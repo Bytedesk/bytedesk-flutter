@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="bytedesk_demo"
+        android:label="萝卜丝客服Demo"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

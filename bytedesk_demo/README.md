@@ -1,16 +1,25 @@
-# bytedesk_demo
+# 萝卜丝客服SDK
 
-A new Flutter project.
+萝卜丝(bytedesk) flutter 客服SDK
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### 第一步
 
-A few resources to get you started if this is your first Flutter project:
+- [注册账号](https://www.bytedesk.com/antv/user/login)
+- 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
+- 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
+- 获取技能组workGroupWid
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### 第二步：匿名登录
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- BytedeskKefu.anonymousLogin(appKey, subDomain);
+
+### 第三步：联系客服
+
+- BytedeskKefu.startWorkGroupChat(context, workGroupWid, "技能组客服");
+
+### 集成完毕
+
+<img src="./home.jpeg" width="25%" height="25%"/>
+<img src="./chat.jpeg" width="25%" height="25%"/>
