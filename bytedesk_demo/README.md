@@ -13,7 +13,7 @@
 
 ### 第二步：匿名登录
 
-- BytedeskKefu.anonymousLogin(appKey, subDomain);
+- BytedeskKefu.anonymousLogin(_androidKey, _iOSKey, _subDomain);
 
 ### 第三步：联系客服
 

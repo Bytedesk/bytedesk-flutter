@@ -1,6 +1,6 @@
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
-import 'package:bytedesk_kefu/util/constants.dart';
-import 'package:bytedesk_kefu/util/events.dart';
+import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
+import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,11 +14,12 @@ void main() {
   // 参考文档：https://github.com/pengjinning/bytedesk-android
   // appkey和subDomain请替换为真实值
   // 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
-  String _appKey = "201809171553112";
+  String _androidKey = "66390193-b2c1-4edb-aa5f-50b1541059e8";
+  String _iOSKey = "201809171553112";
   // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
   String _subDomain = "vip";
   // 第一步：匿名登录
-  BytedeskKefu.anonymousLogin(_appKey, _subDomain);
+  BytedeskKefu.anonymousLogin(_androidKey, _iOSKey, _subDomain);
 }
 
 class MyApp extends StatefulWidget {
@@ -64,28 +65,28 @@ class _MyAppState extends State<MyApp> {
   // 监听状态
   _listener() {
     // 监听连接状态
-    eventBus.on<ConnectionEventBus>().listen((event) {
+    bytedeskEventBus.on<ConnectionEventBus>().listen((event) {
       print('长连接状态:' + event.content);
-      if (event.content == BDConstants.USER_STATUS_CONNECTING) {
+      if (event.content == BytedeskConstants.USER_STATUS_CONNECTING) {
         setState(() {
           _title = "萝卜丝客服Demo(连接中...)";
         });
-      } else if (event.content == BDConstants.USER_STATUS_CONNECTED) {
+      } else if (event.content == BytedeskConstants.USER_STATUS_CONNECTED) {
         setState(() {
           _title = "萝卜丝客服Demo(连接成功)";
         });
-      } else if (event.content == BDConstants.USER_STATUS_DISCONNECTED) {
+      } else if (event.content == BytedeskConstants.USER_STATUS_DISCONNECTED) {
         setState(() {
           _title = "萝卜丝客服Demo(连接断开)";
         });
       }
     });
     // 监听消息
-    eventBus.on<ReceiveMessageEventBus>().listen((event) {
+    bytedeskEventBus.on<ReceiveMessageEventBus>().listen((event) {
       // print('receive message:' + event.message.content);
-      if (event.message.type == BDConstants.MESSAGE_TYPE_TEXT) {
+      if (event.message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
         print('文字消息: ' + event.message.content);
-      } else if (event.message.type == BDConstants.MESSAGE_TYPE_IMAGE) {
+      } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
         print('图片消息:' + event.message.imageUrl);
       } else {
         print('其他类型消息');
