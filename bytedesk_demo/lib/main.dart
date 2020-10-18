@@ -1,6 +1,11 @@
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
+import 'package:bytedesk_demo/page/chat_type_page.dart';
+import 'package:bytedesk_demo/page/history_thread_page.dart';
+import 'package:bytedesk_demo/page/online_status_page.dart';
+import 'package:bytedesk_demo/page/setting_page.dart';
+import 'package:bytedesk_demo/page/user_info_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,8 +15,8 @@ void main() {
     home: MyApp(),
   ));
 
+  // 参考文档：https://github.com/Bytedesk/bytedesk-flutter
   // 管理后台：https://www.bytedesk.com/antv/user/login
-  // 参考文档：https://github.com/pengjinning/bytedesk-android
   // appkey和subDomain请替换为真实值
   // 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
   String _androidKey = "66390193-b2c1-4edb-aa5f-50b1541059e8";
@@ -27,14 +32,15 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   //
   String _title = '萝卜丝客服Demo';
-  // 到 客服管理->技能组-有一列 ‘唯一ID（wId）’, 默认设置工作组wid
-  String _workGroupWid = "201807171659201";
+  // 第二步：到 客服管理->技能组-有一列 ‘唯一ID（wId）’, 默认设置工作组wid
+  // String _workGroupWid = "201807171659201";
   //
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
     _listener();
   }
@@ -47,18 +53,78 @@ class _MyAppState extends State<MyApp> {
         elevation: 0,
       ),
       body: ListView(
-        children: <Widget>[
+          children: ListTile.divideTiles(
+        context: context,
+        tiles: [
           ListTile(
             title: Text('联系客服'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
-              print('chat');
-              // 第二步：联系客服，完毕
-              BytedeskKefu.startWorkGroupChat(context, _workGroupWid, "技能组客服");
+              // 第三步：联系客服，完毕
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new ChatTypePage();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text('用户信息'), // 自定义用户资料，设置
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new UserInfoPage();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text('在线状态'), // 技能组或客服账号 在线状态
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new OnlineStatusPage();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text('历史会话'), // 会话记录
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new HistoryThreadPage();
+              }));
+            },
+          ),
+          // ListTile(
+          //   title: Text('TODO:提交工单'),
+          //   trailing: Icon(Icons.keyboard_arrow_right),
+          //   onTap: () {
+          //     print('ticket');
+          //     // TODO: 提交工单
+          //   },
+          // ),
+          // ListTile(
+          //   title: Text('TODO:意见反馈'),
+          //   trailing: Icon(Icons.keyboard_arrow_right),
+          //   onTap: () {
+          //     print('feedback');
+          //     // TODO: 意见反馈
+          //   },
+          // ),
+          ListTile(
+            title: Text('消息设置'),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new SettingPage();
+              }));
             },
           )
         ],
-      ),
+      ).toList()),
     );
   }
 
@@ -93,4 +159,28 @@ class _MyAppState extends State<MyApp> {
       }
     });
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   print("main didChangeAppLifecycleState:" + state.toString());
+  //   switch (state) {
+  //     case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+  //       break;
+  //     case AppLifecycleState.paused: // 应用程序不可见，后台
+  //       break;
+  //     case AppLifecycleState.resumed: // 应用程序可见，前台
+  //       // APP切换到前台之后，重连
+  //       // BytedeskUtils.mqttReConnect();
+  //       break;
+  //     case AppLifecycleState.detached: // 申请将暂时暂停
+  //       break;
+  //   }
+  // }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
 }

@@ -18,14 +18,21 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
+  # 事件通知总线
+  # https://pub.dev/packages/event_bus
+  event_bus: ^1.1.1
+  # toast https://pub.dev/packages/fluttertoast
+  fluttertoast: ^7.1.1
+  # 消息设置switch https://pub.dev/packages/list_tile_switch
+  list_tile_switch: ^0.0.2
   # https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^0.0.8
+  bytedesk_kefu: ^0.1.0
 
 
   # The following adds the Cupertino Icons font to your application.
