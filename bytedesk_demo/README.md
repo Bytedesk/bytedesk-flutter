@@ -22,6 +22,7 @@
 
 ### 第一步
 
+- pubspec.yaml添加：bytedesk_kefu: ^0.1.0
 - [注册账号](https://www.bytedesk.com/antv/user/login)
 - 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
 - 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号

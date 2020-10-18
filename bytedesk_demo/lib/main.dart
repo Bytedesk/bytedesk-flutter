@@ -113,16 +113,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           //     // TODO: 意见反馈
           //   },
           // ),
-          ListTile(
-            title: Text('消息设置'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-            onTap: () {
-              Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new SettingPage();
-              }));
-            },
-          )
+          // ListTile(
+          //   title: Text('消息设置'),
+          //   trailing: Icon(Icons.keyboard_arrow_right),
+          //   onTap: () {
+          //     Navigator.of(context)
+          //         .push(new MaterialPageRoute(builder: (context) {
+          //       return new SettingPage();
+          //     }));
+          //   },
+          // )
         ],
       ).toList()),
     );

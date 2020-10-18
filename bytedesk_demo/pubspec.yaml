@@ -32,7 +32,7 @@ dependencies:
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^0.0.2
   # https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^0.1.0
+  bytedesk_kefu: ^0.1.1
 
 
   # The following adds the Cupertino Icons font to your application.
