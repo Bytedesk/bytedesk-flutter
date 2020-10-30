@@ -31,8 +31,10 @@ dependencies:
   fluttertoast: ^7.1.1
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^0.0.2
+  # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
+  overlay_support: ^1.0.5
   # https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^0.1.1
+  bytedesk_kefu: ^0.1.5
 
 
   # The following adds the Cupertino Icons font to your application.

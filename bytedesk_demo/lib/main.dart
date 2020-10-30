@@ -4,15 +4,25 @@ import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_demo/page/chat_type_page.dart';
 import 'package:bytedesk_demo/page/history_thread_page.dart';
 import 'package:bytedesk_demo/page/online_status_page.dart';
-import 'package:bytedesk_demo/page/setting_page.dart';
+// import 'package:bytedesk_demo/page/setting_page.dart';
 import 'package:bytedesk_demo/page/user_info_page.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
+
+import 'notification/custom_notification.dart';
 
 void main() {
   // runApp(MyApp());
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false, // 去除右上角debug的标签
-    home: MyApp(),
+  // runApp(MaterialApp(
+  //   debugShowCheckedModeBanner: false, // 去除右上角debug的标签
+  //   home: MyApp(),
+  // ));
+  runApp(OverlaySupport(
+    child: MaterialApp(
+      debugShowCheckedModeBanner: false, // 去除右上角debug的标签
+      home: MyApp(),
+    )
   ));
 
   // 参考文档：https://github.com/Bytedesk/bytedesk-flutter
@@ -152,6 +162,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // print('receive message:' + event.message.content);
       if (event.message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
         print('文字消息: ' + event.message.content);
+        // 判断当前是否客服页面，如否，则显示顶部通知栏
+        if (!BytedeskUtils.isCurrentChatKfPage()) {
+          // https://github.com/boyan01/overlay_support
+          showOverlayNotification((context) {
+            return MessageNotification(
+              avatar: event.message.user.avatar,
+              nickname: event.message.user.nickname,
+              content: event.message.content,
+              onReply: () {
+                OverlaySupportEntry.of(context).dismiss();
+              },
+            );
+          }, duration: Duration(milliseconds: 4000));
+        }
+        
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
         print('图片消息:' + event.message.imageUrl);
       } else {
