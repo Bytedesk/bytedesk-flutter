@@ -41,11 +41,10 @@
 
 ### 集成完毕
 
-| image1 | image2 |
-| :----------: | :----------: |
-| <img src="./home.jpeg" width="250"> | <img src="./robot.jpeg" width="250"> |
-| <img src="./robot2.jpeg" width="250"> | <img src="./chat.jpeg" width="250"> |
-|<img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> |
+| image1 | image2 | image3 |
+| :----------: | :----------: | :----------: |
+| <img src="./home.jpeg" width="250"> | <img src="./robot.jpeg" width="250"> | <img src="./notice.jpeg" width="250"> |
+| <img src="./chat.jpeg" width="250"> | <img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> |
 
 ### 其他
 

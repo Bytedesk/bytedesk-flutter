@@ -34,7 +34,7 @@ dependencies:
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
   overlay_support: ^1.0.5
   # https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^0.1.5
+  bytedesk_kefu: ^0.2.5
 
 
   # The following adds the Cupertino Icons font to your application.
