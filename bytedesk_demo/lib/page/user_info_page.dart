@@ -1,7 +1,9 @@
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
+import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+// 需要首先调用anonymousLogin之后，再调用此接口
 // 自定义用户信息接口-对接APP用户信息
 class UserInfoPage extends StatefulWidget {
   UserInfoPage({Key key}) : super(key: key);
@@ -12,8 +14,7 @@ class UserInfoPage extends StatefulWidget {
 
 class _UserInfoPageState extends State<UserInfoPage> {
   String _nickname = '';
-  String _avatar =
-      'https://chainsnow.oss-cn-shenzhen.aliyuncs.com/avatars/chrome_default_avatar.png';
+  String _avatar = BytedeskConstants.DEFAULT_AVATA;
   @override
   void initState() {
     _getProfile();
@@ -41,7 +42,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           ),
           ListTile(
             leading: Image.network(
-              _avatar ?? 'https://chainsnow.oss-cn-shenzhen.aliyuncs.com/avatars/chrome_default_avatar.png',
+              _avatar ?? BytedeskConstants.DEFAULT_AVATA,
               height: 30,
               width: 30,
             ),

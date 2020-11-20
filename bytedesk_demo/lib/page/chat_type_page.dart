@@ -13,8 +13,10 @@ class ChatTypePage extends StatefulWidget {
 }
 
 class _ChatTypePageState extends State<ChatTypePage> {
+  // 第二步：到 客服管理->技能组-有一列 ‘唯一ID（wId）’, 默认设置工作组wid
   // 说明：一个技能组可以分配多个客服，访客会按照一定的规则分配给组内的各个客服账号
-  String _workGroupWid = "201807171659201";
+  String _workGroupWid = "201807171659201"; // 默认人工
+  String _workGroupWidRobot = "201809061716221"; // 默认机器人
   // 说明：直接发送给此一个客服账号，一对一会话
   String _agentUid = "201808221551193";
   //
@@ -33,7 +35,14 @@ class _ChatTypePageState extends State<ChatTypePage> {
               title: Text('技能组客服'),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
-                BytedeskKefu.startWorkGroupChat(context, _workGroupWid, "技能组客服");
+                BytedeskKefu.startWorkGroupChat(context, _workGroupWid, "技能组客服-默认人工");
+              },
+            ),
+            ListTile(
+              title: Text('技能组客服-机器人'),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              onTap: () {
+                BytedeskKefu.startWorkGroupChat(context, _workGroupWidRobot, "技能组客服-默认机器人");
               },
             ),
             ListTile(
@@ -52,14 +61,14 @@ class _ChatTypePageState extends State<ChatTypePage> {
                   "categoryCode": "100010003",
                   "client": "flutter"
                 });
-                BytedeskKefu.startWorkGroupChatShop(context, _workGroupWid, "技能组客服", custom);
+                BytedeskKefu.startWorkGroupChatShop(context, _workGroupWid, "技能组客服-电商", custom);
               },
             ),
             ListTile(
               title: Text('技能组客服-附言'),
               trailing: Icon(Icons.keyboard_arrow_right),
               onTap: () {
-                BytedeskKefu.startWorkGroupChatPostscript(context, _workGroupWid, "技能组客服", "随便说点什么吧，我会自动发送给客服");
+                BytedeskKefu.startWorkGroupChatPostscript(context, _workGroupWid, "技能组客服-附言", "随便说点什么吧，我会自动发送给客服");
               },
             ),
             Container(

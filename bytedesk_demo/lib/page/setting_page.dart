@@ -11,14 +11,14 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  // bool _playAudioOnSendMessage = false;
-  // bool _playAudioOnReceiveMessage = false;
+  bool _playAudioOnSendMessage = false;
+  bool _playAudioOnReceiveMessage = false;
   bool _vibrateOnReceiveMessage = false;
   //
   @override
   void initState() {
-    // _playAudioOnSendMessage = BytedeskKefu.getPlayAudioOnSendMessage();
-    // _playAudioOnReceiveMessage = BytedeskKefu.getPlayAudioOnReceiveMessage();
+    _playAudioOnSendMessage = BytedeskKefu.getPlayAudioOnSendMessage();
+    _playAudioOnReceiveMessage = BytedeskKefu.getPlayAudioOnReceiveMessage();
     _vibrateOnReceiveMessage = BytedeskKefu.getVibrateOnReceiveMessage();
     super.initState();
   }
@@ -34,26 +34,26 @@ class _SettingPageState extends State<SettingPage> {
           children: ListTile.divideTiles(
         context: context,
         tiles: [
-          // ListTileSwitch(
-          //   value: _playAudioOnSendMessage,
-          //   onChanged: (value) {
-          //     setState(() {
-          //       _playAudioOnSendMessage = value;
-          //     });
-          //     BytedeskKefu.setPlayAudioOnSendMessage(value);
-          //   },
-          //   title: Text('TODO: 发送消息时播放声音'),
-          // ),
-          // ListTileSwitch(
-          //   value: _playAudioOnReceiveMessage,
-          //   onChanged: (value) {
-          //     setState(() {
-          //       _playAudioOnReceiveMessage = value;
-          //     });
-          //     BytedeskKefu.setPlayAudioOnReceiveMessage(value);
-          //   },
-          //   title: Text('TODO: 收到消息时播放声音'),
-          // ),
+          ListTileSwitch(
+            value: _playAudioOnSendMessage,
+            onChanged: (value) {
+              setState(() {
+                _playAudioOnSendMessage = value;
+              });
+              BytedeskKefu.setPlayAudioOnSendMessage(value);
+            },
+            title: Text('发送消息时播放声音'),
+          ),
+          ListTileSwitch(
+            value: _playAudioOnReceiveMessage,
+            onChanged: (value) {
+              setState(() {
+                _playAudioOnReceiveMessage = value;
+              });
+              BytedeskKefu.setPlayAudioOnReceiveMessage(value);
+            },
+            title: Text('收到消息时播放声音'),
+          ),
           ListTileSwitch(
             value: _vibrateOnReceiveMessage,
             onChanged: (value) {
