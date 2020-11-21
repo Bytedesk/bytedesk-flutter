@@ -189,6 +189,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               content: event.message.content,
               onReply: () {
                 OverlaySupportEntry.of(context).dismiss();
+                // 进入客服页面，支持自定义页面标题
+                BytedeskKefu.startChatThread(context, event.message.thread, title: '客服会话');
               },
             );
           }, duration: Duration(milliseconds: 4000));
