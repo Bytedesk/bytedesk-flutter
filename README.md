@@ -49,6 +49,7 @@
 
 ### 其他
 
+- [下载 ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk)
 - 技术支持QQ 3群: 825257535
 
 - [Flutter SDK](https://github.com/bytedesk/bytedesk-flutter)
