@@ -40,6 +40,11 @@
 
 - BytedeskKefu.startWorkGroupChat(context, workGroupWid, "技能组客服");
 
+<!-- ### 打包 -->
+<!-- - Step 1. flutter build apk --debug
+- Step 2. flutter build apk --profile
+- Step 3. flutter build apk --release -->
+
 ### 集成完毕
 
 | image1 | image2 | image3 |
