@@ -47,6 +47,10 @@
 | <img src="./home.jpeg" width="250"> | <img src="./robot.jpeg" width="250"> | <img src="./notice.jpeg" width="250"> |
 | <img src="./chat.png" width="250"> | <img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> |
 
+## 公众号
+
+<img src="./img/luobosi_mp.png?raw=true" width="250">
+
 ### 其他
 
 - [下载 ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk)
