@@ -49,7 +49,7 @@
 
 ## 公众号
 
-<img src="./img/luobosi_mp.png?raw=true" width="250">
+<img src="./luobosi_mp.png?raw=true" width="250">
 
 ### 其他
 
