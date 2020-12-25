@@ -20,6 +20,20 @@
 <!-- - 提交工单 -->
 <!-- - 意见反馈 -->
 
+## 注意
+
+- 修改安卓 android/build.gradle
+
+```bash
+# Android
+buildscript {
+    ...
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.5.4'
+    }
+}
+```
+
 ## 集成步骤
 
 ### 第一步
@@ -50,8 +64,10 @@
 | image1 | image2 | image3 |
 | :----------: | :----------: | :----------: |
 | <img src="./home.jpeg" width="250"> | <img src="./robot.jpeg" width="250"> | <img src="./notice.jpeg" width="250"> |
-| <img src="./chat.png" width="250"> | <img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> |
+| <img src="./chat.png" width="250"> | <img src="./shop.png" width="250"> |<img src="./postscript.png" width="250"> |
+| <img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> ||
 
 ### 其他
 
+- [下载 ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk)
 - 技术支持QQ 3群: 825257535

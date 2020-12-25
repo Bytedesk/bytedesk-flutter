@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             title: Text('联系客服'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
-              // 第三步：联系客服，完毕
+              // 第二步：联系客服，完毕
               Navigator.of(context)
                   .push(new MaterialPageRoute(builder: (context) {
                 return new ChatTypePage();
@@ -188,6 +188,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               nickname: event.message.user.nickname,
               content: event.message.content,
               onReply: () {
+                //
                 OverlaySupportEntry.of(context).dismiss();
                 // 进入客服页面，支持自定义页面标题
                 BytedeskKefu.startChatThread(context, event.message.thread, title: '客服会话');
@@ -197,8 +198,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
         print('图片消息:' + event.message.imageUrl);
+      } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
+        print('语音消息:' + event.message.voiceUrl);
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
-        print('视频消息:' + event.message.imageUrl);
+        print('视频消息:' + event.message.videoUrl);
+      } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
+        print('文件消息:' + event.message.fileUrl);
       } else {
         print('其他类型消息');
       }
@@ -222,6 +227,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   //   }
   // }
 
+  // 振动
   void vibrate() async {
     if (await Vibration.hasVibrator()) {
       Vibration.vibrate();

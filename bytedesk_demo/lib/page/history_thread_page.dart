@@ -10,7 +10,9 @@ class HistoryThreadPage extends StatefulWidget {
   _HistoryThreadPageState createState() => _HistoryThreadPageState();
 }
 
+// TODO: 点击thread会话直接进入对话页面
 class _HistoryThreadPageState extends State<HistoryThreadPage> {
+  //
   int _page = 0;
   int _size = 20;
   List<Thread> _historyThreadList = [];
@@ -20,7 +22,6 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
     _getVisitorThreads();
     super.initState();
   }
-
   //
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,10 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
               leading: Image.network(_historyThreadList[index].avatar),
               title: Text('${_historyThreadList[index].nickname}, ${_historyThreadList[index].timestamp}'),
               subtitle: Text('${_historyThreadList[index].content}'),
+              onTap: () {
+                // 进入客服页面
+                BytedeskKefu.startChatThread(context, _historyThreadList[index]);
+              },
             ),
             itemCount: _historyThreadList.length,
           ),
@@ -52,7 +57,7 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
   }
 
   Future<void> _onRefresh() async {
-    _page++;
     _getVisitorThreads();
+    _page++;
   }
 }
