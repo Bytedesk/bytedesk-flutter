@@ -25,12 +25,11 @@ void main() {
   // 管理后台：https://www.bytedesk.com/antv/user/login
   // appkey和subDomain请替换为真实值
   // 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
-  String _androidKey = "66390193-b2c1-4edb-aa5f-50b1541059e8";
-  String _iOSKey = "201809171553112";
+  String _appKey = "45c513b8-0331-414c-8412-7e2cdfb3eb9f";
   // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
   String _subDomain = "vip";
   // 第一步：匿名登录
-  BytedeskKefu.anonymousLogin(_androidKey, _iOSKey, _subDomain);
+  BytedeskKefu.anonymousLogin(_appKey, _subDomain);
 }
 
 class MyApp extends StatefulWidget {
