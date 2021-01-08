@@ -72,6 +72,7 @@ buildscript {
 - 技术支持QQ 3群: 825257535
 
 - [Flutter SDK](https://github.com/bytedesk/bytedesk-flutter)
+- [UniApp SDK](https://github.com/bytedesk/bytedesk-uniapp)
 - [iOS SDK](https://github.com/bytedesk/bytedesk-ios)
 - [Android SDK](https://github.com/bytedesk/bytedesk-android)
 - [Web端接口](https://github.com/bytedesk/bytedesk-web)
