@@ -46,9 +46,9 @@ buildscript {
 - 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
 - 获取技能组workGroupWid
 
-### 第二步：匿名登录
+### 第二步：初始化
 
-- BytedeskKefu.anonymousLogin(_androidKey, _iOSKey, _subDomain);
+- BytedeskKefu.init(_appKey, _subDomain);
 
 ### 第三步：联系客服
 
