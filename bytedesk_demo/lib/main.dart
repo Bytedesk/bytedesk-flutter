@@ -24,12 +24,12 @@ void main() {
   // 参考文档：https://github.com/Bytedesk/bytedesk-flutter
   // 管理后台：https://www.bytedesk.com/antv/user/login
   // appkey和subDomain请替换为真实值
-  // 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
-  String _appKey = "45c513b8-0331-414c-8412-7e2cdfb3eb9f";
+  // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
+  String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
   // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
   String _subDomain = "vip";
-  // 第一步：匿名登录
-  BytedeskKefu.anonymousLogin(_appKey, _subDomain);
+  // 第一步：初始化
+  BytedeskKefu.init(_appKey, _subDomain);
 }
 
 class MyApp extends StatefulWidget {
@@ -119,7 +119,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           //   },
           // ),
           ListTile(
-            title: Text('消息设置'),
+            title: Text('消息提示'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
@@ -157,7 +157,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // print('receive message:' + event.message.content);
       // 1. 首先将example/assets/audio文件夹中文件拷贝到自己项目；2.在自己项目pubspec.yaml中添加assets
       // 播放发送消息提示音
-      if (BytedeskKefu.getPlayAudioOnSendMessage() && event.message.isSend == 1) {
+      if (BytedeskKefu.getPlayAudioOnSendMessage() &&
+          event.message.isSend == 1) {
         print('play send audio');
         // 修改为自己项目中语音文件路径
         audioCache.play('audio/bytedesk_dingdong.wav');
@@ -167,12 +168,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         return;
       }
       // 接收消息播放提示音
-      if (BytedeskKefu.getPlayAudioOnReceiveMessage() && event.message.isSend == 0) {
+      if (BytedeskKefu.getPlayAudioOnReceiveMessage() &&
+          event.message.isSend == 0) {
         print('play receive audio');
         audioCache.play('audio/bytedesk_dingdong.wav');
       }
       // 振动
-      if (BytedeskKefu.getVibrateOnReceiveMessage() && event.message.isSend == 0) {
+      if (BytedeskKefu.getVibrateOnReceiveMessage() &&
+          event.message.isSend == 0) {
         print('should vibrate');
         vibrate();
       }
@@ -190,7 +193,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                 //
                 OverlaySupportEntry.of(context).dismiss();
                 // 进入客服页面，支持自定义页面标题
-                BytedeskKefu.startChatThread(context, event.message.thread, title: '客服会话');
+                BytedeskKefu.startChatThread(context, event.message.thread,
+                    title: '客服会话');
               },
             );
           }, duration: Duration(milliseconds: 4000));

@@ -15,12 +15,14 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   // 到 客服管理->客服账号-有一列 ‘唯一ID（uId）’
   String _agentUid = "201808221551193";
   //
-  String _workGroupStatus = '';
-  String _agentStatus = '';
+  String _workGroupStatus = ''; // 注：online 代表在线，offline 代表离线
+  String _agentStatus = ''; // 注：online 代表在线，offline 代表离线
   //
   @override
   void initState() {
+    // 获取技能组在线状态
     _getWorkGroupStatus();
+    // 获取指定客服在线状态
     _getAgentStatus();
     super.initState();
   }
@@ -57,6 +59,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   }
 
   void _getWorkGroupStatus() {
+    // 获取技能组在线状态：当技能组中至少有一个客服在线时，显示在线
     BytedeskKefu.getWorkGroupStatus(_workGroupWid).then((status) => {
           print(status),
           setState(() {
@@ -66,6 +69,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   }
 
   void _getAgentStatus() {
+    // 获取指定客服在线状态
     BytedeskKefu.getAgentStatus(_agentUid).then((status) => {
           print(status),
           setState(() {

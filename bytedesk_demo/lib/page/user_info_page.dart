@@ -58,6 +58,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   void _getProfile() {
+    // 查询当前用户信息：昵称、头像
     BytedeskKefu.getProfile().then((user) => {
       setState(() {
         _nickname = user.nickname;
@@ -67,7 +68,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   void _setNickname() {
-    String mynickname = 'APP昵称123';
+    // 可自定义用户昵称-客服端可见
+    String mynickname = '自定义APP昵称flutter';
     BytedeskKefu.updateNickname(mynickname).then((user) => {
       setState(() {
         _nickname = mynickname;
@@ -77,11 +79,12 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   void _setAvatar() {
+    // 可自定义用户头像url-客服端可见
     String myavatarurl = 'https://chainsnow.oss-cn-shenzhen.aliyuncs.com/avatars/visitor_default_avatar.png'; // 头像网址url
     BytedeskKefu.updateAvatar(myavatarurl).then((user) => {
       setState(() {
-            _avatar = myavatarurl;
-          }),
+        _avatar = myavatarurl;
+      }),
       Fluttertoast.showToast(msg: "设置头像成功")
     });
   }

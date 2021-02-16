@@ -16,7 +16,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
   // 第二步：到 客服管理->技能组-有一列 ‘唯一ID（wId）’, 默认设置工作组wid
   // 说明：一个技能组可以分配多个客服，访客会按照一定的规则分配给组内的各个客服账号
   String _workGroupWid = "201807171659201"; // 默认人工
-  String _workGroupWidRobot = "201809061716221"; // 默认机器人
+  String _workGroupWidRobot = "201809061716221"; // 默认机器人, 在管理后台开启或关闭机器人
   // 说明：直接发送给此一个客服账号，一对一会话
   String _agentUid = "201808221551193";
   //
