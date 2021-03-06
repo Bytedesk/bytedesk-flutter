@@ -46,6 +46,12 @@ buildscript {
 - 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
 - 获取技能组workGroupWid
 
+```bash
+# pubspec.yaml添加
+#注意：pull_to_refresh: 1.6.4不兼容，故强制依赖1.6.3
+dependency_overrides:
+ pull_to_refresh: 1.6.3
+```
 ### 第二步：初始化
 
 - BytedeskKefu.init(_appKey, _subDomain);
