@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.8.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -26,29 +26,25 @@ dependencies:
 
   # 事件通知总线
   # https://pub.dev/packages/event_bus
-  event_bus: ^1.1.1
+  event_bus: ^2.0.0
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^7.1.4
+  fluttertoast: ^8.0.6
   # 消息设置switch https://pub.dev/packages/list_tile_switch
-  list_tile_switch: ^0.0.2
+  list_tile_switch: ^1.0.0
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
-  overlay_support: ^1.0.5
+  overlay_support: ^1.2.1
   # 播放提示音 https://pub.dev/packages/audioplayers
-  audioplayers: ^0.17.0
+  audioplayers: ^0.18.3
   # 振动 https://pub.dev/packages/vibration
   # 针对报错fatal error: 'vibration/vibration-Swift.h' file not found #import <vibration/vibration-Swift.h>, ld: library not found for -lvibration
   # 请在ios/Podfile中添加：use_frameworks! 
-  vibration: ^1.7.2
+  vibration: ^1.7.3
   # 在线客服 https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^0.6.1
+  bytedesk_kefu: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-
-#注意：pull_to_refresh: 1.6.4不兼容，故强制依赖1.6.3
-dependency_overrides:
- pull_to_refresh: 1.6.3
+  cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
