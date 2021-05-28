@@ -11,7 +11,7 @@ import 'package:bytedesk_demo/page/user_info_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
-import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   // runApp(MyApp());
@@ -39,7 +39,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   //
-  String _title = '萝卜丝客服Demo';
+  String _title = '萝卜丝客服Demo(连接中...)';
   AudioCache audioCache = AudioCache();
   //
   @override

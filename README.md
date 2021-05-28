@@ -4,6 +4,7 @@
 
 ## 部分功能
 
+- 支持安卓、iOS、Web
 - 机器人对话
 - 技能组客服
 - 一对一客服
@@ -19,20 +20,6 @@
 - 发送/播放视频
 <!-- - 提交工单 -->
 <!-- - 意见反馈 -->
-
-## 注意
-
-- 修改安卓 android/build.gradle
-
-```bash
-# Android
-buildscript {
-    ...
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
-    }
-}
-```
 
 ## 集成步骤
 
