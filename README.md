@@ -29,17 +29,17 @@
 <!-- - 最新版本：[![Pub](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) -->
 - [![pub package](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) | [![pub points](https://badges.bar/bytedesk_kefu/pub%20points)](https://pub.dev/packages/bytedesk_kefu/score) | [![popularity](https://badges.bar/bytedesk_kefu/popularity)](https://pub.dev/packages/bytedesk_kefu/score) | [![likes](https://badges.bar/bytedesk_kefu/likes)](https://pub.dev/packages/bytedesk_kefu/score)
 - [注册账号](https://www.bytedesk.com/antv/user/login)
-- 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
-- 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
-- 获取技能组workGroupWid
 
 ### 第二步：初始化
 
-- BytedeskKefu.init(_appKey, _subDomain);
+- 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
+- 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
+- BytedeskKefu.init(appKey, subDomain);
 
 ### 第三步：联系客服
 
-- BytedeskKefu.startWorkGroupChat(context, workGroupWid, "技能组客服");
+- 获取技能组workGroupWid：登录后台->客服管理->技能组->唯一wid
+- BytedeskKefu.startWorkGroupChat(context, workGroupWid, "技能组客服wid");
 
 ### 集成完毕
 
@@ -55,6 +55,7 @@
 
 ### 其他
 
+- [官网](https://www.bytedesk.com/)
 - [下载 ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk)
 - 技术支持QQ 3群: 825257535
 
