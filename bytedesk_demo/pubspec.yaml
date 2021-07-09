@@ -34,13 +34,13 @@ dependencies:
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
   overlay_support: ^1.2.1
   # 播放提示音 https://pub.dev/packages/audioplayers
-  audioplayers: ^0.19.0
+  audioplayers: ^0.19.1
   # 振动 https://pub.dev/packages/vibration
   # 针对报错fatal error: 'vibration/vibration-Swift.h' file not found #import <vibration/vibration-Swift.h>, ld: library not found for -lvibration
   # 请在ios/Podfile中添加：use_frameworks! 
   vibration: ^1.7.3
   # 在线客服 https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^1.0.3
+  bytedesk_kefu: ^1.0.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
