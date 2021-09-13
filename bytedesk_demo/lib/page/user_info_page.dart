@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // 需要首先调用anonymousLogin之后，再调用此接口
 // 自定义用户信息接口-对接APP用户信息
 class UserInfoPage extends StatefulWidget {
-  UserInfoPage({Key key}) : super(key: key);
+  UserInfoPage({Key? key}) : super(key: key);
 
   @override
   _UserInfoPageState createState() => _UserInfoPageState();
@@ -34,7 +34,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
         tiles: [
           ListTile(
             title: Text('设置昵称(见代码)'),
-            subtitle: Text(_nickname ?? ''),
+            subtitle: Text(_nickname),
             onTap: () {
               //
               _setNickname();
@@ -42,7 +42,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
           ),
           ListTile(
             leading: Image.network(
-              _avatar ?? BytedeskConstants.DEFAULT_AVATA,
+              _avatar,
               height: 30,
               width: 30,
             ),
@@ -61,8 +61,8 @@ class _UserInfoPageState extends State<UserInfoPage> {
     // 查询当前用户信息：昵称、头像
     BytedeskKefu.getProfile().then((user) => {
       setState(() {
-        _nickname = user.nickname;
-        _avatar = user.avatar;
+        _nickname = user.nickname!;
+        _avatar = user.avatar!;
       })
     });
   }

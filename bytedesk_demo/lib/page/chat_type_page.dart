@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 // 多种客服对话类型列表页面
 class ChatTypePage extends StatefulWidget {
-  ChatTypePage({Key key}) : super(key: key);
+  ChatTypePage({Key? key}) : super(key: key);
 
   @override
   _ChatTypePageState createState() => _ChatTypePageState();

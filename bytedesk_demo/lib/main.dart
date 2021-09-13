@@ -10,7 +10,7 @@ import 'package:bytedesk_demo/page/setting_page.dart';
 import 'package:bytedesk_demo/page/user_info_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
-import 'package:vibration/vibration.dart';
+// import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 void main() {
@@ -41,10 +41,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   //
   String _title = '萝卜丝客服Demo(连接中...)';
   AudioCache audioCache = AudioCache();
+  // bool _isConnected = false;
   //
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance?.addObserver(this);
     super.initState();
     _listener();
   }
@@ -130,6 +131,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           )
         ],
       ).toList()),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // 第二步：到 客服管理->技能组-有一列 ‘唯一ID（wId）’, 默认设置工作组wid
+      //     // 说明：一个技能组可以分配多个客服，访客会按照一定的规则分配给组内的各个客服账号
+      //     String _workGroupWid = "201807171659201"; // 默认人工
+      //     BytedeskKefu.startWorkGroupChat(context, _workGroupWid, "技能组客服-默认人工");
+      //   },
+      //   tooltip: '客服',
+      //   child: Icon(Icons.message),
+      // ), // Th
     );
   }
 
@@ -157,7 +168,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // print('receive message:' + event.message.content);
       // 1. 首先将example/assets/audio文件夹中文件拷贝到自己项目；2.在自己项目pubspec.yaml中添加assets
       // 播放发送消息提示音
-      if (BytedeskKefu.getPlayAudioOnSendMessage() &&
+      if (BytedeskKefu.getPlayAudioOnSendMessage()! &&
           event.message.isSend == 1) {
         print('play send audio');
         // 修改为自己项目中语音文件路径
@@ -168,48 +179,52 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         return;
       }
       // 接收消息播放提示音
-      if (BytedeskKefu.getPlayAudioOnReceiveMessage() &&
+      if (BytedeskKefu.getPlayAudioOnReceiveMessage()! &&
           event.message.isSend == 0) {
         print('play receive audio');
         audioCache.play('audio/bytedesk_dingdong.wav');
       }
       // 振动
-      if (BytedeskKefu.getVibrateOnReceiveMessage() &&
+      if (BytedeskKefu.getVibrateOnReceiveMessage()! &&
           event.message.isSend == 0) {
         print('should vibrate');
         vibrate();
       }
       if (event.message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-        print('文字消息: ' + event.message.content);
+        print('文字消息: ' + event.message.content!);
         // 判断当前是否客服页面，如否，则显示顶部通知栏
-        if (!BytedeskUtils.isCurrentChatKfPage()) {
+        if (!BytedeskUtils.isCurrentChatKfPage()!) {
           // https://github.com/boyan01/overlay_support
           showOverlayNotification((context) {
             return MessageNotification(
-              avatar: event.message.user.avatar,
-              nickname: event.message.user.nickname,
-              content: event.message.content,
+              avatar: event.message.user!.avatar!,
+              nickname: event.message.user!.nickname!,
+              content: event.message.content!,
               onReply: () {
                 //
-                OverlaySupportEntry.of(context).dismiss();
+                OverlaySupportEntry.of(context)!.dismiss();
                 // 进入客服页面，支持自定义页面标题
-                BytedeskKefu.startChatThread(context, event.message.thread,
+                BytedeskKefu.startChatThread(context, event.message.thread!,
                     title: '客服会话');
               },
             );
           }, duration: Duration(milliseconds: 4000));
         }
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-        print('图片消息:' + event.message.imageUrl);
+        print('图片消息:' + event.message.imageUrl!);
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
-        print('语音消息:' + event.message.voiceUrl);
+        print('语音消息:' + event.message.voiceUrl!);
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
-        print('视频消息:' + event.message.videoUrl);
+        print('视频消息:' + event.message.videoUrl!);
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
-        print('文件消息:' + event.message.fileUrl);
+        print('文件消息:' + event.message.fileUrl!);
       } else {
         print('其他类型消息');
       }
+    });
+    // token过期
+    bytedeskEventBus.on<InvalidTokenEventBus>().listen((event) {
+      // 执行重新初始化
     });
   }
 
@@ -232,14 +247,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   // 振动
   void vibrate() async {
-    if (await Vibration.hasVibrator()) {
-      Vibration.vibrate();
-    }
+    // if (await Vibration.hasVibrator()) {
+    //   Vibration.vibrate();
+    // }
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
+    // audioCache?
   }
 }

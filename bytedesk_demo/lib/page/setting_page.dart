@@ -4,7 +4,7 @@ import 'package:list_tile_switch/list_tile_switch.dart';
 
 // 消息声音、振动设置页面
 class SettingPage extends StatefulWidget {
-  SettingPage({Key key}) : super(key: key);
+  SettingPage({Key? key}) : super(key: key);
 
   @override
   _SettingPageState createState() => _SettingPageState();
@@ -17,9 +17,9 @@ class _SettingPageState extends State<SettingPage> {
   //
   @override
   void initState() {
-    _playAudioOnSendMessage = BytedeskKefu.getPlayAudioOnSendMessage();
-    _playAudioOnReceiveMessage = BytedeskKefu.getPlayAudioOnReceiveMessage();
-    _vibrateOnReceiveMessage = BytedeskKefu.getVibrateOnReceiveMessage();
+    _playAudioOnSendMessage = BytedeskKefu.getPlayAudioOnSendMessage()!;
+    _playAudioOnReceiveMessage = BytedeskKefu.getPlayAudioOnReceiveMessage()!;
+    _vibrateOnReceiveMessage = BytedeskKefu.getVibrateOnReceiveMessage()!;
     super.initState();
   }
 

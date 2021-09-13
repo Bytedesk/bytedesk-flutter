@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 // 历史会话列表
 class HistoryThreadPage extends StatefulWidget {
-  HistoryThreadPage({Key key}) : super(key: key);
+  HistoryThreadPage({Key? key}) : super(key: key);
 
   @override
   _HistoryThreadPageState createState() => _HistoryThreadPageState();
@@ -34,7 +34,7 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
           child: ListView.builder(
             padding: EdgeInsets.all(8.0),
             itemBuilder: (_, int index) => ListTile(
-              leading: Image.network(_historyThreadList[index].avatar),
+              leading: Image.network(_historyThreadList[index].avatar!),
               title: Text('${_historyThreadList[index].nickname}, ${_historyThreadList[index].timestamp}'),
               subtitle: Text('${_historyThreadList[index].content}'),
               onTap: () {

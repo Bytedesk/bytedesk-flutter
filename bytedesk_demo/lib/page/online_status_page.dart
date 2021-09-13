@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // 查询技能组和指定客服账号的在线状态
 class OnlineStatusPage extends StatefulWidget {
-  OnlineStatusPage({Key key}) : super(key: key);
+  OnlineStatusPage({Key? key}) : super(key: key);
 
   @override
   _OnlineStatusPageState createState() => _OnlineStatusPageState();

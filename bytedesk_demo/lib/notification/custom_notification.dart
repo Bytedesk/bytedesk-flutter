@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class MessageNotification extends StatelessWidget {
   //
-  final VoidCallback onReply;
-  final String avatar;
-  final String nickname;
-  final String content;
+  final VoidCallback? onReply;
+  final String? avatar;
+  final String? nickname;
+  final String? content;
 
   const MessageNotification({
-    Key key,
+    Key? key,
     @required this.onReply,
     @required this.avatar,
     @required this.nickname,
@@ -23,13 +23,13 @@ class MessageNotification extends StatelessWidget {
         child: ListTile(
           leading: SizedBox.fromSize(
               size: const Size(40, 40),
-              child: ClipOval(child: Image.network(avatar))),
-          title: Text(nickname),
-          subtitle: Text(content),
+              child: ClipOval(child: Image.network(avatar!))),
+          title: Text(nickname!),
+          subtitle: Text(content!),
           trailing: IconButton(
               icon: Icon(Icons.reply),
               onPressed: () {
-                if (onReply != null) onReply();
+                if (onReply != null) onReply!();
               }),
         ),
       ),
