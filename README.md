@@ -52,7 +52,7 @@
 ### 自定义界面
 
 - 项目中创建文件夹: vendors
-- 去下载最新源码 [sourceCode](https://pub.dev/packages/bytedesk_kefu/versions), 放在 vendors 文件夹中
+- 去[下载](https://pub.dev/packages/bytedesk_kefu/versions)最新源码, 放在 vendors 文件夹中
 - pubspect.yaml中填写引用本地源码
 
 ```dart
