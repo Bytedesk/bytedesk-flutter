@@ -49,6 +49,17 @@
 | <img src="./chat.png" width="250"> | <img src="./shop.png" width="250"> |<img src="./postscript.png" width="250"> |
 | <img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> ||
 
+### 自定义界面
+
+- 项目中创建文件夹: vendors
+- 去下载最新源码 [sourceCode](https://pub.dev/packages/bytedesk_kefu/versions), 放在 vendors 文件夹中
+- pubspect.yaml中填写引用本地源码
+
+```dart
+bytedesk_kefu:
+    path: ./vendors/bytedesk
+```
+
 ## 公众号
 
 <img src="./luobosi_mp.png?raw=true" width="250">
