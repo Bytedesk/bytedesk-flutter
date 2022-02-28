@@ -223,9 +223,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       }
     });
     // token过期
-    bytedeskEventBus.on<InvalidTokenEventBus>().listen((event) {
-      // 执行重新初始化
-    });
+    // bytedeskEventBus.on<InvalidTokenEventBus>().listen((event) {
+    //   // 执行重新初始化
+    //   print('InvalidTokenEventBus, token过期');
+    // });
   }
 
   // @override

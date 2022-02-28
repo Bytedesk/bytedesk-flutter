@@ -28,7 +28,7 @@ dependencies:
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.0.8
+  fluttertoast: ^8.0.9
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
@@ -40,7 +40,7 @@ dependencies:
   # 请在ios/Podfile中添加：use_frameworks! 
   vibration: ^1.7.3
   # 在线客服 https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^1.1.3
+  bytedesk_kefu: ^1.1.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
