@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.bytedesk" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "FileDescription", "demo" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "bytedesk_demo" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 com.bytedesk. All rights reserved." "\0"
-            VALUE "OriginalFilename", "bytedesk_demo.exe" "\0"
-            VALUE "ProductName", "bytedesk_demo" "\0"
+            VALUE "InternalName", "demo" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 com.bytedesk. All rights reserved." "\0"
+            VALUE "OriginalFilename", "demo.exe" "\0"
+            VALUE "ProductName", "demo" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

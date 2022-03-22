@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.15)
-project(bytedesk_demo LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.14)
+project(demo LANGUAGES CXX)
 
-set(BINARY_NAME "bytedesk_demo")
+set(BINARY_NAME "demo")
 
 cmake_policy(SET CMP0063 NEW)
 
