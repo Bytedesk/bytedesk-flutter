@@ -22,7 +22,7 @@ void main() {
   )));
 
   // 参考文档：https://github.com/Bytedesk/bytedesk-flutter
-  // 管理后台：https://www.bytedesk.com/antv/user/login
+  // 管理后台：https://www.bytedesk.com/admin
   // appkey和subDomain请替换为真实值
   // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
   String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';

@@ -12,9 +12,13 @@ class UserInfoPage extends StatefulWidget {
   _UserInfoPageState createState() => _UserInfoPageState();
 }
 
+
 class _UserInfoPageState extends State<UserInfoPage> {
-  String _nickname = '';
-  String _avatar = BytedeskConstants.DEFAULT_AVATA;
+  String _uid = ''; // 用户唯一uid
+  String _username = ''; // 用户唯一用户名
+  String _nickname = ''; // 用户昵称
+  String _avatar = BytedeskConstants.DEFAULT_AVATA; // 用户头像
+  String _description = ''; // 用户备注
   @override
   void initState() {
     _getProfile();
@@ -52,6 +56,14 @@ class _UserInfoPageState extends State<UserInfoPage> {
               _setAvatar();
             },
           ),
+          ListTile(
+            title: Text('设置备注(见代码)'),
+            subtitle: Text(_description),
+            onTap: () {
+              //
+              _setDescription();
+            },
+          ),
         ],
       ).toList()),
     );
@@ -60,32 +72,47 @@ class _UserInfoPageState extends State<UserInfoPage> {
   void _getProfile() {
     // 查询当前用户信息：昵称、头像
     BytedeskKefu.getProfile().then((user) => {
-      setState(() {
-        _nickname = user.nickname!;
-        _avatar = user.avatar!;
-      })
-    });
+          setState(() {
+            _uid = user.uid!;
+            _username = user.username!;
+            _nickname = user.nickname!;
+            _avatar = user.avatar!;
+            _description = user.description!;
+          })
+        });
   }
 
   void _setNickname() {
     // 可自定义用户昵称-客服端可见
     String mynickname = '自定义APP昵称flutter';
     BytedeskKefu.updateNickname(mynickname).then((user) => {
-      setState(() {
-        _nickname = mynickname;
-      }),
-      Fluttertoast.showToast(msg: "设置昵称成功")
-    });
+          setState(() {
+            _nickname = mynickname;
+          }),
+          Fluttertoast.showToast(msg: "设置昵称成功")
+        });
   }
 
   void _setAvatar() {
     // 可自定义用户头像url-客服端可见
-    String myavatarurl = 'https://chainsnow.oss-cn-shenzhen.aliyuncs.com/avatars/visitor_default_avatar.png'; // 头像网址url
+    String myavatarurl =
+        'https://chainsnow.oss-cn-shenzhen.aliyuncs.com/avatars/visitor_default_avatar.png'; // 头像网址url
     BytedeskKefu.updateAvatar(myavatarurl).then((user) => {
-      setState(() {
-        _avatar = myavatarurl;
-      }),
-      Fluttertoast.showToast(msg: "设置头像成功")
-    });
+          setState(() {
+            _avatar = myavatarurl;
+          }),
+          Fluttertoast.showToast(msg: "设置头像成功")
+        });
+  }
+
+  void _setDescription() {
+    // 可自定义用户昵称-客服端可见
+    String description = '自定义用户备注';
+    BytedeskKefu.updateDescription(description).then((user) => {
+          setState(() {
+            description = description;
+          }),
+          Fluttertoast.showToast(msg: "设置备注成功")
+        });
   }
 }
