@@ -110,7 +110,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
     String description = '自定义用户备注';
     BytedeskKefu.updateDescription(description).then((user) => {
           setState(() {
-            description = description;
+            _description = description;
           }),
           Fluttertoast.showToast(msg: "设置备注成功")
         });
