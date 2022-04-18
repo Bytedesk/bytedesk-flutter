@@ -30,6 +30,11 @@ void main() {
   String _subDomain = "vip";
   // 第一步：初始化
   BytedeskKefu.init(_appKey, _subDomain);
+  // 注：如果需要多平台统一用户（用于同步聊天记录等），可使用:
+  // BytedeskKefu.initWithUsernameAndNicknameAndAvatar('myuniappusername', '我是美女', 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png', subDomain, appKey);
+  // BytedeskKefu.initWithUsername('myuniappusername',subDomain, appKey); // 其中：username为自定义用户名，可与开发者所在用户系统对接
+  // 如果还需要自定义昵称/头像，可以使用 initWithUsernameAndNickname或initWithUsernameAndNicknameAndAvatar，
+  // 具体参数可以参考 bytedesk_kefu/bytedesk_kefu.dart 文件
 }
 
 class MyApp extends StatefulWidget {
@@ -63,44 +68,44 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         context: context,
         tiles: [
           ListTile(
-            title: Text('联系客服'),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('联系客服'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 第二步：联系客服，完毕
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new ChatTypePage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const ChatTypePage();
               }));
             },
           ),
           ListTile(
-            title: Text('用户信息'), // 自定义用户资料，设置
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('用户信息'), // 自定义用户资料，设置
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 需要首先调用anonymousLogin之后，再调用设置用户信息接口
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new UserInfoPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return UserInfoPage();
               }));
             },
           ),
           ListTile(
-            title: Text('在线状态'), // 技能组或客服账号 在线状态
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('在线状态'), // 技能组或客服账号 在线状态
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new OnlineStatusPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return OnlineStatusPage();
               }));
             },
           ),
           ListTile(
-            title: Text('历史会话'), // 会话记录
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('历史会话'), // 会话记录
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new HistoryThreadPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return HistoryThreadPage();
               }));
             },
           ),
@@ -121,14 +126,17 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           //   },
           // ),
           ListTile(
-            title: Text('消息提示'),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('消息提示'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new SettingPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return SettingPage();
               }));
             },
+          ),
+          const ListTile(
+            title: Text('技术支持: QQ-3群: 825257535'),
           )
         ],
       ).toList()),
@@ -209,7 +217,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     title: '客服会话');
               },
             );
-          }, duration: Duration(milliseconds: 4000));
+          }, duration: const Duration(milliseconds: 4000));
         }
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
         print('图片消息:' + event.message.imageUrl!);
