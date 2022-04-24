@@ -4,7 +4,7 @@ import 'package:list_tile_switch/list_tile_switch.dart';
 
 // 消息声音、振动设置页面
 class SettingPage extends StatefulWidget {
-  SettingPage({Key? key}) : super(key: key);
+  const SettingPage({Key? key}) : super(key: key);
 
   @override
   _SettingPageState createState() => _SettingPageState();
@@ -27,7 +27,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('消息设置'),
+        title: const Text('消息设置'),
         elevation: 0,
       ),
       body: ListView(
@@ -42,7 +42,7 @@ class _SettingPageState extends State<SettingPage> {
               });
               BytedeskKefu.setPlayAudioOnSendMessage(value);
             },
-            title: Text('发送消息时播放声音'),
+            title: const Text('发送消息时播放声音'),
           ),
           ListTileSwitch(
             value: _playAudioOnReceiveMessage,
@@ -52,7 +52,7 @@ class _SettingPageState extends State<SettingPage> {
               });
               BytedeskKefu.setPlayAudioOnReceiveMessage(value);
             },
-            title: Text('收到消息时播放声音'),
+            title: const Text('收到消息时播放声音'),
           ),
           ListTileSwitch(
             value: _vibrateOnReceiveMessage,
@@ -63,7 +63,7 @@ class _SettingPageState extends State<SettingPage> {
               // 注意：需要在安卓AndroidManifest.xml添加权限<uses-permission android:name="android.permission.VIBRATE"/>
               BytedeskKefu.setVibrateOnReceiveMessage(value);
             },
-            title: Text('收到消息时振动'),
+            title: const Text('收到消息时振动'),
           ),
         ],
       ).toList()),

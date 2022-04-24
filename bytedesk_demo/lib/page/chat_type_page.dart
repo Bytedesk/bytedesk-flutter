@@ -15,10 +15,10 @@ class ChatTypePage extends StatefulWidget {
 class _ChatTypePageState extends State<ChatTypePage> {
   // 第二步：到 客服管理->技能组-有一列 ‘唯一ID（wId）’, 默认设置工作组wid
   // 说明：一个技能组可以分配多个客服，访客会按照一定的规则分配给组内的各个客服账号
-  final String _workGroupWid = "201807171659201"; // 默认人工
-  final String _workGroupWidRobot = "201809061716221"; // 默认机器人, 在管理后台开启或关闭机器人
+  String _workGroupWid = "201807171659201"; // 默认人工
+  String _workGroupWidRobot = "201809061716221"; // 默认机器人, 在管理后台开启或关闭机器人
   // 说明：直接发送给此一个客服账号，一对一会话
-  final String _agentUid = "201808221551193";
+  String _agentUid = "201808221551193";
   // 未读消息数目
   String _unreadMessageCount = "0";
   //
@@ -29,6 +29,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
     //
     super.initState();
   }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -41,11 +42,14 @@ class _ChatTypePageState extends State<ChatTypePage> {
         children: ListTile.divideTiles(context: context, tiles: [
           ListTile(
             title: Text('未读消息数目：' + _unreadMessageCount),
-            trailing: const Icon(Icons.keyboard_arrow_right),
+            // trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 加载未读消息数目
               _getUnreadCountVisitor();
             },
+          ),
+          Container(
+            height: 20,
           ),
           ListTile(
             title: const Text('技能组客服'),
@@ -180,9 +184,9 @@ class _ChatTypePageState extends State<ChatTypePage> {
               });
               BytedeskKefu.startAppointedChatShopCallback(
                   context, _agentUid, "指定一对一客服-电商-回调", custom, (value) {
-                    print('value为custom参数原样返回 $value');
-                    // 主要用途：用户在聊天页面点击商品消息，回调此接口，开发者可在此打开进入商品详情页
-                  });
+                print('value为custom参数原样返回 $value');
+                // 主要用途：用户在聊天页面点击商品消息，回调此接口，开发者可在此打开进入商品详情页
+              });
             },
           ),
           ListTile(

@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               // 第二步：联系客服，完毕
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return const ChatTypePage();
+                return ChatTypePage();
               }));
             },
           ),
