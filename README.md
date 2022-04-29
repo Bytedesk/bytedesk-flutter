@@ -4,6 +4,7 @@
 
 ## 部分功能
 
+- SDK源码100%开源，[下载](https://pub.dev/packages/bytedesk_kefu/versions)
 - 支持安卓、iOS、Web
 - 机器人对话
 - 技能组客服
