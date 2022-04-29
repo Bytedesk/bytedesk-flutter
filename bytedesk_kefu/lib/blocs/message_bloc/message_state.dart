@@ -1,0 +1,140 @@
+import 'package:bytedesk_kefu/model/jsonResult.dart';
+import 'package:bytedesk_kefu/model/message.dart';
+import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
+
+@immutable
+abstract class MessageState extends Equatable {
+  const MessageState();
+
+  @override
+  List<Object> get props => [];
+}
+
+class InitialMessageState extends MessageState {}
+
+class MessageLoading extends MessageState {
+  @override
+  String toString() => 'MessageLoading';
+}
+
+class MessageUpLoading extends MessageState {
+  @override
+  String toString() => 'MessageUpLoading';
+}
+
+class RestMessageSending extends MessageState {
+  @override
+  String toString() => 'RestMessageSending';
+}
+
+class ReceiveMessageState extends MessageState {
+  final Message? message;
+
+  ReceiveMessageState({@required this.message}) : super();
+}
+
+class SendMessageRestSuccess extends MessageState {
+  final JsonResult jsonResult;
+
+  const SendMessageRestSuccess(this.jsonResult);
+
+  @override
+  List<Object> get props => [jsonResult];
+
+  @override
+  String toString() => 'SendMessageRestSuccess';
+}
+
+class UploadImageSuccess extends MessageState {
+  final UploadJsonResult uploadJsonResult;
+
+  const UploadImageSuccess(this.uploadJsonResult);
+
+  @override
+  List<Object> get props => [uploadJsonResult];
+
+  @override
+  String toString() => 'UploadImageSuccess { logo: ${uploadJsonResult.url} }';
+}
+
+class UpLoadImageError extends MessageState {
+  @override
+  String toString() => 'UpLoadImageError';
+}
+
+class SendMessageRestError extends MessageState {
+  @override
+  String toString() => 'SendMessageRestError';
+}
+
+class LoadHistoryMessageError extends MessageState {
+  @override
+  String toString() => 'LoadHistoryMessageError';
+}
+
+class LoadTopicMessageError extends MessageState {
+  @override
+  String toString() => 'LoadTopicMessageError';
+}
+
+class LoadChannelMessageError extends MessageState {
+  @override
+  String toString() => 'LoadChannelMessageError';
+}
+
+class UploadVideoSuccess extends MessageState {
+  final UploadJsonResult uploadJsonResult;
+
+  const UploadVideoSuccess(this.uploadJsonResult);
+
+  @override
+  List<Object> get props => [uploadJsonResult];
+
+  @override
+  String toString() => 'UploadVideoSuccess { logo: ${uploadJsonResult.url} }';
+}
+
+class UpLoadVideoError extends MessageState {
+  @override
+  String toString() => 'UpLoadVideoError';
+}
+
+class LoadHistoryMessageSuccess extends MessageState {
+  final List<Message>? messageList;
+
+  LoadHistoryMessageSuccess({@required this.messageList}) : super();
+}
+
+class LoadTopicMessageSuccess extends MessageState {
+  final List<Message>? messageList;
+
+  LoadTopicMessageSuccess({@required this.messageList}) : super();
+}
+
+class LoadChannelMessageSuccess extends MessageState {
+  final List<Message>? messageList;
+
+  LoadChannelMessageSuccess({@required this.messageList}) : super();
+}
+
+class QueryAnswerSuccess extends MessageState {
+  final Message? query;
+  final Message? answer;
+
+  QueryAnswerSuccess({@required this.query, @required this.answer}) : super();
+}
+
+class MessageAnswerSuccess extends MessageState {
+  final Message? query;
+  final Message? answer;
+
+  MessageAnswerSuccess({@required this.query, @required this.answer}) : super();
+}
+
+class RateAnswerSuccess extends MessageState {
+  final Message? result;
+
+  RateAnswerSuccess({@required this.result}) : super();
+}
