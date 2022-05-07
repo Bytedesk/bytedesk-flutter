@@ -8,7 +8,7 @@ bytedesk flutter helpdesk sdk
 - [Website](https://www.bytedesk.com)
 - [Download Gitee Demo](https://git.oschina.net/270580156/bytedesk-flutter)
 - [Download Github Demo](https://github.com/Bytedesk/bytedesk-flutter)
-- [Download ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk)
+<!-- - [Download ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk) -->
 
 ## Features
 

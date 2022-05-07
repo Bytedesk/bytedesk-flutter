@@ -45,16 +45,9 @@ class BytedeskMqtt {
   factory BytedeskMqtt() {
     return _singleton;
   }
-  BytedeskMqtt._internal() {
-    // _connect();
-    reconnect();
-  }
-  //
-  // void _connect() async {
-  //   reconnect();
-  // }
+  BytedeskMqtt._internal() {}
 
-  void reconnect() async {
+  void connect() async {
     // eventbus发送广播，连接中...
     bytedeskEventBus
         .fire(ConnectionEventBus(BytedeskConstants.USER_STATUS_CONNECTING));

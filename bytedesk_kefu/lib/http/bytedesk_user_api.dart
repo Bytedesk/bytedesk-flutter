@@ -30,13 +30,14 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     };
     final oauthResponse =
         await this.httpClient.post(oauthUrl, headers: headers, body: bodyMap);
-    print('oauth result: $oauthResponse');
+    // print('oauth result: $oauthResponse');
     // check the status code for the result
     int statusCode = oauthResponse.statusCode;
-    // print("statusCode $statusCode");
+    print("statusCode $statusCode");
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
-    // print('oauthJson:' + oauthJson);
+    print('oauth:');
+    print(oauthJson);
     SpUtil.putBool(BytedeskConstants.isLogin, true);
     SpUtil.putString(BytedeskConstants.accessToken, oauthJson['access_token']);
     //
@@ -66,7 +67,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     int statusCode = oauthResponse.statusCode;
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
-    print("oauthJson $oauthJson");
+    print('smsOAuth:');
+    print(oauthJson);
     if (statusCode == 200) {
       SpUtil.putBool(BytedeskConstants.isLogin, true);
       SpUtil.putBool(BytedeskConstants.isAuthenticated, true);
@@ -100,7 +102,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     // print("statusCode $statusCode");
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
-    print("oauthJson $oauthJson");
+    print('unionIdOAuth:');
+    print(oauthJson);
     if (statusCode == 200) {
       SpUtil.putBool(BytedeskConstants.isLogin, true);
       SpUtil.putBool(BytedeskConstants.isAuthenticated, true);
@@ -134,8 +137,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // final responseJson = json.decode(initResponse.body);
-    // print("responseJson $responseJson");
+    // print("register:");
+    // print(responseJson);
 
     return JsonResult.fromJson(responseJson);
   }
@@ -154,7 +157,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // print("responseJson $responseJson");
+    // print("registerAnonymous:");
+    // print(responseJson);
     //
     User user = User.fromJson(responseJson['data']);
     //
@@ -192,8 +196,9 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
-    // 
+    print("registerUser:");
+    print(responseJson);
+    //
     int statusCode = responseJson['status_code'];
     if (statusCode == 200) {
       User user = User.fromJson(responseJson['data']);
@@ -210,7 +215,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     } else {
       //
       SpUtil.putString(BytedeskConstants.uid, responseJson['data']);
-      SpUtil.putString(BytedeskConstants.username, username! + '@' + subDomain!);
+      SpUtil.putString(
+          BytedeskConstants.username, username! + '@' + subDomain!);
       SpUtil.putString(BytedeskConstants.password, password!);
       SpUtil.putString(BytedeskConstants.nickname, nickname!);
       SpUtil.putString(BytedeskConstants.avatar, avatar!);
@@ -227,7 +233,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     var body =
         json.encode({"mobile": mobile, "password": password, "client": client});
 
-    // final initUrl = '$baseUrl/visitors/api/v1/change';
     final initUrl = Uri.http(BytedeskConstants.host, '/visitors/api/v1/change');
     final initResponse =
         await this.httpClient.post(initUrl, headers: headers, body: body);
@@ -238,7 +243,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
     // final responseJson = json.decode(initResponse.body);
-    print("responseJson $responseJson");
+    // print("changePassword");
+    // print(responseJson);
 
     return JsonResult.fromJson(responseJson);
   }
@@ -255,7 +261,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    // print("requestCode:");
+    // print(responseJson);
 
     SpUtil.putBool(BytedeskConstants.exist, responseJson['data']['exist']);
     SpUtil.putString(BytedeskConstants.code, responseJson['data']['code']);
@@ -299,7 +306,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    // print("getProfile:");
+    // print(responseJson);
     //
     User user = User.fromJson(responseJson['data']);
     //
@@ -762,8 +770,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
-    //
+    // print("unfollow:");
+    // print(responseJson);
     return JsonResult.fromJson(responseJson);
   }
 
@@ -777,10 +785,14 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
         {'access_token': accessToken});
     final initResponse =
         await this.httpClient.post(initUrl, headers: headers, body: body);
-
-    final responseJson = json.decode(initResponse.body);
-    print("responseJson $responseJson");
-    //
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    print("logout:");
+    print(responseJson);
     BytedeskUtils.clearUserCache();
   }
+
 }

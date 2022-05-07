@@ -121,7 +121,7 @@ class BytedeskUtils {
   static bool mqttConnect() {
     var isLogin = SpUtil.getBool(BytedeskConstants.isLogin);
     if (isLogin!) {
-      new BytedeskMqtt();
+      new BytedeskMqtt().connect();
       return true;
     }
     return false;
@@ -130,7 +130,7 @@ class BytedeskUtils {
   static bool mqttReConnect() {
     bool isConnected = new BytedeskMqtt().isConnected();
     if (!isConnected) {
-      new BytedeskMqtt().reconnect();
+      new BytedeskMqtt().connect();
       return true;
     }
     return false;

@@ -1,6 +1,6 @@
 name: bytedesk_kefu
 description: the best app chat sdk in china, you can chat with the agent freely at anytime. the agent can chat with the visitor by web/pc/mac/ios/android client.
-version: 1.2.5
+version: 1.2.6
 homepage: https://www.weikefu.net
 
 environment:
@@ -49,7 +49,7 @@ dependencies:
   # https://pub.dev/packages/flutter_easyloading
   flutter_easyloading: ^3.0.3
   # H5-webchat https://pub.dev/packages/webview_flutter
-  webview_flutter: ^2.8.0
+  webview_flutter: ^3.0.2
   # https://pub.dev/packages/device_info
   device_info: ^2.0.3
   # 查看大图 https://pub.dev/packages/photo_view
@@ -77,7 +77,7 @@ dependencies:
   # audioplayers: ^0.16.1
   # https://pub.dev/packages/flutter_html
   # https://github.com/Sub6Resources/flutter_html
-  flutter_html: ^2.2.1
+  flutter_html: ^3.0.0-alpha.3
   # https://pub.dev/packages/flutter_cache_manager
   flutter_cache_manager: ^3.3.0
   # 保存图片到相册
@@ -99,7 +99,7 @@ dependencies:
   css_colors: ^1.1.1
   # Plugins for rendering the <video> tag.
   video_player: ^2.4.0
-  # chewie: ^1.2.2 # 与 flutter_html: ^2.2.1 不兼容
+  # chewie: ^1.2.2 # 与 flutter_html: ^3.0.0-alpha.3 不兼容
   # chewie:
   #   git:
   #     url: https://github.com/brianegan/chewie.git
@@ -111,7 +111,7 @@ dependencies:
   # Plugins for rendering the <audio> tag.
   # chewie_audio: ^1.0.0+1
   # Plugins for rendering the <svg> tag.
-  flutter_svg: ^0.22.0
+  flutter_svg: ^1.0.3
 
   flutter_web_plugins:
     sdk: flutter
