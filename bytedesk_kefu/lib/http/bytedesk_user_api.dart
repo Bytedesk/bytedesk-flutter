@@ -17,7 +17,6 @@ import 'package:http/http.dart' as http;
 class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   // 授权
   Future<OAuth> oauth(String? username, String? password) async {
-    // final oauthUrl = '$baseUrl/oauth/token';
     var oauthUrl = Uri.http(BytedeskConstants.host, '/oauth/token');
     // print("http api client: oauthUrl $oauthUrl");
     Map<String, String> headers = {
@@ -31,12 +30,13 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     };
     final oauthResponse =
         await this.httpClient.post(oauthUrl, headers: headers, body: bodyMap);
-    // print('oauth result: $oauthResponse');
+    print('oauth result: $oauthResponse');
     // check the status code for the result
     int statusCode = oauthResponse.statusCode;
     // print("statusCode $statusCode");
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
+    // print('oauthJson:' + oauthJson);
     SpUtil.putBool(BytedeskConstants.isLogin, true);
     SpUtil.putString(BytedeskConstants.accessToken, oauthJson['access_token']);
     //
@@ -187,28 +187,35 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
         Uri.http(BytedeskConstants.host, '/visitor/api/register/user');
     final initResponse =
         await this.httpClient.post(initUrl, headers: headers, body: body);
-
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // final responseJson = json.decode(initResponse.body);
     print("responseJson $responseJson");
-    // return JsonResult.fromJson(responseJson);
+    // 
     int statusCode = responseJson['status_code'];
     if (statusCode == 200) {
-      //
       User user = User.fromJson(responseJson['data']);
       //
       SpUtil.putString(BytedeskConstants.uid, user.uid!);
       SpUtil.putString(BytedeskConstants.username, user.username!);
+      SpUtil.putString(BytedeskConstants.password, password!);
       SpUtil.putString(BytedeskConstants.nickname, user.nickname!);
       SpUtil.putString(BytedeskConstants.avatar, user.avatar!);
       SpUtil.putString(BytedeskConstants.description, user.description!);
       SpUtil.putString(BytedeskConstants.subDomain, user.subDomain!);
       // 解析用户资料
       return user;
+    } else {
+      //
+      SpUtil.putString(BytedeskConstants.uid, responseJson['data']);
+      SpUtil.putString(BytedeskConstants.username, username! + '@' + subDomain!);
+      SpUtil.putString(BytedeskConstants.password, password!);
+      SpUtil.putString(BytedeskConstants.nickname, nickname!);
+      SpUtil.putString(BytedeskConstants.avatar, avatar!);
+      SpUtil.putString(BytedeskConstants.description, "");
+      SpUtil.putString(BytedeskConstants.subDomain, subDomain);
     }
     return new User();
   }
@@ -240,9 +247,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   Future<CodeResult> requestCode(String? mobile) async {
     //
     Map<String, String> headers = {"Content-Type": "application/json"};
-    //
-    // final initUrl =
-    //     '$baseUrl/sms/api/send/liangshibao?mobile=$mobile&client=$client';
     final initUrl = Uri.http(BytedeskConstants.host,
         '/sms/api/send/liangshibao', {'mobile': mobile, 'client': client});
     final initResponse = await this.httpClient.get(initUrl, headers: headers);
@@ -263,10 +267,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   Future<JsonResult> bindMobile(String? mobile) async {
     //
     String? uid = SpUtil.getString(BytedeskConstants.uid);
-    //
     var body = json.encode({"uid": uid, "mobile": mobile, "client": client});
     //
-    // final initUrl = '$baseUrl/api/user/bind/mobile';
     final initUrl = Uri.http(BytedeskConstants.host, '/api/user/bind/mobile');
     final initResponse =
         await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
@@ -288,7 +290,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   /// 初始化
   Future<User> getProfile() async {
     //
-    // final initUrl = '$baseUrl/api/user/profile?client=$client';
     final initUrl = Uri.http(
         BytedeskConstants.host, '/api/user/profile/simple', {'client': client});
     final initResponse =
@@ -317,8 +318,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   Future<User> updateNickname(String? nickname) async {
     //
     var body = json.encode({"nickname": nickname, "client": client});
-    //
-    // final initUrl = '$baseUrl/api/user/nickname';
     final initUrl = Uri.http(BytedeskConstants.host, '/api/user/nickname');
     final initResponse =
         await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
@@ -774,8 +773,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     Map<String, String> headers = {"Content-Type": "application/json"};
 
     var body = json.encode({"client": client});
-
-    // final initUrl = '$baseUrl/api/user/logout?access_token=$accessToken';
     final initUrl = Uri.http(BytedeskConstants.host, '/api/user/logout',
         {'access_token': accessToken});
     final initResponse =
@@ -784,23 +781,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     final responseJson = json.decode(initResponse.body);
     print("responseJson $responseJson");
     //
-    // Preference.clearAccessToken();
     BytedeskUtils.clearUserCache();
-    //
-    // SpUtil.putString(BytedeskConstants.uid, '');
-    // SpUtil.putString(BytedeskConstants.username, '');
-    // SpUtil.putString(BytedeskConstants.nickname, '');
-    // SpUtil.putString(BytedeskConstants.avatar, '');
-    // SpUtil.putString(BytedeskConstants.description, '');
-    // SpUtil.putString(BytedeskConstants.subDomain, '');
-    // SpUtil.putString(BytedeskConstants.role, '');
-    // //
-    // SpUtil.putString(BytedeskConstants.unionid, '');
-    // SpUtil.putString(BytedeskConstants.openid, '');
-    // //
-    // SpUtil.putBool(BytedeskConstants.isLogin, false);
-    // SpUtil.putBool(BytedeskConstants.isAuthenticated, false);
-    // SpUtil.putString(BytedeskConstants.mobile, '');
-    // SpUtil.putString(BytedeskConstants.accessToken, '');
   }
 }

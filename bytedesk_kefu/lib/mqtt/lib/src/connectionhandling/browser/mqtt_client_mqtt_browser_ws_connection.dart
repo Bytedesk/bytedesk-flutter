@@ -52,8 +52,8 @@ class MqttBrowserWsConnection extends MqttBrowserConnection {
       client = WebSocket(uriString, protocols);
       client.binaryType = 'arraybuffer';
       messageStream = MqttByteBuffer(typed.Uint8Buffer());
-      var closeEvents;
-      var errorEvents;
+      dynamic closeEvents;
+      dynamic errorEvents;
       client.onOpen.listen((e) {
         MqttLogger.log('MqttBrowserWsConnection::connect - websocket is open');
         closeEvents.cancel();
@@ -117,8 +117,8 @@ class MqttBrowserWsConnection extends MqttBrowserConnection {
       client = WebSocket(uriString, protocols);
       client.binaryType = 'arraybuffer';
       messageStream = MqttByteBuffer(typed.Uint8Buffer());
-      var closeEvents;
-      var errorEvents;
+      dynamic closeEvents;
+      dynamic errorEvents;
       client.onOpen.listen((e) {
         MqttLogger.log(
             'MqttBrowserWsConnection::connectAuto - websocket is open');
@@ -179,6 +179,15 @@ class MqttBrowserWsConnection extends MqttBrowserConnection {
     if (client != null) {
       client.close();
       client = null;
+    }
+  }
+
+  /// Stops listening and closes the socket immediately.
+  @override
+  void stopListening() {
+    if (client != null) {
+      listener?.cancel();
+      client.close();
     }
   }
 }

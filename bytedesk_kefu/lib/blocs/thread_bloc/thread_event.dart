@@ -9,7 +9,7 @@ abstract class ThreadEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class InitThreadEvent extends ThreadEvent {}
+// class InitThreadEvent extends ThreadEvent {}
 
 class RefreshThreadEvent extends ThreadEvent {}
 

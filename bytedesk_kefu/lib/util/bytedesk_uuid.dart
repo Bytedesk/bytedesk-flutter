@@ -4,6 +4,8 @@
 
 import 'dart:math';
 
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+
 /// A UUID generator, useful for generating unique IDs for your Todos.
 /// Shamelessly extracted from the Flutter source code.
 ///
@@ -15,12 +17,22 @@ import 'dart:math';
 ///
 ///     final String id = Uuid().generateV4();
 class BytedeskUuid {
+  //
+  static String uuid() {
+    String timestamp = BytedeskUtils.formatedTimestampNow();
+    final int special = 8 + Random().nextInt(4);
+    return timestamp +
+        '${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}'
+            '${_bitsDigits(16, 4)}'
+            '4${_bitsDigits(12, 3)}'
+            '${_printDigits(special, 1)}${_bitsDigits(12, 3)}'
+            '${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}';
+  }
   /// Generate a version 4 (random) uuid. This is a uuid scheme that only uses
   /// random numbers as the source of the generated uuid.
   static String generateV4() {
     // Generate xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx / 8-4-4-4-12.
     final int special = 8 + Random().nextInt(4);
-
     return '${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}-'
         '${_bitsDigits(16, 4)}-'
         '4${_bitsDigits(12, 3)}-'

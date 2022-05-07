@@ -24,7 +24,7 @@ import 'package:bytedesk_kefu/protobuf/thread.pb.dart' as protothread;
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:bytedesk_kefu/protobuf/user.pb.dart' as protouser;
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:vibration/vibration.dart';
 
 class BytedeskMqtt {
@@ -46,13 +46,13 @@ class BytedeskMqtt {
     return _singleton;
   }
   BytedeskMqtt._internal() {
-    _connect();
-  }
-  //
-  void _connect() async {
-    //
+    // _connect();
     reconnect();
   }
+  //
+  // void _connect() async {
+  //   reconnect();
+  // }
 
   void reconnect() async {
     // eventbus发送广播，连接中...
@@ -60,8 +60,6 @@ class BytedeskMqtt {
         .fire(ConnectionEventBus(BytedeskConstants.USER_STATUS_CONNECTING));
     //
     currentUid = SpUtil.getString(BytedeskConstants.uid);
-    // String role = SpUtil.getString(BytedeskConstants.role,
-    //     defValue: BytedeskConstants.ROLE_VISITOR);
     client = BytedeskUtils.getClient();
     clientId = "$currentUid/$client";
 
@@ -81,6 +79,11 @@ class BytedeskMqtt {
             MqttServerClient(BytedeskConstants.webSocketWssUrl, clientId!);
         mqttClient.useWebSocket = true;
         mqttClient.port = 443;
+
+        /// You can also supply your own websocket protocol list or disable this feature using the websocketProtocols
+        /// setter, read the API docs for further details here, the vast majority of brokers will support the client default
+        /// list so in most cases you can ignore this. Mosquito needs the single default setting.
+        // mqttClient.websocketProtocols = MqttClientConstants.protocolsSingleDefault;
       } else {
         mqttClient = MqttServerClient(BytedeskConstants.mqttHost, clientId!);
         mqttClient.port = BytedeskConstants.mqttPort;
@@ -92,6 +95,7 @@ class BytedeskMqtt {
     mqttClient.setProtocolV311();
 
     /// Set logging on if needed, defaults to off
+    // mqttClient.logging(on: BytedeskConstants.isDebug);
     mqttClient.logging(on: false); // BytedeskConstants.isDebug
     /// If you intend to use a keep alive value in your connect message that is not the default(60s)
     /// you must set it here
@@ -111,7 +115,7 @@ class BytedeskMqtt {
     /// client identifier, any supplied username/password, the default keepalive interval(60s)
     /// and clean session, an example of a specific one below.
 
-    final MqttConnectMessage connMess = MqttConnectMessage()
+    final MqttConnectMessage connMessage = MqttConnectMessage()
         .withClientIdentifier(clientId!)
         .authenticateAs('username', 'password'); // TODO: 服务器暂时不需要auth，随便填写
     // .keepAliveFor(keepAlivePeriod); // Must agree with the keep alive set above or not set
@@ -123,7 +127,7 @@ class BytedeskMqtt {
     if (BytedeskConstants.isDebug) {
       print('mqttClient connecting....');
     }
-    mqttClient.connectionMessage = connMess;
+    mqttClient.connectionMessage = connMessage;
 
     /// Connect the client, any errors here are communicated by raising of the appropriate exception. Note
     /// in some circumstances the broker will just disconnect us, see the spec about this, we however eill
@@ -162,7 +166,7 @@ class BytedeskMqtt {
       // print('Published notification:: topic is ${messageBinary.variableHeader.topicName}, with Qos ${messageBinary.header.qos}');
       //
       protomsg.Message messageProto =
-          protomsg.Message.fromBuffer(messageBinary.payload.message!);
+          protomsg.Message.fromBuffer(messageBinary.payload.message);
       // FIXME: 自己发送的消息显示两条？此处根据mid去个重
       var mid = messageProto.mid;
       if (midList.contains(mid)) {
@@ -220,7 +224,8 @@ class BytedeskMqtt {
           isSend: uid == currentUid ? 1 : 0,
           currentUid: currentUid,
           thread: thread,
-          user: user);
+          user: user,
+          client: client);
       // 是否发送消息回执
       // var autoReply = false;
       var sendReceipt = false;
@@ -282,10 +287,15 @@ class BytedeskMqtt {
             message.content = messageProto.text.content;
             break;
           }
+        case BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_QUEUE:
+          {
+            message.content = messageProto.text.content;
+            break;
+          }
         case BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_QUEUE_ACCEPT:
           {
             // 替换 'joinQueueThread'
-            message.content = '接入队列会话';
+            message.content = '接入队列会话'; // TODO: 国际化
             break;
           }
         case BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_AGENT_CLOSE:
@@ -667,8 +677,7 @@ class BytedeskMqtt {
         currentThread, extraParam);
   }
 
-  void publish(String content, String type, Thread currentThread,
-      ExtraParam? extraParam) {
+  void publish(String content, String type, Thread currentThread, ExtraParam? extraParam) {
     // if (currentThread == null) {
     //   print('连接客服失败,请退出页面重新进入。注意: 请在App启动的时候，调用init接口');
     //   Fluttertoast.showToast(msg: '连接客服失败,请退出页面重新进入');
@@ -699,7 +708,7 @@ class BytedeskMqtt {
     user.avatar = SpUtil.getString(BytedeskConstants.avatar)!;
     // msg
     protomsg.Message messageProto = new protomsg.Message();
-    messageProto.mid = BytedeskUuid.generateV4();
+    messageProto.mid = BytedeskUuid.uuid();
     messageProto.type = type;
     messageProto.timestamp = BytedeskUtils.formatedDateNow();
     messageProto.client = BytedeskUtils.getClient(); //BytedeskConstants.client;
@@ -710,7 +719,7 @@ class BytedeskMqtt {
     message.mid = messageProto.mid;
     message.type = messageProto.type;
     message.timestamp = messageProto.timestamp;
-    // message.client
+    message.client = messageProto.client;
     message.nickname = user.nickname;
     message.avatar = user.avatar;
     message.topic = thread.topic;

@@ -60,6 +60,9 @@ class MqttServerClient extends MqttClient {
       [String? username, String? password]) async {
     instantiationCorrect = true;
     clientEventBus = events.EventBus();
+    clientEventBus
+        ?.on<DisconnectOnNoPingResponse>()
+        .listen(disconnectOnNoPingResponse);
     connectionHandler = SynchronousMqttServerConnectionHandler(
       clientEventBus,
       maxConnectionAttempts: maxConnectionAttempts,
@@ -69,6 +72,9 @@ class MqttServerClient extends MqttClient {
       connectionHandler.useWebSocket = true;
       connectionHandler.useAlternateWebSocketImplementation =
           useAlternateWebSocketImplementation;
+      if (connectionHandler.useAlternateWebSocketImplementation) {
+        connectionHandler.securityContext = securityContext;
+      }
       if (websocketProtocolString != null) {
         connectionHandler.websocketProtocols = websocketProtocolString;
       }

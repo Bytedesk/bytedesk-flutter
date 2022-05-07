@@ -1,6 +1,7 @@
 # mqtt 说明
 
-- 当前版本9.3.1, 更新日期2021/05/24
+- <https://pub.dev/packages/mqtt_client>
+- 当前版本9.6.7, 更新日期2022/05/05
 - 在mqtt/lib/src/utility/mqtt_client_payload_builder.dart添加
 
 ```dart

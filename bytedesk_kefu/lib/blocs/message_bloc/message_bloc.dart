@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
@@ -11,154 +11,160 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   //
   final MessageRepository messageRepository = new MessageRepository();
 
-  MessageBloc() : super(InitialMessageState());
+  MessageBloc() : super(InitialMessageState()) {
+    on<ReceiveMessageEvent>(_mapRefreshCourseToState);
+    on<UploadImageEvent>(_mapUploadImageToState);
+    on<UploadVideoEvent>(_mapUploadVideoToState);
+    on<SendMessageRestEvent>(_mapSendMessageRestToState);
+    on<LoadHistoryMessageEvent>(_mapLoadHistoryMessageToState);
+    on<LoadTopicMessageEvent>(_mapLoadTopicMessageToState);
 
-  @override
-  Stream<MessageState> mapEventToState(MessageEvent event) async* {
-    if (event is ReceiveMessageEvent) {
-      yield* _mapRefreshCourseToState(event);
-    } else if (event is UploadImageEvent) {
-      yield* _mapUploadImageToState(event);
-    } else if (event is UploadVideoEvent) {
-      yield* _mapUploadVideoToState(event);
-    } else if (event is QueryAnswerEvent) {
-      yield* _mapQueryAnswerToState(event);
-    } else if (event is MessageAnswerEvent) {
-      yield* _mapMessageAnswerToState(event);
-    } else if (event is RateAnswerEvent) {
-      yield* _mapRateAnswerToState(event);
-    } else if (event is LoadHistoryMessageEvent) {
-      yield* _mapLoadHistoryMessageToState(event);
-    } else if (event is LoadTopicMessageEvent) {
-      yield* _mapLoadTopicMessageToState(event);
-    } else if (event is LoadChannelMessageEvent) {
-      yield* _mapLoadChannelMessageToState(event);
-    } else if (event is SendMessageRestEvent) {
-      yield* _mapSendMessageRestToState(event);
-    }
+    on<LoadChannelMessageEvent>(_mapLoadChannelMessageToState);
+    on<QueryAnswerEvent>(_mapQueryAnswerToState);
+    on<MessageAnswerEvent>(_mapMessageAnswerToState);
+    on<RateAnswerEvent>(_mapRateAnswerToState);
   }
 
-  Stream<MessageState> _mapRefreshCourseToState(
-      ReceiveMessageEvent event) async* {
+  // @override
+  // void mapEventToState(MessageEvent event, Emitter<MessageState> emit) async {
+  //   if (event is ReceiveMessageEvent) {
+  //     yield* _mapRefreshCourseToState(event);
+  //   } else if (event is UploadImageEvent) {
+  //     yield* _mapUploadImageToState(event);
+  //   } else if (event is UploadVideoEvent) {
+  //     yield* _mapUploadVideoToState(event);
+  //   } else if (event is QueryAnswerEvent) {
+  //     yield* _mapQueryAnswerToState(event);
+  //   } else if (event is MessageAnswerEvent) {
+  //     yield* _mapMessageAnswerToState(event);
+  //   } else if (event is RateAnswerEvent) {
+  //     yield* _mapRateAnswerToState(event);
+  //   } else if (event is LoadHistoryMessageEvent) {
+  //     yield* _mapLoadHistoryMessageToState(event);
+  //   } else if (event is LoadTopicMessageEvent) {
+  //     yield* _mapLoadTopicMessageToState(event);
+  //   } else if (event is LoadChannelMessageEvent) {
+  //     yield* _mapLoadChannelMessageToState(event);
+  //   } else if (event is SendMessageRestEvent) {
+  //     yield* _mapSendMessageRestToState(event);
+  //   }
+  // }
+
+  void _mapRefreshCourseToState(ReceiveMessageEvent event, Emitter<MessageState> emit) async {
     try {
-      yield ReceiveMessageState(message: event.message);
+      emit(ReceiveMessageState(message: event.message));
     } catch (error) {
       print(error);
     }
   }
 
-  Stream<MessageState> _mapUploadImageToState(UploadImageEvent event) async* {
-    yield MessageUpLoading();
+  void _mapUploadImageToState(UploadImageEvent event, Emitter<MessageState> emit) async {
+    emit(MessageUpLoading());
     try {
       final UploadJsonResult uploadJsonResult =
           await messageRepository.uploadImage(event.filePath);
-      yield UploadImageSuccess(uploadJsonResult);
+      emit(UploadImageSuccess(uploadJsonResult));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<MessageState> _mapUploadVideoToState(UploadVideoEvent event) async* {
-    yield MessageUpLoading();
+  void _mapUploadVideoToState(UploadVideoEvent event, Emitter<MessageState> emit) async {
+    emit(MessageUpLoading());
     try {
       final UploadJsonResult uploadJsonResult =
           await messageRepository.uploadVideo(event.filePath);
-      yield UploadVideoSuccess(uploadJsonResult);
+      emit(UploadVideoSuccess(uploadJsonResult));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<MessageState> _mapSendMessageRestToState(
-      SendMessageRestEvent event) async* {
-    yield RestMessageSending();
+  void _mapSendMessageRestToState(SendMessageRestEvent event, Emitter<MessageState> emit) async {
+    emit(RestMessageSending());
     try {
       final JsonResult jsonResult =
           await messageRepository.sendMessageRest(event.json);
-      yield SendMessageRestSuccess(jsonResult);
+      emit(SendMessageRestSuccess(jsonResult));
     } catch (error) {
       print(error);
-      yield SendMessageRestError();
+      emit(SendMessageRestError());
     }
   }
 
-  Stream<MessageState> _mapLoadHistoryMessageToState(
-      LoadHistoryMessageEvent event) async* {
-    yield MessageLoading();
+  void _mapLoadHistoryMessageToState(LoadHistoryMessageEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
     try {
       final List<Message> messageList = await messageRepository
           .loadHistoryMessages(event.uid, event.page, event.size);
-      yield LoadHistoryMessageSuccess(messageList: messageList);
+      emit(LoadHistoryMessageSuccess(messageList: messageList));
     } catch (error) {
       print(error);
-      yield LoadHistoryMessageError();
+      emit(LoadHistoryMessageError());
     }
   }
 
-  Stream<MessageState> _mapLoadTopicMessageToState(
-      LoadTopicMessageEvent event) async* {
-    yield MessageLoading();
+  void _mapLoadTopicMessageToState(LoadTopicMessageEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
     try {
       final List<Message> messageList = await messageRepository
           .loadTopicMessages(event.topic, event.page, event.size);
-      yield LoadTopicMessageSuccess(messageList: messageList);
+      emit(LoadTopicMessageSuccess(messageList: messageList));
     } catch (error) {
       print(error);
-      yield LoadTopicMessageError();
+      emit(LoadTopicMessageError());
     }
   }
 
-  Stream<MessageState> _mapLoadChannelMessageToState(
-      LoadChannelMessageEvent event) async* {
-    yield MessageLoading();
+  void _mapLoadChannelMessageToState(LoadChannelMessageEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
     try {
       final List<Message> messageList = await messageRepository
           .loadChannelMessages(event.cid, event.page, event.size);
-      yield LoadChannelMessageSuccess(messageList: messageList);
+      emit(LoadChannelMessageSuccess(messageList: messageList));
     } catch (error) {
       print(error);
-      yield LoadChannelMessageError();
+      emit(LoadChannelMessageError());
     }
   }
 
-  Stream<MessageState> _mapQueryAnswerToState(QueryAnswerEvent event) async* {
-    yield MessageLoading();
+  void _mapQueryAnswerToState(QueryAnswerEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
     try {
       final RequestAnswerResult requestAnswerResult =
           await messageRepository.queryAnswer(event.tid, event.aid);
-      yield QueryAnswerSuccess(
-          query: requestAnswerResult.query, answer: requestAnswerResult.anwser);
+      emit(QueryAnswerSuccess(
+          query: requestAnswerResult.query, answer: requestAnswerResult.anwser));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<MessageState> _mapMessageAnswerToState(
-      MessageAnswerEvent event) async* {
-    yield MessageLoading();
+  void _mapMessageAnswerToState(MessageAnswerEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
     try {
       final RequestAnswerResult requestAnswerResult = await messageRepository
           .messageAnswer(event.type, event.wid, event.aid, event.content);
-      yield MessageAnswerSuccess(
-          query: requestAnswerResult.query, answer: requestAnswerResult.anwser);
+      emit(MessageAnswerSuccess(
+          query: requestAnswerResult.query, answer: requestAnswerResult.anwser));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<MessageState> _mapRateAnswerToState(RateAnswerEvent event) async* {
-    yield MessageLoading();
+  void _mapRateAnswerToState(RateAnswerEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
     try {
       final RequestAnswerResult requestAnswerResult =
           await messageRepository.rateAnswer(event.aid, event.mid, event.rate);
-      yield RateAnswerSuccess(result: requestAnswerResult.anwser);
+      emit(RateAnswerSuccess(result: requestAnswerResult.anwser));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 }

@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 import 'package:bytedesk_kefu/model/markThread.dart';
 import 'package:bloc/bloc.dart';
 import './bloc.dart';
@@ -9,234 +9,219 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
   //
   final ThreadRepository threadRepository = new ThreadRepository();
 
-  ThreadBloc() : super(ThreadEmpty());
+  // ThreadBloc() : super(ThreadEmpty());
 
-  @override
-  Stream<ThreadState> mapEventToState(ThreadEvent event) async* {
-    //
-    if (event is InitThreadEvent) {
-      yield InitialThreadState();
-    } else if (event is RefreshThreadEvent) {
-      yield* _mapRefreshThreadToState(event);
-    } else if (event is RefreshHistoryThreadEvent) {
-      yield* _mapRefreshHistoryThreadToState(event);
-    } else if (event is RefreshVisitorThreadEvent) {
-      yield* _mapRefreshVisitorThreadToState(event);
-    } else if (event is RefreshVisitorThreadAllEvent) {
-      yield* _mapRefreshVisitorThreadAllToState(event);
-    } else if (event is RequestThreadEvent) {
-      yield* _mapRequestThreadToState(event);
-    } else if (event is RequestAgentEvent) {
-      yield* _mapRequestAgentToState(event);
-    } else if (event is RequestContactThreadEvent) {
-      yield* _mapRequestContactThreadToState(event);
-    } else if (event is RequestGroupThreadEvent) {
-      yield* _mapRequestGroupThreadToState(event);
-    } else if (event is MarkTopThreadEvent) {
-      yield* _mapMarkTopThreadEventToState(event);
-    } else if (event is UnMarkTopThreadEvent) {
-      yield* _mapUnMarkTopThreadEventToState(event);
-    } else if (event is MarkNodisturbThreadEvent) {
-      yield* _mapMarkNodisturbThreadEventToState(event);
-    } else if (event is UnMarkNodisturbThreadEvent) {
-      yield* _mapUnMarkNodisturbThreadEventToState(event);
-    } else if (event is MarkUnreadThreadEvent) {
-      yield* _mapMarkUnreadThreadEventToState(event);
-    } else if (event is UnMarkUnreadThreadEvent) {
-      yield* _mapUnMarkUnreadThreadEventToState(event);
-    } else if (event is DeleteThreadEvent) {
-      yield* _mapDeleteThreadEventToState(event);
-    }
+  ThreadBloc() : super(ThreadEmpty()) {
+    // on<InitThreadEvent>(InitialThreadState);
+    on<RefreshThreadEvent>(_mapRefreshThreadToState);
+    on<RefreshHistoryThreadEvent>(_mapRefreshHistoryThreadToState);
+    on<RefreshVisitorThreadEvent>(_mapRefreshVisitorThreadToState);
+    on<RefreshVisitorThreadAllEvent>(_mapRefreshVisitorThreadAllToState);
+    on<RequestThreadEvent>(_mapRequestThreadToState);
+
+    on<RequestAgentEvent>(_mapRequestAgentToState);
+    on<RequestContactThreadEvent>(_mapRequestContactThreadToState);
+    on<RequestGroupThreadEvent>(_mapRequestGroupThreadToState);
+    on<MarkTopThreadEvent>(_mapMarkTopThreadEventToState);
+    on<UnMarkTopThreadEvent>(_mapUnMarkTopThreadEventToState);
+
+    on<MarkNodisturbThreadEvent>(_mapMarkNodisturbThreadEventToState);
+    on<UnMarkNodisturbThreadEvent>(_mapUnMarkNodisturbThreadEventToState);
+    on<MarkUnreadThreadEvent>(_mapMarkUnreadThreadEventToState);
+    on<UnMarkUnreadThreadEvent>(_mapUnMarkUnreadThreadEventToState);
+    on<DeleteThreadEvent>(_mapDeleteThreadEventToState);
   }
 
-  Stream<ThreadState> _mapRefreshThreadToState(
-      RefreshThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapRefreshThreadToState(
+      RefreshThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final List<Thread> threadList = await threadRepository.getThreads();
-      yield ThreadLoadSuccess(threadList);
+      emit(ThreadLoadSuccess(threadList));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapRefreshHistoryThreadToState(
-      RefreshHistoryThreadEvent event) async* {
-    yield ThreadHistoryLoading();
+  void _mapRefreshHistoryThreadToState(
+      RefreshHistoryThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadHistoryLoading());
     try {
       final List<Thread> threadList =
           await threadRepository.getHistoryThreads(event.page, event.size);
-      yield ThreadLoadSuccess(threadList);
+      emit(ThreadLoadSuccess(threadList));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapRefreshVisitorThreadToState(
-      RefreshVisitorThreadEvent event) async* {
-    yield ThreadVisitorLoading();
+  void _mapRefreshVisitorThreadToState(
+      RefreshVisitorThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadVisitorLoading());
     try {
       final List<Thread> threadList =
           await threadRepository.getVisitorThreads(event.page, event.size);
-      yield ThreadLoadSuccess(threadList);
+      emit(ThreadLoadSuccess(threadList));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapRefreshVisitorThreadAllToState(
-      RefreshVisitorThreadAllEvent event) async* {
-    yield ThreadLoading();
+  void _mapRefreshVisitorThreadAllToState(
+      RefreshVisitorThreadAllEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final List<Thread> threadList =
           await threadRepository.getVisitorThreadsAll();
-      yield ThreadLoadSuccess(threadList);
+      emit(ThreadLoadSuccess(threadList));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapRequestThreadToState(
-      RequestThreadEvent event) async* {
-    yield RequestThreading();
+  void _mapRequestThreadToState(
+      RequestThreadEvent event, Emitter<ThreadState> emit) async {
+    print('RequestThreadEvent');
+    emit(RequestThreading());
     try {
       final RequestThreadResult thread = await threadRepository.requestThread(
           event.wid, event.type, event.aid);
-      yield RequestThreadSuccess(thread);
+      emit(RequestThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield RequestThreadError();
+      emit(RequestThreadError());
     }
   }
 
-  Stream<ThreadState> _mapRequestAgentToState(RequestAgentEvent event) async* {
-    yield RequestAgentThreading();
+  void _mapRequestAgentToState(
+      RequestAgentEvent event, Emitter<ThreadState> emit) async {
+    emit(RequestAgentThreading());
     try {
       final RequestThreadResult thread =
           await threadRepository.requestAgent(event.wid, event.type, event.aid);
-      yield RequestAgentSuccess(thread);
+      emit(RequestAgentSuccess(thread));
     } catch (error) {
       print(error);
-      yield RequestAgentThreadError();
+      emit(RequestAgentThreadError());
     }
   }
 
-  Stream<ThreadState> _mapRequestContactThreadToState(
-      RequestContactThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapRequestContactThreadToState(
+      RequestContactThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final RequestThreadResult thread =
           await threadRepository.requestContactThread(event.cid);
-      yield RequestContactThreadSuccess(thread);
+      emit(RequestContactThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapRequestGroupThreadToState(
-      RequestGroupThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapRequestGroupThreadToState(
+      RequestGroupThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final RequestThreadResult thread =
           await threadRepository.requestGroupThread(event.gid);
-      yield RequestGroupThreadSuccess(thread);
+      emit(RequestGroupThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapMarkTopThreadEventToState(
-      MarkTopThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapMarkTopThreadEventToState(
+      MarkTopThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread = await threadRepository.markTop(event.tid);
-      yield MarkTopThreadSuccess(thread);
+      emit(MarkTopThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapUnMarkTopThreadEventToState(
-      UnMarkTopThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapUnMarkTopThreadEventToState(
+      UnMarkTopThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread =
           await threadRepository.unmarkTop(event.tid);
-      yield UnMarkTopThreadSuccess(thread);
+      emit(UnMarkTopThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapMarkNodisturbThreadEventToState(
-      MarkNodisturbThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapMarkNodisturbThreadEventToState(
+      MarkNodisturbThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread =
           await threadRepository.markNodisturb(event.tid);
-      yield MarkNodisturbThreadSuccess(thread);
+      emit(MarkNodisturbThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapUnMarkNodisturbThreadEventToState(
-      UnMarkNodisturbThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapUnMarkNodisturbThreadEventToState(
+      UnMarkNodisturbThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread =
           await threadRepository.unmarkNodisturb(event.tid);
-      yield UnMarkNodisturbThreadSuccess(thread);
+      emit(UnMarkNodisturbThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapMarkUnreadThreadEventToState(
-      MarkUnreadThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapMarkUnreadThreadEventToState(
+      MarkUnreadThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread =
           await threadRepository.markUnread(event.tid);
-      yield MarkUnreadThreadSuccess(thread);
+      emit(MarkUnreadThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapUnMarkUnreadThreadEventToState(
-      UnMarkUnreadThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapUnMarkUnreadThreadEventToState(
+      UnMarkUnreadThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread =
           await threadRepository.unmarkUnread(event.tid);
-      yield UnMarkUnreadThreadSuccess(thread);
+      emit(UnMarkUnreadThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 
-  Stream<ThreadState> _mapDeleteThreadEventToState(
-      DeleteThreadEvent event) async* {
-    yield ThreadLoading();
+  void _mapDeleteThreadEventToState(
+      DeleteThreadEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadLoading());
     try {
       final MarkThreadResult thread = await threadRepository.delete(event.tid);
-      yield DeleteThreadSuccess(thread);
+      emit(DeleteThreadSuccess(thread));
     } catch (error) {
       print(error);
-      yield ThreadLoadError();
+      emit(ThreadLoadError());
     }
   }
 }

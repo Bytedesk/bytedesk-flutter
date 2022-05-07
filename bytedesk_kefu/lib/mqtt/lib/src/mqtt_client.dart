@@ -35,12 +35,14 @@ class MqttClient {
 
   /// Initializes a new instance of the MqttClient class using
   /// the supplied Mqtt Port.
-  /// The server hostname to connect to
-  /// The client identifier to use to connect with
+  /// The server/hostname to connect to.
+  /// The client identifier to use to connect with.
   /// The port to use
   MqttClient.withPort(this.server, this.clientIdentifier, this.port);
 
-  /// Server name
+  /// Server name.
+  /// Note that a server name that is a host name must conform to the name
+  /// syntax described in RFC952 [https://datatracker.ietf.org/doc/html/rfc952]
   String server;
 
   /// Port number
@@ -128,6 +130,13 @@ class MqttClient {
   /// Keep alive is defaulted to off, this must be set to a valid value to
   /// enable keep alive.
   int keepAlivePeriod = MqttClientConstants.defaultKeepAlive;
+
+  /// The period of time to wait if the broker does not respond to a ping request
+  /// from keep alive processing, in seconds.
+  /// If this time period is exceeded the client is forcibly disconnected.
+  /// The default is 0, which disables this functionality.
+  /// Thi setting has no effect if keep alive is disabled.
+  int disconnectOnNoResponsePeriod = 0;
 
   /// Handles everything to do with publication management.
   @protected
@@ -273,7 +282,8 @@ class MqttClient {
     if (keepAlivePeriod != MqttClientConstants.defaultKeepAlive) {
       MqttLogger.log(
           'MqttClient::connect - keep alive is enabled with a value of $keepAlivePeriod seconds');
-      keepAlive = MqttConnectionKeepAlive(connectionHandler, keepAlivePeriod);
+      keepAlive = MqttConnectionKeepAlive(connectionHandler, clientEventBus,
+          keepAlivePeriod, disconnectOnNoResponsePeriod);
       if (pongCallback != null) {
         keepAlive!.pongCallback = pongCallback;
       }
@@ -366,9 +376,12 @@ class MqttClient {
     }
   }
 
-  /// Unsubscribe from a topic
-  void unsubscribe(String topic) {
-    subscriptionsManager!.unsubscribe(topic);
+  /// Unsubscribe from a topic.
+  /// Some brokers(AWS for instance) need to have each un subscription acknowledged, use
+  /// the [expectAcknowledge] parameter for this, default is false.
+  void unsubscribe(String topic, {expectAcknowledge = false}) {
+    subscriptionsManager!
+        .unsubscribe(topic, expectAcknowledge: expectAcknowledge);
   }
 
   /// Gets the current status of a subscription.
@@ -388,6 +401,17 @@ class MqttClient {
   /// This method will disconnect regardless of the [autoReconnect] state.
   void disconnect() {
     _disconnect(unsolicited: false);
+  }
+
+  /// Called when the keep alive mechanism has determined that
+  /// a ping response expected from the broker has not arrived in the
+  /// time period specified by [disconnectOnNoResponsePeriod].
+  void disconnectOnNoPingResponse(DisconnectOnNoPingResponse event) {
+    MqttLogger.log(
+        'MqttClient::_disconnectOnNoPingResponse - disconnecting, no ping request response for $disconnectOnNoResponsePeriod seconds');
+    // Destroy the existing client socket
+    connectionHandler?.connection?.disconnect();
+    internalDisconnect();
   }
 
   /// Internal disconnect
@@ -426,7 +450,9 @@ class MqttClient {
     if (!unsolicited) {
       connectionHandler?.disconnect();
       disconnectOrigin = MqttDisconnectionOrigin.solicited;
+      connectionHandler?.stopListening();
     }
+
     publishingManager?.published.close();
     publishingManager = null;
     subscriptionsManager = null;

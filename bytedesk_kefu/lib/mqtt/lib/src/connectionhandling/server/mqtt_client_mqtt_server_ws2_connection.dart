@@ -151,7 +151,8 @@ class MqttServerWs2Connection extends MqttServerConnection {
           messageStream = MqttByteBuffer(typed.Uint8Buffer());
           MqttLogger.log('MqttWs2Connection::connect - start listening');
           _startListening();
-          completer.complete();
+          completer.complete(MqttClientConnectionStatus()
+            ..state = MqttConnectionState.connected);
         }).catchError((dynamic e) {
           onError(e);
           completer.completeError(e);
@@ -240,6 +241,15 @@ class MqttServerWs2Connection extends MqttServerConnection {
       throw NoConnectionException(message);
     }
     return completer.future;
+  }
+
+  /// Stops listening and closes the socket immediately.
+  @override
+  void stopListening() {
+    if (client != null) {
+      listener?.cancel();
+      client.close();
+    }
   }
 
   Future<bool> _performWSHandshake(Socket socket, Uri uri) async {

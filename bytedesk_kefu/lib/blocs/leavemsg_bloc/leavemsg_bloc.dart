@@ -7,56 +7,43 @@ class LeaveMsgBloc extends Bloc<LeaveMsgEvent, LeaveMsgState> {
   //
   final LeaveMsgRepository leaveMsgRepository = new LeaveMsgRepository();
 
-  LeaveMsgBloc() : super(new UnLeaveMsgState());
-
-  @override
-  Stream<LeaveMsgState> mapEventToState(
-    LeaveMsgEvent event,
-  ) async* {
-    // if (event is GetLeaveMsgCategoryEvent) {
-    //   yield* _mapGetLeaveMsgCategoryToState(event);
-    // } else
-    if (event is SubmitLeaveMsgEvent) {
-      yield* _mapSubmitLeaveMsgToState(event);
-    } else if (event is UploadImageEvent) {
-      yield* _mapUploadImageToState(event);
-    }
+  LeaveMsgBloc() : super(new UnLeaveMsgState()) {
+    on<SubmitLeaveMsgEvent>(_mapSubmitLeaveMsgToState);
+    on<UploadImageEvent>(_mapUploadImageToState);
   }
 
-  // Stream<LeaveMsgState> _mapGetLeaveMsgCategoryToState(
-  //     GetLeaveMsgCategoryEvent event) async* {
-  //   yield LeaveMsgLoading();
-  //   try {
-  //     final List<HelpCategory> categoryList =
-  //         await leaveMsgRepository.getHelpLeaveMsgCategories(event.uid);
-  //     yield LeaveMsgCategoryState(categoryList);
-  //   } catch (error) {
-  //     print(error);
-  //     yield LeaveMsgLoadError();
+  // @override
+  // Stream<LeaveMsgState> mapEventToState(
+  //   LeaveMsgEvent event,
+  // ) async* {
+  //   if (event is SubmitLeaveMsgEvent) {
+  //     yield* _mapSubmitLeaveMsgToState(event);
+  //   } else if (event is UploadImageEvent) {
+  //     yield* _mapUploadImageToState(event);
   //   }
   // }
 
-  Stream<LeaveMsgState> _mapSubmitLeaveMsgToState(
-      SubmitLeaveMsgEvent event) async* {
-    yield LeaveMsgSubmiting();
+  void _mapSubmitLeaveMsgToState(
+      SubmitLeaveMsgEvent event, Emitter<LeaveMsgState> emit) async {
+    emit(LeaveMsgSubmiting());
     try {
       // final JsonResult jsonResult =
       await leaveMsgRepository.submitLeaveMsg(event.content, event.imageUrls);
-      yield LeaveMsgSubmitSuccessState();
+      emit(LeaveMsgSubmitSuccessState());
     } catch (error) {
       print(error);
-      yield LeaveMsgSubmitError();
+      emit(LeaveMsgSubmitError());
     }
   }
 
-  Stream<LeaveMsgState> _mapUploadImageToState(UploadImageEvent event) async* {
-    yield ImageUploading();
+  void _mapUploadImageToState(UploadImageEvent event, Emitter<LeaveMsgState> emit) async {
+    emit(ImageUploading());
     try {
       final String url = await leaveMsgRepository.upload(event.filePath);
-      yield UploadImageSuccess(url);
+      emit(UploadImageSuccess(url));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 }

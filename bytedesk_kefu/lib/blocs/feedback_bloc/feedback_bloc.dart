@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 import 'package:bytedesk_kefu/blocs/feedback_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/helpCategory.dart';
 // import 'package:bytedesk_kefu/model/jsonResult.dart';
@@ -9,55 +9,58 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   //
   final FeedbackRepository feedbackRepository = new FeedbackRepository();
 
-  FeedbackBloc() : super(new UnFeedbackState());
-
-  @override
-  Stream<FeedbackState> mapEventToState(
-    FeedbackEvent event,
-  ) async* {
-    if (event is GetFeedbackCategoryEvent) {
-      yield* _mapGetFeedbackCategoryToState(event);
-    } else if (event is SubmitFeedbackEvent) {
-      yield* _mapSubmitFeedbackToState(event);
-    } else if (event is UploadImageEvent) {
-      yield* _mapUploadImageToState(event);
-    }
+  FeedbackBloc() : super(new UnFeedbackState()) {
+    on<GetFeedbackCategoryEvent>(_mapGetFeedbackCategoryToState);
+    on<SubmitFeedbackEvent>(_mapSubmitFeedbackToState);
+    on<UploadImageEvent>(_mapUploadImageToState);
   }
 
-  Stream<FeedbackState> _mapGetFeedbackCategoryToState(
-      GetFeedbackCategoryEvent event) async* {
-    yield FeedbackLoading();
+  // @override
+  // void mapEventToState(
+  //   FeedbackEvent event,
+  // ) async {
+  //   if (event is GetFeedbackCategoryEvent) {
+  //     yield* _mapGetFeedbackCategoryToState(event);
+  //   } else if (event is SubmitFeedbackEvent) {
+  //     yield* _mapSubmitFeedbackToState(event);
+  //   } else if (event is UploadImageEvent) {
+  //     yield* _mapUploadImageToState(event);
+  //   }
+  // }
+
+  void _mapGetFeedbackCategoryToState(
+      GetFeedbackCategoryEvent event, Emitter<FeedbackState> emit) async {
+    emit(FeedbackLoading());
     try {
       final List<HelpCategory> categoryList =
           await feedbackRepository.getHelpFeedbackCategories(event.uid);
-      yield FeedbackCategoryState(categoryList);
+      emit(FeedbackCategoryState(categoryList));
     } catch (error) {
       print(error);
-      yield FeedbackLoadError();
+      emit(FeedbackLoadError());
     }
   }
 
-  Stream<FeedbackState> _mapSubmitFeedbackToState(
-      SubmitFeedbackEvent event) async* {
-    yield FeedbackSubmiting();
+  void _mapSubmitFeedbackToState(
+      SubmitFeedbackEvent event, Emitter<FeedbackState> emit) async {
+    emit(FeedbackSubmiting());
     try {
-      // final JsonResult jsonResult =
       await feedbackRepository.submitFeedback(event.content, event.imageUrls);
-      yield FeedbackSubmitSuccess();
+      emit(FeedbackSubmitSuccess());
     } catch (error) {
       print(error);
-      yield FeedbackSubmitError();
+      emit(FeedbackSubmitError());
     }
   }
 
-  Stream<FeedbackState> _mapUploadImageToState(UploadImageEvent event) async* {
-    yield ImageUploading();
+  void _mapUploadImageToState(UploadImageEvent event, Emitter<FeedbackState> emit) async {
+    emit(ImageUploading());
     try {
       final String url = await feedbackRepository.upload(event.filePath);
-      yield UploadImageSuccess(url);
+      emit(UploadImageSuccess(url));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 }

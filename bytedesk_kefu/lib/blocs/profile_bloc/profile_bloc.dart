@@ -9,172 +9,184 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   //
   final UserRepository userRepository = new UserRepository();
 
-  ProfileBloc() : super(InitialProfileState());
+  ProfileBloc() : super(InitialProfileState()) {
+    on<GetProfileEvent>(_mapProfileState);
+    on<UploadImageEvent>(_mapUploadImageToState);
+    on<UpdateAvatarEvent>(_mapUpdateAvatarToState);
+    on<UpdateNicknameEvent>(_mapUpdateNicknameToState);
+    on<UpdateDescriptionEvent>(_mapUpdateDescriptionToState);
+    on<UpdateMobileEvent>(_mapUpdateMobileToState);
 
-  @override
-  Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
-    //
-    if (event is GetProfileEvent) {
-      yield* _mapProfileState();
-    } else if (event is UploadImageEvent) {
-      yield* _mapUploadImageToState(event);
-    } else if (event is UpdateAvatarEvent) {
-      yield* _mapUpdateAvatarToState(event);
-    } else if (event is UpdateNicknameEvent) {
-      yield* _mapUpdateNicknameToState(event);
-    } else if (event is UpdateDescriptionEvent) {
-      yield* _mapUpdateDescriptionToState(event);
-    } else if (event is UpdateMobileEvent) {
-      yield* _mapUpdateMobileToState(event);
-    } else if (event is UpdateSexEvent) {
-      yield* _mapUpdateSexToState(event);
-    } else if (event is UpdateLocationEvent) {
-      yield* _mapUpdateLocationToState(event);
-    } else if (event is UpdateBirthdayEvent) {
-      yield* _mapUpdateBirthdayToState(event);
-    } else if (event is QueryFollowEvent) {
-      yield* _mapQueryFollowToState(event);
-    } else if (event is UserFollowEvent) {
-      yield* _mapUserFollowToState(event);
-    } else if (event is UserUnfollowEvent) {
-      yield* _mapUserUnfollowToState(event);
-    }
+    on<UpdateSexEvent>(_mapUpdateSexToState);
+    on<UpdateLocationEvent>(_mapUpdateLocationToState);
+    on<UpdateBirthdayEvent>(_mapUpdateBirthdayToState);
+    on<QueryFollowEvent>(_mapQueryFollowToState);
+    on<UserFollowEvent>(_mapUserFollowToState);
+
+    on<UserUnfollowEvent>(_mapUserUnfollowToState);
+
   }
 
-  Stream<ProfileState> _mapProfileState() async* {
-    yield ProfileInProgress();
+  // @override
+  // void mapEventToState(ProfileEvent event, Emitter<ProfileState> emit) async {
+  //   //
+  //   if (event is GetProfileEvent) {
+  //     yield* _mapProfileState();
+  //   } else if (event is UploadImageEvent) {
+  //     yield* _mapUploadImageToState(event);
+  //   } else if (event is UpdateAvatarEvent) {
+  //     yield* _mapUpdateAvatarToState(event);
+  //   } else if (event is UpdateNicknameEvent) {
+  //     yield* _mapUpdateNicknameToState(event);
+  //   } else if (event is UpdateDescriptionEvent) {
+  //     yield* _mapUpdateDescriptionToState(event);
+  //   } else if (event is UpdateMobileEvent) {
+  //     yield* _mapUpdateMobileToState(event);
+  //   } else if (event is UpdateSexEvent) {
+  //     yield* _mapUpdateSexToState(event);
+  //   } else if (event is UpdateLocationEvent) {
+  //     yield* _mapUpdateLocationToState(event);
+  //   } else if (event is UpdateBirthdayEvent) {
+  //     yield* _mapUpdateBirthdayToState(event);
+  //   } else if (event is QueryFollowEvent) {
+  //     yield* _mapQueryFollowToState(event);
+  //   } else if (event is UserFollowEvent) {
+  //     yield* _mapUserFollowToState(event);
+  //   } else if (event is UserUnfollowEvent) {
+  //     yield* _mapUserUnfollowToState(event);
+  //   }
+  // }
+
+  void _mapProfileState(GetProfileEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       User user = await userRepository.getProfile();
-      yield ProfileSuccess(user: user);
+      emit(ProfileSuccess(user: user));
     } catch (error) {
       // 网络或其他错误
-      yield ProfileFailure(error: error.toString());
+      emit(ProfileFailure(error: error.toString()));
     }
   }
 
-  Stream<ProfileState> _mapUploadImageToState(UploadImageEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUploadImageToState(UploadImageEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final String url = await userRepository.upload(event.filePath);
-      yield UploadImageSuccess(url);
+      emit(UploadImageSuccess(url));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateAvatarToState(UpdateAvatarEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateAvatarToState(UpdateAvatarEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user = await userRepository.updateAvatar(event.avatar);
-      yield UpdateAvatarSuccess(user);
+      emit(UpdateAvatarSuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateNicknameToState(
-      UpdateNicknameEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateNicknameToState(UpdateNicknameEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user = await userRepository.updateNickname(event.nickname);
-      yield UpdateNicknameSuccess(user);
+      emit(UpdateNicknameSuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateDescriptionToState(
-      UpdateDescriptionEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateDescriptionToState(UpdateDescriptionEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user =
           await userRepository.updateDescription(event.description);
-      yield UpdateDescriptionSuccess(user);
+      emit(UpdateDescriptionSuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateMobileToState(UpdateMobileEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateMobileToState(UpdateMobileEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user = await userRepository.updateMobile(event.mobile);
-      yield UpdateMobileSuccess(user);
+      emit(UpdateMobileSuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateSexToState(UpdateSexEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateSexToState(UpdateSexEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user = await userRepository.updateSex(event.sex);
-      yield UpdateSexSuccess(user);
+      emit(UpdateSexSuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateLocationToState(
-      UpdateLocationEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateLocationToState(UpdateLocationEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user = await userRepository.updateLocation(event.location);
-      yield UpdateLocationSuccess(user);
+      emit(UpdateLocationSuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapUpdateBirthdayToState(
-      UpdateBirthdayEvent event) async* {
-    yield ProfileInProgress();
+  void _mapUpdateBirthdayToState(UpdateBirthdayEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
     try {
       final User user = await userRepository.updateBirthday(event.birthday);
-      yield UpdateBirthdaySuccess(user);
+      emit(UpdateBirthdaySuccess(user));
     } catch (error) {
       print(error);
-      yield UpLoadImageError();
+      emit(UpLoadImageError());
     }
   }
 
-  Stream<ProfileState> _mapQueryFollowToState(QueryFollowEvent event) async* {
-    yield QueryFollowing();
+  void _mapQueryFollowToState(QueryFollowEvent event, Emitter<ProfileState> emit) async {
+    emit(QueryFollowing());
     try {
       final bool isFollowed = await userRepository.isFollowed(event.uid);
-      yield QueryFollowSuccess(isFollowed);
+      emit(QueryFollowSuccess(isFollowed));
     } catch (error) {
       print(error);
-      yield QueryFollowError();
+      emit(QueryFollowError());
     }
   }
 
-  Stream<ProfileState> _mapUserFollowToState(UserFollowEvent event) async* {
-    yield Following();
+  void _mapUserFollowToState(UserFollowEvent event, Emitter<ProfileState> emit) async {
+    emit(Following());
     try {
       final JsonResult jsonResult = await userRepository.follow(event.uid);
-      yield FollowResultSuccess(jsonResult);
+      emit(FollowResultSuccess(jsonResult));
     } catch (error) {
       print(error);
-      yield FollowError();
+      emit(FollowError());
     }
   }
 
-  Stream<ProfileState> _mapUserUnfollowToState(UserUnfollowEvent event) async* {
-    yield Following();
+  void _mapUserUnfollowToState(UserUnfollowEvent event, Emitter<ProfileState> emit) async {
+    emit(Following());
     try {
       final JsonResult jsonResult = await userRepository.unfollow(event.uid);
-      yield UnfollowResultSuccess(jsonResult);
+      emit(UnfollowResultSuccess(jsonResult));
     } catch (error) {
       print(error);
-      yield UnFollowError();
+      emit(UnFollowError());
     }
   }
 }

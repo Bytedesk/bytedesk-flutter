@@ -8,17 +8,17 @@ class BytedeskConstants {
   //
   // TODO: 增加自定义服务器地址接口
   // 公司debug
-  // static const bool isDebug = true;
-  // static const bool isSecure = false;
-  // static const bool isWebSocketWss = false;
-  // static const String webSocketWssUrl = 'wss://www.bytedesk.com/websocket';
-  // static const String httpBaseUrl = 'http://' + mqttHost + ':8000';
-  // static const String httpBaseUrlAndroid = 'http://' + mqttHost + ':8000';
-  // static const String httpBaseUrliOS = 'http://' + mqttHost + ':8000';
-  // static const String httpUploadUrl = 'http://' + mqttHost + ':8000';
-  // static const String host = mqttHost + ':8000';
-  // static const int mqttPort = 3883; // not secure
-  // static const String mqttHost = '172.16.0.65';
+  static const bool isDebug = true;
+  static const bool isSecure = false;
+  static const bool isWebSocketWss = false;
+  static const String webSocketWssUrl = 'wss://www.bytedesk.com/websocket';
+  static const String httpBaseUrl = 'http://' + mqttHost + ':8000';
+  static const String httpBaseUrlAndroid = 'http://' + mqttHost + ':8000';
+  static const String httpBaseUrliOS = 'http://' + mqttHost + ':8000';
+  static const String httpUploadUrl = 'http://' + mqttHost + ':8000';
+  static const String host = mqttHost + ':8000';
+  static const int mqttPort = 3883; // not secure
+  static const String mqttHost = '172.16.0.78';
 
   // 本机测试
   // static const bool isDebug = true;
@@ -48,19 +48,19 @@ class BytedeskConstants {
   // static const String mqttHost = '192.168.0.102';
 
   // 线上
-  static const bool isDebug = false; // false;
-  static const bool isSecure = true; // secure
-  static const bool isWebSocketWss = true;
-  static const String webSocketWssUrl = 'wss://flutter.bytedesk.com/websocket';
-  static const int mqttPort = 13883; // secure
-  static const String httpBaseUrl = 'https://' + mqttHost;
-  static const String httpBaseUrlAndroid = 'https://' + mqttHost;
-  static const String httpBaseUrliOS = 'https://' + mqttHost;
-  static const String httpUploadUrl = 'https://upload.bytedesk.com';
-  static const String host = mqttHost;
-  static const String mqttHost = 'flutter.bytedesk.com';
+  // static const bool isDebug = false; // false;
+  // static const bool isSecure = true; // secure
+  // static const bool isWebSocketWss = true;
+  // static const String webSocketWssUrl = 'wss://flutter.bytedesk.com/websocket';
+  // static const int mqttPort = 13883; // secure
+  // static const String httpBaseUrl = 'https://' + mqttHost;
+  // static const String httpBaseUrlAndroid = 'https://' + mqttHost;
+  // static const String httpBaseUrliOS = 'https://' + mqttHost;
+  // static const String httpUploadUrl = 'https://upload.bytedesk.com';
+  // static const String host = mqttHost;
+  // static const String mqttHost = 'flutter.bytedesk.com';
 
-  // 
+  //
   static const String WORKGROUP_WID_LIANGSHIBAO = '201808101819291';
   static const String CHAT_TYPE_WORKGROUP = 'workGroup';
   static const String CHAT_TYPE_APPOINTED = 'appointed';
@@ -81,6 +81,7 @@ class BytedeskConstants {
   static const String user = 'bytedesk_user';
   static const String uid = 'bytedesk_uid';
   static const String username = 'bytedesk_username';
+  static const String password = 'bytedesk_password';
   static const String nickname = 'bytedesk_nickname';
   static const String avatar = 'bytedesk_avatar';
   static const String description = 'bytedesk_description';
@@ -278,6 +279,9 @@ class BytedeskConstants {
       'notification_kickoff';
   // 发送表单请求
   static const String MESSAGE_TYPE_NOTIFICATION_FORM = 'notification_form';
+  // 表单内嵌类型
+  static const String MESSAGE_TYPE_NOTIFICATION_FORM_REQUEST = "notification_form_request";
+  static const String MESSAGE_TYPE_NOTIFICATION_FORM_RESULT = "notification_form_result";
   // 通知初始化localStream
   // static const String MESSAGE_TYPE_NOTIFICATION_WEBRTC_INVITE = 'notification_webrtc_invite'
   static const String MESSAGE_TYPE_NOTIFICATION_WEBRTC_INVITE_VIDEO =

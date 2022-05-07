@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 import 'package:bytedesk_kefu/model/codeResult.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/oauth.dart';
@@ -10,172 +10,179 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   //
   final UserRepository _userRepository = new UserRepository();
 
-  LoginBloc() : super(LoginInitial());
-
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    //
-    if (event is LoginButtonPressed) {
-      yield* _mapLoginState(event);
-    } else if (event is SMSLoginButtonPressed) {
-      yield* _mapSMSLoginState(event);
-    } else if (event is RegisterButtonPressed) {
-      yield* _mapRegisterState(event);
-    } else if (event is RequestCodeButtonPressed) {
-      yield* _mapRequestCodeState(event);
-    } else if (event is BindMobileEvent) {
-      yield* _mapBindMobileState(event);
-    } else if (event is UnionidOAuthEvent) {
-      yield* _mapUnionidOAuthState(event);
-    } else if (event is ResetPasswordButtonPressed) {
-      yield* _mapResetPasswordState(event);
-    } else if (event is UpdatePasswordButtonPressed) {
-      yield* _mapUpdatePasswordState(event);
-    }
+  LoginBloc() : super(LoginInitial()) {
+    on<LoginButtonPressed>(_mapLoginState);
+    on<SMSLoginButtonPressed>(_mapSMSLoginState);
+    on<RegisterButtonPressed>(_mapRegisterState);
+    on<RequestCodeButtonPressed>(_mapRequestCodeState);
+    on<BindMobileEvent>(_mapBindMobileState);
+    on<UnionidOAuthEvent>(_mapUnionidOAuthState);
+    on<ResetPasswordButtonPressed>(_mapResetPasswordState);
+    on<UpdatePasswordButtonPressed>(_mapUpdatePasswordState);
   }
 
-  Stream<LoginState> _mapLoginState(LoginButtonPressed event) async* {
-    yield LoginInProgress();
+  // @override
+  // void mapEventToState(LoginEvent event, Emitter<LoginState> emit) async {
+  //   //
+  //   if (event is LoginButtonPressed) {
+  //     yield* _mapLoginState(event);
+  //   } else if (event is SMSLoginButtonPressed) {
+  //     yield* _mapSMSLoginState(event);
+  //   } else if (event is RegisterButtonPressed) {
+  //     yield* _mapRegisterState(event);
+  //   } else if (event is RequestCodeButtonPressed) {
+  //     yield* _mapRequestCodeState(event);
+  //   } else if (event is BindMobileEvent) {
+  //     yield* _mapBindMobileState(event);
+  //   } else if (event is UnionidOAuthEvent) {
+  //     yield* _mapUnionidOAuthState(event);
+  //   } else if (event is ResetPasswordButtonPressed) {
+  //     yield* _mapResetPasswordState(event);
+  //   } else if (event is UpdatePasswordButtonPressed) {
+  //     yield* _mapUpdatePasswordState(event);
+  //   }
+  // }
+
+  void _mapLoginState(LoginButtonPressed event, Emitter<LoginState> emit) async {
+    emit(LoginInProgress());
     try {
       OAuth oauth = await _userRepository.login(event.username, event.password);
       if (oauth.statusCode == 200) {
         // 用户名密码正确，登录成功
-        yield LoginSuccess();
+        emit(LoginSuccess());
       } else {
         // 用户名密码错误，登录失败
-        yield LoginError();
+        emit(LoginError());
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapSMSLoginState(SMSLoginButtonPressed event) async* {
-    yield LoginInProgress();
+  void _mapSMSLoginState(SMSLoginButtonPressed event, Emitter<LoginState> emit) async {
+    emit(LoginInProgress());
     try {
       //
       OAuth oauth = await _userRepository.smsOAuth(event.mobile, event.code);
       if (oauth.statusCode == 200) {
         // 用户名密码正确，登录成功
-        yield SMSLoginSuccess();
+        emit(SMSLoginSuccess());
       } else {
         // 用户名密码错误，登录失败
-        yield LoginError();
+        emit(LoginError());
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapRegisterState(RegisterButtonPressed event) async* {
-    yield RegisterInProgress();
+  void _mapRegisterState(RegisterButtonPressed event, Emitter<LoginState> emit) async {
+    emit(RegisterInProgress());
     try {
       //
       JsonResult jsonResult =
           await _userRepository.register(event.mobile, event.password);
       if (jsonResult.statusCode == 200) {
-        yield RegisterSuccess();
+        emit(RegisterSuccess());
       } else {
-        yield RegisterError(
-            message: jsonResult.message, statusCode: jsonResult.statusCode);
+        emit(RegisterError(
+            message: jsonResult.message, statusCode: jsonResult.statusCode));
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapRequestCodeState(
-      RequestCodeButtonPressed event) async* {
-    yield RequestCodeInProgress();
+  void _mapRequestCodeState(RequestCodeButtonPressed event, Emitter<LoginState> emit) async {
+    emit(RequestCodeInProgress());
     try {
       //
       CodeResult codeResult = await _userRepository.requestCode(event.mobile);
       if (codeResult.statusCode == 200) {
-        yield RequestCodeSuccess(codeResult: codeResult);
+        emit(RequestCodeSuccess(codeResult: codeResult));
       } else {
-        yield RequestCodeError(
-            message: codeResult.message, statusCode: codeResult.statusCode);
+        emit(RequestCodeError(
+            message: codeResult.message, statusCode: codeResult.statusCode));
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapBindMobileState(BindMobileEvent event) async* {
-    yield BindMobileInProgress();
+  void _mapBindMobileState(BindMobileEvent event, Emitter<LoginState> emit) async {
+    emit(BindMobileInProgress());
     try {
       //
       JsonResult jsonResult = await _userRepository.bindMobile(event.mobile);
       if (jsonResult.statusCode == 200) {
-        yield BindMobileSuccess(jsonResult: jsonResult);
+        emit(BindMobileSuccess(jsonResult: jsonResult));
       } else {
-        yield BindMobileError(
-            message: jsonResult.message, statusCode: jsonResult.statusCode);
+        emit(BindMobileError(
+            message: jsonResult.message, statusCode: jsonResult.statusCode));
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapUnionidOAuthState(UnionidOAuthEvent event) async* {
-    yield UnionidOAuthInProgress();
+  void _mapUnionidOAuthState(UnionidOAuthEvent event, Emitter<LoginState> emit) async {
+    emit(UnionidOAuthInProgress());
     try {
       //
       OAuth oauth = await _userRepository.unionIdOAuth(event.unionid);
       if (oauth.statusCode == 200) {
         // 登录成功
-        yield UnionidLoginSuccess();
+        emit(UnionidLoginSuccess());
       } else {
         // 登录失败
-        yield LoginError();
+        emit(LoginError());
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapResetPasswordState(
-      ResetPasswordButtonPressed event) async* {
-    yield ResetPasswordInProgress();
+  void _mapResetPasswordState(ResetPasswordButtonPressed event, Emitter<LoginState> emit) async {
+    emit(ResetPasswordInProgress());
     try {
       //
       JsonResult jsonResult =
           await _userRepository.changePassword(event.mobile, event.password);
       if (jsonResult.statusCode == 200) {
-        yield ResetPasswordSuccess();
+        emit(ResetPasswordSuccess());
       } else {
-        yield ResetPasswordError(
-            message: jsonResult.message, statusCode: jsonResult.statusCode);
+        emit(ResetPasswordError(
+            message: jsonResult.message, statusCode: jsonResult.statusCode));
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
 
-  Stream<LoginState> _mapUpdatePasswordState(
-      UpdatePasswordButtonPressed event) async* {
+  void _mapUpdatePasswordState(UpdatePasswordButtonPressed event, Emitter<LoginState> emit) async {
     //
-    yield UpdatePasswordInProgress();
+    emit(UpdatePasswordInProgress());
     try {
       //
       JsonResult jsonResult =
           await _userRepository.changePassword(event.mobile, event.password);
       if (jsonResult.statusCode == 200) {
-        yield UpdatePasswordSuccess();
+        emit(UpdatePasswordSuccess());
       } else {
-        yield UpdatePasswordError(
-            message: jsonResult.message, statusCode: jsonResult.statusCode);
+        emit(UpdatePasswordError(
+            message: jsonResult.message, statusCode: jsonResult.statusCode));
       }
     } catch (error) {
       // 网络或其他错误
-      yield LoginFailure(error: error.toString());
+      emit(LoginFailure(error: error.toString()));
     }
   }
+
 }

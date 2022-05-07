@@ -204,10 +204,10 @@ class _ChatTypePageState extends State<ChatTypePage> {
             title: const Text('H5网页会话'),
             trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
-              print('h5 chat');
+              // print('h5 chat');
               // 注意: 登录后台->客服管理->技能组(或客服账号)->获取客服代码 获取相应URL
               String url =
-                  "https://h1.kefux.cn/chat/h5/index.html?sub=vip&uid=201808221551193&wid=201807171659201&type=workGroup&aid=&hidenav=1&ph=ph";
+                  "https://h2.kefux.cn/chat/h5/index.html?sub=vip&uid=201808221551193&wid=201807171659201&type=workGroup&aid=&hidenav=1&ph=ph";
               String title = 'H5在线客服演示';
               BytedeskKefu.startH5Chat(context, url, title);
             },

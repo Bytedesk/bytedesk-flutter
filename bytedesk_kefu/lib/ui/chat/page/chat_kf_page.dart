@@ -590,7 +590,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     message.mid = mid;
     message.type = type;
     message.timestamp = timestamp;
-    // message.client = client;
+    message.client = client;
     message.avatar = _currentAvatar;
     message.topic = this._currentThread!.topic;
     message.status = BytedeskConstants.MESSAGE_STATUS_SENDING;
@@ -670,19 +670,30 @@ class _ChatKFPageState extends State<ChatKFPage>
   _listener() {
     // 更新消息状态
     bytedeskEventBus.on<ReceiveMessageReceiptEventBus>().listen((event) {
-      // print('更新状态:' + event.status);
-      if (!this.mounted) {
-        return;
-      }
-      // 更新界面, FIXME: 只有插入新消息，才会更新？
-      for (var i = 0; i < _messages.length; i++) {
-        MessageWidget messageWidget = _messages[i];
-        if (messageWidget.message!.mid == event.mid &&
-            _messages[i].message!.status !=
-                BytedeskConstants.MESSAGE_STATUS_READ) {
-          setState(() {
-            _messages[i].message!.status = event.status;
-          });
+      // print('更新状态:' + event.mid + '-' + event.status);
+      if (this.mounted) {
+        // 更新界面
+        for (var i = 0; i < _messages.length; i++) {
+          MessageWidget messageWidget = _messages[i];
+          if (messageWidget.message!.mid == event.mid &&
+              _messages[i].message!.status !=
+                  BytedeskConstants.MESSAGE_STATUS_READ) {
+            // print('do update status:' + messageWidget.message!.mid!);
+            // setState(() {
+            //   _messages[i].message!.status = event.status; // 不更新
+            // });
+            // 必须重新创建一个messageWidget才会更新
+            Message message = messageWidget.message!;
+            message.status = event.status;
+            MessageWidget messageWidget2 = new MessageWidget(
+                message: message,
+                customCallback: widget.customCallback,
+                animationController: new AnimationController(
+                    vsync: this, duration: Duration(milliseconds: 500)));
+            setState(() {
+              _messages[i] = messageWidget2;
+            });
+          }
         }
       }
     });
@@ -937,25 +948,60 @@ class _ChatKFPageState extends State<ChatKFPage>
   // TODO: 从服务器加载聊天记录
   // FIXME: 消息排序错乱
   Future<Null> _getMessages(int page, int size) async {
+    // BlocProvider.of<MessageBloc>(context)
+    //     ..add(LoadHistoryMessageEvent(uid: _currentUid, page: page, size: size));
     //
     List<Message> messageList = await _messageProvider.getTopicMessages(
         _currentThread!.topic, _currentUid, page, size);
     // print(messageList.length);
-    messageList.forEach((message) {
-      // print('mid: ' + message.mid! + ' content:' + message.content!);
+    int length = messageList.length;
+    for (var i = 0; i < length; i++) {
+      Message message = messageList[i];
+      if (message.type ==
+              BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_FORM_REQUEST ||
+          message.type ==
+              BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_FORM_RESULT) {
+        // 暂时忽略表单消息
+      } else if (message.type ==
+          BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_THREAD_REENTRY) {
+        // 连续的 ‘继续会话’ 消息，只显示最后一条
+        if (i + 1 < length) {
+          var nextmsg = messageList[i + 1];
+          if (nextmsg.type ==
+              BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_THREAD_REENTRY) {
+            continue;
+          } else {
+            pushToMessageArray(message);
+          }
+        }
+      } else {
+        pushToMessageArray(message);
+      }
+    }
+    //
+    _page += 1;
+  }
+
+  void pushToMessageArray(Message message) {
+    if (this.mounted) {
       MessageWidget messageWidget = new MessageWidget(
           message: message,
           customCallback: widget.customCallback,
           animationController: new AnimationController(
               vsync: this, duration: Duration(milliseconds: 500)));
-      if (this.mounted) {
-        setState(() {
-          _messages.add(messageWidget);
+      setState(() {
+        _messages.add(messageWidget);
+        _messages.sort((a, b) {
+          return b.message!.timestamp!.compareTo(a.message!.timestamp!);
         });
+      });
+    }
+    if (message.status != BytedeskConstants.MESSAGE_STATUS_READ) {
+      // 发送已读回执
+      if (message.isSend == 0) {
+        _bdMqtt.sendReceiptReadMessage(message.mid!, _currentThread!);
       }
-    });
-    //
-    _page += 1;
+    }
   }
 
   Future<Null> _appendMessage(Message message) async {
@@ -965,6 +1011,8 @@ class _ChatKFPageState extends State<ChatKFPage>
       Message? element = _messages[i].message;
       if (element!.mid == message.mid) {
         contains = true;
+        // 更新消息状态
+        _messageProvider.update(element.mid, message.status);
       }
     }
     if (!contains) {

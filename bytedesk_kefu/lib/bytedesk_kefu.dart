@@ -54,28 +54,23 @@ class BytedeskKefu {
 
   static void initWithUsernameAndNicknameAndAvatar(String username,
       String nickname, String avatar, String appKey, String subDomain) async {
-    // anonymousLogin(appKey, subDomain);
     /// sp初始化
     await SpUtil.getInstance();
     // 首先检测是否是第一次，如果是第一此启动
     String? spusername = SpUtil.getString(BytedeskConstants.username);
-    if (spusername!.isEmpty) {
-      // 第一此启动, 则调用注册接口，否则调用登录接口
+    String? sppassword = SpUtil.getString(BytedeskConstants.password);
+    if (spusername!.isNotEmpty) {
+      // 登录
+      userLogin(spusername, sppassword!, appKey, subDomain);
+    } else {
+      // 调用注册接口
+      // 默认密码同用户名
       String password = username;
       await BytedeskUserHttpApi()
           .registerUser(username, nickname, password, avatar, subDomain);
-      username = username + "@" + subDomain;
-      userLogin(username, password, appKey, subDomain);
-    } else if (spusername == username) {
-      // 同一个账号，直接登录
-      String password = username;
-      username = username + "@" + subDomain;
-      userLogin(username, password, appKey, subDomain);
-    } else {
-      // TODO: 切换新用户登录, 首先判断用户是否已经存在，如不存在着注册；如存在则直接登录
-      // String password = username;
-      // username = username + "@" + subDomain;
-      // userLogin(username, password, appKey, subDomain);
+      // 注册成功之后，调用登录接口
+      String usernameCompose = username + "@" + subDomain;
+      userLogin(usernameCompose, password, appKey, subDomain);
     }
   }
 
@@ -128,7 +123,7 @@ class BytedeskKefu {
     }
     await BytedeskUserHttpApi().oauth(username, password);
     // 登录成功之后，建立长连接
-    BytedeskUtils.mqttConnect();
+    connect();
     // if (role == BytedeskConstants.ROLE_ADMIN) {
     //   // TODO: 如果是客服账号，加载个人信息
     // }
@@ -141,7 +136,7 @@ class BytedeskKefu {
     //
     await BytedeskUserHttpApi().unionIdOAuth(unionid);
     // 登录成功之后，建立长连接
-    BytedeskUtils.mqttConnect();
+    connect();
     // 上传设备信息
     await BytedeskDeviceHttpApi().setDeviceInfo();
   }
@@ -149,7 +144,7 @@ class BytedeskKefu {
   // 直接建立长连接
   static void otherOAuth() async {
     // 登录成功之后，建立长连接
-    BytedeskUtils.mqttConnect();
+    connect();
     // 上传设备信息
     await BytedeskDeviceHttpApi().setDeviceInfo();
   }
@@ -162,6 +157,11 @@ class BytedeskKefu {
   // 重连
   static bool reconnect() {
     return BytedeskUtils.mqttReConnect();
+  }
+
+  // 断开
+  static void disconnect() {
+    BytedeskUtils.mqttDisconnect();
   }
 
   // 判断长连接状态
@@ -489,6 +489,9 @@ class BytedeskKefu {
 
   // 退出登录
   static Future<void> logout() {
+    // 断开长链接
+    disconnect();
+    // 通知服务器，并清空本地数据
     return BytedeskUserHttpApi().logout();
   }
 

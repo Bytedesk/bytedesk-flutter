@@ -140,6 +140,10 @@ class BytedeskUtils {
     return new BytedeskMqtt().isConnected();
   }
 
+  static void mqttDisconnect() {
+    new BytedeskMqtt().disconnect();
+  }
+
   static double? getLatitude() {
     if (isWeb) {
       return SpUtil.getDouble(BytedeskConstants.latitude);
@@ -179,6 +183,11 @@ class BytedeskUtils {
 
   static String formatedDateNow() {
     var format = new DateFormat('yyyy-MM-dd HH:mm:ss');
+    return format.format(new DateTime.now());
+  }
+
+  static String formatedTimestampNow() {
+    var format = new DateFormat('yyyyMMddHHmmss');
     return format.format(new DateTime.now());
   }
 

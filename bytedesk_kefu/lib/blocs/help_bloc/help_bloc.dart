@@ -9,39 +9,43 @@ class HelpBloc extends Bloc<HelpEvent, HelpState> {
   //
   final HelpRepository helpRepository = new HelpRepository();
 
-  HelpBloc() : super(new UnHelpState());
-
-  @override
-  Stream<HelpState> mapEventToState(HelpEvent event) async* {
-    if (event is GetHelpCategoryEvent) {
-      yield* _mapGetHelpCategoryToState(event);
-    } else if (event is GetHelpArticleEvent) {
-      yield* _mapGetHelpArticleState(event);
-    }
+  HelpBloc() : super(new UnHelpState()) {
+    on<GetHelpCategoryEvent>(_mapGetHelpCategoryToState);
+    on<GetHelpArticleEvent>(_mapGetHelpArticleState);
   }
 
-  Stream<HelpState> _mapGetHelpCategoryToState(
-      GetHelpCategoryEvent event) async* {
-    yield HelpLoading();
+  // @override
+  // Stream<HelpState> mapEventToState(HelpEvent event) async* {
+  //   if (event is GetHelpCategoryEvent) {
+  //     yield* _mapGetHelpCategoryToState(event);
+  //   } else if (event is GetHelpArticleEvent) {
+  //     yield* _mapGetHelpArticleState(event);
+  //   }
+  // }
+
+  void _mapGetHelpCategoryToState(
+      GetHelpCategoryEvent event, Emitter<HelpState> emit) async {
+    emit(HelpLoading());
     try {
       final List<HelpCategory> categoryList =
           await helpRepository.getHelpCategories(event.uid);
-      yield HelpCategoryState(categoryList);
+      emit(HelpCategoryState(categoryList));
     } catch (error) {
       print(error);
-      yield HelpLoadError();
+      emit(HelpLoadError());
     }
   }
 
-  Stream<HelpState> _mapGetHelpArticleState(GetHelpArticleEvent event) async* {
-    yield HelpLoading();
+  void _mapGetHelpArticleState(
+      GetHelpArticleEvent event, Emitter<HelpState> emit) async {
+    emit(HelpLoading());
     try {
       final List<HelpArticle> categoryList =
           await helpRepository.getCategoryArticles(event.categoryId);
-      yield HelpArticleState(categoryList);
+      emit(HelpArticleState(categoryList));
     } catch (error) {
       print(error);
-      yield HelpLoadError();
+      emit(HelpLoadError());
     }
   }
 }

@@ -67,7 +67,7 @@ class MessageProvider {
       version: 9,
     );
     // database path:/Users/ningjinpeng/Library/Developer/CoreSimulator/Devices/715CBA02-A602-4DE1-8C57-75A64B53BF03/data/Containers/Data/Application/8F46273D-9492-4C42-A618-4DF3815562BA/Documents/bytedesk-message-v9.db
-    // print('database path:' + database!.path);
+    print('database path:' + database!.path);
   }
 
   Future<int> insert(Message message) async {
