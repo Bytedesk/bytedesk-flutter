@@ -30,7 +30,7 @@
 - pubspec.yaml添加：bytedesk_kefu: ^最近版本号
 <!-- - 最新版本：[![Pub](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) -->
 - [![pub package](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) | [![pub points](https://badges.bar/bytedesk_kefu/pub%20points)](https://pub.dev/packages/bytedesk_kefu/score) | [![popularity](https://badges.bar/bytedesk_kefu/popularity)](https://pub.dev/packages/bytedesk_kefu/score) | [![likes](https://badges.bar/bytedesk_kefu/likes)](https://pub.dev/packages/bytedesk_kefu/score)
-- [注册账号](https://www.bytedesk.com/antv/user/login)
+- [注册账号](https://www.bytedesk.com/admin/#/)
 
 ### 第二步：初始化
 
