@@ -16,6 +16,13 @@ class RequestThreadResult extends Equatable {
         msg: Message.fromJsonThread(json["data"]));
   }
 
+  static RequestThreadResult fromJsonV2(dynamic json) {
+    return RequestThreadResult(
+        message: json["message"],
+        statusCode: json["status_code"],
+        msg: Message.fromJsonThreadWorkGroupV2(json["data"]));
+  }
+
   @override
   List<Object> get props => [this.msg!.mid!];
 }

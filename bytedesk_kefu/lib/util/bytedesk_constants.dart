@@ -45,7 +45,7 @@ class BytedeskConstants {
   // static const String httpBaseUrliOS = 'http://' + mqttHost + ':8000';
   // static const String httpUploadUrl = 'http://' + mqttHost + ':8000';
   // static const String host = mqttHost + ':8000';
-  // static const String mqttHost = '192.168.0.102';
+  // static const String mqttHost = '192.168.0.104';
 
   // 线上
   static const bool isDebug = false; // false;
@@ -149,6 +149,10 @@ class BytedeskConstants {
   static const String MESSAGE_TYPE_EVENT = 'event';
   // 机器人 自动回复
   static const String MESSAGE_TYPE_ROBOT = 'robot';
+  //
+  static const String MESSAGE_TYPE_ROBOT_V2 = 'robotv2';
+  //
+  static const String MESSAGE_TYPE_ROBOT_RESULT = 'robot_result';
   // 问卷
   static const String MESSAGE_TYPE_QUESTIONNAIRE = 'questionnaire';
   // 分公司，方便提取分公司所包含的国家，金吉列大学长

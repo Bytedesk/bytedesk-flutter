@@ -12,6 +12,7 @@ class ChatKFProvider extends StatelessWidget {
   final String? title;
   final String? custom;
   final String? postscript;
+  final bool? isV2Robot;
   final ValueSetter<String>? customCallback;
   //
   const ChatKFProvider(
@@ -22,6 +23,7 @@ class ChatKFProvider extends StatelessWidget {
       this.title,
       this.custom,
       this.postscript,
+      this.isV2Robot,
       this.customCallback})
       : super(key: key);
   //
@@ -32,7 +34,7 @@ class ChatKFProvider extends StatelessWidget {
       providers: [
         BlocProvider<ThreadBloc>(
           create: (BuildContext context) => ThreadBloc()
-            ..add(RequestThreadEvent(wid: wid, aid: aid, type: type)),
+            ..add(RequestThreadEvent(wid: wid, aid: aid, type: type, isV2Robot: isV2Robot)),
         ),
         BlocProvider<MessageBloc>(
           create: (BuildContext context) => MessageBloc(),
@@ -45,6 +47,7 @@ class ChatKFProvider extends StatelessWidget {
           title: title,
           custom: custom,
           postscript: postscript,
+          isV2Robot: isV2Robot,
           isThread: false,
           customCallback: customCallback),
     );

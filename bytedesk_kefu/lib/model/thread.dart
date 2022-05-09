@@ -47,7 +47,8 @@ class Thread extends Equatable {
       this.nodisturbVisitor,
       this.unread,
       this.unreadVisitor,
-      this.client});
+      this.client,
+      this.currentUid});
 
   static Thread fromWorkGroupJson(dynamic json) {
     return Thread(
@@ -61,6 +62,7 @@ class Thread extends Equatable {
         unreadCount: json['unreadCount'],
         type: json['type'],
         current: json['current'],
+        client: json['client'],
         top: json['top'],
         topVisitor: json['topVisitor'],
         nodisturb: json['nodisturb'],
@@ -82,6 +84,7 @@ class Thread extends Equatable {
           unreadCount: json['unreadCount'],
           type: json['type'],
           current: json['current'],
+          client: json['client'],
           top: json['top'],
           topVisitor: json['topVisitor'],
           nodisturb: json['nodisturb'],
@@ -100,6 +103,7 @@ class Thread extends Equatable {
           unreadCount: json['unreadCount'],
           type: json['type'],
           current: json['current'],
+          client: json['client'],
           top: json['top'],
           topVisitor: json['topVisitor'],
           nodisturb: json['nodisturb'],
@@ -118,6 +122,7 @@ class Thread extends Equatable {
           unreadCount: json['unreadCount'],
           type: json['type'],
           current: json['current'],
+          client: json['client'],
           top: json['top'],
           topVisitor: json['topVisitor'],
           nodisturb: json['nodisturb'],
@@ -137,6 +142,7 @@ class Thread extends Equatable {
         unreadCount: json['unreadCount'],
         type: json['type'],
         current: json['current'],
+        client: json['client'],
         top: json['top'],
         topVisitor: json['topVisitor'],
         nodisturb: json['nodisturb'],
@@ -157,6 +163,7 @@ class Thread extends Equatable {
         unreadCount: json['unreadCount'],
         type: json['type'],
         current: json['current'],
+        client: json['client'],
         top: json['top'],
         topVisitor: json['topVisitor'],
         nodisturb: json['nodisturb'],
@@ -177,6 +184,7 @@ class Thread extends Equatable {
         unreadCount: json['unreadCount'],
         type: json['type'],
         current: json['current'],
+        client: json['client'],
         top: json['top'],
         topVisitor: json['topVisitor'],
         nodisturb: json['nodisturb'],
@@ -196,6 +204,7 @@ class Thread extends Equatable {
         unreadCount: json['unreadCount'],
         type: json['type'],
         current: json['current'],
+        client: json['client'],
         top: json['top'],
         topVisitor: json['topVisitor'],
         nodisturb: json['nodisturb'],
@@ -215,6 +224,7 @@ class Thread extends Equatable {
         unreadCount: json['unreadCount'],
         type: json['type'],
         current: json['current'],
+        client: json['client'],
         top: json['top'],
         topVisitor: json['topVisitor'],
         nodisturb: json['nodisturb'],
@@ -264,6 +274,7 @@ class Thread extends Equatable {
     unreadCount = map['unreadCount'];
     type = map['type'];
     current = map['current'];
+    client = map['client'];
     top = map['top'];
     topVisitor = map['topVisitor'];
     nodisturb = map['nodisturb'];

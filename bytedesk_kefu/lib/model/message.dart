@@ -5,6 +5,8 @@ import 'package:bytedesk_kefu/model/thread.dart';
 import 'package:bytedesk_kefu/model/user.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:sp_util/sp_util.dart';
+
+import 'category.dart';
 // import 'package:equatable/equatable.dart';
 
 class Message {
@@ -30,6 +32,9 @@ class Message {
   //
   List<Answer>? answers;
   String? answersJson;
+  //
+  List<Category>? categories;
+  String? categoriesJson;
 
   Message(
       {this.mid,
@@ -50,7 +55,9 @@ class Message {
       this.currentUid,
       this.client,
       this.answers,
-      this.answersJson})
+      this.answersJson,
+      this.categories,
+      this.categoriesJson})
       : super();
 
   //
@@ -86,6 +93,77 @@ class Message {
         currentUid: SpUtil.getString(BytedeskConstants.uid),
         client: json['client'],
         thread: Thread.fromVisitorJson(json['thread']),
+        user: User.fromJson(json['user']),
+        answers: robotQaList,
+        answersJson: json['answers'].toString());
+  }
+
+  //
+  static Message fromJsonThreadWorkGroupV2(dynamic json) {
+    //
+    List<Category> categoriesList = [];
+    if (json['type'] == BytedeskConstants.MESSAGE_TYPE_ROBOT_V2) {
+      categoriesList = json['categories'] == null
+          ? []
+          : (json['categories'] as List<dynamic>)
+              .map((item) => Category.fromJson(item))
+              .toList();
+    }
+    //
+    return Message(
+        mid: json['mid'],
+        content: json['content'],
+        imageUrl: json['imageUrl'],
+        voiceUrl: json['voiceUrl'],
+        fileUrl: json['fileUrl'],
+        videoUrl: json['videoOrShortUrl'],
+        nickname: json['user']['nickname'],
+        avatar: json['user']['avatar'],
+        type: json['type'],
+        timestamp: json['createdAt'],
+        status: 'stored',
+        isSend: 0,
+        currentUid: SpUtil.getString(BytedeskConstants.uid),
+        client: json['client'],
+        thread: Thread.fromVisitorJson(json['thread']),
+        user: User.fromJson(json['user']),
+        categories: categoriesList,
+        categoriesJson: json['categories'].toString());
+  }
+
+  //
+  static Message fromJsonRobotQuery(dynamic json) {
+    //
+    // String? content = json['content'];
+    List<Answer> robotQaList = [];
+    if (json['type'] == BytedeskConstants.MESSAGE_TYPE_ROBOT) {
+      robotQaList = json['answers'] == null
+          ? []
+          : (json['answers'] as List<dynamic>)
+              .map((item) => Answer.fromJson(item))
+              .toList();
+      // for (var i = 0; i < robotQaList.length; i++) {
+      //   Answer answer = robotQaList[i];
+      //   content += '\n\n' + answer.aid + ':' + answer.question;
+      // }
+    }
+    //
+    return Message(
+        mid: json['mid'],
+        content: json['content'],
+        imageUrl: json['imageUrl'],
+        voiceUrl: json['voiceUrl'],
+        fileUrl: json['fileUrl'],
+        videoUrl: json['videoOrShortUrl'],
+        nickname: json['user']['nickname'],
+        avatar: json['user']['avatar'],
+        type: json['type'],
+        timestamp: json['createdAt'],
+        status: 'stored',
+        isSend: 0,
+        currentUid: SpUtil.getString(BytedeskConstants.uid),
+        client: json['client'],
+        // thread: Thread.fromVisitorJson(json['thread']),
         user: User.fromJson(json['user']),
         answers: robotQaList,
         answersJson: json['answers'].toString());
@@ -139,7 +217,8 @@ class Message {
       'isSend': isSend,
       'currentUid': currentUid,
       'client': client,
-      'answers': answersJson
+      'answers': answersJson,
+      'categories': categoriesJson
     };
   }
 

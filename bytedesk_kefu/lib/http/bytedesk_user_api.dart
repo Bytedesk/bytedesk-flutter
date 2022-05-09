@@ -33,11 +33,11 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     // print('oauth result: $oauthResponse');
     // check the status code for the result
     int statusCode = oauthResponse.statusCode;
-    print("statusCode $statusCode");
+    // print("statusCode $statusCode");
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
-    print('oauth:');
-    print(oauthJson);
+    // print('oauth:');
+    // print(oauthJson);
     SpUtil.putBool(BytedeskConstants.isLogin, true);
     SpUtil.putString(BytedeskConstants.accessToken, oauthJson['access_token']);
     //

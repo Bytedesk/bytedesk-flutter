@@ -17,8 +17,8 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
     on<RefreshHistoryThreadEvent>(_mapRefreshHistoryThreadToState);
     on<RefreshVisitorThreadEvent>(_mapRefreshVisitorThreadToState);
     on<RefreshVisitorThreadAllEvent>(_mapRefreshVisitorThreadAllToState);
-    on<RequestThreadEvent>(_mapRequestThreadToState);
 
+    on<RequestThreadEvent>(_mapRequestThreadToState);
     on<RequestAgentEvent>(_mapRequestAgentToState);
     on<RequestContactThreadEvent>(_mapRequestContactThreadToState);
     on<RequestGroupThreadEvent>(_mapRequestGroupThreadToState);
@@ -85,11 +85,10 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
 
   void _mapRequestThreadToState(
       RequestThreadEvent event, Emitter<ThreadState> emit) async {
-    print('RequestThreadEvent');
     emit(RequestThreading());
     try {
       final RequestThreadResult thread = await threadRepository.requestThread(
-          event.wid, event.type, event.aid);
+          event.wid, event.type, event.aid, event.isV2Robot);
       emit(RequestThreadSuccess(thread));
     } catch (error) {
       print(error);

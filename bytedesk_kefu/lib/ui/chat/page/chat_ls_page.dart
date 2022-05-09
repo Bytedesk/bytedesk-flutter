@@ -469,9 +469,9 @@ class _ChatLSPageState extends State<ChatLSPage>
     if (_isRobot) {
       BlocProvider.of<MessageBloc>(context)
         ..add(MessageAnswerEvent(
-            type: widget.type,
+            // type: widget.type,
             wid: widget.wid,
-            aid: widget.aid,
+            // aid: widget.aid,
             content: text));
     } else {
       if (_currentThread == null) {

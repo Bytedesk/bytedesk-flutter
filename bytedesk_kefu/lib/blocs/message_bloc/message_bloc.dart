@@ -2,6 +2,7 @@
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
+import 'package:bytedesk_kefu/model/requestCategory.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:bytedesk_kefu/repositories/message_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -21,6 +22,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
 
     on<LoadChannelMessageEvent>(_mapLoadChannelMessageToState);
     on<QueryAnswerEvent>(_mapQueryAnswerToState);
+    on<QueryCategoryEvent>(_mapQueryCategoryToState);
     on<MessageAnswerEvent>(_mapMessageAnswerToState);
     on<RateAnswerEvent>(_mapRateAnswerToState);
   }
@@ -134,9 +136,24 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     emit(MessageLoading());
     try {
       final RequestAnswerResult requestAnswerResult =
-          await messageRepository.queryAnswer(event.tid, event.aid);
+          await messageRepository.queryAnswer(event.tid, event.aid, event.mid);
       emit(QueryAnswerSuccess(
           query: requestAnswerResult.query, answer: requestAnswerResult.anwser));
+    } catch (error) {
+      print(error);
+      emit(UpLoadImageError());
+    }
+  }
+
+  void _mapQueryCategoryToState(
+      QueryCategoryEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
+    try {
+      final RequestCategoryResult requestAnswerResult =
+          await messageRepository.queryCategory(event.tid, event.cid);
+      emit(QueryCategorySuccess(
+          query: requestAnswerResult.query,
+          answer: requestAnswerResult.anwser));
     } catch (error) {
       print(error);
       emit(UpLoadImageError());
@@ -147,7 +164,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     emit(MessageLoading());
     try {
       final RequestAnswerResult requestAnswerResult = await messageRepository
-          .messageAnswer(event.type, event.wid, event.aid, event.content);
+          .messageAnswer(event.wid, event.content);
       emit(MessageAnswerSuccess(
           query: requestAnswerResult.query, answer: requestAnswerResult.anwser));
     } catch (error) {

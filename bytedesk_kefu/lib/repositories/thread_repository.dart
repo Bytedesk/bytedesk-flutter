@@ -28,7 +28,10 @@ class ThreadRepository {
   }
 
   Future<RequestThreadResult> requestThread(
-      String? wid, String? type, String? aid) async {
+      String? wid, String? type, String? aid, bool? isV2Robot) async {
+    if (isV2Robot!) {
+      return await bytedeskHttpApi.requestWorkGroupThreadV2(wid);
+    }
     return await bytedeskHttpApi.requestThread(wid, type, aid);
   }
 

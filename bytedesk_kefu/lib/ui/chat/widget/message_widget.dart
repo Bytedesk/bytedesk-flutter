@@ -41,12 +41,16 @@ class MessageWidget extends StatelessWidget {
     double tWidth = MediaQuery.of(context).size.width - 160;
     // FIXME: 消息状态，待完善
     String status = '';
-    if (message!.status == BytedeskConstants.MESSAGE_STATUS_STORED) {
-      // status = '发送成功';
+    if (message!.status == BytedeskConstants.MESSAGE_STATUS_SENDING) {
+      status = '发送中';
+    } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_STORED) {
+      status = ''; // 发送成功
     } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_RECEIVED) {
       status = '送达';
     } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_READ) {
       status = '已读';
+    } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_ERROR) {
+      status = '失败';
     }
     return Container(
         margin: EdgeInsets.only(top: 8.0, left: 8.0),
@@ -450,43 +454,46 @@ class MessageWidget extends StatelessWidget {
           //   softWrap: true,
           //   style: TextStyle(color: Colors.black, fontSize: 16.0),
           // ),
-          Html(
-            data: message.content ?? '',
-            onLinkTap: (url, _, __, ___) {
-              // 打开url
-              BytedeskKefu.openWebView(context, url!, '网页');
-            },
-            onImageTap: (src, _, __, ___) {
-              // 查看大图
-              // print("open image $src");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => PhotoViewWrapper(
-                    imageUrl: message.imageUrl!,
-                    imageProvider: NetworkImage(
-                      src!,
-                    ),
-                    loadingBuilder: (context, event) {
-                      if (event == null) {
-                        return const Center(
-                          child: Text("Loading"),
+          Visibility(
+            visible: message.content != null && message.content!.length > 0,
+            child: Html(
+              data: message.content ?? '',
+              onLinkTap: (url, _, __, ___) {
+                // 打开url
+                BytedeskKefu.openWebView(context, url!, '网页');
+              },
+              onImageTap: (src, _, __, ___) {
+                // 查看大图
+                // print("open image $src");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PhotoViewWrapper(
+                      imageUrl: message.imageUrl!,
+                      imageProvider: NetworkImage(
+                        src!,
+                      ),
+                      loadingBuilder: (context, event) {
+                        if (event == null) {
+                          return const Center(
+                            child: Text("Loading"),
+                          );
+                        }
+                        final value = event.cumulativeBytesLoaded /
+                            event.expectedTotalBytes!;
+                        final percentage = (100 * value).floor();
+                        return Center(
+                          child: Text("$percentage%"),
                         );
-                      }
-                      final value = event.cumulativeBytesLoaded /
-                          event.expectedTotalBytes!;
-                      final percentage = (100 * value).floor();
-                      return Center(
-                        child: Text("$percentage%"),
-                      );
-                    },
+                      },
+                    ),
                   ),
-                ),
-              );
-            },
-            onImageError: (exception, stackTrace) {
-              print(exception);
-            },
+                );
+              },
+              onImageError: (exception, stackTrace) {
+                print(exception);
+              },
+            ),
           ),
           Visibility(
               visible: message.answers != null && message.answers!.length > 0,
@@ -548,6 +555,88 @@ class MessageWidget extends StatelessWidget {
             ),
           )
         ],
+      );
+    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_V2) {
+      return Column(
+        children: <Widget>[
+          Text(
+            message.content ?? '',
+            textAlign: TextAlign.left,
+            softWrap: true,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16.0,
+            ),
+          ),
+          Visibility(
+              visible: message.categories != null && message.categories!.length > 0,
+              // visible: false,
+              child: Container(
+                // color: Colors.black,
+                child: ListView.builder(
+                  // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
+                  shrinkWrap: true,
+                  // 禁用ListView滑动，使用外层的ScrollView滑动
+                  physics: const NeverScrollableScrollPhysics(),
+                  padding: EdgeInsets.all(0),
+                  itemCount:
+                      message.categories == null ? 0 : message.categories!.length,
+                  itemBuilder: (_, index) {
+                    //
+                    var category = message.categories![index];
+                    // return Text(answer.question!);
+                    return DecoratedBox(
+                        decoration: BoxDecoration(
+                            border: Border(
+                          bottom: Divider.createBorderSide(context, width: 0.8),
+                        )),
+                        child: Container(
+                          margin: EdgeInsets.only(top: 6, left: 8, bottom: 8),
+                          // color: Colors.pink,
+                          child: InkWell(
+                              child: Text(
+                                category.name!,
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                              onTap: () => {
+                                    // print(category.name),
+                                    bytedeskEventBus.fire(QueryCategoryEventBus(
+                                        category.cid!,
+                                        category.name!))
+                                  }),
+                        ));
+                  },
+                ),
+              )),
+          Container(
+            margin: EdgeInsets.only(left: 10, top: 10),
+            child: Row(
+              children: [
+                Text('没有找到答案？'),
+                GestureDetector(
+                  child: Text(
+                    '人工客服',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  onTap: () {
+                    print('请求人工客服');
+                    bytedeskEventBus.fire(RequestAgentThreadEventBus());
+                  },
+                )
+              ],
+            ),
+          )
+        ],
+      );
+    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT) {
+      return Text(
+        message.content ?? '',
+        textAlign: TextAlign.left,
+        softWrap: true,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 16.0,
+        ),
       );
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_COMMODITY) {
       // 商品信息, TODO: add send button

@@ -44,6 +44,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  // // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
+  // String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
+  // // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
+  // String _subDomain = "vip";
   //
   String _title = '萝卜丝客服Demo(连接中...)';
   AudioCache audioCache = AudioCache();
@@ -74,7 +78,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               // 第二步：联系客服，完毕
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return ChatTypePage();
+                return const ChatTypePage();
               }));
             },
           ),
@@ -85,7 +89,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               // 需要首先调用anonymousLogin之后，再调用设置用户信息接口
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return UserInfoPage();
+                return const UserInfoPage();
               }));
             },
           ),
@@ -95,7 +99,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return OnlineStatusPage();
+                return const OnlineStatusPage();
               }));
             },
           ),
@@ -105,7 +109,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return HistoryThreadPage();
+                return const HistoryThreadPage();
               }));
             },
           ),
@@ -131,10 +135,27 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             onTap: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
-                return SettingPage();
+                return const SettingPage();
               }));
             },
           ),
+          // ListTile(
+          //   title: Text('退出登录'),
+          //   onTap: () {
+          //     BytedeskKefu.logout();
+          //   },
+          // ),
+          // ListTile(
+          //   title: Text('重新初始化'),
+          //   onTap: () {
+          //     BytedeskKefu.initWithUsernameAndNicknameAndAvatar(
+          //         'myflutterusername2',
+          //         '我是帅哥',
+          //         'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/boy.png',
+          //         _appKey,
+          //         _subDomain);
+          //   },
+          // ),
           const ListTile(
             title: Text('技术支持: QQ-3群: 825257535'),
           )

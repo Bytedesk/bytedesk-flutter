@@ -65,7 +65,7 @@ BytedeskKefu.startWorkGroupChat(context, workGroupWid, "title");
 
 ```dart
 bytedesk_kefu:
-    path: ./vendors/bytedesk
+    path: ./vendors/bytedesk_kefu
 ```
 
 ### Support

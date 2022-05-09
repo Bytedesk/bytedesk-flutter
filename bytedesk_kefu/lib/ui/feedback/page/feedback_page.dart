@@ -6,7 +6,7 @@ import 'package:bytedesk_kefu/ui/widget/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
-import 'package:flutter_easyrefresh/phoenix_header.dart';
+// import 'package:flutter_easyrefresh/phoenix_header.dart';
 
 class FeedbackPage extends StatefulWidget {
   final String? uid;

@@ -46,7 +46,7 @@ dependencies:
   # 请在ios/Podfile中添加：use_frameworks! 
   vibration: ^1.7.3
   # 在线客服 https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^1.2.5
+  bytedesk_kefu: ^1.2.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

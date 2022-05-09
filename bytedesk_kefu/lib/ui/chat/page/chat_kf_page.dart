@@ -40,6 +40,7 @@ class ChatKFPage extends StatefulWidget {
   final String? title;
   final String? custom;
   final String? postscript;
+  final bool? isV2Robot;
   // 从历史会话或者点击通知栏进入
   final bool? isThread;
   final Thread? thread;
@@ -53,6 +54,7 @@ class ChatKFPage extends StatefulWidget {
       this.title,
       this.custom,
       this.postscript,
+      this.isV2Robot,
       this.isThread,
       this.thread,
       this.customCallback})
@@ -89,6 +91,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   String? _currentAvatar = SpUtil.getString(BytedeskConstants.avatar);
   // 当前会话
   Thread? _currentThread;
+  User? _robotUser;
   // 判断是否机器人对话状态
   bool _isRobot = false;
   // 分页加载聊天记录
@@ -189,11 +192,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                       _currentThread = state.threadResult.msg!.thread;
                       _isRequestingThread = false;
                     });
-                    // 插入本地
-                    // _messageProvider.insert(state.threadResult.msg!);
                     // TODO: 加载本地历史消息
                     _getMessages(_page, _size);
-                    // _appendMessage(state.threadResult.msg!);
                     //
                     if (state.threadResult.statusCode == 200 ||
                         state.threadResult.statusCode == 201) {
@@ -286,6 +286,7 @@ class _ChatKFPageState extends State<ChatKFPage>
                       // TODO: 显示问题列表
                       setState(() {
                         _isRobot = true;
+                        _robotUser = state.threadResult.msg!.user;
                         _currentThread = state.threadResult.msg!.thread;
                       });
                       // 插入本地
@@ -347,20 +348,25 @@ class _ChatKFPageState extends State<ChatKFPage>
                   } else if (state is UploadVideoSuccess) {
                     _bdMqtt.sendVideoMessage(
                         state.uploadJsonResult.url!, _currentThread!);
-                    // TODO: 调用http rest接口发送消息 sendImageRest
                   } else if (state is QueryAnswerSuccess) {
-                    Message queryMessage = state.query!;
-                    queryMessage.isSend = 1;
-                    _messageProvider.insert(queryMessage);
-                    _appendMessage(queryMessage);
-                    //
+                    // 已经修改为直接插入本地
+                    // Message queryMessage = state.query!;
+                    // queryMessage.isSend = 1;
+                    // _messageProvider.insert(queryMessage);
+                    // _appendMessage(queryMessage);
+                    // //
+                    // _messageProvider.insert(state.answer!);
+                    // _appendMessage(state.answer!);
+                  } else if (state is QueryCategorySuccess) {
+
                     _messageProvider.insert(state.answer!);
                     _appendMessage(state.answer!);
+
                   } else if (state is MessageAnswerSuccess) {
-                    Message queryMessage = state.query!;
-                    queryMessage.isSend = 1;
-                    _messageProvider.insert(queryMessage);
-                    _appendMessage(queryMessage);
+                    // Message queryMessage = state.query!;
+                    // queryMessage.isSend = 1;
+                    // _messageProvider.insert(queryMessage);
+                    // _appendMessage(queryMessage);
                     //
                     if (state.query!.content!.contains('人工')) {
                       BlocProvider.of<ThreadBloc>(context)
@@ -375,7 +381,7 @@ class _ChatKFPageState extends State<ChatKFPage>
                   } else if (state is RateAnswerSuccess) {
                     // TODO:
                   } else if (state is LoadHistoryMessageSuccess) {
-                    print('LoadHistoryMessageSuccess');
+                    // print('LoadHistoryMessageSuccess');
                     // 插入历史聊天记录
                     for (var i = 0; i < state.messageList!.length; i++) {
                       Message message = state.messageList![i];
@@ -490,7 +496,7 @@ class _ChatKFPageState extends State<ChatKFPage>
                   if (_debounce?.isActive ?? false) _debounce!.cancel();
                   // 积累500毫秒，再发送。否则发送过于频繁
                   _debounce = Timer(const Duration(milliseconds: 500), () {
-                    print('send preview $value');
+                    // print('send preview $value');
                     // 发送预知消息
                     if (value.trim().length > 0) {
                       _bdMqtt.sendPreviewMessage(value, _currentThread!);
@@ -530,12 +536,14 @@ class _ChatKFPageState extends State<ChatKFPage>
     }
     //
     if (_isRobot) {
+      //
+      appendQueryMessage(text);
       // 请求机器人答案
       BlocProvider.of<MessageBloc>(context)
         ..add(MessageAnswerEvent(
-            type: widget.type,
+            // type: widget.type,
             wid: widget.wid,
-            aid: widget.aid,
+            // aid: widget.aid,
             content: text));
     } else if (_bdMqtt.isConnected()) {
       if (_currentThread == null) {
@@ -545,7 +553,7 @@ class _ChatKFPageState extends State<ChatKFPage>
       // 长连接正常情况下，调用长连接接口
       _bdMqtt.sendTextMessage(text, _currentThread!);
     } else {
-      print('长连接断开的情况下，调用rest接口');
+      // print('长连接断开的情况下，调用rest接口');
       sendTextMessageRest(text);
     }
   }
@@ -553,7 +561,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   // http rest 接口发生文本消息
   void sendTextMessageRest(String text) {
     //
-    String? mid = BytedeskUuid.generateV4();
+    String? mid = BytedeskUuid.uuid();
     String? timestamp = BytedeskUtils.formatedDateNow();
     String? client = BytedeskUtils.getClient();
     String? type = BytedeskConstants.MESSAGE_TYPE_TEXT;
@@ -564,6 +572,7 @@ class _ChatKFPageState extends State<ChatKFPage>
       "client": client,
       "version": "1",
       "type": type,
+      "status": "sending",
       "user": {
         "uid": this._currentUid,
         "nickname": this._currentNickname,
@@ -606,12 +615,14 @@ class _ChatKFPageState extends State<ChatKFPage>
     message.content = text;
     // 插入本地数据库
     _messageProvider.insert(message);
+    //
+    pushToMessageArray(message, true);
   }
 
   // http rest 接口发送图片消息
   void sendImageMessageRest(String imageUrl) {
     //
-    String? mid = BytedeskUuid.generateV4();
+    String? mid = BytedeskUuid.uuid();
     String? timestamp = BytedeskUtils.formatedDateNow();
     String? client = BytedeskUtils.getClient();
     String? type = BytedeskConstants.MESSAGE_TYPE_IMAGE;
@@ -622,6 +633,7 @@ class _ChatKFPageState extends State<ChatKFPage>
       "client": client,
       "version": "1",
       "type": type,
+      "status": "sending",
       "user": {
         "uid": this._currentUid,
         "nickname": this._currentNickname,
@@ -664,6 +676,73 @@ class _ChatKFPageState extends State<ChatKFPage>
     message.imageUrl = imageUrl;
     // 插入本地数据库
     _messageProvider.insert(message);
+    //
+    pushToMessageArray(message, true);
+  }
+
+  void appendQueryMessage(String content) {
+    //
+    String? mid = BytedeskUuid.uuid();
+    String? timestamp = BytedeskUtils.formatedDateNow();
+    String? client = BytedeskUtils.getClient();
+    String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT;
+    //
+    // 暂时没有将插入本地函数独立出来，暂时
+    Message message = new Message();
+    message.mid = mid;
+    message.type = type;
+    message.timestamp = timestamp;
+    message.client = client;
+    message.nickname = _currentNickname;
+    message.avatar = _currentAvatar;
+    message.topic = this._currentThread!.topic;
+    message.status = BytedeskConstants.MESSAGE_STATUS_STORED;
+    message.isSend = 1;
+    message.currentUid = this._currentUid;
+    message.answersJson = '';
+    message.thread = this._currentThread;
+    message.user = User(
+        uid: this._currentUid,
+        avatar: this._currentAvatar,
+        nickname: this._currentNickname);
+    //
+    message.content = content;
+    // 插入本地数据库
+    _messageProvider.insert(message);
+    //
+    pushToMessageArray(message, true);
+  }
+
+  void appendReplyMessage(String aid, String mid, String content) {
+    //
+    String? timestamp = BytedeskUtils.formatedDateNow();
+    String? client = BytedeskUtils.getClient();
+    String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT;
+    //
+    // 暂时没有将插入本地函数独立出来，暂时R
+    Message message = new Message();
+    message.mid = mid;
+    message.type = type;
+    message.timestamp = timestamp;
+    message.client = client;
+    message.nickname = _robotUser!.nickname;
+    message.avatar = _robotUser!.avatar;
+    message.topic = this._currentThread!.topic;
+    message.status = BytedeskConstants.MESSAGE_STATUS_STORED;
+    message.isSend = 0;
+    message.currentUid = this._currentUid;
+    message.answersJson = '';
+    message.thread = this._currentThread;
+    message.user = User(
+        uid: this._robotUser!.uid,
+        avatar: this._robotUser!.avatar,
+        nickname: this._robotUser!.nickname);
+    //
+    message.content = content;
+    // 插入本地数据库
+    _messageProvider.insert(message);
+    //
+    pushToMessageArray(message, true);
   }
 
   //
@@ -731,18 +810,19 @@ class _ChatKFPageState extends State<ChatKFPage>
             event.message.mid!, event.message.thread!);
       }
       //
-      if (this.mounted) {
-        // 界面显示
-        MessageWidget messageWidget = new MessageWidget(
-            message: event.message,
-            customCallback: widget.customCallback,
-            animationController: new AnimationController(
-                vsync: this, duration: Duration(milliseconds: 500)));
-        setState(() {
-          _messages.insert(0, messageWidget);
-          // _messages.add(messageWidget);
-        });
-      }
+      pushToMessageArray(event.message, true);
+      // if (this.mounted) {
+      //   // 界面显示
+      //   MessageWidget messageWidget = new MessageWidget(
+      //       message: event.message,
+      //       customCallback: widget.customCallback,
+      //       animationController: new AnimationController(
+      //           vsync: this, duration: Duration(milliseconds: 500)));
+      //   setState(() {
+      //     _messages.insert(0, messageWidget);
+      //     // _messages.add(messageWidget);
+      //   });
+      // }
     });
     // 删除消息
     bytedeskEventBus.on<DeleteMessageEventBus>().listen((event) {
@@ -761,11 +841,26 @@ class _ChatKFPageState extends State<ChatKFPage>
       if (this.mounted) {
         // print('aid ${event.aid}, question ${event.question}, answer ${event.answer}');
         // 可以直接将问题和答案插入本地，并显示，但为了服务器保存查询记录，特将请求发送给服务器
+        appendQueryMessage(event.question);
+        //
+        String? mid = BytedeskUuid.uuid();
+        appendReplyMessage(event.aid, mid, event.answer);
+        //
         BlocProvider.of<MessageBloc>(context)
           ..add(QueryAnswerEvent(
-            tid: _currentThread!.tid,
-            aid: event.aid,
-          ));
+              tid: _currentThread!.tid, aid: event.aid, mid: mid));
+      }
+    });
+    // 查询分类下属问题
+    bytedeskEventBus.on<QueryCategoryEventBus>().listen((event) {
+      if (this.mounted) {
+        print('cid ${event.cid}, name ${event.name}');
+        // 可以直接将问题和答案插入本地，并显示，但为了服务器保存查询记录，特将请求发送给服务器
+        appendQueryMessage(event.name);
+        //
+        BlocProvider.of<MessageBloc>(context)
+          ..add(QueryCategoryEvent(
+              tid: _currentThread!.tid, cid: event.cid));
       }
     });
     // 点击机器人消息 ‘人工客服’
@@ -971,30 +1066,45 @@ class _ChatKFPageState extends State<ChatKFPage>
               BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_THREAD_REENTRY) {
             continue;
           } else {
-            pushToMessageArray(message);
+            pushToMessageArray(message, false);
           }
         }
       } else {
-        pushToMessageArray(message);
+        pushToMessageArray(message, false);
       }
     }
     //
     _page += 1;
   }
 
-  void pushToMessageArray(Message message) {
+  void pushToMessageArray(Message message, bool append) {
     if (this.mounted) {
-      MessageWidget messageWidget = new MessageWidget(
-          message: message,
-          customCallback: widget.customCallback,
-          animationController: new AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
-      setState(() {
-        _messages.add(messageWidget);
-        _messages.sort((a, b) {
-          return b.message!.timestamp!.compareTo(a.message!.timestamp!);
+      bool contains = false;
+      for (var i = 0; i < _messages.length; i++) {
+        Message? element = _messages[i].message;
+        if (element!.mid == message.mid) {
+          contains = true;
+          // 更新消息状态
+          _messageProvider.update(element.mid, message.status);
+        }
+      }
+      if (!contains) {
+        MessageWidget messageWidget = new MessageWidget(
+            message: message,
+            customCallback: widget.customCallback,
+            animationController: new AnimationController(
+                vsync: this, duration: Duration(milliseconds: 500)));
+        setState(() {
+          if (append) {
+            _messages.insert(0, messageWidget);
+          } else {
+            _messages.add(messageWidget);
+            _messages.sort((a, b) {
+              return b.message!.timestamp!.compareTo(a.message!.timestamp!);
+            });
+          }
         });
-      });
+      }
     }
     if (message.status != BytedeskConstants.MESSAGE_STATUS_READ) {
       // 发送已读回执
@@ -1005,29 +1115,8 @@ class _ChatKFPageState extends State<ChatKFPage>
   }
 
   Future<Null> _appendMessage(Message message) async {
-    // print('append:' + message.mid! + 'content:' + message.content!);
-    bool contains = false;
-    for (var i = 0; i < _messages.length; i++) {
-      Message? element = _messages[i].message;
-      if (element!.mid == message.mid) {
-        contains = true;
-        // 更新消息状态
-        _messageProvider.update(element.mid, message.status);
-      }
-    }
-    if (!contains) {
-      // _messageProvider.insert(message); // 造成重复插入
-      MessageWidget messageWidget = new MessageWidget(
-          message: message,
-          customCallback: widget.customCallback,
-          animationController: new AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
-      if (this.mounted) {
-        setState(() {
-          _messages.insert(0, messageWidget);
-        });
-      }
-    }
+    print('append:' + message.mid! + 'content:' + message.content!);
+    pushToMessageArray(message, true);
   }
 
   void scrollToBottom() {

@@ -53,6 +53,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('技能组客服'),
+            subtitle: Text('默认人工'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               BytedeskKefu.startWorkGroupChat(
@@ -61,14 +62,25 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('技能组客服-机器人'),
+            subtitle: Text('默认热门问题'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               BytedeskKefu.startWorkGroupChat(
-                  context, _workGroupWidRobot, "技能组客服-默认机器人");
+                  context, _workGroupWidRobot, "技能组客服-默认机器人问题");
+            },
+          ),
+          ListTile(
+            title: Text('技能组客服-机器人2'),
+            subtitle: Text('默认问题分类'),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              BytedeskKefu.startWorkGroupChatV2Robot(
+                  context, _workGroupWidRobot, "技能组客服-默认机器人分类");
             },
           ),
           ListTile(
             title: Text('技能组客服-电商'),
+            subtitle: Text('携带商品参数'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 商品信息，type/title/content/price/url/imageUrl/id/categoryCode
@@ -92,6 +104,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('技能组客服-电商-回调'),
+            subtitle: Text('携带商品参数，点击商品支持回调'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 商品信息，type/title/content/price/url/imageUrl/id/categoryCode
@@ -122,6 +135,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('技能组客服-附言'),
+            subtitle: Text('自动发送一条消息'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               BytedeskKefu.startWorkGroupChatPostscript(
@@ -133,6 +147,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('指定一对一客服'),
+            subtitle: Text('默认人工'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               BytedeskKefu.startAppointedChat(context, _agentUid, "指定一对一客服");
@@ -140,6 +155,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('指定一对一客服-电商'),
+            subtitle: Text('携带商品参数'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 商品信息，type/title/content/price/url/imageUrl/id/categoryCode
@@ -162,6 +178,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('指定一对一客服-电商-回调'),
+            subtitle: Text('携带商品参数，点击商品支持回调'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 商品信息，type/title/content/price/url/imageUrl/id/categoryCode
@@ -191,6 +208,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
           ),
           ListTile(
             title: Text('指定一对一客服-附言'),
+            subtitle: Text('自动发送一条消息'),
             trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               BytedeskKefu.startAppointedChatPostscript(

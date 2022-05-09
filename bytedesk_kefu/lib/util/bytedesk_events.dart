@@ -46,6 +46,12 @@ class QueryAnswerEventBus {
   QueryAnswerEventBus(this.aid, this.question, this.answer);
 }
 
+class QueryCategoryEventBus {
+  String cid;
+  String name;
+  QueryCategoryEventBus(this.cid, this.name);
+}
+
 class RequestAgentThreadEventBus {
   RequestAgentThreadEventBus();
 }

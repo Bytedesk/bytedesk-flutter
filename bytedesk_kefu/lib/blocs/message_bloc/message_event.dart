@@ -67,20 +67,30 @@ class LoadChannelMessageEvent extends MessageEvent {
 class QueryAnswerEvent extends MessageEvent {
   final String? tid;
   final String? aid;
+  final String? mid;
 
-  QueryAnswerEvent({@required this.tid, @required this.aid}) : super();
+  QueryAnswerEvent({@required this.tid, @required this.aid, @required this.mid}) : super();
+}
+
+class QueryCategoryEvent extends MessageEvent {
+  final String? tid;
+  final String? cid;
+
+  QueryCategoryEvent({@required this.tid, @required this.cid})
+      : super();
 }
 
 class MessageAnswerEvent extends MessageEvent {
-  final String? type;
+  // final String? type;
   final String? wid;
-  final String? aid;
+  // final String? aid;
   final String? content;
 
   MessageAnswerEvent(
-      {@required this.type,
+      {
+        // @required this.type,
       @required this.wid,
-      @required this.aid,
+      // @required this.aid,
       @required this.content})
       : super();
 }

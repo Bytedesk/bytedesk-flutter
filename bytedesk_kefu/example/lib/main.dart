@@ -43,10 +43,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
-  String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
-  // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
-  String _subDomain = "vip";
+  // // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
+  // String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
+  // // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
+  // String _subDomain = "vip";
   //
   String _title = '萝卜丝客服Demo(连接中...)';
   // AudioCache audioCache = AudioCache();

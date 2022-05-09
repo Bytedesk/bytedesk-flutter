@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 import 'dart:math';
 
@@ -219,7 +221,7 @@ class BytedeskUtils {
   }
 
   static String getDateStr(DateTime date) {
-    if (date == null || date.toString() == null) {
+    if (date.toString() == null) {
       return "";
     } else if (date.toString().length < 10) {
       return date.toString();

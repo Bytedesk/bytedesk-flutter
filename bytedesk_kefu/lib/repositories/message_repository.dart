@@ -2,6 +2,7 @@ import 'package:bytedesk_kefu/http/bytedesk_message_api.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
+import 'package:bytedesk_kefu/model/requestCategory.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 
 class MessageRepository {
@@ -28,13 +29,17 @@ class MessageRepository {
     return await bytedeskHttpApi.loadChannelMessages(cid, page, size);
   }
 
-  Future<RequestAnswerResult> queryAnswer(String? tid, String? aid) async {
-    return await bytedeskHttpApi.queryAnswer(tid, aid);
+  Future<RequestAnswerResult> queryAnswer(String? tid, String? aid, String? mid) async {
+    return await bytedeskHttpApi.queryAnswer2(tid, aid, mid);
   }
 
-  Future<RequestAnswerResult> messageAnswer(
-      String? type, String? wid, String? aid, String? content) async {
-    return await bytedeskHttpApi.messageAnswer(type, wid, aid, content);
+  Future<RequestCategoryResult> queryCategory(
+      String? tid, String? cid) async {
+    return await bytedeskHttpApi.queryCategory(tid, cid);
+  }
+
+  Future<RequestAnswerResult> messageAnswer(String? wid, String? content) async {
+    return await bytedeskHttpApi.messageAnswer(wid, content);
   }
 
   Future<RequestAnswerResult> rateAnswer(

@@ -55,9 +55,10 @@ class RequestThreadEvent extends ThreadEvent {
   final String? wid;
   final String? type;
   final String? aid;
+  final bool? isV2Robot;
 
   RequestThreadEvent(
-      {@required this.wid, @required this.type, @required this.aid})
+      {@required this.wid, @required this.type, @required this.aid, @required this.isV2Robot})
       : super();
 }
 

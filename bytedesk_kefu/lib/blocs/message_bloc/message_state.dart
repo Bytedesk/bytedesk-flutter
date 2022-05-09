@@ -126,6 +126,13 @@ class QueryAnswerSuccess extends MessageState {
   QueryAnswerSuccess({@required this.query, @required this.answer}) : super();
 }
 
+class QueryCategorySuccess extends MessageState {
+  final Message? query;
+  final Message? answer;
+
+  QueryCategorySuccess({@required this.query, @required this.answer}) : super();
+}
+
 class MessageAnswerSuccess extends MessageState {
   final Message? query;
   final Message? answer;

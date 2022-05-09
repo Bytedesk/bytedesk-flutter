@@ -149,7 +149,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     //
     final threadUrl = Uri.http(BytedeskConstants.host, '/api/thread/request',
         {'wId': wid, 'type': type, 'aId': aid, 'client': client});
-    // print("request thread Url $threadUrl");
+    print(threadUrl);
     final initResponse =
         await this.httpClient.get(threadUrl, headers: getHeaders());
 
@@ -158,13 +158,38 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // print("responseJson $responseJson");
+    // print("requestThread:");
+    // print(responseJson);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
 
     return RequestThreadResult.fromJson(responseJson);
+  }
+
+  // 机器人分类会话
+  Future<RequestThreadResult> requestWorkGroupThreadV2(String? wid) async {
+    //
+    final threadUrl = Uri.http(BytedeskConstants.host,
+        '/api/v2/thread/workGroup', {'wId': wid, 'client': client});
+    print(threadUrl);
+    final initResponse =
+        await this.httpClient.get(threadUrl, headers: getHeaders());
+
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    print("requestWorkGroupThreadV2:");
+    print(responseJson);
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+
+    return RequestThreadResult.fromJsonV2(responseJson);
   }
 
   // 请求人工客服，不管此工作组是否设置为默认机器人，只要有人工客服在线，则可以直接对接人工

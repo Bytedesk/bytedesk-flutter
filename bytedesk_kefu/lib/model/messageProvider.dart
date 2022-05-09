@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bytedesk_kefu/model/answer.dart';
+import 'package:bytedesk_kefu/model/category.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:path/path.dart';
@@ -43,6 +45,7 @@ class MessageProvider {
   final String? columnCurrentUid = 'currentUid';
   final String? columnClient = 'client';
   final String? columnAnswers = 'answers';
+  final String? columnCategories = 'categories';
   //
   Database? database;
 
@@ -52,19 +55,19 @@ class MessageProvider {
       // Set the path to the database. Note: Using the `join` function from the
       // `path` package is best practice to ensure the path is correctly
       // constructed for each platform.
-      join(await getDatabasesPath(), 'bytedesk-message-v9.db'),
+      join(await getDatabasesPath(), 'bytedesk-message-v10.db'),
       // When the database is first created, create a table to store dogs.
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database. autoincrement
         return db.execute(
           "CREATE TABLE $tableMessage($columnId INTEGER PRIMARY KEY AUTOINCREMENT, " +
               "$columnMid TEXT, $columnType TEXT, $columnTopic TEXT, $columnContent TEXT, $columnImageUrl TEXT, $columnVoiceUrl TEXT,$columnVideoUrl TEXT, $columnFileUrl TEXT, $columnNickname TEXT, $columnAvatar TEXT, $columnStatus TEXT, " +
-              "$columnIsSend INTEGER, $columnTimestamp TEXT, $columnCurrentUid TEXT, $columnClient TEXT, $columnAnswers TEXT)",
+              "$columnIsSend INTEGER, $columnTimestamp TEXT, $columnCurrentUid TEXT, $columnClient TEXT, $columnAnswers TEXT, $columnCategories TEXT)",
         );
       },
       // Set the version. This executes the onCreate function and provides a
       // path to perform database upgrades and downgrades.
-      version: 9,
+      version: 10,
     );
     // database path:/Users/ningjinpeng/Library/Developer/CoreSimulator/Devices/715CBA02-A602-4DE1-8C57-75A64B53BF03/data/Containers/Data/Application/8F46273D-9492-4C42-A618-4DF3815562BA/Documents/bytedesk-message-v9.db
     // print('database path:' + database!.path);
@@ -104,7 +107,9 @@ class MessageProvider {
           columnNickname!,
           columnAvatar!,
           columnIsSend!,
-          columnClient!
+          columnClient!,
+          columnAnswers!,
+          columnCategories!
         ],
         where: '$columnTopic = ? and $columnCurrentUid = ?',
         whereArgs: [topic, currentUid],
@@ -118,13 +123,23 @@ class MessageProvider {
     return List.generate(maps.length, (i) {
       //
       List<Answer> robotQaList = [];
-      if (maps[i]['type'] == BytedeskConstants.MESSAGE_TYPE_ROBOT) {
-        robotQaList = maps[i]['answers'] == null
-            ? []
-            : (maps[i]['answers'] as List<dynamic>)
-                .map((item) => Answer.fromJson(item))
-                .toList();
-      }
+      // FIXME: 下面解析报错
+      // if (maps[i]['type'] == BytedeskConstants.MESSAGE_TYPE_ROBOT) {
+      //   robotQaList = maps[i][columnAnswers] == null
+      //       ? []
+      //       : (json.decode(maps[i][columnAnswers]) as List<dynamic>)
+      //           .map((item) => Answer.fromJson(item))
+      //           .toList();
+      // }
+      List<Category> categoriesList = [];
+      // FIXME: 下面解析报错
+      // if (maps[i]['type'] == BytedeskConstants.MESSAGE_TYPE_ROBOT_V2) {
+      //   categoriesList = maps[i][columnCategories] == null
+      //       ? []
+      //       : (json.decode(maps[i][columnCategories]) as List<dynamic>)
+      //           .map((item) => Category.fromJson(item))
+      //           .toList();
+      // }
       // print('4');
       return Message(
           mid: maps[i]['mid'],
@@ -141,7 +156,8 @@ class MessageProvider {
           avatar: maps[i]['avatar'],
           isSend: maps[i]['isSend'],
           client: maps[i]['client'],
-          answers: robotQaList);
+          answers: robotQaList,
+          categories: categoriesList);
     });
   }
 

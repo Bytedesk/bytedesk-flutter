@@ -500,9 +500,9 @@ class _ChatIMPageState extends State<ChatIMPage>
       // 请求机器人答案
       BlocProvider.of<MessageBloc>(context)
         ..add(MessageAnswerEvent(
-            type: widget.type,
+            // type: widget.type,
             wid: widget.wid,
-            aid: widget.aid,
+            // aid: widget.aid,
             content: text));
     } else if (_bdMqtt.isConnected()) {
       if (_currentThread == null) {

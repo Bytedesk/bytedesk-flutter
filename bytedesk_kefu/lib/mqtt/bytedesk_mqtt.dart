@@ -45,7 +45,7 @@ class BytedeskMqtt {
   factory BytedeskMqtt() {
     return _singleton;
   }
-  BytedeskMqtt._internal() {}
+  BytedeskMqtt._internal();
 
   void connect() async {
     // eventbus发送广播，连接中...
@@ -670,7 +670,8 @@ class BytedeskMqtt {
         currentThread, extraParam);
   }
 
-  void publish(String content, String type, Thread currentThread, ExtraParam? extraParam) {
+  void publish(String content, String type, Thread currentThread,
+      ExtraParam? extraParam) {
     // if (currentThread == null) {
     //   print('连接客服失败,请退出页面重新进入。注意: 请在App启动的时候，调用init接口');
     //   Fluttertoast.showToast(msg: '连接客服失败,请退出页面重新进入');
@@ -689,6 +690,7 @@ class BytedeskMqtt {
     thread.topic = currentThread.topic!;
     thread.nickname = currentThread.nickname!;
     thread.avatar = currentThread.avatar!;
+    thread.client = currentThread.client!;
     thread.timestamp = BytedeskUtils.formatedDateNow(); // 没有必要填写，服务器端会填充
     thread.unreadCount = 0;
     var extra = {'top': false, 'undisturb': false};

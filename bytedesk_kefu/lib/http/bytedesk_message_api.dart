@@ -5,6 +5,7 @@ import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
+import 'package:bytedesk_kefu/model/requestCategory.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
@@ -143,8 +144,6 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
   //
   Future<RequestAnswerResult> queryAnswer(String? tid, String? aid) async {
     //
-    // final queryAnswerUrl =
-    //     '$baseUrl/api/answer/query?tid=$tid&aid=$aid&client=$client';
     final queryAnswerUrl = Uri.http(BytedeskConstants.host, '/api/answer/query',
         {'tid': tid, 'aid': aid, 'client': client});
     print("query Url $queryAnswerUrl");
@@ -165,16 +164,64 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
   }
 
   //
-  Future<RequestAnswerResult> messageAnswer(
-      String? type, String? wid, String? aid, String? content) async {
+  Future<RequestAnswerResult> queryAnswer2(
+      String? tid, String? aid, String? mid) async {
     //
-    // final messageAnswerUrl =
-    //     '$baseUrl/api/v2/answer/message?type=$type&wid=$wid&aid=$aid&content=$content&client=$client';
-    final messageAnswerUrl = Uri.http(
-        BytedeskConstants.host, '/api/v2/answer/message', {
-      'type': type,
+    final queryAnswerUrl = Uri.http(
+        BytedeskConstants.host,
+        '/api/v2/answer/query',
+        {'tid': tid, 'aid': aid, 'mid': mid, 'client': client});
+    print("query Url $queryAnswerUrl");
+    final initResponse =
+        await this.httpClient.get(queryAnswerUrl, headers: getHeaders());
+    //
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+    //
+    return RequestAnswerResult.fromJson(responseJson);
+  }
+
+  //
+  Future<RequestCategoryResult> queryCategory(
+      String? tid, String? cid) async {
+    //
+    final queryCategoryUrl = Uri.http(
+        BytedeskConstants.host,
+        '/api/v2/answer/category',
+        {'tid': tid, 'cid': cid, 'client': client});
+    print("query Url $queryCategoryUrl");
+    final initResponse =
+        await this.httpClient.get(queryCategoryUrl, headers: getHeaders());
+    //
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+    //
+    return RequestCategoryResult.fromJson(responseJson);
+  }
+
+  //
+  Future<RequestAnswerResult> messageAnswer(
+      String? wid, String? content) async {
+    // String? aid, String? type,
+    final messageAnswerUrl =
+        Uri.http(BytedeskConstants.host, '/api/v2/answer/message', {
+      // 'type': type,
       'wid': wid,
-      'aid': aid,
+      // 'aid': aid,
       'content': content,
       'client': client
     });
@@ -187,7 +234,8 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("messageAnswer responseJson $responseJson");
+    print("messageAnswer:");
+    print(responseJson);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());

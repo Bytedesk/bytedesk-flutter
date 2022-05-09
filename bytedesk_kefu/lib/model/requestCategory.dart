@@ -1,29 +1,22 @@
 import 'package:equatable/equatable.dart';
 import 'message.dart';
 
-class RequestAnswerResult extends Equatable {
+class RequestCategoryResult extends Equatable {
   final String? message;
   final int? statusCode;
   //
   final Message? query;
   final Message? anwser;
 
-  RequestAnswerResult({this.message, this.statusCode, this.query, this.anwser})
+  RequestCategoryResult({this.message, this.statusCode, this.query, this.anwser})
       : super();
 
-  static RequestAnswerResult fromJson(dynamic json) {
-    return RequestAnswerResult(
+  static RequestCategoryResult fromJson(dynamic json) {
+    return RequestCategoryResult(
         message: json["message"],
         statusCode: json["status_code"],
         query: Message.fromJsonRobotQuery(json["data"]["query"]),
         anwser: Message.fromJsonRobotQuery(json["data"]["reply"]));
-  }
-
-  static RequestAnswerResult fromRateJson(dynamic json) {
-    return RequestAnswerResult(
-        message: json["message"],
-        statusCode: json["status_code"],
-        anwser: Message.fromJsonRobotQuery(json["data"]));
   }
 
   @override

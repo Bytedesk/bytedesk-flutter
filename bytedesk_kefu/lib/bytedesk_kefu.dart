@@ -173,14 +173,20 @@ class BytedeskKefu {
   static void startWorkGroupChat(
       BuildContext context, String wid, String title) {
     startChatDefault(
-        context, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, title);
+        context, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, title, false);
+  }
+
+  static void startWorkGroupChatV2Robot(
+      BuildContext context, String wid, String title) {
+    startChatDefault(
+        context, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, title, true);
   }
 
   // 发送附言消息
   static void startWorkGroupChatPostscript(
       BuildContext context, String wid, String title, String postScript) {
     startChat(context, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, title, '',
-        postScript, null);
+        postScript, false, null);
   }
 
   // 电商接口，携带商品参数
@@ -201,14 +207,14 @@ class BytedeskKefu {
   static void startAppointedChat(
       BuildContext context, String uid, String title) {
     startChatDefault(
-        context, uid, BytedeskConstants.CHAT_TYPE_APPOINTED, title);
+        context, uid, BytedeskConstants.CHAT_TYPE_APPOINTED, title, false);
   }
 
   // 发送附言消息
   static void startAppointedChatPostscript(
       BuildContext context, String uid, String title, String postScript) {
     startChat(context, uid, BytedeskConstants.CHAT_TYPE_APPOINTED, title, '',
-        postScript, null);
+        postScript, false, null);
   }
 
   // 电商接口，携带商品参数
@@ -226,20 +232,20 @@ class BytedeskKefu {
 
   // 默认设置商品信息和附言为空
   static void startChatDefault(
-      BuildContext context, String uuid, String type, String title) {
-    startChat(context, uuid, type, title, '', '', null);
+      BuildContext context, String uuid, String type, String title, bool isV2Robot) {
+    startChat(context, uuid, type, title, '', '', isV2Robot, null);
   }
 
   // 电商对话-自定义类型(技能组、指定客服)
   static void startChatShop(BuildContext context, String uuid, String type,
       String title, String commodity, ValueSetter<String>? customCallback) {
-    startChat(context, uuid, type, title, commodity, '', customCallback);
+    startChat(context, uuid, type, title, commodity, '', false, customCallback);
   }
 
   // 发送附言消息-自定义类型(技能组、指定客服)
   static void startChatPostscript(BuildContext context, String uuid,
       String type, String title, String postScript) {
-    startChat(context, uuid, type, title, '', postScript, null);
+    startChat(context, uuid, type, title, '', postScript, false, null);
   }
 
   // 客服会话-自定义类型(技能组、指定客服)
@@ -250,6 +256,7 @@ class BytedeskKefu {
       String title,
       String commodity,
       String postScript,
+      bool isV2Robot,
       ValueSetter<String>? customCallback) {
     Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
       return new ChatKFProvider(
@@ -259,6 +266,7 @@ class BytedeskKefu {
         title: title,
         custom: commodity,
         postscript: postScript,
+        isV2Robot: isV2Robot,
         customCallback: customCallback,
       );
     }));
