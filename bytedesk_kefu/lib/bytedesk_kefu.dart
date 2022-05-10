@@ -394,8 +394,13 @@ class BytedeskKefu {
   }
 
   // 设置用户备注
-  static Future<User> updateDescription(String avatar) async {
-    return BytedeskUserHttpApi().updateDescription(avatar);
+  static Future<User> updateDescription(String description) async {
+    return BytedeskUserHttpApi().updateDescription(description);
+  }
+
+  // 一个接口，设置：昵称、头像、备注
+  static Future<User> updateProfile(String nickname, String avatar, String description) async {
+    return BytedeskUserHttpApi().updateProfile(nickname, avatar, description);
   }
 
   // 查询技能组在线状态

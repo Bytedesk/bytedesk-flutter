@@ -12,9 +12,9 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
+    return TextButton( // FlatButton
         onPressed: onPressed,
-        textColor: Colors.white,
+        // textColor: Colors.white,
         child: Container(
             height: 48,
             width: double.infinity,

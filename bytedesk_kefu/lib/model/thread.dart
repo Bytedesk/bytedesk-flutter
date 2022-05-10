@@ -1,33 +1,34 @@
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:equatable/equatable.dart';
+import 'package:sp_util/sp_util.dart';
 
 class Thread extends Equatable {
   //
-  String? tid;
-  String? topic;
-  String? wid;
-  String? uid;
-  String? nickname;
-  String? avatar;
-  String? content;
-  String? timestamp;
-  int? unreadCount;
-  String? type;
+  final String? tid;
+  final String? topic;
+  final String? wid;
+  final String? uid;
+  final String? nickname;
+  final String? avatar;
+  final String? content;
+  final String? timestamp;
+  final int? unreadCount;
+  final String? type;
   //
-  bool? current;
+  final bool? current;
   //
-  bool? top;
-  bool? topVisitor;
+  final bool? top;
+  final bool? topVisitor;
   //
-  bool? nodisturb;
-  bool? nodisturbVisitor;
+  final bool? nodisturb;
+  final bool? nodisturbVisitor;
   //
-  bool? unread;
-  bool? unreadVisitor;
+  final bool? unread;
+  final bool? unreadVisitor;
   //
-  String? client;
-  String? currentUid;
+  final String? client;
+  final String? currentUid;
 
   Thread(
       {this.tid,
@@ -177,8 +178,10 @@ class Thread extends Equatable {
         tid: json['tid'],
         topic: json['topic'],
         uid: json['visitor']['uid'],
-        nickname: json['visitor']['nickname'],
-        avatar: json['visitor']['avatar'],
+        // nickname: json['visitor']['nickname'],
+        nickname: SpUtil.getString(BytedeskConstants.nickname)!,
+        // avatar: json['visitor']['avatar'],
+        avatar: SpUtil.getString(BytedeskConstants.avatar)!,
         content: json['content'],
         timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
         unreadCount: json['unreadCount'],
@@ -262,26 +265,26 @@ class Thread extends Equatable {
     };
   }
 
-  Thread.fromMap(Map<String, dynamic> map) {
-    tid = map['tid'];
-    topic = map['topic'];
-    wid = map['wid'];
-    uid = map['uid'];
-    nickname = map['nickname'];
-    avatar = map['avatar'];
-    content = map['content'];
-    timestamp = map['timestamp'];
-    unreadCount = map['unreadCount'];
-    type = map['type'];
-    current = map['current'];
-    client = map['client'];
-    top = map['top'];
-    topVisitor = map['topVisitor'];
-    nodisturb = map['nodisturb'];
-    nodisturbVisitor = map['nodisturbVisitor'];
-    unread = map['unread'];
-    unreadVisitor = map['unreadVisitor'];
-    currentUid = map['currentUid'];
-    client = map['client'];
-  }
+  // Thread.fromMap(Map<String, dynamic> map) {
+  //   tid = map['tid'];
+  //   topic = map['topic'];
+  //   wid = map['wid'];
+  //   uid = map['uid'];
+  //   nickname = map['nickname'];
+  //   avatar = map['avatar'];
+  //   content = map['content'];
+  //   timestamp = map['timestamp'];
+  //   unreadCount = map['unreadCount'];
+  //   type = map['type'];
+  //   current = map['current'];
+  //   client = map['client'];
+  //   top = map['top'];
+  //   topVisitor = map['topVisitor'];
+  //   nodisturb = map['nodisturb'];
+  //   nodisturbVisitor = map['nodisturbVisitor'];
+  //   unread = map['unread'];
+  //   unreadVisitor = map['unreadVisitor'];
+  //   currentUid = map['currentUid'];
+  //   client = map['client'];
+  // }
 }

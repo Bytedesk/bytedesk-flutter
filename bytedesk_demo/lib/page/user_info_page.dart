@@ -122,4 +122,22 @@ class _UserInfoPageState extends State<UserInfoPage> {
           Fluttertoast.showToast(msg: "设置备注成功")
         });
   }
+
+  // 一次调用接口，同时设置：昵称、头像、备注
+  void _updateProfile() {
+    //
+    String mynickname = '自定义APP昵称flutter';
+    String myavatarurl =
+        'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png'; // 头像网址url
+    String mydescription = '自定义用户备注';
+    BytedeskKefu.updateProfile(mynickname, myavatarurl, mydescription)
+        .then((user) => {
+              setState(() {
+                _nickname = mynickname;
+                _avatar = myavatarurl;
+                _description = mydescription;
+              }),
+              Fluttertoast.showToast(msg: "设置成功")
+            });
+  }
 }

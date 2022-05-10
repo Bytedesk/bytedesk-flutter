@@ -102,8 +102,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
 
   void _setAvatar() {
     // 可自定义用户头像url-客服端可见，注意：是头像网址，非本地图片路径
-    String myavatarurl =
-        'https://chainsnow.oss-cn-shenzhen.aliyuncs.com/avatars/visitor_default_avatar.png'; // 头像网址url
+    String myavatarurl = 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png'; // 头像网址url
     BytedeskKefu.updateAvatar(myavatarurl).then((user) => {
           setState(() {
             _avatar = myavatarurl;
@@ -120,6 +119,22 @@ class _UserInfoPageState extends State<UserInfoPage> {
             _description = description;
           }),
           Fluttertoast.showToast(msg: "设置备注成功")
+        });
+  }
+
+  // 一次调用接口，同时设置：昵称、头像、备注
+  void _updateProfile() {
+    //
+    String mynickname = '自定义APP昵称flutter';
+    String myavatarurl = 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png'; // 头像网址url
+    String mydescription = '自定义用户备注';
+    BytedeskKefu.updateProfile(mynickname, myavatarurl, mydescription).then((user) => {
+          setState(() {
+            _nickname = mynickname;
+            _avatar = myavatarurl;
+            _description = mydescription;
+          }),
+          Fluttertoast.showToast(msg: "设置成功")
         });
   }
 }

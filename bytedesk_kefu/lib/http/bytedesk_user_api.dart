@@ -334,7 +334,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // print("responseJson $responseJson");
+    print("updateNickname:");
+    print(responseJson);
     // 更新本地数据
     SpUtil.putString(BytedeskConstants.nickname, nickname!);
 
@@ -355,7 +356,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // print("responseJson $responseJson");
+    print("updateAvatar:");
+    print(responseJson);
     // 更新本地数据
     SpUtil.putString(BytedeskConstants.avatar, avatar!);
 
@@ -376,8 +378,32 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // print("updateDescription $responseJson");
+    print("updateDescription:");
+    print(responseJson);
     // 更新本地数据
+    SpUtil.putString(BytedeskConstants.description, description!);
+
+    return User.fromJson(responseJson['data']);
+  }
+
+  // 一个接口同时设置：昵称、头像、备注
+  Future<User> updateProfile(String? nickname, String? avatar, String? description) async {
+    //
+    var body = json.encode({"nickname": nickname, "avatar": avatar, "description": description, "client": client});
+    //
+    final initUrl = Uri.http(BytedeskConstants.host, '/api/user/update/visitor/profile');
+    final initResponse =
+        await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    print("updateProfile:");
+    print(responseJson);
+    // 更新本地数据
+    SpUtil.putString(BytedeskConstants.nickname, nickname!);
+    SpUtil.putString(BytedeskConstants.avatar, avatar!);
     SpUtil.putString(BytedeskConstants.description, description!);
 
     return User.fromJson(responseJson['data']);

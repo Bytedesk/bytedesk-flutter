@@ -198,8 +198,6 @@ class _ChatKFPageState extends State<ChatKFPage>
                     if (state.threadResult.statusCode == 200 ||
                         state.threadResult.statusCode == 201) {
                       print('创建新会话');
-                      // 插入本地
-                      // _messageProvider.insert(state.threadResult.msg!);
                       // TODO: 参考拼多多，在发送按钮上方显示pop商品信息，用户确认之后才会发送商品信息
                       // 发送商品信息
                       if (widget.custom != null &&
@@ -218,7 +216,6 @@ class _ChatKFPageState extends State<ChatKFPage>
                       // 插入本地
                       _messageProvider.insert(state.threadResult.msg!);
                       // 加载本地历史消息
-                      // _getMessages(_page, _size);
                       _appendMessage(state.threadResult.msg!);
                       // 发送商品信息
                       if (widget.custom != null &&
@@ -240,7 +237,6 @@ class _ChatKFPageState extends State<ChatKFPage>
                       // 插入本地
                       _messageProvider.insert(state.threadResult.msg!);
                       // TODO: 加载本地历史消息
-                      // _getMessages(_page, _size);
                       _appendMessage(state.threadResult.msg!);
                       // 跳转留言页面，TODO: 关闭当前页面？
                       Navigator.of(context)
@@ -358,10 +354,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                     // _messageProvider.insert(state.answer!);
                     // _appendMessage(state.answer!);
                   } else if (state is QueryCategorySuccess) {
-
                     _messageProvider.insert(state.answer!);
                     _appendMessage(state.answer!);
-
                   } else if (state is MessageAnswerSuccess) {
                     // Message queryMessage = state.query!;
                     // queryMessage.isSend = 1;
@@ -859,8 +853,7 @@ class _ChatKFPageState extends State<ChatKFPage>
         appendQueryMessage(event.name);
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(QueryCategoryEvent(
-              tid: _currentThread!.tid, cid: event.cid));
+          ..add(QueryCategoryEvent(tid: _currentThread!.tid, cid: event.cid));
       }
     });
     // 点击机器人消息 ‘人工客服’
@@ -1109,6 +1102,8 @@ class _ChatKFPageState extends State<ChatKFPage>
     if (message.status != BytedeskConstants.MESSAGE_STATUS_READ) {
       // 发送已读回执
       if (message.isSend == 0) {
+        print('message.mid ${message.mid}');
+        print('_currentThread ${_currentThread!.tid}');
         _bdMqtt.sendReceiptReadMessage(message.mid!, _currentThread!);
       }
     }

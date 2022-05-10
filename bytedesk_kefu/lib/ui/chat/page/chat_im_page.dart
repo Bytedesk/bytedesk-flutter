@@ -659,11 +659,11 @@ class _ChatIMPageState extends State<ChatIMPage>
         print(
             'aid ${event.aid}, question ${event.question}, answer ${event.answer}');
         // 可以直接将问题和答案插入本地，并显示，但为了服务器保存查询记录，特将请求发送给服务器
-        BlocProvider.of<MessageBloc>(context)
-          ..add(QueryAnswerEvent(
-            tid: _currentThread!.tid,
-            aid: event.aid,
-          ));
+        // BlocProvider.of<MessageBloc>(context)
+        //   ..add(QueryAnswerEvent(
+        //     tid: _currentThread!.tid,
+        //     aid: event.aid,
+        //   ));
       }
     });
     // 滚动监听, https://learnku.com/articles/30338
