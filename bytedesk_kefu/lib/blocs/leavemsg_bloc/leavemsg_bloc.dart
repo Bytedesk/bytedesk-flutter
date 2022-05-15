@@ -27,8 +27,7 @@ class LeaveMsgBloc extends Bloc<LeaveMsgEvent, LeaveMsgState> {
       SubmitLeaveMsgEvent event, Emitter<LeaveMsgState> emit) async {
     emit(LeaveMsgSubmiting());
     try {
-      // final JsonResult jsonResult =
-      await leaveMsgRepository.submitLeaveMsg(event.content, event.imageUrls);
+      await leaveMsgRepository.submitLeaveMsg(event.wid, event.aid, event.type, event.mobile, event.email, event.content);
       emit(LeaveMsgSubmitSuccessState());
     } catch (error) {
       print(error);

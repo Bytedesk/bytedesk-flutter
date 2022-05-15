@@ -33,14 +33,12 @@ class BytedeskLeaveMsgHttpApi extends BytedeskBaseHttpApi {
     return categories;
   }
 
-  // TODO: 提交意见反馈
-  Future<JsonResult> submitLeaveMsg(
-      String? content, List<String>? imageUrls) async {
+  // TODO: 提交意见反馈 , List<String>? imageUrls
+  Future<JsonResult> submitLeaveMsg(String? wid, String? aid, String? type,
+      String? mobile, String? email, String? content) async {
     //
-    var body = json.encode({"content": content, "client": client});
-    //
-    // final initUrl = '$baseUrl/api/feedback/create';
-    final initUrl = Uri.http(BytedeskConstants.host, '/api/leavemsg/create');
+    var body = json.encode({"wid": wid, "aid": aid, "type": type, "mobile": mobile, "email": email,"content": content, "client": client});
+    final initUrl = Uri.http(BytedeskConstants.host, '/api/leavemsg/save');
     final initResponse =
         await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
     //解决json解析中的乱码问题
@@ -48,12 +46,12 @@ class BytedeskLeaveMsgHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    print("submitLeaveMsg:");
+    print(responseJson);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
-
     // return User.fromJson(responseJson);
     return JsonResult();
   }

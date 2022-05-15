@@ -15,10 +15,15 @@ class GetLeaveMsgCategoryEvent extends LeaveMsgEvent {
 }
 
 class SubmitLeaveMsgEvent extends LeaveMsgEvent {
-  final List<String>? imageUrls;
+  // final List<String>? imageUrls;
+  final String? wid;
+  final String? aid;
+  final String? type;
+  final String? mobile;
+  final String? email;
   final String? content;
-
-  SubmitLeaveMsgEvent({@required this.content, @required this.imageUrls})
+  // @required this.imageUrls
+  SubmitLeaveMsgEvent({@required this.wid, @required this.aid, @required this.type, @required this.mobile, @required this.email, @required this.content})
       : super();
 }
 

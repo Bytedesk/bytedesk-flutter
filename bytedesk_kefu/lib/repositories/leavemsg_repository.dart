@@ -11,9 +11,9 @@ class LeaveMsgRepository {
     return await bytedeskHttpApi.getHelpLeaveMsgCategories(uid);
   }
 
-  Future<JsonResult> submitLeaveMsg(
-      String? content, List<String>? imageUrls) async {
-    return await bytedeskHttpApi.submitLeaveMsg(content, imageUrls);
+  // , List<String>? imageUrls
+  Future<JsonResult> submitLeaveMsg(String? wid, String? aid, String? type, String? mobile, String? email, String? content) async {
+    return await bytedeskHttpApi.submitLeaveMsg(wid, aid, type, mobile, email, content);
   }
 
   Future<String> upload(String? filePath) async {
