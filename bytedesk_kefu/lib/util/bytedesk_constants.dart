@@ -45,13 +45,13 @@ class BytedeskConstants {
   // static const String httpBaseUrliOS = 'http://' + mqttHost + ':8000';
   // static const String httpUploadUrl = 'http://' + mqttHost + ':8000';
   // static const String host = mqttHost + ':8000';
-  // static const String mqttHost = '192.168.0.102';
+  // static const String mqttHost = '192.168.0.103';
 
   // 线上
   static const bool isDebug = false; // false;
   static const bool isSecure = true; // secure
   static const bool isWebSocketWss = true;
-  static const String webSocketWssUrl = 'wss://flutter.bytedesk.com/websocket';
+  static const String webSocketWssUrl = 'wss://' + mqttHost + '/websocket';
   static const int mqttPort = 13883; // secure
   static const String httpBaseUrl = 'https://' + mqttHost;
   static const String httpBaseUrlAndroid = 'https://' + mqttHost;

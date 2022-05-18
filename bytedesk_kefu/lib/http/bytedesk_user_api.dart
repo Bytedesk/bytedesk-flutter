@@ -387,11 +387,18 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   }
 
   // 一个接口同时设置：昵称、头像、备注
-  Future<User> updateProfile(String? nickname, String? avatar, String? description) async {
+  Future<User> updateProfile(
+      String? nickname, String? avatar, String? description) async {
     //
-    var body = json.encode({"nickname": nickname, "avatar": avatar, "description": description, "client": client});
+    var body = json.encode({
+      "nickname": nickname,
+      "avatar": avatar,
+      "description": description,
+      "client": client
+    });
     //
-    final initUrl = Uri.http(BytedeskConstants.host, '/api/user/update/visitor/profile');
+    final initUrl =
+        Uri.http(BytedeskConstants.host, '/api/user/update/visitor/profile');
     final initResponse =
         await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
     //解决json解析中的乱码问题
@@ -630,14 +637,18 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    print("checkAppVersion:");
+    print(responseJson);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     // TODO: 根据status_code判断结果，并解析
-    // 解析
-    return App.fromJson(responseJson['data']);
+    int statusCode = responseJson['status_code'];
+    if (statusCode == 200) {
+      return App.fromJson(responseJson['data']);
+    }
+    return App(version: "0");
   }
 
   // 通过token获取手机号
@@ -820,5 +831,4 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     print(responseJson);
     BytedeskUtils.clearUserCache();
   }
-
 }

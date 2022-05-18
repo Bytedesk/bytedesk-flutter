@@ -711,7 +711,8 @@ class _ChatKFPageState extends State<ChatKFPage>
     //
     String? timestamp = BytedeskUtils.formatedDateNow();
     String? client = BytedeskUtils.getClient();
-    String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT;
+    // String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT;
+    String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT;
     //
     // 暂时没有将插入本地函数独立出来，暂时R
     Message message = new Message();

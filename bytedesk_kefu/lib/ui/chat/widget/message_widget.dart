@@ -569,7 +569,8 @@ class MessageWidget extends StatelessWidget {
             ),
           ),
           Visibility(
-              visible: message.categories != null && message.categories!.length > 0,
+              visible:
+                  message.categories != null && message.categories!.length > 0,
               // visible: false,
               child: Container(
                 // color: Colors.black,
@@ -579,8 +580,9 @@ class MessageWidget extends StatelessWidget {
                   // 禁用ListView滑动，使用外层的ScrollView滑动
                   physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.all(0),
-                  itemCount:
-                      message.categories == null ? 0 : message.categories!.length,
+                  itemCount: message.categories == null
+                      ? 0
+                      : message.categories!.length,
                   itemBuilder: (_, index) {
                     //
                     var category = message.categories![index];
@@ -601,8 +603,7 @@ class MessageWidget extends StatelessWidget {
                               onTap: () => {
                                     // print(category.name),
                                     bytedeskEventBus.fire(QueryCategoryEventBus(
-                                        category.cid!,
-                                        category.name!))
+                                        category.cid!, category.name!))
                                   }),
                         ));
                   },
