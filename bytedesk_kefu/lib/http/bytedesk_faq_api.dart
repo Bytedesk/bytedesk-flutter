@@ -4,6 +4,7 @@ import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/helpArticle.dart';
 import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
   //
@@ -12,7 +13,7 @@ class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
     //
     final categoriesUrl = Uri.http(BytedeskConstants.host,
         '/visitor/api/category/support', {'uid': uid, 'client': client});
-    print("categories Url $categoriesUrl");
+    BytedeskUtils.printLog("categories Url $categoriesUrl");
     final initResponse = await this.httpClient.get(categoriesUrl);
     //
     //解决json解析中的乱码问题
@@ -20,7 +21,7 @@ class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    BytedeskUtils.printLog("responseJson $responseJson");
     //
     List<HelpCategory> categories = (responseJson['data'] as List<dynamic>)
         .map((item) => HelpCategory.fromJson(item))
@@ -38,7 +39,7 @@ class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
         BytedeskConstants.host,
         '/visitor/api/category/articles',
         {'categoryId': categoryId, 'client': client});
-    print("categories Url $categoriesUrl");
+    BytedeskUtils.printLog("categories Url $categoriesUrl");
     final initResponse = await this.httpClient.get(categoriesUrl);
     //
     //解决json解析中的乱码问题
@@ -46,7 +47,7 @@ class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    BytedeskUtils.printLog("responseJson $responseJson");
     //
     List<HelpArticle> articles = (responseJson['data'] as List<dynamic>)
         .map((item) => HelpArticle.fromJson(item))

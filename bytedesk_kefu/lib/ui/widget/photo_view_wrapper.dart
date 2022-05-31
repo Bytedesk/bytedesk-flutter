@@ -61,7 +61,7 @@ class PhotoViewWrapper extends StatelessWidget {
                   // color: Colors.pink,
                   child: InkWell(
                     onTap: () {
-                      print('imageurl: $imageUrl');
+                      BytedeskUtils.printLog('imageurl: $imageUrl');
                       BytedeskUtils.saveImage(imageUrl!);
                     },
                     child: Text(

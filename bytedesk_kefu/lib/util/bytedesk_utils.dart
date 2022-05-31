@@ -39,6 +39,12 @@ class BytedeskUtils {
   static bool get isFuchsia => Platform.isFuchsia;
   static bool get isIOS => Platform.isIOS;
 
+  static void printLog(content) {
+    if (BytedeskConstants.isDebug) {
+      print(content);
+    }
+  }
+
   static String client() {
     if (isWeb) {
       return 'flutter_web';
@@ -235,7 +241,7 @@ class BytedeskUtils {
 
   // 图片压缩 https://pub.dev/packages/flutter_image_compress
   // static Future<File> compressImage(File file, String targetPath) async {
-  //   // print("compressImage");
+  //   // BytedeskUtils.printLog("compressImage");
   //   final result = await FlutterImageCompress.compressAndGetFile(
   //     file.absolute.path,
   //     targetPath,
@@ -307,7 +313,7 @@ class BytedeskUtils {
   }
 
   static Future<bool> requestPermission() async {
-    print('请求定位');
+    BytedeskUtils.printLog('请求定位');
     return true;
     // FIXME:
     // if (await Permission.location.request().isGranted) {
@@ -402,9 +408,9 @@ class BytedeskUtils {
       if (result == null || result == '') throw '图片保存失败';
       // 提示
       Fluttertoast.showToast(msg: "保存成功");
-      print("保存成功");
+      BytedeskUtils.printLog("保存成功");
     } catch (e) {
-      print(e.toString());
+      BytedeskUtils.printLog(e.toString());
     }
   }
 

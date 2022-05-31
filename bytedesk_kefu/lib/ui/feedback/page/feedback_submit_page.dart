@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class FeedbackSubmitPage extends StatefulWidget {
   final HelpCategory? helpCategory;
@@ -35,7 +36,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
       // 如果滑动到底部
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        // print('scroll to bottom');
+        // BytedeskUtils.printLog('scroll to bottom');
       }
     });
     super.initState();
@@ -44,7 +45,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   @override
   Widget build(BuildContext context) {
     //
-    print('fileList的内容: $_fileList');
+    BytedeskUtils.printLog('fileList的内容: $_fileList');
     if (_selectedImageFile != null) {
       _fileList.add(_selectedImageFile!);
     }
@@ -62,7 +63,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                 margin: EdgeInsets.only(right: 10),
                 child: InkWell(
                   onTap: () {
-                    print('submit');
+                    BytedeskUtils.printLog('submit');
                     // TODO: 提交
                     BlocProvider.of<FeedbackBloc>(context)
                       ..add(SubmitFeedbackEvent(
@@ -222,7 +223,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
     try {
       XFile? pickedFile = await picker.pickImage(
           source: ImageSource.gallery, maxWidth: 800, imageQuality: 95);
-      print('pick image path: ${pickedFile!.path}');
+      BytedeskUtils.printLog('pick image path: ${pickedFile!.path}');
       setState(() {
         _selectedImageFile = File(pickedFile.path);
       });
@@ -230,7 +231,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
       BlocProvider.of<FeedbackBloc>(context)
         ..add(UploadImageEvent(filePath: pickedFile.path));
     } catch (e) {
-      print('pick image error ${e.toString()}');
+      BytedeskUtils.printLog('pick image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
@@ -244,7 +245,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
     try {
       XFile? pickedFile = await picker.pickImage(
           source: ImageSource.camera, maxWidth: 800, imageQuality: 95);
-      print('take image path: ${pickedFile!.path}');
+      BytedeskUtils.printLog('take image path: ${pickedFile!.path}');
       setState(() {
         _selectedImageFile = File(pickedFile.path);
       });
@@ -252,7 +253,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
       BlocProvider.of<FeedbackBloc>(context)
         ..add(UploadImageEvent(filePath: pickedFile.path));
     } catch (e) {
-      print('take image error ${e.toString()}');
+      BytedeskUtils.printLog('take image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
@@ -270,7 +271,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   //       ImagePicker.pickImage(source: source).then((result) {
   //         setState(() {
   //           _selectedImageFile = result;
-  //           print("执行刷新:");
+  //           BytedeskUtils.printLog("执行刷新:");
   //         });
   //       });
   //     },

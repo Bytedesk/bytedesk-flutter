@@ -51,7 +51,7 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
                     //       padding: new EdgeInsets.only(right: 10),
                     //       child: InkWell(
                     //           onTap: () {
-                    //             print('share');
+                    //             BytedeskUtils.printLog('share');
                     //             // showShareSheet(context);
                     //           },
                     //           child: Image.asset(
@@ -120,7 +120,7 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
   //         );
   //       }).then((value) {
   //     //
-  //     print('share $value');
+  //     BytedeskUtils.printLog('share $value');
   //     if (value == 'wechat') {
   //       // TODO: 分享到微信
   //     } else if (value == 'weibo') {

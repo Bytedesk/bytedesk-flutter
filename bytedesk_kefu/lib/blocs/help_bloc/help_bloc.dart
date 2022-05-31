@@ -3,6 +3,7 @@ import 'package:bytedesk_kefu/blocs/help_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/helpArticle.dart';
 import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/repositories/help_repository.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bloc/bloc.dart';
 
 class HelpBloc extends Bloc<HelpEvent, HelpState> {
@@ -31,7 +32,7 @@ class HelpBloc extends Bloc<HelpEvent, HelpState> {
           await helpRepository.getHelpCategories(event.uid);
       emit(HelpCategoryState(categoryList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(HelpLoadError());
     }
   }
@@ -44,7 +45,7 @@ class HelpBloc extends Bloc<HelpEvent, HelpState> {
           await helpRepository.getCategoryArticles(event.categoryId);
       emit(HelpArticleState(categoryList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(HelpLoadError());
     }
   }

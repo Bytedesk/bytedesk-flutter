@@ -52,7 +52,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
       // 如果滑动到底部
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        // print('scroll to bottom');
+        // BytedeskUtils.printLog('scroll to bottom');
       }
     });
     super.initState();
@@ -61,7 +61,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
   @override
   Widget build(BuildContext context) {
     //
-    // print('fileList的内容: $_fileList');
+    // BytedeskUtils.printLog('fileList的内容: $_fileList');
     // if (_selectedImageFile != null) {
     //   _fileList.add(_selectedImageFile!);
     // }
@@ -282,7 +282,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
   //   try {
   //     XFile? pickedFile = await picker.pickImage(
   //         source: ImageSource.gallery, maxWidth: 800, imageQuality: 95);
-  //     print('pick image path: ${pickedFile!.path}');
+  //     BytedeskUtils.printLog('pick image path: ${pickedFile!.path}');
   //     setState(() {
   //       _selectedImageFile = File(pickedFile.path);
   //     });
@@ -290,7 +290,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
   //     BlocProvider.of<LeaveMsgBloc>(context)
   //       ..add(UploadImageEvent(filePath: pickedFile.path));
   //   } catch (e) {
-  //     print('pick image error ${e.toString()}');
+  //     BytedeskUtils.printLog('pick image error ${e.toString()}');
   //     Fluttertoast.showToast(msg: "未选取图片");
   //   }
   // }
@@ -304,7 +304,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
   //   try {
   //     XFile? pickedFile = await picker.pickImage(
   //         source: ImageSource.camera, maxWidth: 800, imageQuality: 95);
-  //     print('take image path: ${pickedFile!.path}');
+  //     BytedeskUtils.printLog('take image path: ${pickedFile!.path}');
   //     setState(() {
   //       _selectedImageFile = File(pickedFile.path);
   //     });
@@ -312,7 +312,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
   //     BlocProvider.of<LeaveMsgBloc>(context)
   //       ..add(UploadImageEvent(filePath: pickedFile.path));
   //   } catch (e) {
-  //     print('take image error ${e.toString()}');
+  //     BytedeskUtils.printLog('take image error ${e.toString()}');
   //     Fluttertoast.showToast(msg: "未选取图片");
   //   }
   // }

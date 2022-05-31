@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 // 系统消息居中显示
 class MessageWidget extends StatelessWidget {
@@ -124,7 +125,7 @@ class MessageWidget extends StatelessWidget {
         ];
       },
       onSelected: (value) {
-        print('send menu $value');
+        BytedeskUtils.printLog('send menu $value');
         // 删除消息
         if (value == 'copy') {
           /// 把文本复制进入粘贴板
@@ -150,7 +151,7 @@ class MessageWidget extends StatelessWidget {
         }
       },
       onCancelled: () {
-        // print('cancel');
+        // BytedeskUtils.printLog('cancel');
       },
     );
   }
@@ -212,11 +213,11 @@ class MessageWidget extends StatelessWidget {
       String imageUrl = commodityJson['imageUrl'].toString();
       return InkWell(
         onTap: () {
-          // print('message!.type ${message!.type}, message!.content ${message!.content}');
+          // BytedeskUtils.printLog('message!.type ${message!.type}, message!.content ${message!.content}');
           if (customCallback != null) {
             customCallback!(message.content!);
           } else {
-            print('customCallback is null');
+            BytedeskUtils.printLog('customCallback is null');
           }
         },
         child: Row(
@@ -271,7 +272,7 @@ class MessageWidget extends StatelessWidget {
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
-          print('play video');
+          BytedeskUtils.printLog('play video');
           Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
             return new VideoPlayPage(videoUrl: message.videoUrl);
           }));
@@ -365,7 +366,7 @@ class MessageWidget extends StatelessWidget {
         ];
       },
       onSelected: (value) {
-        print('send menu $value');
+        BytedeskUtils.printLog('send menu $value');
         // 删除消息
         if (value == 'copy') {
           /// 把文本复制进入粘贴板
@@ -389,7 +390,7 @@ class MessageWidget extends StatelessWidget {
         }
       },
       onCancelled: () {
-        // print('cancel');
+        // BytedeskUtils.printLog('cancel');
       },
     );
   }
@@ -464,7 +465,7 @@ class MessageWidget extends StatelessWidget {
               },
               onImageTap: (src, _, __, ___) {
                 // 查看大图
-                // print("open image $src");
+                // BytedeskUtils.printLog("open image $src");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -491,7 +492,7 @@ class MessageWidget extends StatelessWidget {
                 );
               },
               onImageError: (exception, stackTrace) {
-                print(exception);
+                BytedeskUtils.printLog(exception);
               },
             ),
           ),
@@ -526,7 +527,7 @@ class MessageWidget extends StatelessWidget {
                                 style: TextStyle(color: Colors.blue),
                               ),
                               onTap: () => {
-                                    // print('object:' + answer.question),
+                                    // BytedeskUtils.printLog('object:' + answer.question),
                                     bytedeskEventBus.fire(QueryAnswerEventBus(
                                         answer.aid!,
                                         answer.question!,
@@ -547,7 +548,7 @@ class MessageWidget extends StatelessWidget {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onTap: () {
-                    print('请求人工客服');
+                    BytedeskUtils.printLog('请求人工客服');
                     bytedeskEventBus.fire(RequestAgentThreadEventBus());
                   },
                 )
@@ -601,7 +602,7 @@ class MessageWidget extends StatelessWidget {
                                 style: TextStyle(color: Colors.blue),
                               ),
                               onTap: () => {
-                                    // print(category.name),
+                                    // BytedeskUtils.printLog(category.name),
                                     bytedeskEventBus.fire(QueryCategoryEventBus(
                                         category.cid!, category.name!))
                                   }),
@@ -620,7 +621,7 @@ class MessageWidget extends StatelessWidget {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onTap: () {
-                    print('请求人工客服');
+                    BytedeskUtils.printLog('请求人工客服');
                     bytedeskEventBus.fire(RequestAgentThreadEventBus());
                   },
                 )
@@ -648,11 +649,11 @@ class MessageWidget extends StatelessWidget {
       String imageUrl = commodityJson['imageUrl'].toString();
       return InkWell(
         onTap: () {
-          // print('message!.type ${message!.type}, message!.content ${message!.content}');
+          // BytedeskUtils.printLog('message!.type ${message!.type}, message!.content ${message!.content}');
           if (customCallback != null) {
             customCallback!(message.content!);
           } else {
-            print('customCallback is null');
+            BytedeskUtils.printLog('customCallback is null');
           }
         },
         child: Row(
@@ -707,7 +708,7 @@ class MessageWidget extends StatelessWidget {
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
-          print('play video');
+          BytedeskUtils.printLog('play video');
           Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
             return new VideoPlayPage(videoUrl: message.videoUrl);
           }));

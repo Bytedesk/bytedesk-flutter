@@ -84,6 +84,21 @@ class LoadChannelMessageError extends MessageState {
   String toString() => 'LoadChannelMessageError';
 }
 
+class LoadUnreadMessageError extends MessageState {
+  @override
+  String toString() => 'LoadUnreadMessageError';
+}
+
+class LoadUnreadVisitorMessageError extends MessageState {
+  @override
+  String toString() => 'LoadUnreadVisitorMessageError';
+}
+
+class LoadUnreadAgentMessageError extends MessageState {
+  @override
+  String toString() => 'LoadUnreadAgentMessageError';
+}
+
 class UploadVideoSuccess extends MessageState {
   final UploadJsonResult uploadJsonResult;
 
@@ -117,6 +132,24 @@ class LoadChannelMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
   LoadChannelMessageSuccess({@required this.messageList}) : super();
+}
+
+class LoadUnreadMessageSuccess extends MessageState {
+  final List<Message>? messageList;
+
+  LoadUnreadMessageSuccess({@required this.messageList}) : super();
+}
+
+class LoadUnreadVisitorMessageSuccess extends MessageState {
+  final List<Message>? messageList;
+
+  LoadUnreadVisitorMessageSuccess({@required this.messageList}) : super();
+}
+
+class LoadUnreadAgentMessageSuccess extends MessageState {
+  final List<Message>? messageList;
+
+  LoadUnreadAgentMessageSuccess({@required this.messageList}) : super();
 }
 
 class QueryAnswerSuccess extends MessageState {

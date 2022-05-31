@@ -2,6 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bytedesk_kefu/blocs/friend_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/friend.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bytedesk_kefu/repositories/friend_repository.dart';
 
 class FriendBloc extends Bloc<FriendEvent, FriendState> {
@@ -31,14 +32,15 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
   //   }
   // }
 
-  void _mapQueryFriendToState(QueryFriendEvent event, Emitter<FriendState> emit) async {
+  void _mapQueryFriendToState(
+      QueryFriendEvent event, Emitter<FriendState> emit) async {
     emit(FriendLoading());
     try {
       final List<Friend> friendList =
           await friendRepository.getFriends(event.page, event.size);
       emit(FriendLoadSuccess(friendList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ErrorFriendState('friend error'));
     }
   }
@@ -51,7 +53,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
           await friendRepository.getFriendsAddress(event.page, event.size);
       emit(FriendLoadSuccess(friendList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ErrorFriendState('friend error'));
     }
   }
@@ -64,7 +66,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
           await friendRepository.uploadAddress(event.nickname, event.mobile);
       emit(FriendCreateSuccess(friend: friend));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ErrorFriendState('friend error'));
     }
   }
@@ -77,7 +79,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
           await friendRepository.getFriendsNearby(event.page, event.size);
       emit(FriendLoadSuccess(friendList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ErrorFriendState('friend error'));
     }
   }
@@ -89,7 +91,7 @@ class FriendBloc extends Bloc<FriendEvent, FriendState> {
       await friendRepository.updateLocation(event.latitude, event.longtitude);
       emit(FriendUpdateSuccess());
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ErrorFriendState('friend error'));
     }
   }

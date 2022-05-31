@@ -29,6 +29,19 @@ class MessageRepository {
     return await bytedeskHttpApi.loadChannelMessages(cid, page, size);
   }
 
+  Future<List<Message>> loadUnreadMessages(
+      String? wid, int? page, int? size) async {
+    return await bytedeskHttpApi.loadUnreadMessages(wid, page, size);
+  }
+
+  Future<List<Message>> loadUnreadVisitorMessages(int? page, int? size) async {
+    return await bytedeskHttpApi.loadUnreadMessagesVisitor(page, size);
+  }
+
+  Future<List<Message>> loadUnreadAgentMessages(int? page, int? size) async {
+    return await bytedeskHttpApi.loadUnreadMessagesAgent(page, size);
+  }
+
   Future<RequestAnswerResult> queryAnswer(String? tid, String? aid, String? mid) async {
     return await bytedeskHttpApi.queryAnswer2(tid, aid, mid);
   }

@@ -6,6 +6,7 @@ import 'package:bytedesk_kefu/ui/widget/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 // import 'package:flutter_easyrefresh/phoenix_header.dart';
 
 class FeedbackPage extends StatefulWidget {
@@ -47,7 +48,7 @@ class _FeedbackPageState extends State<FeedbackPage>
           BlocConsumer<FeedbackBloc, FeedbackState>(listener: (context, state) {
         // do stuff here based on BlocA's state
         if (state is FeedbackCategoryState) {
-          print('help category load success length: ' +
+          BytedeskUtils.printLog('help category load success length: ' +
               state.categoryList.length.toString());
           if (state.categoryList.length == 0) {
             // Toast.show('没有更多了哦');

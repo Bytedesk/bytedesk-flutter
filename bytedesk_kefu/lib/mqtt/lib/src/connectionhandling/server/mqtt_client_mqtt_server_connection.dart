@@ -38,7 +38,8 @@ class MqttServerConnection extends MqttConnectionBase {
     try {
       listener = client.listen(_onData, onError: onError, onDone: onDone);
     } on Exception catch (e) {
-      print('MqttServerConnection::_startListening - exception raised $e');
+      print(
+          'MqttServerConnection::_startListening - exception raised $e');
     }
   }
 

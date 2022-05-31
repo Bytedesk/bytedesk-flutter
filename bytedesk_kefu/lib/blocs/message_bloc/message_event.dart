@@ -64,6 +64,33 @@ class LoadChannelMessageEvent extends MessageEvent {
       : super();
 }
 
+class LoadUnreadMessagesEvent extends MessageEvent {
+  final String? wid;
+  final int? page;
+  final int? size;
+
+  LoadUnreadMessagesEvent(
+      {@required this.wid, @required this.page, @required this.size})
+      : super();
+}
+
+class LoadUnreadVisitorMessagesEvent extends MessageEvent {
+  final int? page;
+  final int? size;
+
+  LoadUnreadVisitorMessagesEvent(
+      {@required this.page, @required this.size})
+      : super();
+}
+
+class LoadUnreadAgentMessagesEvent extends MessageEvent {
+  final int? page;
+  final int? size;
+
+  LoadUnreadAgentMessagesEvent({@required this.page, @required this.size})
+      : super();
+}
+
 class QueryAnswerEvent extends MessageEvent {
   final String? tid;
   final String? aid;

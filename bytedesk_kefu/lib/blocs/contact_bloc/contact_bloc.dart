@@ -2,6 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bytedesk_kefu/blocs/contact_bloc/bloc.dart';
 import 'package:bytedesk_kefu/repositories/contact_repository.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class ContactBloc extends Bloc<ContactEvent, ContactState> {
   final ContactRepository contactRepository = new ContactRepository();
@@ -27,7 +28,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       // final List<Contact> contactList = await contactRepository.getContacts();
       // yield ContactLoadSuccess(contactList);
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ContactLoadError());
     }
   }

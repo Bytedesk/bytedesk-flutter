@@ -2,6 +2,7 @@
 import 'package:bytedesk_kefu/blocs/feedback_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/helpCategory.dart';
 // import 'package:bytedesk_kefu/model/jsonResult.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bytedesk_kefu/repositories/feedback_repository.dart';
 import 'package:bloc/bloc.dart';
 
@@ -36,7 +37,7 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
           await feedbackRepository.getHelpFeedbackCategories(event.uid);
       emit(FeedbackCategoryState(categoryList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(FeedbackLoadError());
     }
   }
@@ -48,18 +49,19 @@ class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
       await feedbackRepository.submitFeedback(event.content, event.imageUrls);
       emit(FeedbackSubmitSuccess());
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(FeedbackSubmitError());
     }
   }
 
-  void _mapUploadImageToState(UploadImageEvent event, Emitter<FeedbackState> emit) async {
+  void _mapUploadImageToState(
+      UploadImageEvent event, Emitter<FeedbackState> emit) async {
     emit(ImageUploading());
     try {
       final String url = await feedbackRepository.upload(event.filePath);
       emit(UploadImageSuccess(url));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(UpLoadImageError());
     }
   }

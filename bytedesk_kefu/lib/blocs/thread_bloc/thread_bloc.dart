@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import './bloc.dart';
 import 'package:bytedesk_kefu/repositories/repositories.dart';
 import 'package:bytedesk_kefu/model/model.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
   //
@@ -39,7 +40,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
       final List<Thread> threadList = await threadRepository.getThreads();
       emit(ThreadLoadSuccess(threadList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -52,7 +53,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.getHistoryThreads(event.page, event.size);
       emit(ThreadLoadSuccess(threadList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -65,7 +66,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.getVisitorThreads(event.page, event.size);
       emit(ThreadLoadSuccess(threadList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -78,7 +79,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.getVisitorThreadsAll();
       emit(ThreadLoadSuccess(threadList));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -91,7 +92,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           event.wid, event.type, event.aid, event.isV2Robot);
       emit(RequestThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(RequestThreadError());
     }
   }
@@ -104,7 +105,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.requestAgent(event.wid, event.type, event.aid);
       emit(RequestAgentSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(RequestAgentThreadError());
     }
   }
@@ -117,7 +118,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.requestContactThread(event.cid);
       emit(RequestContactThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -130,7 +131,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.requestGroupThread(event.gid);
       emit(RequestGroupThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -142,7 +143,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
       final MarkThreadResult thread = await threadRepository.markTop(event.tid);
       emit(MarkTopThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -155,7 +156,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.unmarkTop(event.tid);
       emit(UnMarkTopThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -168,7 +169,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.markNodisturb(event.tid);
       emit(MarkNodisturbThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -181,7 +182,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.unmarkNodisturb(event.tid);
       emit(UnMarkNodisturbThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -194,7 +195,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.markUnread(event.tid);
       emit(MarkUnreadThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -207,7 +208,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
           await threadRepository.unmarkUnread(event.tid);
       emit(UnMarkUnreadThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }
@@ -219,7 +220,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
       final MarkThreadResult thread = await threadRepository.delete(event.tid);
       emit(DeleteThreadSuccess(thread));
     } catch (error) {
-      print(error);
+      BytedeskUtils.printLog(error);
       emit(ThreadLoadError());
     }
   }

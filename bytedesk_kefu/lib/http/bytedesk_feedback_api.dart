@@ -5,6 +5,7 @@ import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,7 +18,7 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
     //     '$baseUrl/visitor/api/category/feedback?uid=$uid&client=$client';
     final categoriesUrl = Uri.http(BytedeskConstants.host,
         '/visitor/api/category/feedback', {'uid': uid, 'client': client});
-    print("categories Url $categoriesUrl");
+    BytedeskUtils.printLog("categories Url $categoriesUrl");
     final initResponse = await this.httpClient.get(categoriesUrl);
     //
     //解决json解析中的乱码问题
@@ -25,7 +26,7 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    BytedeskUtils.printLog("responseJson $responseJson");
     //
     List<HelpCategory> categories = (responseJson['data'] as List<dynamic>)
         .map((item) => HelpCategory.fromJson(item))
@@ -49,7 +50,7 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    print("responseJson $responseJson");
+    BytedeskUtils.printLog("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -65,7 +66,8 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
     String? username = SpUtil.getString(BytedeskConstants.uid);
 
     final uploadUrl = '$baseUrl/visitor/api/upload/image';
-    print("fileName $fileName, username $username, upload Url $uploadUrl");
+    BytedeskUtils.printLog(
+        "fileName $fileName, username $username, upload Url $uploadUrl");
 
     var uri = Uri.parse(uploadUrl);
     var request = http.MultipartRequest('POST', uri)
@@ -75,16 +77,16 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
 
     http.Response response =
         await http.Response.fromStream(await request.send());
-    // print("Result: ${response.body}");
+    // BytedeskUtils.printLog("Result: ${response.body}");
 
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
-    print("responseJson $responseJson");
+    BytedeskUtils.printLog("responseJson $responseJson");
 
     String url = responseJson['data'];
-    print('url:' + url);
+    BytedeskUtils.printLog('url:' + url);
     return url;
   }
 }

@@ -85,12 +85,12 @@ class UserRepository {
   }
 
   Future<void> logout() {
-    // print("user_repository logout");
+    // BytedeskUtils.printLog("user_repository logout");
     return Future.wait([bytedeskHttpApi.logout()]);
   }
 
   // Future<bool> isLogin() {
-  //   print("user_repository isSignedIn");
+  //   BytedeskUtils.printLog("user_repository isSignedIn");
   //   // final currentUser = BytedeskHttpApi.currentUser();
   //   // return currentUser != null;
   // }
@@ -100,7 +100,7 @@ class UserRepository {
   }
 
   // Future<String> getUsername() {
-  //   print("user_repository getUsername");
+  //   BytedeskUtils.printLog("user_repository getUsername");
   //   return (BytedeskHttpApi.currentUser()).username;
   // }
 

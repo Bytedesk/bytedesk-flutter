@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 // import 'package:flutter_easyrefresh/phoenix_header.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class HelpPage extends StatefulWidget {
   final String? uid;
@@ -43,7 +44,7 @@ class _HelpPageState extends State<HelpPage>
       body: BlocConsumer<HelpBloc, HelpState>(listener: (context, state) {
         // do stuff here based on BlocA's state
         if (state is HelpCategoryState) {
-          print('help category load success length: ' +
+          BytedeskUtils.printLog('help category load success length: ' +
               state.categoryList.length.toString());
           if (state.categoryList.length == 0) {
             // Toast.show('没有更多了哦');
