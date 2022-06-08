@@ -79,6 +79,7 @@ class Message {
     //
     return Message(
         mid: json['mid'],
+        // topic: json['thread']['topic'],
         content: json['content'],
         imageUrl: json['imageUrl'],
         voiceUrl: json['voiceUrl'],
@@ -112,6 +113,7 @@ class Message {
     //
     return Message(
         mid: json['mid'],
+        // topic: json['thread']['topic'],
         content: json['content'],
         imageUrl: json['imageUrl'],
         voiceUrl: json['voiceUrl'],
@@ -150,6 +152,7 @@ class Message {
     //
     return Message(
         mid: json['mid'],
+        // topic: json['thread']['topic'],
         content: json['content'],
         imageUrl: json['imageUrl'],
         voiceUrl: json['voiceUrl'],
@@ -169,7 +172,9 @@ class Message {
         answersJson: json['answers'].toString());
   }
 
+
   static Message fromJson(dynamic json) {
+    //
     List<Answer> robotQaList = [];
     if (json['type'] == BytedeskConstants.MESSAGE_TYPE_ROBOT) {
       robotQaList = json['answers'] == null
@@ -180,6 +185,7 @@ class Message {
     }
     return Message(
         mid: json['mid'],
+        // topic: json['thread']['topic'],
         content: json['content'],
         imageUrl: json['imageUrl'],
         voiceUrl: json['voiceUrl'],
@@ -191,6 +197,7 @@ class Message {
         timestamp: json['createdAt'],
         client: json['client'],
         currentUid: SpUtil.getString(BytedeskConstants.uid),
+        thread: Thread.fromUnreadJson(json['thread']),
         answers: robotQaList,
         answersJson: json['answers'].toString());
   }

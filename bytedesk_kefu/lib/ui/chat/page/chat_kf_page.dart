@@ -138,8 +138,8 @@ class _ChatKFPageState extends State<ChatKFPage>
       //   // 每隔 1 秒钟会调用一次，如果要结束调用
       //   // timer.cancel();
     });
-    BlocProvider.of<MessageBloc>(context)
-      ..add(LoadUnreadVisitorMessagesEvent(page: 0, size: 10));
+    // BlocProvider.of<MessageBloc>(context)
+    //   ..add(LoadUnreadVisitorMessagesEvent(page: 0, size: 10));
   }
 
   //
@@ -196,7 +196,10 @@ class _ChatKFPageState extends State<ChatKFPage>
                     });
                     // TODO: 加载本地历史消息
                     _getMessages(_page, _size);
-                    //
+                    // 加载未读消息
+                    BlocProvider.of<MessageBloc>(context)
+                      ..add(LoadUnreadVisitorMessagesEvent(page: 0, size: 10));
+                    // 结果解析
                     if (state.threadResult.statusCode == 200 ||
                         state.threadResult.statusCode == 201) {
                       BytedeskUtils.printLog('创建新会话');
@@ -385,9 +388,18 @@ class _ChatKFPageState extends State<ChatKFPage>
                     }
                   } else if (state is LoadUnreadVisitorMessageSuccess) {
                     // 插入历史聊天记录
-                    for (var i = 0; i < state.messageList!.length; i++) {
-                      Message message = state.messageList![i];
-                      _appendMessage(message);
+                    if (state.messageList!.length > 0) {
+                      // for (var i = 0; i < state.messageList!.length; i++) {
+                      for (var i = state.messageList!.length - 1; i >= 0; i--) {
+                        Message message = state.messageList![i];
+                        // 本地持久化
+                        _messageProvider.insert(message);
+                        // 界面显示
+                        _appendMessage(message);
+                        // 发送已读回执
+                        _bdMqtt.sendReceiptReadMessage(
+                            message.mid!, _currentThread!);
+                      }
                     }
                   }
                 },
@@ -1110,7 +1122,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     }
     if (message.status != BytedeskConstants.MESSAGE_STATUS_READ) {
       // 发送已读回执
-      if (message.isSend == 0) {
+      if (message.isSend == 0 && _currentThread != null) {
         // BytedeskUtils.printLog('message.mid ${message.mid}');
         // BytedeskUtils.printLog('_currentThread ${_currentThread!.tid}');
         _bdMqtt.sendReceiptReadMessage(message.mid!, _currentThread!);

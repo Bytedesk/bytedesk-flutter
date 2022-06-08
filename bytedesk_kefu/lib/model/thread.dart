@@ -236,6 +236,12 @@ class Thread extends Equatable {
         unreadVisitor: json['unreadVisitor']);
   }
 
+  static Thread fromUnreadJson(dynamic json) {
+    return Thread(
+        tid: json['tid'],
+        topic: json['topic']);
+  }
+
   @override
   List<Object> get props => [topic!];
 
