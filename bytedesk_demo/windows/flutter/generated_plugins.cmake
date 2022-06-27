@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bytedesk_kefu
+  url_launcher_windows
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

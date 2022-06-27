@@ -74,6 +74,15 @@ class BytedeskKefu {
     }
   }
 
+  // 判断是否已经登录
+  static bool isLogin() {
+    String? accessToken = SpUtil.getString(BytedeskConstants.accessToken);
+    if (accessToken!.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   // 访客匿名登录接口
   static void anonymousLogin(String appKey, String subDomain) async {
     /// sp初始化
@@ -231,8 +240,8 @@ class BytedeskKefu {
   }
 
   // 默认设置商品信息和附言为空
-  static void startChatDefault(
-      BuildContext context, String uuid, String type, String title, bool isV2Robot) {
+  static void startChatDefault(BuildContext context, String uuid, String type,
+      String title, bool isV2Robot) {
     startChat(context, uuid, type, title, '', '', isV2Robot, null);
   }
 
@@ -399,7 +408,8 @@ class BytedeskKefu {
   }
 
   // 一个接口，设置：昵称、头像、备注
-  static Future<User> updateProfile(String nickname, String avatar, String description) async {
+  static Future<User> updateProfile(
+      String nickname, String avatar, String description) async {
     return BytedeskUserHttpApi().updateProfile(nickname, avatar, description);
   }
 

@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 // import 'package:vibration/vibration.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+import 'page/switch_user_page.dart';
+
 void main() {
   // runApp(MyApp());
   runApp(OverlaySupport(
@@ -136,6 +138,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) {
                 return const SettingPage();
+              }));
+            },
+          ),
+          ListTile(
+            title: const Text('切换用户'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) {
+                return SwitchUserPage();
               }));
             },
           ),
