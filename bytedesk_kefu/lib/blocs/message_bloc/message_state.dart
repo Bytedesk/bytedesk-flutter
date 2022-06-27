@@ -65,6 +65,13 @@ class UpLoadImageError extends MessageState {
 }
 
 class SendMessageRestError extends MessageState {
+  final String json;
+
+  const SendMessageRestError(this.json);
+
+  @override
+  List<Object> get props => [json];
+
   @override
   String toString() => 'SendMessageRestError';
 }

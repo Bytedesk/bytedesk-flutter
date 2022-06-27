@@ -312,6 +312,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     User user = User.fromJson(responseJson['data']);
     //
     SpUtil.putString(BytedeskConstants.uid, user.uid!);
+    SpUtil.putString(BytedeskConstants.username, user.username!);
     SpUtil.putString(BytedeskConstants.nickname, user.nickname!);
     SpUtil.putString(BytedeskConstants.avatar, user.avatar!);
     SpUtil.putString(BytedeskConstants.mobile, user.mobile ?? '');

@@ -1,5 +1,13 @@
 # Upgrade Log
 
+## 1.4.0
+
+* optimize user experience
+
+## 1.3.4
+
+* optimize user experience
+
 ## 1.3.3
 
 * optimize user experience

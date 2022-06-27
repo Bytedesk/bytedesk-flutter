@@ -39,7 +39,9 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
               subtitle: Text('${_historyThreadList[index].content}'),
               onTap: () {
                 // 进入客服页面
-                BytedeskKefu.startChatThread(context, _historyThreadList[index]);
+                // BytedeskKefu.startChatThread(context, _historyThreadList[index]);
+                BytedeskKefu.startChatThreadIM(
+                    context, _historyThreadList[index]);
               },
             ),
             itemCount: _historyThreadList.length,

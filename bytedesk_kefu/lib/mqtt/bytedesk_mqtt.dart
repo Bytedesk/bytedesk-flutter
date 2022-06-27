@@ -984,7 +984,9 @@ class BytedeskMqtt {
 
   // 断开长连接
   void disconnect() {
-    mqttClient.disconnect();
+    if (mqttClient != null) {
+      mqttClient.disconnect();
+    }
   }
 
   /// The subscribed callback

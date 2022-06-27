@@ -18,7 +18,7 @@ class BytedeskConstants {
   // static const String httpUploadUrl = 'http://' + mqttHost + ':8000';
   // static const String host = mqttHost + ':8000';
   // static const int mqttPort = 3883; // not secure
-  // static const String mqttHost = '172.16.0.78';
+  // static const String mqttHost = '172.16.0.3';
 
   // 本机测试
   // static const bool isDebug = true;
@@ -45,7 +45,7 @@ class BytedeskConstants {
   // static const String httpBaseUrliOS = 'http://' + mqttHost + ':8000';
   // static const String httpUploadUrl = 'http://' + mqttHost + ':8000';
   // static const String host = mqttHost + ':8000';
-  // static const String mqttHost = '192.168.0.106';
+  // static const String mqttHost = '192.168.0.104';
 
   // 线上
   static const bool isDebug = false; // false;

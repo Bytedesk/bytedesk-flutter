@@ -25,6 +25,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 // import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:bytedesk_kefu/ui/widget/chat_input.dart';
+import 'package:bytedesk_kefu/ui/widget/extra_item.dart';
+// import 'package:bytedesk_kefu/ui/widget/send_button_visibility_mode.dart';
+// import 'package:bytedesk_kefu/ui/widget/voice_record/voice_widget.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
+// import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 // TODO: 接通客服之前，在title显示loading
 // 客服关闭会话，或者 自动关闭会话，则禁止继续发送消息
@@ -87,6 +93,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   BytedeskMqtt _bdMqtt = new BytedeskMqtt();
   // 当前用户uid
   String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
+  String? _currentUsername = SpUtil.getString(BytedeskConstants.username);
   String? _currentNickname = SpUtil.getString(BytedeskConstants.nickname);
   String? _currentAvatar = SpUtil.getString(BytedeskConstants.avatar);
   // 当前会话
@@ -101,6 +108,8 @@ class _ChatKFPageState extends State<ChatKFPage>
   Timer? _debounce;
   // 定时拉取聊天记录
   Timer? _loadHistoryTimer;
+  //
+  Timer? _resendTimer;
   // 视频压缩
   // final _flutterVideoCompress = FlutterVideoCompress();
   bool _isRequestingThread = true;
@@ -137,6 +146,41 @@ class _ChatKFPageState extends State<ChatKFPage>
       //   ..add(LoadHistoryMessageEvent(uid: _currentUid, page: 0, size: 10));
       //   // 每隔 1 秒钟会调用一次，如果要结束调用
       //   // timer.cancel();
+    });
+    _resendTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+      // TODO: 检测-消息是否超时发送失败
+      for (var i = 0; i < _messages.length; i++) {
+        Message? message = _messages[i].message;
+        // 自己发送的 && 消息状态为发送中...
+        if (message!.isSend == 1 &&
+            message.status == BytedeskConstants.MESSAGE_STATUS_SENDING) {
+          var nowTime = DateTime.now();
+          var messageTime = DateTime.parse(message.timestamp!);
+          int diff = nowTime.difference(messageTime).inSeconds;
+          if (diff > 15) {
+            // 超时15秒，设置为消息状态为error
+            _messageProvider.update(
+                message.mid, BytedeskConstants.MESSAGE_STATUS_ERROR);
+          } else if (diff > 5) {
+            // 5秒没有发送成功，则尝试使用http rest接口发送
+            String content = '';
+            if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
+              content = message.content!;
+            } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
+              content = message.imageUrl!;
+            } else if (message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
+              content = message.fileUrl!;
+            } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
+              content = message.voiceUrl!;
+            } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+              content = message.videoUrl!;
+            } else {
+              content = message.content!;
+            }
+            this.sendMessageRest(message.mid!, message.type!, content);
+          }
+        }
+      }
     });
     // BlocProvider.of<MessageBloc>(context)
     //   ..add(LoadUnreadVisitorMessagesEvent(page: 0, size: 10));
@@ -401,6 +445,18 @@ class _ChatKFPageState extends State<ChatKFPage>
                             message.mid!, _currentThread!);
                       }
                     }
+                  } else if (state is SendMessageRestSuccess) {
+                    // http rest 发送消息成功
+                    String jsonMessage = state.jsonResult.data!;
+                    String mid = json.decode(jsonMessage);
+                    _messageProvider.update(
+                        mid, BytedeskConstants.MESSAGE_STATUS_STORED);
+                  } else if (state is SendMessageRestError) {
+                    // http rest 发送消息失败
+                    String jsonMessage = state.json;
+                    String mid = json.decode(jsonMessage);
+                    _messageProvider.update(
+                        mid, BytedeskConstants.MESSAGE_STATUS_STORED);
                   }
                 },
               ),
@@ -466,11 +522,79 @@ class _ChatKFPageState extends State<ChatKFPage>
                           decoration: BoxDecoration(
                             color: Theme.of(context).cardColor,
                           ),
-                          child: _textComposerWidget(),
+                          // child: _textComposerWidget(),
+                          child: _chatInput(),
                         ),
                       ],
                     ),
                   )));
+  }
+
+  Widget _chatInput() {
+    return ChatInput(
+      // 发送触发事件
+      onSendPressed: _handleSendPressed,
+      sendButtonVisibilityMode: chat_ui.SendButtonVisibilityMode.editing,
+      // voiceWidget: VoiceRecord(),
+      // voiceWidget: VoiceWidget(
+      //   startRecord: () {},
+      //   stopRecord: _handleVoiceSelection,
+      //   // 加入定制化Container的相关属性
+      //   height: 40.0,
+      //   margin: EdgeInsets.zero,
+      // ),
+      extraWidget: ExtraItems(
+          // 照片
+          handleImageSelection: _handleImageSelection,
+          // 文件
+          handleFileSelection: _handleFileSelection,
+          // 拍摄
+          handlePickerSelection: _handlePickerSelection,
+          // 上传视频
+          handleUploadVideo: _handleUploadVideo,
+          // 录制视频
+          handleCaptureVideo: _handleCaptureVideo),
+    );
+  }
+
+  //
+  // void _handleVoiceSelection(AudioFile? obj) async {
+  //   print('_handleVoiceSelection');
+  //   if (obj != null) {
+
+  //   }
+  // }
+
+  //
+  Future<bool> _handleSendPressed(String content) async {
+    print('send: ${content}');
+    _handleSubmitted(content);
+    return true;
+  }
+
+  void _handleImageSelection() async {
+    print('_handleImageSelection');
+    _pickImage();
+  }
+
+  void _handleFileSelection() async {
+    print('_handleFileSelection');
+  }
+
+  Future<void> _handlePickerSelection() async {
+    print('_handlePickerSelection');
+    _takeImage();
+    return;
+  }
+
+  void _handleUploadVideo() async {
+    print('_handleUploadVideo');
+    _pickVideo();
+  }
+
+  void _handleCaptureVideo() async {
+    print('_handleCaptureVideo');
+    _captureVideo();
   }
 
   //
@@ -541,7 +665,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   @override
   bool get wantKeepAlive => true;
 
-  //
+  // 发送消息
   void _handleSubmitted(String? text) {
     _textController.clear();
     // 内容为空，直接返回
@@ -572,39 +696,175 @@ class _ChatKFPageState extends State<ChatKFPage>
     }
   }
 
-  // http rest 接口发生文本消息
+  // http rest 接口发生文本消息，长链接断开情况下调用
   void sendTextMessageRest(String text) {
     //
     String? mid = BytedeskUuid.uuid();
+    sendMessageRest(mid, BytedeskConstants.MESSAGE_TYPE_TEXT, text);
+  }
+
+  // http rest 接口发送图片消息，长链接断开情况下调用
+  void sendImageMessageRest(String imageUrl) {
+    //
+    String? mid = BytedeskUuid.uuid();
+    sendMessageRest(mid, BytedeskConstants.MESSAGE_TYPE_IMAGE, imageUrl);
+  }
+
+  // http rest 接口发送消息，长链接断开情况下调用
+  void sendMessageRest(String mid, String type, String content) {
+    //
+    // String? mid = BytedeskUuid.uuid();
     String? timestamp = BytedeskUtils.formatedDateNow();
     String? client = BytedeskUtils.getClient();
-    String? type = BytedeskConstants.MESSAGE_TYPE_TEXT;
     //
-    var jsonContent = {
-      "mid": mid,
-      "timestamp": timestamp,
-      "client": client,
-      "version": "1",
-      "type": type,
-      "status": "sending",
-      "user": {
-        "uid": this._currentUid,
-        "nickname": this._currentNickname,
-        "avatar": this._currentAvatar,
-        "extra": {"agent": false}
-      },
-      "text": {"content": text},
-      "thread": {
-        "tid": this._currentThread!.tid,
-        "type": this._currentThread!.type,
-        "content": text,
-        "nickname": this._currentThread!.nickname,
-        "avatar": this._currentThread!.avatar,
-        "topic": this._currentThread!.topic,
+    var jsonContent;
+
+    if (type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
+      jsonContent = {
+        "mid": mid,
         "timestamp": timestamp,
-        "unreadCount": 0
-      }
-    };
+        "client": client,
+        "version": "1",
+        "type": type,
+        "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
+        "user": {
+          "uid": this._currentUid,
+          "username": this._currentUsername,
+          "nickname": this._currentNickname,
+          "avatar": this._currentAvatar,
+          "extra": {"agent": false}
+        },
+        "text": {"content": content},
+        "thread": {
+          "tid": this._currentThread!.tid,
+          "type": this._currentThread!.type,
+          "content": content,
+          "nickname": this._currentThread!.nickname,
+          "avatar": this._currentThread!.avatar,
+          "topic": this._currentThread!.topic,
+          "client": client,
+          "timestamp": timestamp,
+          "unreadCount": 0
+        }
+      };
+    } else if (type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
+      jsonContent = {
+        "mid": mid,
+        "timestamp": timestamp,
+        "client": client,
+        "version": "1",
+        "type": type,
+        "status": "sending",
+        "user": {
+          "uid": this._currentUid,
+          "username": this._currentUsername,
+          "nickname": this._currentNickname,
+          "avatar": this._currentAvatar,
+          "extra": {"agent": false}
+        },
+        "image": {"imageUrl": content},
+        "thread": {
+          "tid": this._currentThread!.tid,
+          "type": this._currentThread!.type,
+          "content": "[图片]",
+          "nickname": this._currentThread!.nickname,
+          "avatar": this._currentThread!.avatar,
+          "topic": this._currentThread!.topic,
+          "client": client,
+          "timestamp": timestamp,
+          "unreadCount": 0
+        }
+      };
+    } else if (type == BytedeskConstants.MESSAGE_TYPE_FILE) {
+      jsonContent = {
+        "mid": mid,
+        "timestamp": timestamp,
+        "client": client,
+        "version": "1",
+        "type": type,
+        "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
+        "user": {
+          "uid": this._currentUid,
+          "username": this._currentUsername,
+          "nickname": this._currentNickname,
+          "avatar": this._currentAvatar,
+          "extra": {"agent": false}
+        },
+        "file": {"fileUrl": content},
+        "thread": {
+          "tid": this._currentThread!.tid,
+          "type": this._currentThread!.type,
+          "content": "[文件]",
+          "nickname": this._currentThread!.nickname,
+          "avatar": this._currentThread!.avatar,
+          "topic": this._currentThread!.topic,
+          "client": client,
+          "timestamp": timestamp,
+          "unreadCount": 0
+        }
+      };
+    } else if (type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
+      jsonContent = {
+        "mid": mid,
+        "timestamp": timestamp,
+        "client": client,
+        "version": "1",
+        "type": type,
+        "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
+        "user": {
+          "uid": this._currentUid,
+          "username": this._currentUsername,
+          "nickname": this._currentNickname,
+          "avatar": this._currentAvatar,
+          "extra": {"agent": false}
+        },
+        "voice": {
+          "voiceUrl": content,
+          "length": '0', // TODO:替换为真实值
+          "format": "wav",
+        },
+        "thread": {
+          "tid": this._currentThread!.tid,
+          "type": this._currentThread!.type,
+          "content": content,
+          "nickname": this._currentThread!.nickname,
+          "avatar": this._currentThread!.avatar,
+          "topic": this._currentThread!.topic,
+          "client": client,
+          "timestamp": timestamp,
+          "unreadCount": 0
+        }
+      };
+    } else if (type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+      jsonContent = {
+        "mid": mid,
+        "timestamp": timestamp,
+        "client": client,
+        "version": "1",
+        "type": type,
+        "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
+        "user": {
+          "uid": this._currentUid,
+          "username": this._currentUsername,
+          "nickname": this._currentNickname,
+          "avatar": this._currentAvatar,
+          "extra": {"agent": false}
+        },
+        "video": {"videoOrShortUrl": content},
+        "thread": {
+          "tid": this._currentThread!.tid,
+          "type": this._currentThread!.type,
+          "content": content,
+          "nickname": this._currentThread!.nickname,
+          "avatar": this._currentThread!.avatar,
+          "topic": this._currentThread!.topic,
+          "client": client,
+          "timestamp": timestamp,
+          "unreadCount": 0
+        }
+      };
+    }
+
     String? jsonString = json.encode(jsonContent);
     BlocProvider.of<MessageBloc>(context)
       ..add(SendMessageRestEvent(json: jsonString));
@@ -626,68 +886,7 @@ class _ChatKFPageState extends State<ChatKFPage>
         avatar: this._currentAvatar,
         nickname: this._currentNickname);
     //
-    message.content = text;
-    // 插入本地数据库
-    _messageProvider.insert(message);
-    //
-    pushToMessageArray(message, true);
-  }
-
-  // http rest 接口发送图片消息
-  void sendImageMessageRest(String imageUrl) {
-    //
-    String? mid = BytedeskUuid.uuid();
-    String? timestamp = BytedeskUtils.formatedDateNow();
-    String? client = BytedeskUtils.getClient();
-    String? type = BytedeskConstants.MESSAGE_TYPE_IMAGE;
-    //
-    var jsonContent = {
-      "mid": mid,
-      "timestamp": timestamp,
-      "client": client,
-      "version": "1",
-      "type": type,
-      "status": "sending",
-      "user": {
-        "uid": this._currentUid,
-        "nickname": this._currentNickname,
-        "avatar": this._currentAvatar,
-        "extra": {"agent": false}
-      },
-      "image": {"imageUrl": imageUrl},
-      "thread": {
-        "tid": this._currentThread!.tid,
-        "type": this._currentThread!.type,
-        "content": "[图片]",
-        "nickname": this._currentThread!.nickname,
-        "avatar": this._currentThread!.avatar,
-        "topic": this._currentThread!.topic,
-        "timestamp": timestamp,
-        "unreadCount": 0
-      }
-    };
-    String? jsonString = json.encode(jsonContent);
-    BlocProvider.of<MessageBloc>(context)
-      ..add(SendMessageRestEvent(json: jsonString));
-    // 暂时没有将插入本地函数独立出来，暂时
-    Message message = new Message();
-    message.mid = mid;
-    message.type = type;
-    message.timestamp = timestamp;
-    // message.client = client;
-    message.avatar = _currentAvatar;
-    message.topic = this._currentThread!.topic;
-    message.status = BytedeskConstants.MESSAGE_STATUS_SENDING;
-    message.isSend = 1;
-    message.currentUid = this._currentUid;
-    message.answersJson = '';
-    message.thread = this._currentThread;
-    message.user = User(
-        uid: this._currentUid,
-        avatar: this._currentAvatar,
-        nickname: this._currentNickname);
-    //
-    message.imageUrl = imageUrl;
+    message.content = content;
     // 插入本地数据库
     _messageProvider.insert(message);
     //
@@ -1174,6 +1373,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     WidgetsBinding.instance!.removeObserver(this);
     _debounce?.cancel();
     _loadHistoryTimer?.cancel();
+    _resendTimer?.cancel();
     // bytedeskEventBus.destroy(); // FIXME: 只能取消监听，不能destroy
     super.dispose();
   }

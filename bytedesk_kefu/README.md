@@ -27,6 +27,15 @@ bytedesk flutter helpdesk sdk
 
 ## Getting Started
 
+### Zero Step: Copy Assets dir from bytedesk_demo
+
+```dart
+assets:
+    - assets/audio/
+    - assets/images/chat/
+    - assets/images/feedback/
+```
+
 ### First Step: Register Account
 
 - [Register](https://www.bytedesk.com/admin)

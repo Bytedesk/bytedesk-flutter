@@ -31,6 +31,7 @@ void main() {
   // 第一步：初始化
   BytedeskKefu.init(_appKey, _subDomain);
   // 注：如果需要多平台统一用户（用于同步聊天记录等），可使用下列接口，其中：username只能包含数字或字母，不能含有汉字和特殊字符等，nickname可以使用汉字
+  // 注：如需切换用户，请首先执行BytedeskKefu.logout()
   // BytedeskKefu.initWithUsernameAndNicknameAndAvatar('myflutterusername', '我是美女', 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png', _appKey, _subDomain);
   // BytedeskKefu.initWithUsername('myflutterusername', _appKey, _subDomain); // 其中：username为自定义用户名，可与开发者所在用户系统对接
   // 如果还需要自定义昵称/头像，可以使用 initWithUsernameAndNickname或initWithUsernameAndNicknameAndAvatar，

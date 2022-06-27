@@ -100,7 +100,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       emit(SendMessageRestSuccess(jsonResult));
     } catch (error) {
       BytedeskUtils.printLog(error);
-      emit(SendMessageRestError());
+      emit(SendMessageRestError(event.json!));
     }
   }
 
