@@ -32,6 +32,16 @@
 - [![pub package](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) | [![pub points](https://badges.bar/bytedesk_kefu/pub%20points)](https://pub.dev/packages/bytedesk_kefu/score) | [![popularity](https://badges.bar/bytedesk_kefu/popularity)](https://pub.dev/packages/bytedesk_kefu/score) | [![likes](https://badges.bar/bytedesk_kefu/likes)](https://pub.dev/packages/bytedesk_kefu/score)
 - [注册账号](https://www.bytedesk.com/admin/#/)
 
+- 复制SDK中assets文件夹到自己项目中，并配置pubspec.yaml文件
+
+```dart
+# 添加下面3条
+assets:
+    - assets/audio/
+    - assets/images/chat/
+    - assets/images/feedback/
+```
+
 ### 第二步：初始化
 
 - 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
