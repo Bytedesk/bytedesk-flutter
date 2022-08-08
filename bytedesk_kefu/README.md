@@ -62,9 +62,9 @@ BytedeskKefu.startWorkGroupChat(context, workGroupWid, "title");
 
 |                                                image1                                                 |                                                 image2                                                  |                                                  image3                                                  |
 | :---------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
-|  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/home.jpeg?raw=true" width="250">  |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot.jpeg?raw=true" width="250">   |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/notice.jpeg?raw=true" width="250">   |
+|  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/home.jpeg?raw=true" width="250">  |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot1.jpeg?raw=true" width="250">   |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot2.jpeg?raw=true" width="250">   |
 |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/chat.png?raw=true" width="250">   |   <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/shop.png?raw=true" width="250">    | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/postscript.png?raw=true" width="250"> |
-| <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/status.jpeg?raw=true" width="250"> | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/userinfo.jpeg?raw=true" width="250"> |                                                                                                          |
+| <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/status.jpeg?raw=true" width="250"> | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/userinfo.jpeg?raw=true" width="250"> |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/notice.jpeg?raw=true" width="250"> |
 
 ### Change UI
 

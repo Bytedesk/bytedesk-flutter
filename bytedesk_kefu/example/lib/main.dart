@@ -7,6 +7,7 @@ import 'package:bytedesk_kefu_example/page/chat_type_page.dart';
 import 'package:bytedesk_kefu_example/page/history_thread_page.dart';
 import 'package:bytedesk_kefu_example/page/online_status_page.dart';
 import 'package:bytedesk_kefu_example/page/setting_page.dart';
+import 'package:bytedesk_kefu_example/page/switch_user_page.dart';
 import 'package:bytedesk_kefu_example/page/user_info_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
@@ -136,6 +137,16 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               Navigator.of(context)
                   .push(new MaterialPageRoute(builder: (context) {
                 return new SettingPage();
+              }));
+            },
+          ),
+          ListTile(
+            title: Text('切换用户'),
+            trailing: Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              Navigator.of(context)
+                  .push(new MaterialPageRoute(builder: (context) {
+                return new SwitchUserPage();
               }));
             },
           ),

@@ -523,7 +523,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                             color: Theme.of(context).cardColor,
                           ),
                           // child: _textComposerWidget(),
-                          child: _chatInput(),
+                          // FIXME: 表情在web和Android有问题？暂时仅在iOS启用表情
+                          child: (BytedeskUtils.isWeb || BytedeskUtils.isAndroid) ? _textComposerWidget() : _chatInput(),
                         ),
                       ],
                     ),
@@ -561,7 +562,6 @@ class _ChatKFPageState extends State<ChatKFPage>
   // void _handleVoiceSelection(AudioFile? obj) async {
   //   print('_handleVoiceSelection');
   //   if (obj != null) {
-
   //   }
   // }
 

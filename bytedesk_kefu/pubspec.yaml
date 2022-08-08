@@ -1,7 +1,7 @@
 name: bytedesk_kefu
 description: the best app chat sdk in china, you can chat with the agent freely at anytime. the agent can chat with the visitor by web/pc/mac/ios/android client.
-version: 1.4.0
-homepage: https://www.weikefu.net
+version: 1.4.2
+homepage: https://www.bytedesk.com
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -71,7 +71,7 @@ dependencies:
   # 视频压缩 https://pub.dev/packages/flutter_video_compress/install
   # flutter_video_compress: ^0.3.7+8
   # 振动 https://pub.dev/packages/vibration
-  # vibration: ^1.7.3
+  # vibration: ^1.7.5
   # 播放语音
   # https://pub.dev/packages/audioplayers
   # audioplayers: ^0.16.1
