@@ -12,7 +12,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
+import 'package:bytedesk_kefu/vendors/flutter_html/flutter_html.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 // 系统消息居中显示

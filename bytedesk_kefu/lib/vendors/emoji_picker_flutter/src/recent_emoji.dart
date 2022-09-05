@@ -1,4 +1,4 @@
-import './emoji.dart';
+import '../src/emoji.dart';
 
 /// Class that holds an recent emoji
 /// Recent Emoji has an instance of the emoji

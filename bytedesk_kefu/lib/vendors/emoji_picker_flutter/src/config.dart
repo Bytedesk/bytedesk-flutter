@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import './category_icons.dart';
-import './emoji_picker.dart';
+import '../src/category_icons.dart';
+import '../src/emoji_picker.dart';
 import 'package:flutter/material.dart';
 
 /// Default Widget if no recent is available

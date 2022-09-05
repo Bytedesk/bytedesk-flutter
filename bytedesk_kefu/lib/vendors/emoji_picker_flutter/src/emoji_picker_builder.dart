@@ -1,5 +1,5 @@
-import './config.dart';
-import './emoji_view_state.dart';
+import '../src/config.dart';
+import '../src/emoji_view_state.dart';
 import 'package:flutter/material.dart';
 
 /// Template class for custom implementation

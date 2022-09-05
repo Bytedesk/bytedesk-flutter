@@ -1,5 +1,5 @@
 import '../emoji_picker_flutter.dart';
-import './recent_emoji.dart';
+import '../src/recent_emoji.dart';
 import 'package:flutter/material.dart';
 import 'emoji_picker_internal_utils.dart';
 

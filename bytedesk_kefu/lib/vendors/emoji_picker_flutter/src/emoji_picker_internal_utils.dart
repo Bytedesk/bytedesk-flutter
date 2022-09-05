@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import '../emoji_picker_flutter.dart';
-import './emoji_skin_tones.dart';
+import '../src/emoji_skin_tones.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'emoji_lists.dart' as emoji_list;

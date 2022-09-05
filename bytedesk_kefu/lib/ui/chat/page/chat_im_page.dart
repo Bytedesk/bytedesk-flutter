@@ -113,7 +113,7 @@ class _ChatIMPageState extends State<ChatIMPage>
       // 从请求客服页面进入
       _title = widget.title;
     }
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     // 监听build完成，https://blog.csdn.net/baoolong/article/details/85097318
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   BytedeskUtils.printLog('addPostFrameCallback');
@@ -917,7 +917,7 @@ class _ChatIMPageState extends State<ChatIMPage>
   void dispose() {
     // BytedeskUtils.printLog('chat_kf_page dispose');
     SpUtil.putBool(BytedeskConstants.isCurrentChatKfPage, false);
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _debounce?.cancel();
     _loadHistoryTimer?.cancel();
     super.dispose();

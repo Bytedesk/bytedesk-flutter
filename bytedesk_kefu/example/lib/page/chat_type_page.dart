@@ -224,8 +224,9 @@ class _ChatTypePageState extends State<ChatTypePage> {
             onTap: () {
               print('h5 chat');
               // 注意: 登录后台->客服管理->技能组(或客服账号)->获取客服代码 获取相应URL
-              String url =
-                  "https://h2.kefux.cn/chat/h5/index.html?sub=vip&uid=201808221551193&wid=201807171659201&type=workGroup&aid=&hidenav=1&ph=ph";
+              String url = "https://h2.kefux.com/chat/h5/index.html?sub=vip&uid=201808221551193&wid=201807171659201&type=workGroup&aid=&hidenav=1&p";
+              // String url =
+              //     "http://127.0.0.1:8887/chat/h5/index.html?sub=vip&uid=201808221551193&wid=201807171659201&type=workGroup&aid=201808221551193&history=0&lang=cn&v2robot=0&p";
               String title = 'H5在线客服演示';
               BytedeskKefu.startH5Chat(context, url, title);
             },

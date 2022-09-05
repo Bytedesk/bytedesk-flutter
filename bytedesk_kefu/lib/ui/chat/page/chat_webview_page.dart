@@ -1,19 +1,27 @@
 import 'dart:async';
+// import 'dart:convert';
+import 'dart:io';
+// import 'dart:typed_data';
 
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:flutter_webview_pro/webview_flutter.dart';
+// import 'package:path_provider/path_provider.dart';
 
+// TODO: 支持访问相册发送图片
 // TODO: 支持右上角在其他浏览器打开
 class ChatWebViewPage extends StatefulWidget {
   const ChatWebViewPage({
     Key? key,
     @required this.title,
-    @required this.url,
+    @required this.url, 
+    // this.cookieManager
   }) : super(key: key);
 
   final String? title;
   final String? url;
+  // final CookieManager? cookieManager;
 
   @override
   _ChatWebViewPageState createState() => _ChatWebViewPageState();
@@ -24,108 +32,63 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
       Completer<WebViewController>();
 
   @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FutureBuilder<WebViewController>(
-        future: _controller.future,
-        builder: (context, snapshot) {
-          return WillPopScope(
-            onWillPop: () async {
-              if (snapshot.hasData) {
-                var canGoBack = await snapshot.data!.canGoBack();
-                if (canGoBack) {
-                  // 网页可以返回时，优先返回上一页
-                  await snapshot.data!.goBack();
-                  return Future.value(false);
-                }
-              }
-              return Future.value(true);
-            },
-            child: Scaffold(
-                appBar: AppBar(
-                  title: Text(widget.title!),
-                  elevation: 0,
-                  actions: [
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child: Container(
-                    //       padding: new EdgeInsets.only(right: 10),
-                    //       child: InkWell(
-                    //           onTap: () {
-                    //             BytedeskUtils.printLog('share');
-                    //             // showShareSheet(context);
-                    //           },
-                    //           child: Image.asset(
-                    //             // 'assets/images/weibo/icon_more.png',
-                    //             'assets/images/weibo/video_detail_share.png',
-                    //             width: 23.0,
-                    //             height: 23.0,
-                    //           )))),
-                  ],
-                ),
-                body: WebView(
-                  initialUrl: widget.url,
-                  javascriptMode: JavascriptMode.unrestricted,
-                  onWebViewCreated: (WebViewController webViewController) {
-                    _controller.complete(webViewController);
-                  },
-                )),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title!),
+          elevation: 0,
+          actions: [
+            // NavigationControls(_controller.future),
+            // SampleMenu(_controller.future, widget.cookieManager),
+          ],
+        ),
+        body: WebView(
+          initialUrl: widget.url,
+          javascriptMode: JavascriptMode.unrestricted,
+          onWebViewCreated: (WebViewController webViewController) {
+            _controller.complete(webViewController);
+          },
+          onProgress: (int progress) {
+            print('WebView is loading (progress : $progress%)');
+          },
+          javascriptChannels: <JavascriptChannel>{
+            _toasterJavascriptChannel(context),
+          },
+          navigationDelegate: (NavigationRequest request) {
+            // if (request.url.startsWith('')) {
+            //   print('blocking navigation to $request}');
+            //   return NavigationDecision.prevent;
+            // }
+            print('allowing navigation to $request');
+            return NavigationDecision.navigate;
+          },
+          onPageStarted: (String url) {
+            print('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            print('Page finished loading: $url');
+          },
+          gestureNavigationEnabled: true,
+          // geolocationEnabled: false,//support geolocation or not
+        ));
+  }
+
+  JavascriptChannel _toasterJavascriptChannel(BuildContext context) {
+    return JavascriptChannel(
+        name: 'Toaster',
+        onMessageReceived: (JavascriptMessage message) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message.message)),
           );
         });
   }
 
-  // void showShareSheet(BuildContext context) {
-  //   showFLBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return FLCupertinoOperationSheet(
-  //           sheetStyle: FLCupertinoActionSheetStyle.filled,
-  //           cancelButton: CupertinoActionSheetAction(
-  //             child: Text(
-  //               '取消',
-  //             ),
-  //             isDefaultAction: true,
-  //             onPressed: () {
-  //               Navigator.pop(context, 'cancel');
-  //             },
-  //           ),
-  //           header: Container(
-  //             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-  //             child: Text('分享', style: TextStyle(fontSize: 18)),
-  //           ),
-  //           itemList: [
-  //             [
-  //               FLCupertinoOperationSheetItem(
-  //                 imagePath: 'assets/images/circle/weibo.png',
-  //                 title: '复制链接', // TODO
-  //                 onPressed: () {
-  //                   Navigator.pop(context, 'weibo');
-  //                 },
-  //               ),
-  //               FLCupertinoOperationSheetItem(
-  //                 imagePath: 'assets/images/circle/weibo.png',
-  //                 title: '浏览器打开', // TODO
-  //                 onPressed: () {
-  //                   Navigator.pop(context, 'weibo');
-  //                 },
-  //               ),
-  //               FLCupertinoOperationSheetItem(
-  //                 imagePath: 'assets/images/circle/weibo.png',
-  //                 title: '刷新', // TODO
-  //                 onPressed: () {
-  //                   Navigator.pop(context, 'weibo');
-  //                 },
-  //               ),
-  //             ],
-  //           ],
-  //         );
-  //       }).then((value) {
-  //     //
-  //     BytedeskUtils.printLog('share $value');
-  //     if (value == 'wechat') {
-  //       // TODO: 分享到微信
-  //     } else if (value == 'weibo') {
-  //       // TODO: 分享到微博
-  //     }
-  //   });
-  // }
 }

@@ -2,7 +2,6 @@ import 'package:bytedesk_kefu/blocs/help_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/helpArticle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_html/flutter_html.dart';
 
 class HelpArticleDetailPage extends StatefulWidget {
   final HelpArticle? helpArticle;

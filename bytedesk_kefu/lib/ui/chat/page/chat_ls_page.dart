@@ -111,7 +111,7 @@ class _ChatLSPageState extends State<ChatLSPage>
       // 从请求客服页面进入
       _title = widget.title;
     }
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     // 监听build完成，https://blog.csdn.net/baoolong/article/details/85097318
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   BytedeskUtils.printLog('addPostFrameCallback');
@@ -820,7 +820,7 @@ class _ChatLSPageState extends State<ChatLSPage>
   void dispose() {
     // BytedeskUtils.printLog('chat_kf_page dispose');
     SpUtil.putBool(BytedeskConstants.isCurrentChatKfPage, false);
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _debounce?.cancel();
     super.dispose();
   }

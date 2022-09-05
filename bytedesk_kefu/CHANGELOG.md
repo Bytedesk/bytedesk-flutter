@@ -1,5 +1,9 @@
 # Upgrade Log
 
+## 1.4.3
+
+* 支持webview发送图片
+
 ## 1.4.2
 
 * optimize user experience

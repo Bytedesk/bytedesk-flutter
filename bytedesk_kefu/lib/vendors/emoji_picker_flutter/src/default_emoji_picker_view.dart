@@ -1,8 +1,8 @@
 import '../emoji_picker_flutter.dart';
-import './category_emoji.dart';
-import './emoji_picker_internal_utils.dart';
-import './emoji_skin_tones.dart';
-import './triangle_shape.dart';
+import '../src/category_emoji.dart';
+import '../src/emoji_picker_internal_utils.dart';
+import '../src/emoji_skin_tones.dart';
+import '../src/triangle_shape.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
