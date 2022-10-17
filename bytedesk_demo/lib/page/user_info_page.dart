@@ -113,7 +113,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   void _setDescription() {
-    // 可自定义用户昵称-客服端可见
+    // 可自定义用户备注-客服端可见
     String description = '自定义用户备注';
     BytedeskKefu.updateDescription(description).then((user) => {
           setState(() {
