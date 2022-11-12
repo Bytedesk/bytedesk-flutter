@@ -468,40 +468,41 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                       // buildLeftButton(),
                       // input
                       Expanded(
-                        child: Shortcuts(
-                          shortcuts: isAndroid || isIOS
-                              ? {
-                                  LogicalKeySet(LogicalKeyboardKey.enter):
-                                      const NewLineIntent(),
-                                  LogicalKeySet(LogicalKeyboardKey.enter,
-                                          LogicalKeyboardKey.alt):
-                                      const NewLineIntent(),
-                                }
-                              : {
-                                  LogicalKeySet(LogicalKeyboardKey.enter):
-                                      const SendMessageIntent(),
-                                  LogicalKeySet(LogicalKeyboardKey.enter,
-                                          LogicalKeyboardKey.alt):
-                                      const NewLineIntent(),
-                                  LogicalKeySet(LogicalKeyboardKey.enter,
-                                          LogicalKeyboardKey.shift):
-                                      const NewLineIntent(),
-                                },
-                          child: Actions(
-                            actions: {
-                              SendMessageIntent:
-                                  CallbackAction<SendMessageIntent>(
-                                onInvoke: (SendMessageIntent intent) =>
-                                    _handleSendPressed(),
-                              ),
-                              NewLineIntent: CallbackAction<NewLineIntent>(
-                                onInvoke: (NewLineIntent intent) =>
-                                    _handleNewLine(),
-                              ),
-                            },
-                            child: _buildInputButton(context),
-                          ),
-                        ),
+                        child: _buildInputButton(context),
+                        // child: Shortcuts(
+                        //   shortcuts: isAndroid || isIOS
+                        //       ? {
+                        //           LogicalKeySet(LogicalKeyboardKey.enter):
+                        //               const NewLineIntent(),
+                        //           LogicalKeySet(LogicalKeyboardKey.enter,
+                        //                   LogicalKeyboardKey.alt):
+                        //               const NewLineIntent(),
+                        //         }
+                        //       : {
+                        //           LogicalKeySet(LogicalKeyboardKey.enter):
+                        //               const SendMessageIntent(),
+                        //           LogicalKeySet(LogicalKeyboardKey.enter,
+                        //                   LogicalKeyboardKey.alt):
+                        //               const NewLineIntent(),
+                        //           LogicalKeySet(LogicalKeyboardKey.enter,
+                        //                   LogicalKeyboardKey.shift):
+                        //               const NewLineIntent(),
+                        //         },
+                        //   child: Actions(
+                        //     actions: {
+                        //       // SendMessageIntent:
+                        //       //     CallbackAction<SendMessageIntent>(
+                        //       //   onInvoke: (SendMessageIntent intent) =>
+                        //       //       _handleSendPressed(),
+                        //       // ),
+                        //       // NewLineIntent: CallbackAction<NewLineIntent>(
+                        //       //   onInvoke: (NewLineIntent intent) =>
+                        //       //       _handleNewLine(),
+                        //       // ),
+                        //     },
+                        //     child: _buildInputButton(context),
+                        //   ),
+                        // ),
                       ),
                       // emoji
                       buildEmojiButton(),

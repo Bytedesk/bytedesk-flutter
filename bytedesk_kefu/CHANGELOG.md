@@ -1,5 +1,9 @@
 # Upgrade Log
 
+## 1.4.4
+
+* 升级第三方package
+
 ## 1.4.3
 
 * 支持webview发送图片

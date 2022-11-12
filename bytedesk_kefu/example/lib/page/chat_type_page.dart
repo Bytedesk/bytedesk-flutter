@@ -237,7 +237,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
   }
 
   void _getUnreadCountVisitor() {
-    // 获取未读消息数目
+    // 获取消息未读数目
     BytedeskKefu.getUnreadCountVisitor().then((count) => {
           print('unreadcount:' + count),
           setState(() {

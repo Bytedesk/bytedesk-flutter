@@ -8,6 +8,7 @@ import 'package:bytedesk_kefu/model/oauth.dart';
 // import 'package:meta/meta.dart';
 
 class UserRepository {
+  
   final BytedeskUserHttpApi bytedeskHttpApi = BytedeskUserHttpApi();
 
   UserRepository();

@@ -47,10 +47,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   // 验证码登录
   Future<OAuth> smsOAuth(String? mobile, String? code) async {
     //
-    // final oauthUrl = '$baseUrl/mobile/token';
-    // final oauthUrl = Uri.http(BytedeskConstants.host, '/mobile/token');
     final oauthUrl = Uri.http(BytedeskConstants.host, '/mobile/token');
-    // BytedeskUtils.printLog("http api client: oauthUrl $oauthUrl");
     Map<String, String> headers = {
       "Authorization": "Basic Y2xpZW50OnNlY3JldA=="
     };
@@ -126,7 +123,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       "client": client
     });
 
-    // final initUrl = '$baseUrl/visitors/api/v1/register/mobile';
     final initUrl =
         Uri.http(BytedeskConstants.host, '/visitors/api/v1/register/mobile');
     final initResponse =
@@ -245,7 +241,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     // final responseJson = json.decode(initResponse.body);
     // BytedeskUtils.printLog("changePassword");
     // BytedeskUtils.printLog(responseJson);
-
+    //
     return JsonResult.fromJson(responseJson);
   }
 
