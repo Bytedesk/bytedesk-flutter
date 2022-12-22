@@ -1,5 +1,9 @@
 # Upgrade Log
 
+## 1.4.5
+
+* optimize user experience
+
 ## 1.4.4
 
 * 升级第三方package

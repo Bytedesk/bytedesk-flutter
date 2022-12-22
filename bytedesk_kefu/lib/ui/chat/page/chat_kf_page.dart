@@ -15,7 +15,7 @@ import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bytedesk_kefu/util/bytedesk_uuid.dart';
-import 'package:file_picker/file_picker.dart';
+// import 'package:file_picker/file_picker.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -1168,42 +1168,44 @@ class _ChatKFPageState extends State<ChatKFPage>
   // 手机可以播放，但chrome无法播放
   Future<void> _pickVideo() async {
     try {
-      // final PickedFile videoFile = await _picker.getVideo(
-      //     source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
-      // BytedeskUtils.printLog('pick video path: ${videoFile.path}');
-      // if (videoFile != null) {
-      //   BlocProvider.of<MessageBloc>(context)
-      //     ..add(UploadVideoEvent(filePath: videoFile.path));
-      // } else {
-      //   Fluttertoast.showToast(msg: '未选取视频');
-      // }
-      // 使用file_picker替换image_picker
-      List<PlatformFile>? _paths = (await FilePicker.platform.pickFiles(
-        type: FileType.video,
-        allowMultiple: false,
-        allowedExtensions: [],
-      ))
-          ?.files;
-      if (_paths!.length > 0) {
-        // TODO: 将视频显示到对话消息中
-        // TODO: 显示处理中loading
-        // 压缩
-        // final info = await _flutterVideoCompress.compressVideo(
-        //   _paths[0].path,
-        //   quality:
-        //       VideoQuality.LowQuality, // default(VideoQuality.DefaultQuality)
-        //   deleteOrigin: false, // default(false)
-        // );
-        // // debugBytedeskUtils.printLog(info.toJson().toString());
-        // String? afterPath = info.toJson()['path'];
-        // // BytedeskUtils.printLog('video path: ${_paths[0].path}, compress path: $afterPath');
-        // // 上传
-        // BlocProvider.of<MessageBloc>(context)
-        //   ..add(UploadVideoEvent(filePath: afterPath));
-        // 压缩后上传
+      XFile? pickedFile = await _picker.pickVideo(
+          source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
+      
+      if (pickedFile != null) {
+        BytedeskUtils.printLog('pick video path: ${pickedFile.path}');
+        //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: _paths[0].path));
+          ..add(UploadVideoEvent(filePath: pickedFile.path));
+      } else {
+        Fluttertoast.showToast(msg: '未选取视频');
       }
+      // 使用file_picker替换image_picker
+      // List<PlatformFile>? _paths = (await FilePicker.platform.pickFiles(
+      //   type: FileType.video,
+      //   allowMultiple: false,
+      //   allowedExtensions: [],
+      // ))
+      //     ?.files;
+      // if (_paths!.length > 0) {
+      //   // TODO: 将视频显示到对话消息中
+      //   // TODO: 显示处理中loading
+      //   // 压缩
+      //   // final info = await _flutterVideoCompress.compressVideo(
+      //   //   _paths[0].path,
+      //   //   quality:
+      //   //       VideoQuality.LowQuality, // default(VideoQuality.DefaultQuality)
+      //   //   deleteOrigin: false, // default(false)
+      //   // );
+      //   // // debugBytedeskUtils.printLog(info.toJson().toString());
+      //   // String? afterPath = info.toJson()['path'];
+      //   // // BytedeskUtils.printLog('video path: ${_paths[0].path}, compress path: $afterPath');
+      //   // // 上传
+      //   // BlocProvider.of<MessageBloc>(context)
+      //   //   ..add(UploadVideoEvent(filePath: afterPath));
+      //   // 压缩后上传
+      //   BlocProvider.of<MessageBloc>(context)
+      //     ..add(UploadVideoEvent(filePath: _paths[0].path));
+      // }
     } catch (e) {
       BytedeskUtils.printLog('pick video error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取视频");

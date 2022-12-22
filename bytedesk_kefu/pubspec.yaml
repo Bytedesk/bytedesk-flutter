@@ -1,6 +1,6 @@
 name: bytedesk_kefu
 description: the best app chat sdk in china, you can chat with the agent freely at anytime. the agent can chat with the visitor by web/pc/mac/ios/android client.
-version: 1.4.4
+version: 1.4.5
 homepage: https://gitee.com/270580156/bytedesk-flutter
 
 environment:
@@ -39,13 +39,13 @@ dependencies:
   # https://pub.dev/packages/image_picker
   image_picker: ^0.8.6
   # image_picker在选择视频的时候有bug，选此替代 https://pub.dev/packages/file_picker
-  file_picker: ^4.6.1
+  # file_picker: ^4.6.1
   # https://pub.dev/packages/protobuf
   protobuf: ^2.1.0
   # 下拉刷新 https://pub.dev/packages/flutter_easyrefresh
   flutter_easyrefresh: ^2.2.2
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.1.1
+  fluttertoast: ^8.1.2
   # https://pub.dev/packages/flutter_easyloading
   flutter_easyloading: ^3.0.5
   # H5-webchat https://pub.dev/packages/webview_flutter
@@ -56,7 +56,7 @@ dependencies:
   # 查看大图 https://pub.dev/packages/photo_view
   photo_view: ^0.14.0
   # 图片缓存 https://pub.dev/packages/cached_network_image
-  cached_network_image: ^3.2.2
+  cached_network_image: ^3.2.3
   # 满意度评价 https://pub.dev/packages/flutter_rating_bar
   # flutter_rating_bar: ^4.0.0
   # 手机语言 https://pub.dev/packages/devicelocale
@@ -92,7 +92,7 @@ dependencies:
   #   ./vendors/emoji_picker_flutter
   shared_preferences: ^2.0.15
   # # https://pub.dev/packages/carousel_slider
-  carousel_slider: ^4.1.1
+  carousel_slider: ^4.2.1
   # # https://pub.dev/packages/flutter_chat_ui
   flutter_chat_ui: ^1.6.6
   # 录音
@@ -115,7 +115,7 @@ dependencies:
   csslib: ^0.17.2
   css_colors: ^1.1.1
   # Plugins for rendering the <video> tag.
-  video_player: ^2.4.7
+  video_player: ^2.4.10
   # chewie: ^1.2.2 # 与 flutter_html: ^3.0.0-alpha.3 不兼容
   # chewie:
   #   git:

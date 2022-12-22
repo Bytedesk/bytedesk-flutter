@@ -16,7 +16,7 @@ dependencies:
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.1.1
+  fluttertoast: ^8.1.2
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
