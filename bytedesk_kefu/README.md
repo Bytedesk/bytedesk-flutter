@@ -84,7 +84,7 @@ bytedesk_kefu:
 - Follow Us：
 - <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/luobosi_mp.png?raw=true" width="250">
 
-### Other
+## Other
 
 - [Flutter Push SDK](https://pub.dev/packages/bytedesk_push)
 - [Flutter SDK](https://github.com/bytedesk/bytedesk-flutter)
