@@ -60,7 +60,7 @@ dependencies:
   # 满意度评价 https://pub.dev/packages/flutter_rating_bar
   # flutter_rating_bar: ^4.0.0
   # 手机语言 https://pub.dev/packages/devicelocale
-  devicelocale: ^0.5.5
+  # devicelocale: ^0.5.5
   # https://pub.dev/packages/package_info
   package_info: ^2.0.2
   # 输入框 https://pub.dev/packages/extended_text_field
