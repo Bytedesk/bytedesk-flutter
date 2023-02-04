@@ -524,7 +524,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                           ),
                           // child: _textComposerWidget(),
                           // FIXME: 表情在web和Android有问题？暂时仅在iOS启用表情
-                          child: (BytedeskUtils.isWeb || BytedeskUtils.isAndroid) ? _textComposerWidget() : _chatInput(),
+                          // child: (BytedeskUtils.isWeb || BytedeskUtils.isAndroid) ? _textComposerWidget() : _chatInput(),
+                          child: _chatInput()
                         ),
                       ],
                     ),

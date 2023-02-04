@@ -2,17 +2,18 @@ import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
-import 'package:bytedesk_kefu_example/notification/custom_notification.dart';
-import 'package:bytedesk_kefu_example/page/chat_type_page.dart';
-import 'package:bytedesk_kefu_example/page/history_thread_page.dart';
-import 'package:bytedesk_kefu_example/page/online_status_page.dart';
-import 'package:bytedesk_kefu_example/page/setting_page.dart';
-import 'package:bytedesk_kefu_example/page/switch_user_page.dart';
-import 'package:bytedesk_kefu_example/page/user_info_page.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
 // import 'package:vibration/vibration.dart';
 // import 'package:audioplayers/audioplayers.dart';
+
+import 'notification/custom_notification.dart';
+import 'page/chat_type_page.dart';
+import 'page/history_thread_page.dart';
+import 'page/online_status_page.dart';
+import 'page/setting_page.dart';
+import 'page/user_info_page.dart';
+import 'page/switch_user_page.dart';
 
 void main() {
   // runApp(MyApp());

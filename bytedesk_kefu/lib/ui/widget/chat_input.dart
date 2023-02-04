@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bytedesk_kefu/ui/widget/emoji_picker_view.dart';
 import 'package:bytedesk_kefu/ui/widget/image_button.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/emoji_picker_flutter.dart';
 // import 'package:bytedesk_kefu/ui/widget/send_button_visibility_mode.dart';
 // import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
@@ -11,13 +12,8 @@ import 'package:flutter/services.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 // import 'package:flutter_chat_ui/src/widgets/inherited_chat_theme.dart';
-// import 'package:imboy/config/init.dart';
-// import 'package:imboy/service/websocket.dart';
-// import 'package:imboy/store/model/message_model.dart';
 
-/**
- * 部分代码来自该项目，感谢作者 CaiJingLong https://github.com/CaiJingLong/flutter_like_wechat_input
- */
+// 部分代码来自该项目，感谢作者 CaiJingLong https://github.com/CaiJingLong/flutter_like_wechat_input
 enum InputType {
   text,
   voice,
@@ -388,11 +384,9 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     );
   }
 
-  /**
-   *
-   */
+  // FIXME: 表情在web和Android有问题？暂时不在web和Android启用表情
   Widget buildEmojiButton() {
-    return ImageButton(
+    return (BytedeskUtils.isWeb || BytedeskUtils.isAndroid) ? Text('') : ImageButton(
       image: AssetImage(inputType != InputType.emoji
           ? 'assets/images/chat/input_emoji.png'
           : 'assets/images/chat/input_keyboard.png'),
@@ -406,10 +400,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     );
   }
 
-  /**
-   * 更多输入消息类型入口
-   * More input message types entries
-   */
+  // 更多输入消息类型入口
   Widget buildExtra() {
     return ImageButton(
       image: AssetImage('assets/images/chat/input_extra.png'),
@@ -423,26 +414,23 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     );
   }
 
-  /**
-   * 实现换行效果
-   * Implement line breaks
-   */
-  void _handleNewLine() {
-    final _newValue = '${_textController.text}\r\n';
-    _textController.value = TextEditingValue(
-      text: _newValue,
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: _newValue.length),
-      ),
-    );
-  }
+  // 实现换行效果
+  // void _handleNewLine() {
+  //   final _newValue = '${_textController.text}\r\n';
+  //   _textController.value = TextEditingValue(
+  //     text: _newValue,
+  //     selection: TextSelection.fromPosition(
+  //       TextPosition(offset: _newValue.length),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     final _query = MediaQuery.of(context);
 
-    final isAndroid = Theme.of(context).platform == TargetPlatform.android;
-    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+    // final isAndroid = Theme.of(context).platform == TargetPlatform.android;
+    // final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
     return InkWell(
       child: Focus(

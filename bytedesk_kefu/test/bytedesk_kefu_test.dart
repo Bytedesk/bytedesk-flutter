@@ -1,23 +1,29 @@
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
+import 'package:bytedesk_kefu/bytedesk_kefu_platform_interface.dart';
+import 'package:bytedesk_kefu/bytedesk_kefu_method_channel.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
+class MockBytedeskKefuPlatform
+    with MockPlatformInterfaceMixin
+    implements BytedeskKefuPlatform {
+
+  @override
+  Future<String?> getPlatformVersion() => Future.value('42');
+}
 
 void main() {
-  const MethodChannel channel = MethodChannel('bytedesk_kefu');
+  final BytedeskKefuPlatform initialPlatform = BytedeskKefuPlatform.instance;
 
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
-    });
-  });
-
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
+  test('$MethodChannelBytedeskKefu is the default instance', () {
+    expect(initialPlatform, isInstanceOf<MethodChannelBytedeskKefu>());
   });
 
   test('getPlatformVersion', () async {
-    expect(await BytedeskKefu.platformVersion, '42');
+    BytedeskKefu bytedeskKefuPlugin = BytedeskKefu();
+    MockBytedeskKefuPlatform fakePlatform = MockBytedeskKefuPlatform();
+    BytedeskKefuPlatform.instance = fakePlatform;
+
+    expect(await bytedeskKefuPlugin.getPlatformVersion(), '42');
   });
 }

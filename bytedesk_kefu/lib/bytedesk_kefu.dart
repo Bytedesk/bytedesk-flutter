@@ -1,3 +1,5 @@
+
+import 'bytedesk_kefu_platform_interface.dart';
 import 'dart:async';
 // import 'dart:io';
 
@@ -8,15 +10,15 @@ import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/thread.dart';
 import 'package:bytedesk_kefu/model/userJsonResult.dart';
 import 'package:bytedesk_kefu/model/wechatResult.dart';
-import 'package:bytedesk_kefu/ui/channel/provider/channel_provider.dart';
+// import 'package:bytedesk_kefu/ui/channel/provider/channel_provider.dart';
 import 'package:bytedesk_kefu/ui/chat/page/chat_webview_page.dart';
 import 'package:bytedesk_kefu/ui/chat/provider/chat_im_provider.dart';
 import 'package:bytedesk_kefu/ui/chat/provider/chat_thread_provider.dart';
-import 'package:bytedesk_kefu/ui/faq/provider/help_provider.dart';
-import 'package:bytedesk_kefu/ui/feedback/provider/feedback_provider.dart';
+// import 'package:bytedesk_kefu/ui/faq/provider/help_provider.dart';
+// import 'package:bytedesk_kefu/ui/feedback/provider/feedback_provider.dart';
 import 'package:bytedesk_kefu/ui/leavemsg/provider/leavemsg_provider.dart';
 import 'package:bytedesk_kefu/ui/ticket/provider/ticket_provider.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 
 import 'package:bytedesk_kefu/http/bytedesk_user_api.dart';
 import 'package:bytedesk_kefu/ui/chat/provider/chat_kf_provider.dart';
@@ -28,11 +30,8 @@ import 'package:flutter/material.dart';
 import 'model/user.dart';
 
 class BytedeskKefu {
-  //
-  static const MethodChannel _channel = const MethodChannel('bytedesk_kefu');
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  Future<String?> getPlatformVersion() {
+    return BytedeskKefuPlatform.instance.getPlatformVersion();
   }
 
   // 下面为 自定义接口
@@ -345,18 +344,18 @@ class BytedeskKefu {
   }
 
   // 常见问题列表
-  static void showFaq(BuildContext context, String uid) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new HelpProvider(uid: uid);
-    }));
-  }
+  // static void showFaq(BuildContext context, String uid) {
+  //   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+  //     return new HelpProvider(uid: uid);
+  //   }));
+  // }
 
   // 意见反馈
-  static void showFeedback(BuildContext context, String uid) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new FeedbackProvider(uid: uid);
-    }));
-  }
+  // static void showFeedback(BuildContext context, String uid) {
+  //   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+  //     return new FeedbackProvider(uid: uid);
+  //   }));
+  // }
 
   // TODO: 提交工单
   static void showTicket(BuildContext context, String uid) {
@@ -379,13 +378,13 @@ class BytedeskKefu {
   }
 
   // 频道消息
-  static void showChannel(BuildContext context, Thread thread) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChannelProvider(
-        thread: thread,
-      );
-    }));
-  }
+  // static void showChannel(BuildContext context, Thread thread) {
+  //   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
+  //     return new ChannelProvider(
+  //       thread: thread,
+  //     );
+  //   }));
+  // }
 
   // 获取个人资料
   static Future<User> getProfile() async {
@@ -547,4 +546,5 @@ class BytedeskKefu {
       String mobile, String unionid) async {
     return BytedeskUserHttpApi().bindWeChatMobile(mobile, unionid);
   }
+
 }

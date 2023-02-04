@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // 查询技能组和指定客服账号的在线状态
 class OnlineStatusPage extends StatefulWidget {
-  OnlineStatusPage({Key? key}) : super(key: key);
+  const OnlineStatusPage({Key? key}) : super(key: key);
 
   @override
   _OnlineStatusPageState createState() => _OnlineStatusPageState();
@@ -32,7 +32,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('在线状态'),
+        title: const Text('在线状态'),
         elevation: 0,
       ),
       body: ListView(
@@ -40,14 +40,14 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
         context: context,
         tiles: [
           ListTile(
-            title: Text('技能组在线状态'),
+            title: const Text('技能组在线状态'),
             subtitle: Text(_workGroupStatus),
             onTap: () {
               _getWorkGroupStatus();
             },
           ),
           ListTile(
-            title: Text('客服在线状态'),
+            title: const Text('客服在线状态'),
             subtitle: Text(_agentStatus),
             onTap: () {
               _getAgentStatus();

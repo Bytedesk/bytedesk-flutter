@@ -27,9 +27,12 @@ bytedesk flutter helpdesk sdk
 
 ## Getting Started
 
-### Zero Step: Copy Assets dir from bytedesk_demo
+### Zero Step: Copy assets dir from bytedesk_demo and add to pubspec.yaml
 
 ```dart
+//
+bytedesk_kefu: ^1.4.6
+//
 assets:
     - assets/audio/
     - assets/images/chat/
@@ -79,7 +82,7 @@ bytedesk_kefu:
 
 ### Support
 
-- [官网](https://www.bytedesk.com/)
+- [官网kefux.com](https://www.kefux.com/)
 - QQ 3Group: 825257535
 - Follow Us：
 - <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/luobosi_mp.png?raw=true" width="250">

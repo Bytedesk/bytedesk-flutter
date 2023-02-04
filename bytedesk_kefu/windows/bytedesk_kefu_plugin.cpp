@@ -1,4 +1,4 @@
-#include "include/bytedesk_kefu/bytedesk_kefu_plugin.h"
+#include "bytedesk_kefu_plugin.h"
 
 // This must be included before many other Windows headers.
 #include <windows.h>
@@ -10,26 +10,10 @@
 #include <flutter/plugin_registrar_windows.h>
 #include <flutter/standard_method_codec.h>
 
-#include <map>
 #include <memory>
 #include <sstream>
 
-namespace {
-
-class BytedeskKefuPlugin : public flutter::Plugin {
- public:
-  static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
-
-  BytedeskKefuPlugin();
-
-  virtual ~BytedeskKefuPlugin();
-
- private:
-  // Called when a method is called on this plugin's channel from Dart.
-  void HandleMethodCall(
-      const flutter::MethodCall<flutter::EncodableValue> &method_call,
-      std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
-};
+namespace bytedesk_kefu {
 
 // static
 void BytedeskKefuPlugin::RegisterWithRegistrar(
@@ -72,11 +56,4 @@ void BytedeskKefuPlugin::HandleMethodCall(
   }
 }
 
-}  // namespace
-
-void BytedeskKefuPluginRegisterWithRegistrar(
-    FlutterDesktopPluginRegistrarRef registrar) {
-  BytedeskKefuPlugin::RegisterWithRegistrar(
-      flutter::PluginRegistrarManager::GetInstance()
-          ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
-}
+}  // namespace bytedesk_kefu

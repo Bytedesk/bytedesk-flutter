@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/widgets.dart';
 // import 'package:get/get.dart';
@@ -20,14 +20,11 @@ class ExtraItem extends StatelessWidget {
   final double? width;
   final double? height;
   final String title;
-  
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: this.onPressed ?? () => {
-        print('功能暂未实现')
-      },
+      onTap: this.onPressed ?? () => {print('功能暂未实现')},
       child: Padding(
         padding: EdgeInsets.only(left: 15, top: 13, right: 15, bottom: 0),
         child: Column(
@@ -87,13 +84,14 @@ class ExtraItems extends StatefulWidget {
 }
 
 class _ExtraItemsState extends State<ExtraItems> {
-  int _current = 0;
-  CarouselController _controller = CarouselController();
+  // int _current = 0;
+  // CarouselController _controller = CarouselController();
 
   @override
   Widget build(BuildContext context) {
-    var items = [
-      Column(
+    return Padding(
+      padding: EdgeInsets.only(left: 8),
+      child: Column(
         children: <Widget>[
           Row(
             children: [
@@ -124,102 +122,101 @@ class _ExtraItemsState extends State<ExtraItems> {
               // ),
             ],
           ),
-          Row(
-            children: [
-              // TODO: 选择文件
-              // ExtraItem(
-              //   title: "文件",
-              //   image: AssetImage('assets/images/chat/extra_file.webp'),
-              //   onPressed: widget.handleFileSelection,
-              // ),
-              // ExtraItem(
-              //   title: "语音输入",
-              //   image: AssetImage('assets/images/chat/extra_voice.webp'),
-              //   onPressed: null,
-              // ),
-              // ExtraItem(
-              //   title: "收藏",
-              //   image: AssetImage('assets/images/chat/extra_favorite.webp'),
-              //   onPressed: null,
-              // ),
-              // ExtraItem(
-              //   title: "个人名片",
-              //   image: AssetImage('assets/images/chat/extra_card.webp'),
-              //   onPressed: null,
-              // ),
-            ],
-          )
         ],
       ),
-      // Column(
-      //   children: <Widget>[
-      //     Row(children: [
-      //       ExtraItem(
-      //         title: "文件",
-      //         image: AssetImage('assets/images/chat/extra_file.webp'),
-      //         onPressed: widget.handleFileSelection,
-      //       ),
-      //       ExtraItem(
-      //         title: "卡券",
-      //         image: AssetImage('assets/images/chat/extra_wallet.png'),
-      //         onPressed: null,
-      //       ),
-      //     ]),
-      //   ],
-      // ),
-    ];
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: CarouselSlider(
-            options: CarouselOptions(
-              height: 50, // Get.height,
-              viewportFraction: 1.0,
-              aspectRatio: 2.0,
-              scrollDirection: Axis.horizontal,
-              disableCenter: true,
-              initialPage: 1,
-              enableInfiniteScroll: false,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              },
-            ),
-            items: items.map((tab) {
-              return Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: tab,
-              );
-            }).toList(),
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: items.asMap().entries.map((entry) {
-            return GestureDetector(
-              onTap: () => _controller.animateToPage(entry.key),
-              child: Container(
-                width: 10.0,
-                height: 10.0,
-                margin: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 6.0,
-                ),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: (Theme.of(context).brightness == Brightness.dark
-                          ? Colors.white
-                          : Colors.black)
-                      .withOpacity(_current == entry.key ? 0.7 : 0.2),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ],
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   var items = [
+  //     Column(
+  //       children: <Widget>[
+  //         Row(
+  //           children: [
+  //             ExtraItem(
+  //               title: "照片",
+  //               image: AssetImage('assets/images/chat/extra_photo.webp'),
+  //               onPressed: widget.handleImageSelection,
+  //             ),
+  //             ExtraItem(
+  //               title: "拍摄",
+  //               image: AssetImage('assets/images/chat/extra_camera.webp'),
+  //               onPressed: widget.handlePickerSelection,
+  //             ),
+  //             ExtraItem(
+  //               title: "上传视频",
+  //               image: AssetImage('assets/images/chat/extra_media.webp'),
+  //               onPressed: widget.handleUploadVideo,
+  //             ),
+  //             ExtraItem(
+  //               title: "录制视频",
+  //               image: AssetImage('assets/images/chat/extra_videocall.webp'),
+  //               onPressed: widget.handleCaptureVideo,
+  //             ),
+  //             // ExtraItem(
+  //             //   title: "位置",
+  //             //   image: AssetImage('assets/images/chat/extra_localtion.webp'),
+  //             //   onPressed: null,
+  //             // ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   ];
+  //   return Column(
+  //     children: <Widget>[
+  //       Expanded(
+  //         child: CarouselSlider(
+  //           options: CarouselOptions(
+  //             height: 50, // Get.height,
+  //             viewportFraction: 1.0,
+  //             aspectRatio: 2.0,
+  //             scrollDirection: Axis.horizontal,
+  //             disableCenter: true,
+  //             initialPage: 1,
+  //             enableInfiniteScroll: false,
+  //             onPageChanged: (index, reason) {
+  //               setState(() {
+  //                 _current = index;
+  //               });
+  //             },
+  //           ),
+  //           items: items.map((tab) {
+  //             return Padding(
+  //               padding: EdgeInsets.only(left: 8),
+  //               child: tab,
+  //             );
+  //           }).toList(),
+  //         ),
+  //       ),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: items.asMap().entries.map((entry) {
+  //           return GestureDetector(
+  //             onTap: () => _controller.animateToPage(entry.key),
+  //             child: Container(
+  //               width: 10.0,
+  //               height: 10.0,
+  //               margin: EdgeInsets.symmetric(
+  //                 vertical: 8.0,
+  //                 horizontal: 6.0,
+  //               ),
+  //               decoration: BoxDecoration(
+  //                 shape: BoxShape.circle,
+  //                 color: (Theme.of(context).brightness == Brightness.dark
+  //                         ? Colors.white
+  //                         : Colors.black)
+  //                     .withOpacity(_current == entry.key ? 0.7 : 0.2),
+  //               ),
+  //             ),
+  //           );
+  //         }).toList(),
+  //       ),
+  //     ],
+  //   );
+  // }
+
 }
 
 class AppColors {

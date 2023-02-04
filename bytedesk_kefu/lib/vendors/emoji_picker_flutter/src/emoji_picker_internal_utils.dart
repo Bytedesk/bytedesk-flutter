@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:sp_util/sp_util.dart';
+
 import '../emoji_picker_flutter.dart';
 import '../src/emoji_skin_tones.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'emoji_lists.dart' as emoji_list;
 import 'recent_emoji.dart';
 
@@ -17,22 +19,25 @@ class EmojiPickerInternalUtils {
 
   /// Returns true when local emoji list is outdated
   Future<bool> isEmojiUpdateAvailable() async {
-    final prefs = await SharedPreferences.getInstance();
-    var emojiVersion = prefs.getInt(_emojiVersion) ?? 0;
+    // final prefs = await SharedPreferences.getInstance();
+    // var emojiVersion = prefs.getInt(_emojiVersion) ?? 0;
+    var emojiVersion = SpUtil.getInt(_emojiVersion) ?? 0;
     // != to support downgrading of emoji_picker versions
     return emoji_list.version != emojiVersion;
   }
 
   /// Updates local emoji version with current version
   Future updateEmojiVersion() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setInt(_emojiVersion, emoji_list.version);
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setInt(_emojiVersion, emoji_list.version);
+    SpUtil.putInt(_emojiVersion, emoji_list.version);
   }
 
   /// Restore locally cached emoji
   Future<Map<String, String>?> _restoreFilteredEmojis(String title) async {
-    final prefs = await SharedPreferences.getInstance();
-    var emojiJson = prefs.getString(title);
+    // final prefs = await SharedPreferences.getInstance();
+    // var emojiJson = prefs.getString(title);
+    var emojiJson = SpUtil.getString(title);
     if (emojiJson == null) {
       return null;
     }
@@ -97,8 +102,9 @@ class EmojiPickerInternalUtils {
   Future<void> _cacheFilteredEmojis(
       String title, Map<String, String> emojis) async {
     var emojiJson = jsonEncode(emojis);
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString(title, emojiJson);
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setString(title, emojiJson);
+    SpUtil.putString(title, emojiJson);
   }
 
   /// Check if emoji is available on current platform
@@ -127,8 +133,9 @@ class EmojiPickerInternalUtils {
 
   /// Returns list of recently used emoji from cache
   Future<List<RecentEmoji>> getRecentEmojis() async {
-    final prefs = await SharedPreferences.getInstance();
-    var emojiJson = prefs.getString('recent');
+    // final prefs = await SharedPreferences.getInstance();
+    // var emojiJson = prefs.getString('recent');
+    var emojiJson = SpUtil.getString("recent");
     if (emojiJson == null) {
       return [];
     }
@@ -163,8 +170,9 @@ class EmojiPickerInternalUtils {
     recentEmoji =
         recentEmoji.sublist(0, min(config.recentsLimit, recentEmoji.length));
     // save locally
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('recent', jsonEncode(recentEmoji));
+    // final prefs = await SharedPreferences.getInstance();
+    // prefs.setString('recent', jsonEncode(recentEmoji));
+    SpUtil.putString('recent', jsonEncode(recentEmoji));
 
     return recentEmoji;
   }
