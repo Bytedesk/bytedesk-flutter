@@ -11,7 +11,7 @@ import './bloc.dart';
 
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   //
-  final MessageRepository messageRepository = new MessageRepository();
+  final MessageRepository messageRepository = MessageRepository();
 
   MessageBloc() : super(InitialMessageState()) {
     on<ReceiveMessageEvent>(_mapRefreshCourseToState);
@@ -30,31 +30,6 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<MessageAnswerEvent>(_mapMessageAnswerToState);
     on<RateAnswerEvent>(_mapRateAnswerToState);
   }
-
-  // @override
-  // void mapEventToState(MessageEvent event, Emitter<MessageState> emit) async {
-  //   if (event is ReceiveMessageEvent) {
-  //     yield* _mapRefreshCourseToState(event);
-  //   } else if (event is UploadImageEvent) {
-  //     yield* _mapUploadImageToState(event);
-  //   } else if (event is UploadVideoEvent) {
-  //     yield* _mapUploadVideoToState(event);
-  //   } else if (event is QueryAnswerEvent) {
-  //     yield* _mapQueryAnswerToState(event);
-  //   } else if (event is MessageAnswerEvent) {
-  //     yield* _mapMessageAnswerToState(event);
-  //   } else if (event is RateAnswerEvent) {
-  //     yield* _mapRateAnswerToState(event);
-  //   } else if (event is LoadHistoryMessageEvent) {
-  //     yield* _mapLoadHistoryMessageToState(event);
-  //   } else if (event is LoadTopicMessageEvent) {
-  //     yield* _mapLoadTopicMessageToState(event);
-  //   } else if (event is LoadChannelMessageEvent) {
-  //     yield* _mapLoadChannelMessageToState(event);
-  //   } else if (event is SendMessageRestEvent) {
-  //     yield* _mapSendMessageRestToState(event);
-  //   }
-  // }
 
   void _mapRefreshCourseToState(
       ReceiveMessageEvent event, Emitter<MessageState> emit) async {

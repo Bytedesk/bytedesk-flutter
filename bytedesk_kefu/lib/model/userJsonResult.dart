@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:bytedesk_kefu/model/user.dart';
 import 'package:equatable/equatable.dart';
 
@@ -7,7 +9,7 @@ class UserJsonResult extends Equatable {
   final int? statusCode;
   final User? user;
 
-  UserJsonResult({this.message, this.statusCode, this.user}) : super();
+  const UserJsonResult({this.message, this.statusCode, this.user}) : super();
 
   static UserJsonResult fromJson(dynamic json) {
     return UserJsonResult(
@@ -17,5 +19,5 @@ class UserJsonResult extends Equatable {
   }
 
   @override
-  List<Object> get props => [this.user!.uid!];
+  List<Object> get props => [user!.uid!];
 }

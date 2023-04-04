@@ -8,21 +8,12 @@ import 'package:bloc/bloc.dart';
 
 class HelpBloc extends Bloc<HelpEvent, HelpState> {
   //
-  final HelpRepository helpRepository = new HelpRepository();
+  final HelpRepository helpRepository = HelpRepository();
 
-  HelpBloc() : super(new UnHelpState()) {
+  HelpBloc() : super(const UnHelpState()) {
     on<GetHelpCategoryEvent>(_mapGetHelpCategoryToState);
     on<GetHelpArticleEvent>(_mapGetHelpArticleState);
   }
-
-  // @override
-  // Stream<HelpState> mapEventToState(HelpEvent event) async* {
-  //   if (event is GetHelpCategoryEvent) {
-  //     yield* _mapGetHelpCategoryToState(event);
-  //   } else if (event is GetHelpArticleEvent) {
-  //     yield* _mapGetHelpArticleState(event);
-  //   }
-  // }
 
   void _mapGetHelpCategoryToState(
       GetHelpCategoryEvent event, Emitter<HelpState> emit) async {

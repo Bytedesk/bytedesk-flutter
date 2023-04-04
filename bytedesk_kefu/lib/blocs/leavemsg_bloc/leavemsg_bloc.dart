@@ -6,23 +6,12 @@ import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class LeaveMsgBloc extends Bloc<LeaveMsgEvent, LeaveMsgState> {
   //
-  final LeaveMsgRepository leaveMsgRepository = new LeaveMsgRepository();
+  final LeaveMsgRepository leaveMsgRepository = LeaveMsgRepository();
 
-  LeaveMsgBloc() : super(new UnLeaveMsgState()) {
+  LeaveMsgBloc() : super(const UnLeaveMsgState()) {
     on<SubmitLeaveMsgEvent>(_mapSubmitLeaveMsgToState);
     on<UploadImageEvent>(_mapUploadImageToState);
   }
-
-  // @override
-  // Stream<LeaveMsgState> mapEventToState(
-  //   LeaveMsgEvent event,
-  // ) async* {
-  //   if (event is SubmitLeaveMsgEvent) {
-  //     yield* _mapSubmitLeaveMsgToState(event);
-  //   } else if (event is UploadImageEvent) {
-  //     yield* _mapUploadImageToState(event);
-  //   }
-  // }
 
   void _mapSubmitLeaveMsgToState(
       SubmitLeaveMsgEvent event, Emitter<LeaveMsgState> emit) async {
@@ -30,7 +19,7 @@ class LeaveMsgBloc extends Bloc<LeaveMsgEvent, LeaveMsgState> {
     try {
       await leaveMsgRepository.submitLeaveMsg(event.wid, event.aid, event.type,
           event.mobile, event.email, event.content);
-      emit(LeaveMsgSubmitSuccessState());
+      emit(const LeaveMsgSubmitSuccessState());
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(LeaveMsgSubmitError());

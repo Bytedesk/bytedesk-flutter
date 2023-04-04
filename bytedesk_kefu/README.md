@@ -31,12 +31,34 @@ bytedesk flutter helpdesk sdk
 
 ```dart
 //
-bytedesk_kefu: ^1.4.6
+bytedesk_kefu: ^1.5.1
 //
 assets:
     - assets/audio/
     - assets/images/chat/
     - assets/images/feedback/
+```
+
+### iOS
+
+Add the following keys to your **Info.plist** file, located in **ios/Runner/Info.plist**:
+
+```dart
+<key>NSLocalNetworkUsageDescription</key>
+<string>Looking for local tcp Bonjour service</string>
+<key>NSBonjourServices</key>
+<array>
+  <string>mqtt.tcp</string>
+</array>
+```
+
+### Android
+
+Add the following Android permissions to the **AndroidManifest.xml** file, located in **android/app/src/main/AndroidManifest.xml**:
+
+```dart
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
 
 ### First Step: Register Account

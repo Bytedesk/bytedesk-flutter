@@ -13,25 +13,25 @@ abstract class MessageEvent extends Equatable {
 class ReceiveMessageEvent extends MessageEvent {
   final Message? message;
 
-  ReceiveMessageEvent({@required this.message}) : super();
+  const ReceiveMessageEvent({@required this.message}) : super();
 }
 
 class UploadImageEvent extends MessageEvent {
   final String? filePath;
 
-  UploadImageEvent({@required this.filePath}) : super();
+  const UploadImageEvent({@required this.filePath}) : super();
 }
 
 class UploadVideoEvent extends MessageEvent {
   final String? filePath;
 
-  UploadVideoEvent({@required this.filePath}) : super();
+  const UploadVideoEvent({@required this.filePath}) : super();
 }
 
 class SendMessageRestEvent extends MessageEvent {
   final String? json;
 
-  SendMessageRestEvent({@required this.json}) : super();
+  const SendMessageRestEvent({@required this.json}) : super();
 }
 
 class LoadHistoryMessageEvent extends MessageEvent {
@@ -39,7 +39,7 @@ class LoadHistoryMessageEvent extends MessageEvent {
   final int? page;
   final int? size;
 
-  LoadHistoryMessageEvent(
+  const LoadHistoryMessageEvent(
       {@required this.uid, @required this.page, @required this.size})
       : super();
 }
@@ -49,7 +49,7 @@ class LoadTopicMessageEvent extends MessageEvent {
   final int? page;
   final int? size;
 
-  LoadTopicMessageEvent(
+  const LoadTopicMessageEvent(
       {@required this.topic, @required this.page, @required this.size})
       : super();
 }
@@ -59,7 +59,7 @@ class LoadChannelMessageEvent extends MessageEvent {
   final int? page;
   final int? size;
 
-  LoadChannelMessageEvent(
+  const LoadChannelMessageEvent(
       {@required this.cid, @required this.page, @required this.size})
       : super();
 }
@@ -69,7 +69,7 @@ class LoadUnreadMessagesEvent extends MessageEvent {
   final int? page;
   final int? size;
 
-  LoadUnreadMessagesEvent(
+  const LoadUnreadMessagesEvent(
       {@required this.wid, @required this.page, @required this.size})
       : super();
 }
@@ -78,7 +78,7 @@ class LoadUnreadVisitorMessagesEvent extends MessageEvent {
   final int? page;
   final int? size;
 
-  LoadUnreadVisitorMessagesEvent(
+  const LoadUnreadVisitorMessagesEvent(
       {@required this.page, @required this.size})
       : super();
 }
@@ -87,7 +87,7 @@ class LoadUnreadAgentMessagesEvent extends MessageEvent {
   final int? page;
   final int? size;
 
-  LoadUnreadAgentMessagesEvent({@required this.page, @required this.size})
+  const LoadUnreadAgentMessagesEvent({@required this.page, @required this.size})
       : super();
 }
 
@@ -96,14 +96,14 @@ class QueryAnswerEvent extends MessageEvent {
   final String? aid;
   final String? mid;
 
-  QueryAnswerEvent({@required this.tid, @required this.aid, @required this.mid}) : super();
+  const QueryAnswerEvent({@required this.tid, @required this.aid, @required this.mid}) : super();
 }
 
 class QueryCategoryEvent extends MessageEvent {
   final String? tid;
   final String? cid;
 
-  QueryCategoryEvent({@required this.tid, @required this.cid})
+  const QueryCategoryEvent({@required this.tid, @required this.cid})
       : super();
 }
 
@@ -113,7 +113,7 @@ class MessageAnswerEvent extends MessageEvent {
   // final String? aid;
   final String? content;
 
-  MessageAnswerEvent(
+  const MessageAnswerEvent(
       {
         // @required this.type,
       @required this.wid,
@@ -127,6 +127,6 @@ class RateAnswerEvent extends MessageEvent {
   final String? mid;
   final bool? rate;
 
-  RateAnswerEvent({@required this.aid, @required this.mid, @required this.rate})
+  const RateAnswerEvent({@required this.aid, @required this.mid, @required this.rate})
       : super();
 }

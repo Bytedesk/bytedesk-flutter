@@ -12,7 +12,7 @@ class User extends Equatable {
   final String? birthday;
   final String? subDomain;
 
-  User(
+  const User(
       {this.uid,
       this.username,
       this.nickname,

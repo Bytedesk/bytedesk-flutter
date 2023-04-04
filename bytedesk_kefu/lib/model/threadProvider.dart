@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 
 // import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
@@ -46,9 +48,7 @@ class ThreadProvider {
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database.
         return db.execute(
-          "CREATE TABLE $tableThread($columnId INTEGER PRIMARY KEY autoincrement, " +
-              "$columnTid TEXT, $columnTopic TEXT, $columnWid TEXT, $columnUid TEXT, $columnNickname TEXT, $columnAvatar TEXT, $columnContent TEXT, $columnTimestamp TEXT, " +
-              "$columnUnreadCount integer, $columnType TEXT, $columnClient TEXT,  $columnCurrentUid TEXT)",
+          "CREATE TABLE $tableThread($columnId INTEGER PRIMARY KEY autoincrement, $columnTid TEXT, $columnTopic TEXT, $columnWid TEXT, $columnUid TEXT, $columnNickname TEXT, $columnAvatar TEXT, $columnContent TEXT, $columnTimestamp TEXT, $columnUnreadCount integer, $columnType TEXT, $columnClient TEXT,  $columnCurrentUid TEXT)",
         );
       },
       // Set the version. This executes the onCreate function and provides a

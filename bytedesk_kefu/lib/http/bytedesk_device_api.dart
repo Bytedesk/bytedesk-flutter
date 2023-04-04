@@ -2,7 +2,7 @@ import 'dart:convert';
 // import 'dart:io';
 
 import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
-import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
+// import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 // import 'package:device_info/device_info.dart';
 // import 'package:devicelocale/devicelocale.dart';
@@ -87,7 +87,7 @@ class BytedeskDeviceHttpApi extends BytedeskBaseHttpApi {
     // //
     // // final initUrl = '$baseUrl/api/fingerprint2/ios/deviceInfo';
     // final initUrl =
-    //     Uri.http(BytedeskConstants.host, '/api/fingerprint2/ios/deviceInfo');
+    //     BytedeskUtils.getHostUri('/api/fingerprint2/ios/deviceInfo');
     // await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
   }
 
@@ -103,8 +103,8 @@ class BytedeskDeviceHttpApi extends BytedeskBaseHttpApi {
     });
     //
     // final initUrl = '$baseUrl/api/push/update/token';
-    final initUrl = Uri.http(BytedeskConstants.host, '/api/push/update/token');
-    await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+    final initUrl = BytedeskUtils.getHostUri('/api/push/update/token');
+    await httpClient.post(initUrl, headers: getHeaders(), body: body);
   }
 
   // 删除设备信息
@@ -113,8 +113,8 @@ class BytedeskDeviceHttpApi extends BytedeskBaseHttpApi {
     var body = json.encode({"build": build, "client": client});
     //
     // final initUrl = '$baseUrl/api/push/delete/token';
-    final initUrl = Uri.http(BytedeskConstants.host, '/api/push/delete/token');
-    await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+    final initUrl = BytedeskUtils.getHostUri('/api/push/delete/token');
+    await httpClient.post(initUrl, headers: getHeaders(), body: body);
   }
 
   // Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {

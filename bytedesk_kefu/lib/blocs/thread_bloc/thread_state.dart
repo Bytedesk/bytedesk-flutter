@@ -5,7 +5,6 @@ import 'package:bytedesk_kefu/model/model.dart';
 
 @immutable
 abstract class ThreadState extends Equatable {
-  // ThreadState([List props = const []]) : super(props);
   const ThreadState();
 
   @override

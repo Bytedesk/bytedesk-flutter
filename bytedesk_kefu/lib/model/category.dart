@@ -5,7 +5,7 @@ class Category extends Equatable {
   final String? cid;
   final String? name;
   //
-  Category({this.cid, this.name}) : super();
+  const Category({this.cid, this.name}) : super();
   //
   static Category fromJson(dynamic json) {
     return Category(

@@ -2,7 +2,7 @@ import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class TicketState extends Equatable {
-  TicketState();
+  const TicketState();
 
   @override
   List<Object> get props => [];
@@ -10,7 +10,7 @@ abstract class TicketState extends Equatable {
 
 /// UnInitialized
 class UnTicketState extends TicketState {
-  UnTicketState();
+  const UnTicketState();
 
   @override
   String toString() => 'UnTicketState';
@@ -35,7 +35,7 @@ class TicketLoadError extends TicketState {
 class TicketCategoryState extends TicketState {
   final List<HelpCategory> categoryList;
 
-  TicketCategoryState(this.categoryList) : super();
+  const TicketCategoryState(this.categoryList) : super();
 
   @override
   String toString() => 'GetTicketCategoryState';
@@ -44,7 +44,7 @@ class TicketCategoryState extends TicketState {
 class UploadImageSuccess extends TicketState {
   //
   final String url;
-  UploadImageSuccess(this.url);
+  const UploadImageSuccess(this.url);
   @override
   List<Object> get props => [url];
   @override

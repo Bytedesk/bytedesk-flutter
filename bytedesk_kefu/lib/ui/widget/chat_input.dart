@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bytedesk_kefu/ui/widget/emoji_picker_view.dart';
 import 'package:bytedesk_kefu/ui/widget/image_button.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
-import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/emoji_picker_flutter.dart';
+import './emoji_picker_flutter/emoji_picker_flutter.dart';
 // import 'package:bytedesk_kefu/ui/widget/send_button_visibility_mode.dart';
 // import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 // import 'package:emoji_picker_flutter/src/emoji_view_state.dart';
@@ -22,21 +22,21 @@ enum InputType {
 }
 
 Widget _buildVoiceButton(BuildContext context) {
-  return Container(
+  return SizedBox(
     width: double.infinity,
     child: TextButton(
       // color: Colors.white70,
       onPressed: () {
         // Get.snackbar('Tips', '语音输入功能暂无实现');
       },
-      child: Text(
+      child: const Text(
         'chat_hold_down_talk',
       ),
     ),
   );
 }
 
-typedef void OnSend(String text);
+typedef OnSend = void Function(String text);
 
 InputType _initType = InputType.text;
 
@@ -95,9 +95,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   late AnimationController _bottomHeightController;
   bool emojiShowing = false;
-  /**
-   * https://stackoverflow.com/questions/60057840/flutter-how-to-insert-text-in-middle-of-text-field-text
-   */
+  // https://stackoverflow.com/questions/60057840/flutter-how-to-insert-text-in-middle-of-text-field-text
   void _setText(String val) {
     String text = _textController.text;
     TextSelection textSelection = _textController.selection;
@@ -130,7 +128,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
 
     _bottomHeightController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         milliseconds: 150,
       ),
     );
@@ -190,11 +188,9 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     }
   }
 
-  /**
-   * 语音按钮事件
-   */
+  // 语音按钮事件
   Future<void> _voiceBtnOnPressed(InputType type) async {
-    if (type == this.inputType) {
+    if (type == inputType) {
       return;
     }
     if (type != InputType.text) {
@@ -204,7 +200,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     }
 
     setState(() {
-      this.inputType = type;
+      inputType = type;
     });
   }
 
@@ -215,7 +211,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     if (type == inputType) {
       return;
     }
-    this.inputType = type;
+    inputType = type;
     // InputTypeNotification(type).dispatch(context);
 
     if (type != InputType.text) {
@@ -232,8 +228,8 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     }
 
     setState(() {
-      this.emojiShowing = type == InputType.emoji;
-      this.inputType;
+      emojiShowing = type == InputType.emoji;
+      inputType;
     });
   }
 
@@ -253,17 +249,17 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
   Widget _buildBottomContainer({required Widget child}) {
     return SizeTransition(
       sizeFactor: _bottomHeightController,
-      child: Container(
-        child: child,
+      child: SizedBox(
         height: _softKeyHeight,
+        child: child,
       ),
     );
   }
 
   Widget _buildBottomItems() {
-    if (this.inputType == InputType.extra) {
-      return widget.extraWidget ?? Center(child: Text("其他item"));
-    } else if (this.inputType == InputType.emoji) {
+    if (inputType == InputType.extra) {
+      return widget.extraWidget ?? const Center(child: Text("其他item"));
+    } else if (inputType == InputType.emoji) {
       return Offstage(
         offstage: !emojiShowing,
         child: SizedBox(
@@ -279,14 +275,14 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                   TextPosition(offset: _textController.text.length),
                 );
             },
-            config: Config(
+            config: const Config(
               columns: 7,
               // Issue: https://github.com/flutter/flutter/issues/28894
               // emojiSizeMax: 24 * (GetPlatform.isIOS ? 1.30 : 1.0),
               verticalSpacing: 0,
               horizontalSpacing: 0,
               initCategory: Category.RECENT,
-              bgColor: const Color(0xFFF2F2F2),
+              bgColor: Color(0xFFF2F2F2),
               indicatorColor: Colors.black87,
               iconColorSelected: Colors.black87,
               iconColor: Colors.grey,
@@ -300,7 +296,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
               //   color: Colors.black87,
               // ),
               tabIndicatorAnimDuration: kTabScrollDuration,
-              categoryIcons: const CategoryIcons(),
+              categoryIcons: CategoryIcons(),
               buttonMode: ButtonMode.MATERIAL,
             ),
             customWidget: (Config config, EmojiViewState state) =>
@@ -321,6 +317,15 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     final voiceButton = widget.voiceWidget ?? _buildVoiceButton(ctx);
     final inputButton = TextField(
       controller: _textController,
+      decoration: InputDecoration(
+        hintText: '内容',
+        suffixIcon: _textController.text.isNotEmpty
+            ? IconButton(
+                onPressed: _textController.clear,
+                icon: const Icon(Icons.clear),
+              )
+            : const Text(''),
+      ),
       // cursorColor: InheritedChatTheme.of(ctx).theme.inputTextCursorColor,
       // decoration: InheritedChatTheme.of(ctx).theme.inputTextDecoration.copyWith(
       //       hintStyle: InheritedChatTheme.of(ctx).theme.inputTextStyle.copyWith(
@@ -355,12 +360,12 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     return Stack(
       children: <Widget>[
         Offstage(
-          child: inputButton,
           offstage: inputType == InputType.voice,
+          child: inputButton,
         ),
         Offstage(
-          child: voiceButton,
           offstage: inputType != InputType.voice,
+          child: voiceButton,
         ),
       ],
     );
@@ -386,24 +391,29 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
 
   // FIXME: 表情在web和Android有问题？暂时不在web和Android启用表情
   Widget buildEmojiButton() {
-    return (BytedeskUtils.isWeb || BytedeskUtils.isAndroid) ? Text('') : ImageButton(
-      image: AssetImage(inputType != InputType.emoji
-          ? 'assets/images/chat/input_emoji.png'
-          : 'assets/images/chat/input_keyboard.png'),
-      onPressed: () {
-        if (inputType != InputType.emoji) {
-          updateState(InputType.emoji);
-        } else {
-          updateState(InputType.text);
-        }
-      },
-    );
+    if (BytedeskUtils.isWeb) {
+      return const Text('');
+    } else if (BytedeskUtils.isIOS) {
+      return ImageButton(
+            image: AssetImage(inputType != InputType.emoji
+                ? 'assets/images/chat/input_emoji.png'
+                : 'assets/images/chat/input_keyboard.png'),
+            onPressed: () {
+              if (inputType != InputType.emoji) {
+                updateState(InputType.emoji);
+              } else {
+                updateState(InputType.text);
+              }
+            },
+          );
+    }
+    return const Text('');
   }
 
   // 更多输入消息类型入口
   Widget buildExtra() {
     return ImageButton(
-      image: AssetImage('assets/images/chat/input_extra.png'),
+      image: const AssetImage('assets/images/chat/input_extra.png'),
       onPressed: () {
         if (inputType != InputType.extra) {
           updateState(InputType.extra);
@@ -427,7 +437,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final _query = MediaQuery.of(context);
+    final query = MediaQuery.of(context);
 
     // final isAndroid = Theme.of(context).platform == TargetPlatform.android;
     // final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
@@ -436,17 +446,20 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
       child: Focus(
         autofocus: true,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(15, 0, 0, 0), //InheritedChatTheme.of(context).theme.inputPadding,
+          padding: const EdgeInsets.fromLTRB(
+              0, 0, 0, 0), //InheritedChatTheme.of(context).theme.inputPadding,
           child: Material(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(10),),
-                //InheritedChatTheme.of(context).theme.inputBorderRadius,
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(10),
+            ),
+            //InheritedChatTheme.of(context).theme.inputBorderRadius,
             // color: Color.white, //Color(0xff1d1c21),//InheritedChatTheme.of(context).theme.inputBackgroundColor,
             child: Container(
               padding: EdgeInsets.fromLTRB(
-                _query.padding.left,
+                query.padding.left,
                 4,
-                _query.padding.right,
-                4 + _query.viewInsets.bottom + _query.padding.bottom,
+                query.padding.right,
+                4 + query.viewInsets.bottom + query.padding.bottom,
               ),
               child: Column(
                 children: <Widget>[
@@ -454,6 +467,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                     children: [
                       // TODO: 录制语音
                       // buildLeftButton(),
+                      const SizedBox(width: 10,),
                       // input
                       Expanded(
                         child: _buildInputButton(context),
@@ -493,21 +507,20 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                         // ),
                       ),
                       // emoji
-                      buildEmojiButton(),
+                      // buildEmojiButton(),
                       //extra
                       _textController.text.isEmpty
                           ? buildExtra()
                           : IconButton(
-                              icon: Icon(Icons.send),
+                              icon: const Icon(Icons.send),
                               onPressed: _handleSendPressed,
-                              padding: EdgeInsets.only(left: 0),
+                              padding: const EdgeInsets.only(left: 0),
                             ),
                     ],
                   ),
-                  this.inputType == InputType.emoji ||
-                          this.inputType == InputType.extra
-                      ? Divider()
-                      : SizedBox.shrink(), // 横线
+                  inputType == InputType.emoji || inputType == InputType.extra
+                      ? const Divider()
+                      : const SizedBox.shrink(), // 横线
                   _buildBottomContainer(child: _buildBottomItems()),
                 ],
               ),

@@ -45,7 +45,7 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
         appBar: AppBar(
           title: Text(widget.title!),
           elevation: 0,
-          actions: [
+          actions: const [
             // NavigationControls(_controller.future),
             // SampleMenu(_controller.future, widget.cookieManager),
           ],

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 
 class HelpArticle extends Equatable {
@@ -7,7 +9,7 @@ class HelpArticle extends Equatable {
   final String? type;
   final String? content;
 
-  HelpArticle({this.id, this.aid, this.title, this.type, this.content})
+  const HelpArticle({this.id, this.aid, this.title, this.type, this.content})
       : super();
 
   static HelpArticle fromJson(dynamic json) {

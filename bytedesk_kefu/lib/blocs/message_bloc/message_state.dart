@@ -32,7 +32,7 @@ class RestMessageSending extends MessageState {
 class ReceiveMessageState extends MessageState {
   final Message? message;
 
-  ReceiveMessageState({@required this.message}) : super();
+  const ReceiveMessageState({@required this.message}) : super();
 }
 
 class SendMessageRestSuccess extends MessageState {
@@ -126,62 +126,62 @@ class UpLoadVideoError extends MessageState {
 class LoadHistoryMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
-  LoadHistoryMessageSuccess({@required this.messageList}) : super();
+  const LoadHistoryMessageSuccess({@required this.messageList}) : super();
 }
 
 class LoadTopicMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
-  LoadTopicMessageSuccess({@required this.messageList}) : super();
+  const LoadTopicMessageSuccess({@required this.messageList}) : super();
 }
 
 class LoadChannelMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
-  LoadChannelMessageSuccess({@required this.messageList}) : super();
+  const LoadChannelMessageSuccess({@required this.messageList}) : super();
 }
 
 class LoadUnreadMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
-  LoadUnreadMessageSuccess({@required this.messageList}) : super();
+  const LoadUnreadMessageSuccess({@required this.messageList}) : super();
 }
 
 class LoadUnreadVisitorMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
-  LoadUnreadVisitorMessageSuccess({@required this.messageList}) : super();
+  const LoadUnreadVisitorMessageSuccess({@required this.messageList}) : super();
 }
 
 class LoadUnreadAgentMessageSuccess extends MessageState {
   final List<Message>? messageList;
 
-  LoadUnreadAgentMessageSuccess({@required this.messageList}) : super();
+  const LoadUnreadAgentMessageSuccess({@required this.messageList}) : super();
 }
 
 class QueryAnswerSuccess extends MessageState {
   final Message? query;
   final Message? answer;
 
-  QueryAnswerSuccess({@required this.query, @required this.answer}) : super();
+  const QueryAnswerSuccess({@required this.query, @required this.answer}) : super();
 }
 
 class QueryCategorySuccess extends MessageState {
   final Message? query;
   final Message? answer;
 
-  QueryCategorySuccess({@required this.query, @required this.answer}) : super();
+  const QueryCategorySuccess({@required this.query, @required this.answer}) : super();
 }
 
 class MessageAnswerSuccess extends MessageState {
   final Message? query;
   final Message? answer;
 
-  MessageAnswerSuccess({@required this.query, @required this.answer}) : super();
+  const MessageAnswerSuccess({@required this.query, @required this.answer}) : super();
 }
 
 class RateAnswerSuccess extends MessageState {
   final Message? result;
 
-  RateAnswerSuccess({@required this.result}) : super();
+  const RateAnswerSuccess({@required this.result}) : super();
 }

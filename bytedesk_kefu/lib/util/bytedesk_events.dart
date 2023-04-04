@@ -1,7 +1,7 @@
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:event_bus/event_bus.dart';
 
-EventBus bytedeskEventBus = new EventBus();
+EventBus bytedeskEventBus = EventBus();
 
 class ReceiveMessageEventBus {
   Message message;

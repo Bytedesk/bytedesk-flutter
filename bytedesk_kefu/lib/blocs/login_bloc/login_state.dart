@@ -94,7 +94,7 @@ class RequestCodeInProgress extends LoginState {
 
 class RequestCodeSuccess extends LoginState {
   final CodeResult? codeResult;
-  RequestCodeSuccess({@required this.codeResult}) : super();
+  const RequestCodeSuccess({@required this.codeResult}) : super();
   @override
   String toString() => 'RequestCodeSuccess';
 }
@@ -155,7 +155,7 @@ class BindMobileInProgress extends LoginState {
 
 class BindMobileSuccess extends LoginState {
   final JsonResult? jsonResult;
-  BindMobileSuccess({@required this.jsonResult}) : super();
+  const BindMobileSuccess({@required this.jsonResult}) : super();
   @override
   String toString() => 'BindMobileSuccess';
 }

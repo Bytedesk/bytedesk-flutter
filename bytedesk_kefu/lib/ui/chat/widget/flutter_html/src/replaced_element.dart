@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:math';
 
 import 'package:collection/collection.dart';

@@ -6,13 +6,13 @@ class BytedeskEventBus {
   BytedeskEventBus._internal();
 
   //保存单例
-  static BytedeskEventBus _singleton = BytedeskEventBus._internal();
+  static final BytedeskEventBus _singleton = BytedeskEventBus._internal();
 
   //工厂构造函数
   factory BytedeskEventBus() => _singleton;
 
   //保存事件订阅者队列，key:事件名(id)，value: 对应事件的订阅者队列
-  final _emap = Map<Object, List<EventCallback>?>();
+  final _emap = <Object, List<EventCallback>?>{};
 
   //添加订阅者
   void on(eventName, EventCallback f) {

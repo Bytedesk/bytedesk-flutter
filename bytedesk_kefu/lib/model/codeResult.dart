@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 
 class CodeResult extends Equatable {
@@ -7,7 +9,7 @@ class CodeResult extends Equatable {
   final bool? exist;
   final String? code;
 
-  CodeResult({this.message, this.statusCode, this.exist, this.code}) : super();
+  const CodeResult({this.message, this.statusCode, this.exist, this.code}) : super();
 
   static CodeResult fromJson(dynamic json) {
     return CodeResult(
@@ -19,5 +21,5 @@ class CodeResult extends Equatable {
 
   @override
   List<Object> get props =>
-      [this.message!, this.statusCode!, this.exist!, this.code!];
+      [message!, statusCode!, exist!, code!];
 }

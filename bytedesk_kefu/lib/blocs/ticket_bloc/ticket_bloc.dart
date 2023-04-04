@@ -6,26 +6,13 @@ import 'package:bytedesk_kefu/repositories/ticket_repository.dart';
 
 class TicketBloc extends Bloc<TicketEvent, TicketState> {
   //
-  final TicketRepository feedbackRepository = new TicketRepository();
+  final TicketRepository feedbackRepository = TicketRepository();
 
-  TicketBloc() : super(new UnTicketState()) {
+  TicketBloc() : super(const UnTicketState()) {
     on<GetTicketCategoryEvent>(_mapGetTicketCategoryToState);
     on<SubmitTicketEvent>(_mapSubmitTicketToState);
     on<UploadImageEvent>(_mapUploadImageToState);
   }
-
-  // @override
-  // void mapEventToState(
-  //   TicketEvent event,
-  // ) async* {
-  //   if (event is GetTicketCategoryEvent) {
-  //     yield* _mapGetTicketCategoryToState(event);
-  //   } else if (event is SubmitTicketEvent) {
-  //     yield* _mapSubmitTicketToState(event);
-  //   } else if (event is UploadImageEvent) {
-  //     yield* _mapUploadImageToState(event);
-  //   }
-  // }
 
   void _mapGetTicketCategoryToState(
       GetTicketCategoryEvent event, Emitter<TicketState> emit) async {

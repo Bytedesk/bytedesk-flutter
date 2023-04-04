@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 import 'message.dart';
 
@@ -8,7 +10,7 @@ class RequestCategoryResult extends Equatable {
   final Message? query;
   final Message? anwser;
 
-  RequestCategoryResult({this.message, this.statusCode, this.query, this.anwser})
+  const RequestCategoryResult({this.message, this.statusCode, this.query, this.anwser})
       : super();
 
   static RequestCategoryResult fromJson(dynamic json) {
@@ -20,5 +22,5 @@ class RequestCategoryResult extends Equatable {
   }
 
   @override
-  List<Object> get props => [this.statusCode!];
+  List<Object> get props => [statusCode!];
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 
 // {"openid":"oFyip1EJwsOQjXpsYWddVQh-LReM",
@@ -22,7 +24,7 @@ class WechatUserinfo extends Equatable {
   final String? headimgurl;
   final String? unionid;
 
-  WechatUserinfo(
+  const WechatUserinfo(
       {this.openid,
       this.nickname,
       this.sex,

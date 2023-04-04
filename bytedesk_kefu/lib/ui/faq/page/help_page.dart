@@ -5,7 +5,7 @@
 // import 'package:bytedesk_kefu/ui/widget/loading_widget.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_easyrefresh/easy_refresh.dart';
+// import 'package:easy_refresh/easy_refresh.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 // class HelpPage extends StatefulWidget {

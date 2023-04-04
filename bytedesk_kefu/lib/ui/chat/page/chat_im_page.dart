@@ -69,30 +69,30 @@ class _ChatIMPageState extends State<ChatIMPage>
   //
   String? _title;
   // 下拉刷新
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
   // 输入文字
-  TextEditingController _textController = new TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   // 滚动监听
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
   // 聊天记录本地存储
-  MessageProvider _messageProvider = new MessageProvider();
+  final MessageProvider _messageProvider = MessageProvider();
   // 聊天记录内存存储
-  List<MessageWidget> _messages = <MessageWidget>[];
+  final List<MessageWidget> _messages = <MessageWidget>[];
   // 图片
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   // 长连接
-  BytedeskMqtt _bdMqtt = new BytedeskMqtt();
+  final BytedeskMqtt _bdMqtt = BytedeskMqtt();
   // 当前用户uid
-  String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
-  String? _currentNickname = SpUtil.getString(BytedeskConstants.nickname);
-  String? _currentAvatar = SpUtil.getString(BytedeskConstants.avatar);
+  final String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
+  final String? _currentNickname = SpUtil.getString(BytedeskConstants.nickname);
+  final String? _currentAvatar = SpUtil.getString(BytedeskConstants.avatar);
   // 当前会话
   Thread? _currentThread;
   // 判断是否机器人对话状态
   bool _isRobot = false;
   // 分页加载聊天记录
   int _page = 0;
-  int _size = 20;
+  final int _size = 20;
   // 延迟发送preview消息
   Timer? _debounce;
   // 定时拉取聊天记录
@@ -122,10 +122,10 @@ class _ChatIMPageState extends State<ChatIMPage>
     _listener();
     super.initState();
     // 定时拉取聊天记录 10s
-    _loadHistoryTimer = Timer.periodic(Duration(seconds: 10), (timer) {
+    _loadHistoryTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       // BytedeskUtils.printLog('从服务器 load history');
       BlocProvider.of<MessageBloc>(context)
-        ..add(LoadHistoryMessageEvent(uid: _currentUid, page: 0, size: 10));
+        .add(LoadHistoryMessageEvent(uid: _currentUid, page: 0, size: 10));
       // 每隔 1 秒钟会调用一次，如果要结束调用
       // timer.cancel();
     });
@@ -149,17 +149,17 @@ class _ChatIMPageState extends State<ChatIMPage>
               child: Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                      padding: new EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       width: 60,
                       child: InkWell(
                         onTap: () {
                           BlocProvider.of<ThreadBloc>(context)
-                            ..add(RequestAgentEvent(
+                            .add(RequestAgentEvent(
                                 wid: widget.wid,
                                 aid: widget.aid,
                                 type: widget.type));
                         },
-                        child: Text(
+                        child: const Text(
                           '转人工',
                           style: TextStyle(color: Colors.black),
                         ),
@@ -316,7 +316,7 @@ class _ChatIMPageState extends State<ChatIMPage>
                     //
                     if (state.query!.content!.contains('人工')) {
                       BlocProvider.of<ThreadBloc>(context)
-                        ..add(RequestAgentEvent(
+                        .add(RequestAgentEvent(
                             wid: widget.wid,
                             aid: widget.aid,
                             type: widget.type));
@@ -347,7 +347,7 @@ class _ChatIMPageState extends State<ChatIMPage>
             ],
             child: Container(
               alignment: Alignment.bottomCenter,
-              color: Color(0xFFDEEEEEE),
+              color: const Color(0xFFDEEEEEE),
               child: Column(
                 children: <Widget>[
                   // Expanded(
@@ -383,10 +383,11 @@ class _ChatIMPageState extends State<ChatIMPage>
                         setState(() {});
                         _refreshController.loadComplete();
                       },
-                      footer: ClassicFooter(
+                      footer: const ClassicFooter(
                         loadStyle: LoadStyle.ShowWhenLoading,
                       ),
                       enablePullUp: true,
+                      controller: _refreshController,
                       child: Scrollable(
                         controller: _scrollController,
                         axisDirection: AxisDirection.up,
@@ -405,10 +406,9 @@ class _ChatIMPageState extends State<ChatIMPage>
                           );
                         },
                       ),
-                      controller: _refreshController,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 1.0,
                   ),
                   Container(
@@ -425,7 +425,7 @@ class _ChatIMPageState extends State<ChatIMPage>
   //
   Widget _textComposerWidget() {
     return IconTheme(
-      data: IconThemeData(color: Colors.blue),
+      data: const IconThemeData(color: Colors.blue),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         height: 54,
@@ -433,8 +433,8 @@ class _ChatIMPageState extends State<ChatIMPage>
           children: <Widget>[
             Container(
               // margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: new IconButton(
-                icon: new Icon(Icons.add),
+              child: IconButton(
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   // _getImage();
                   showModalBottomSheet(
@@ -461,14 +461,14 @@ class _ChatIMPageState extends State<ChatIMPage>
                   _debounce = Timer(const Duration(milliseconds: 500), () {
                     BytedeskUtils.printLog('send preview $value');
                     // 发送预知消息 value != null &&
-                    if (value.trim().length > 0) {
+                    if (value.trim().isNotEmpty) {
                       _bdMqtt.sendPreviewMessage(value, _currentThread!);
                     } else {
                       _bdMqtt.sendPreviewMessage('', _currentThread!);
                     }
                   });
                 },
-                decoration: InputDecoration.collapsed(hintText: "输入内容..."),
+                decoration: const InputDecoration.collapsed(hintText: "输入内容..."),
                 controller: _textController,
                 onSubmitted: _handleSubmitted,
               ),
@@ -476,7 +476,7 @@ class _ChatIMPageState extends State<ChatIMPage>
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: () => _handleSubmitted(_textController.text),
               ),
             )
@@ -501,7 +501,7 @@ class _ChatIMPageState extends State<ChatIMPage>
     if (_isRobot) {
       // 请求机器人答案
       BlocProvider.of<MessageBloc>(context)
-        ..add(MessageAnswerEvent(
+        .add(MessageAnswerEvent(
             // type: widget.type,
             wid: widget.wid,
             // aid: widget.aid,
@@ -545,9 +545,9 @@ class _ChatIMPageState extends State<ChatIMPage>
       };
       String? jsonString = json.encode(jsonContent);
       BlocProvider.of<MessageBloc>(context)
-        ..add(SendMessageRestEvent(json: jsonString));
+        .add(SendMessageRestEvent(json: jsonString));
       // 暂时没有将插入本地函数独立出来，暂时
-      Message message = new Message();
+      Message message = Message();
       message.mid = mid;
       message.type = type;
       message.timestamp = timestamp;
@@ -602,7 +602,7 @@ class _ChatIMPageState extends State<ChatIMPage>
       }
       // 还原title
       Timer(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
         () {
           // BytedeskUtils.printLog('timer');
           if (this.mounted) {
@@ -630,11 +630,11 @@ class _ChatIMPageState extends State<ChatIMPage>
             event.message.mid!, event.message.thread!);
       }
       // 界面显示
-      MessageWidget messageWidget = new MessageWidget(
+      MessageWidget messageWidget = MessageWidget(
           message: event.message,
           customCallback: widget.customCallback,
-          animationController: new AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
+          animationController: AnimationController(
+              vsync: this, duration: const Duration(milliseconds: 500)));
       if (this.mounted) {
         setState(() {
           _messages.insert(0, messageWidget);
@@ -703,7 +703,7 @@ class _ChatIMPageState extends State<ChatIMPage>
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadImageEvent(filePath: pickedFile.path));
+          .add(UploadImageEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取图片');
       }
@@ -736,7 +736,7 @@ class _ChatIMPageState extends State<ChatIMPage>
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadImageEvent(filePath: pickedFile.path));
+          .add(UploadImageEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未拍照');
       }
@@ -758,7 +758,7 @@ class _ChatIMPageState extends State<ChatIMPage>
         BytedeskUtils.printLog('pick video path: ${pickedFile.path}');
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: pickedFile.path));
+          .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取视频');
       }
@@ -820,7 +820,7 @@ class _ChatIMPageState extends State<ChatIMPage>
         //   ..add(UploadVideoEvent(filePath: afterPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: pickedFile.path));
+          .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未录制视频');
       }
@@ -844,11 +844,11 @@ class _ChatIMPageState extends State<ChatIMPage>
     List<Message> messageList = await _messageProvider.getTopicMessages(
         _currentThread!.topic, _currentUid, page, size);
     messageList.forEach((message) {
-      MessageWidget messageWidget = new MessageWidget(
+      MessageWidget messageWidget = MessageWidget(
           message: message,
           customCallback: widget.customCallback,
-          animationController: new AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
+          animationController: AnimationController(
+              vsync: this, duration: const Duration(milliseconds: 500)));
       if (this.mounted) {
         setState(() {
           // _messages.insert(0, messageWidget);
@@ -871,11 +871,11 @@ class _ChatIMPageState extends State<ChatIMPage>
     }
     if (!contains) {
       _messageProvider.insert(message);
-      MessageWidget messageWidget = new MessageWidget(
+      MessageWidget messageWidget = MessageWidget(
           message: message,
           customCallback: widget.customCallback,
-          animationController: new AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
+          animationController: AnimationController(
+              vsync: this, duration: const Duration(milliseconds: 500)));
       if (this.mounted) {
         setState(() {
           _messages.insert(0, messageWidget);
@@ -892,7 +892,7 @@ class _ChatIMPageState extends State<ChatIMPage>
     // );
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
   }

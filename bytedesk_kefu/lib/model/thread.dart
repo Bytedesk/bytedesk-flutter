@@ -30,7 +30,7 @@ class Thread extends Equatable {
   final String? client;
   final String? currentUid;
 
-  Thread(
+  const Thread(
       {this.tid,
       this.topic,
       this.wid,
@@ -222,6 +222,27 @@ class Thread extends Equatable {
         topic: json['topic'],
         nickname: json['group']['nickname'],
         avatar: json['group']['avatar'],
+        content: json['content'],
+        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
+        unreadCount: json['unreadCount'],
+        type: json['type'],
+        current: json['current'],
+        client: json['client'],
+        top: json['top'],
+        topVisitor: json['topVisitor'],
+        nodisturb: json['nodisturb'],
+        nodisturbVisitor: json['nodisturbVisitor'],
+        unread: json['unread'],
+        unreadVisitor: json['unreadVisitor']);
+  }
+
+  static Thread fromFileHelperJson(dynamic json) {
+    return Thread(
+        tid: json['tid'],
+        topic: json['topic'],
+        uid: json['visitor']['uid'],
+        nickname: json['visitor']['nickname'],
+        avatar: json['visitor']['avatar'],
         content: json['content'],
         timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
         unreadCount: json['unreadCount'],

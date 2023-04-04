@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 
 // {"access_token":"32_Lzn24923t_quQsCfKy7sl1kwbprKGI2kEYcvlBC5pANPOuiqLqF1S7L3Oeuj5nzP2CP4oSeNMlDmzDqEJsfpplRXku9CetoWx-MNaR1Pgxs",
@@ -15,7 +17,7 @@ class WechatId extends Equatable {
   final String? scope;
   final String? unionid;
 
-  WechatId(
+  const WechatId(
       {this.accessToken,
       this.expiresIn,
       this.refreshToken,

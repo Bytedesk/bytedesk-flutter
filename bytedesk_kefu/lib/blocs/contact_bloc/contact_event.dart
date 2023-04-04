@@ -15,7 +15,7 @@ class RefreshContactEvent extends ContactEvent {}
 class UpdateContactEvent extends ContactEvent {
   final String? tid;
 
-  UpdateContactEvent({@required this.tid})
+  const UpdateContactEvent({@required this.tid})
       : assert(tid != null),
         super();
 }
@@ -23,7 +23,7 @@ class UpdateContactEvent extends ContactEvent {
 class DeleteContactEvent extends ContactEvent {
   final String? tid;
 
-  DeleteContactEvent({@required this.tid})
+  const DeleteContactEvent({@required this.tid})
       : assert(tid != null),
         super();
 }

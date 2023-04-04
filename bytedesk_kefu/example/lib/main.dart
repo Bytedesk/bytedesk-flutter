@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, prefer_interpolation_to_compose_strings
+
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
@@ -27,11 +29,11 @@ void main() {
   // 管理后台：https://www.bytedesk.com/admin
   // appkey和subDomain请替换为真实值
   // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
-  String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
+  String appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
   // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
-  String _subDomain = "vip";
+  String subDomain = "vip";
   // 第一步：初始化
-  BytedeskKefu.init(_appKey, _subDomain);
+  BytedeskKefu.init(appKey, subDomain);
   // 注：如果需要多平台统一用户（用于同步聊天记录等），可使用下列接口，其中：username只能包含数字或字母，不能含有汉字和特殊字符等，nickname可以使用汉字
   // 注：如需切换用户，请首先执行BytedeskKefu.logout()
   // BytedeskKefu.initWithUsernameAndNicknameAndAvatar('myflutterusername', '我是美女', 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png', _appKey, _subDomain);
@@ -74,44 +76,44 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         context: context,
         tiles: [
           ListTile(
-            title: Text('联系客服'),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('联系客服'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 第二步：联系客服，完毕
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new ChatTypePage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const ChatTypePage();
               }));
             },
           ),
           ListTile(
-            title: Text('用户信息'), // 自定义用户资料，设置
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('用户信息'), // 自定义用户资料，设置
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 需要首先调用anonymousLogin之后，再调用设置用户信息接口
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new UserInfoPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const UserInfoPage();
               }));
             },
           ),
           ListTile(
-            title: Text('在线状态'), // 技能组或客服账号 在线状态
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('在线状态'), // 技能组或客服账号 在线状态
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new OnlineStatusPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const OnlineStatusPage();
               }));
             },
           ),
           ListTile(
-            title: Text('历史会话'), // 会话记录
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('历史会话'), // 会话记录
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new HistoryThreadPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const HistoryThreadPage();
               }));
             },
           ),
@@ -132,22 +134,22 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           //   },
           // ),
           ListTile(
-            title: Text('消息提示'),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('消息提示'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new SettingPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const SettingPage();
               }));
             },
           ),
           ListTile(
-            title: Text('切换用户'),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('切换用户'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               Navigator.of(context)
-                  .push(new MaterialPageRoute(builder: (context) {
-                return new SwitchUserPage();
+                  .push(MaterialPageRoute(builder: (context) {
+                return const SwitchUserPage();
               }));
             },
           ),
@@ -168,7 +170,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           //         _subDomain);
           //   },
           // ),
-          ListTile(
+          const ListTile(
             title: Text('技术支持: QQ-3群: 825257535'),
           )
         ],
@@ -190,7 +192,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   _listener() {
     // 监听连接状态
     bytedeskEventBus.on<ConnectionEventBus>().listen((event) {
-      print('长连接状态:' + event.content);
+      // print('长连接状态:' + event.content);
       if (event.content == BytedeskConstants.USER_STATUS_CONNECTING) {
         setState(() {
           _title = "萝卜丝客服Demo(连接中...)";
@@ -250,7 +252,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                     title: '客服会话');
               },
             );
-          }, duration: Duration(milliseconds: 4000));
+          }, duration: const Duration(milliseconds: 4000));
         }
       } else if (event.message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
         print('图片消息:' + event.message.imageUrl!);

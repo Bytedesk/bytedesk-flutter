@@ -9,10 +9,11 @@ import 'package:flutter/material.dart';
 /// Default EmojiPicker Implementation
 class DefaultEmojiPickerView extends EmojiPickerBuilder {
   /// Constructor
-  DefaultEmojiPickerView(Config config, EmojiViewState state)
+  DefaultEmojiPickerView(Config config, EmojiViewState state, {super.key})
       : super(config, state);
 
   @override
+  // ignore: library_private_types_in_public_api
   _DefaultEmojiPickerViewState createState() => _DefaultEmojiPickerViewState();
 }
 
@@ -66,7 +67,7 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
       categoryEmoji,
       index,
     );
-    Overlay.of(context)?.insert(_overlay!);
+    Overlay.of(context).insert(_overlay!);
   }
 
   Widget _buildBackspaceButton() {

@@ -14,15 +14,13 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
   // 获取意见反馈分类
   Future<List<HelpCategory>> getHelpFeedbackCategories(String? uid) async {
     //
-    // final categoriesUrl =
-    //     '$baseUrl/visitor/api/category/feedback?uid=$uid&client=$client';
-    final categoriesUrl = Uri.http(BytedeskConstants.host,
+    final categoriesUrl = BytedeskUtils.getHostUri(
         '/visitor/api/category/feedback', {'uid': uid, 'client': client});
     BytedeskUtils.printLog("categories Url $categoriesUrl");
-    final initResponse = await this.httpClient.get(categoriesUrl);
+    final initResponse = await httpClient.get(categoriesUrl);
     //
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -42,11 +40,11 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
     var body = json
         .encode({"content": content, "images": imageUrls, "client": client});
     // final initUrl = '$baseUrl/api/feedback/create';
-    final initUrl = Uri.http(BytedeskConstants.host, '/api/feedback/create');
+    final initUrl = BytedeskUtils.getHostUri('/api/feedback/create');
     final initResponse =
-        await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+        await httpClient.post(initUrl, headers: getHeaders(), body: body);
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -80,13 +78,13 @@ class BytedeskFeedbackHttpApi extends BytedeskBaseHttpApi {
     // BytedeskUtils.printLog("Result: ${response.body}");
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
     BytedeskUtils.printLog("responseJson $responseJson");
 
     String url = responseJson['data'];
-    BytedeskUtils.printLog('url:' + url);
+    BytedeskUtils.printLog('url:$url');
     return url;
   }
 }

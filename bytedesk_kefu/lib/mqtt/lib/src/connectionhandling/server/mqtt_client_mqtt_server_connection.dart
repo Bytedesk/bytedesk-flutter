@@ -8,47 +8,43 @@
 part of mqtt_server_client;
 
 /// The MQTT client server connection base class
-class MqttServerConnection extends MqttConnectionBase {
+abstract class MqttServerConnection<T extends Object>
+    extends MqttConnectionBase<T> {
   /// Default constructor
-  MqttServerConnection(clientEventBus) : super(clientEventBus);
+  MqttServerConnection(clientEventBus, this.socketOptions)
+      : super(clientEventBus);
 
   /// Initializes a new instance of the MqttConnection class.
-  MqttServerConnection.fromConnect(server, port, clientEventBus)
+  MqttServerConnection.fromConnect(
+      server, port, clientEventBus, this.socketOptions)
       : super(clientEventBus) {
     connect(server, port);
   }
 
-  /// Connect, must be overridden in connection classes
-  @override
-  Future<void> connect(String server, int port) {
-    final completer = Completer<void>();
-    return completer.future;
-  }
-
-  /// Connect for auto reconnect , must be overridden in connection classes
-  @override
-  Future<void> connectAuto(String server, int port) {
-    final completer = Completer<void>();
-    return completer.future;
-  }
+  /// Socket options, applicable only to TCP sockets
+  List<RawSocketOption> socketOptions = <RawSocketOption>[];
 
   /// Create the listening stream subscription and subscribe the callbacks
   void _startListening() {
+    stopListening();
     MqttLogger.log('MqttServerConnection::_startListening');
     try {
-      listener = client.listen(_onData, onError: onError, onDone: onDone);
+      listeners.add(onListen());
     } on Exception catch (e) {
-      print(
-          'MqttServerConnection::_startListening - exception raised $e');
+      print('MqttServerConnection::_startListening - exception raised $e');
     }
   }
 
+  /// Implement stream subscription
+  StreamSubscription onListen();
+
   /// OnData listener callback
-  void _onData(dynamic data) {
-    MqttLogger.log('MqttConnection::_onData');
+  @protected
+  void onData(dynamic /*String|List<int>*/ data) {
+    MqttLogger.log('MqttConnection::onData');
     // Protect against 0 bytes but should never happen.
     if (data.length == 0) {
-      MqttLogger.log('MqttServerConnection::_ondata - Error - 0 byte message');
+      MqttLogger.log('MqttServerConnection::onData - Error - 0 byte message');
       return;
     }
 
@@ -90,19 +86,15 @@ class MqttServerConnection extends MqttConnectionBase {
     }
   }
 
-  /// Sends the message in the stream to the broker.
-  void send(MqttByteBuffer message) {
-    final messageBytes = message.read(message.length);
-    client?.add(messageBytes.toList());
-  }
-
-  /// Stops listening and closes the socket immediately.
-  @override
-  void stopListening() {
-    if (client != null) {
-      listener?.cancel();
-      client.destroy();
-      client.close();
+  // Apply any socket options, true indicates options applied
+  bool _applySocketOptions(Socket socket, List<RawSocketOption> socketOptions) {
+    if (socketOptions.isNotEmpty) {
+      MqttLogger.log(
+          'MqttServerConnection::__applySocketOptions - Socket options supplied, applying');
+      for (final option in socketOptions) {
+        socket.setRawOption(option);
+      }
     }
+    return socketOptions.isNotEmpty;
   }
 }

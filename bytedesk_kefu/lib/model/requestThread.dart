@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 import 'message.dart';
 
@@ -7,7 +9,8 @@ class RequestThreadResult extends Equatable {
   //
   final Message? msg;
 
-  RequestThreadResult({this.message, this.statusCode, this.msg}) : super();
+  const RequestThreadResult({this.message, this.statusCode, this.msg})
+      : super();
 
   static RequestThreadResult fromJson(dynamic json) {
     return RequestThreadResult(
@@ -24,5 +27,5 @@ class RequestThreadResult extends Equatable {
   }
 
   @override
-  List<Object> get props => [this.msg!.mid!];
+  List<Object> get props => [msg!.mid!];
 }

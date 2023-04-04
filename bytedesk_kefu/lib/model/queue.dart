@@ -5,7 +5,7 @@ class Queue extends Equatable {
   final String? nickname;
   final String? avatar;
 
-  Queue({this.qid, this.nickname, this.avatar}) : super();
+  const Queue({this.qid, this.nickname, this.avatar}) : super();
 
   static Queue fromJson(dynamic json) {
     return Queue(

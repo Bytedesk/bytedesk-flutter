@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 
 class HelpCategory extends Equatable {
@@ -6,7 +8,7 @@ class HelpCategory extends Equatable {
   final String? name;
   final String? type;
 
-  HelpCategory({this.id, this.cid, this.name, this.type}) : super();
+  const HelpCategory({this.id, this.cid, this.name, this.type}) : super();
 
   static HelpCategory fromJson(dynamic json) {
     return HelpCategory(

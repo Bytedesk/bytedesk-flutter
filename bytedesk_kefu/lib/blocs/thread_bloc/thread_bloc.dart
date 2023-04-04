@@ -8,9 +8,7 @@ import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
   //
-  final ThreadRepository threadRepository = new ThreadRepository();
-
-  // ThreadBloc() : super(ThreadEmpty());
+  final ThreadRepository threadRepository = ThreadRepository();
 
   ThreadBloc() : super(ThreadEmpty()) {
     // on<InitThreadEvent>(InitialThreadState);

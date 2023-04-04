@@ -11,7 +11,7 @@ abstract class LeaveMsgEvent extends Equatable {
 
 class GetLeaveMsgCategoryEvent extends LeaveMsgEvent {
   final String? uid;
-  GetLeaveMsgCategoryEvent({@required this.uid}) : super();
+  const GetLeaveMsgCategoryEvent({@required this.uid}) : super();
 }
 
 class SubmitLeaveMsgEvent extends LeaveMsgEvent {
@@ -23,12 +23,12 @@ class SubmitLeaveMsgEvent extends LeaveMsgEvent {
   final String? email;
   final String? content;
   // @required this.imageUrls
-  SubmitLeaveMsgEvent({@required this.wid, @required this.aid, @required this.type, @required this.mobile, @required this.email, @required this.content})
+  const SubmitLeaveMsgEvent({@required this.wid, @required this.aid, @required this.type, @required this.mobile, @required this.email, @required this.content})
       : super();
 }
 
 class UploadImageEvent extends LeaveMsgEvent {
   final String? filePath;
 
-  UploadImageEvent({@required this.filePath}) : super();
+  const UploadImageEvent({@required this.filePath}) : super();
 }

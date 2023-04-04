@@ -2,7 +2,7 @@
 import 'package:equatable/equatable.dart';
 
 abstract class LeaveMsgState extends Equatable {
-  LeaveMsgState();
+  const LeaveMsgState();
 
   @override
   List<Object> get props => [];
@@ -10,7 +10,7 @@ abstract class LeaveMsgState extends Equatable {
 
 /// UnInitialized
 class UnLeaveMsgState extends LeaveMsgState {
-  UnLeaveMsgState();
+  const UnLeaveMsgState();
 
   @override
   String toString() => 'UnLeaveMsgState';
@@ -33,7 +33,7 @@ class LeaveMsgSubmitError extends LeaveMsgState {
 
 /// Initialized
 class LeaveMsgSubmitSuccessState extends LeaveMsgState {
-  LeaveMsgSubmitSuccessState() : super();
+  const LeaveMsgSubmitSuccessState() : super();
 
   @override
   String toString() => 'LeaveMsgSubmitSuccessState';
@@ -47,7 +47,7 @@ class ImageUploading extends LeaveMsgState {
 class UploadImageSuccess extends LeaveMsgState {
   //
   final String url;
-  UploadImageSuccess(this.url);
+  const UploadImageSuccess(this.url);
   @override
   List<Object> get props => [url];
   @override

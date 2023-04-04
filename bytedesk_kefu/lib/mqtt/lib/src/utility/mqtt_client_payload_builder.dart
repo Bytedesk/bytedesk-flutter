@@ -101,14 +101,14 @@ class MqttClientPayloadBuilder {
     return this;
   }
 
-  // added by jackning, 2019/12/03
-  void addProtobuf(Uint8List val) {
-    _payload!.addAll(val);
-  }
-
   /// Clear the buffer
   MqttClientPayloadBuilder clear() {
     _payload!.clear();
     return this;
+  }
+
+  // added by jackning, 2019/12/03
+  void addProtobuf(Uint8List val) {
+    _payload!.addAll(val);
   }
 }

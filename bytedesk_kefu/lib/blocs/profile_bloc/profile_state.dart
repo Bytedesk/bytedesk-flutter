@@ -22,7 +22,7 @@ class ProfileInProgress extends ProfileState {
 class ProfileSuccess extends ProfileState {
   final User? user;
 
-  ProfileSuccess({@required this.user});
+  const ProfileSuccess({@required this.user});
 
   @override
   String toString() => 'ProfileSuccess';

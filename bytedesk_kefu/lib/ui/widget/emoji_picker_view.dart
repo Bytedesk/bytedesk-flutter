@@ -3,8 +3,8 @@
 // import 'package:emoji_picker_flutter/src/config.dart';
 // import 'package:emoji_picker_flutter/src/emoji_picker_builder.dart';
 // import 'package:emoji_picker_flutter/src/emoji_view_state.dart';
-import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/emoji_picker_flutter.dart';
-import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/src/category_emoji.dart';
+import './emoji_picker_flutter/emoji_picker_flutter.dart';
+import './emoji_picker_flutter/src/category_emoji.dart';
 // import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/src/config.dart';
 // import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/src/emoji_picker_builder.dart';
 // import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/src/emoji_view_state.dart';

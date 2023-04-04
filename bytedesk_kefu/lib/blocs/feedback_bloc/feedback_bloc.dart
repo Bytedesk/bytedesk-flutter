@@ -8,26 +8,13 @@ import 'package:bloc/bloc.dart';
 
 class FeedbackBloc extends Bloc<FeedbackEvent, FeedbackState> {
   //
-  final FeedbackRepository feedbackRepository = new FeedbackRepository();
+  final FeedbackRepository feedbackRepository = FeedbackRepository();
 
-  FeedbackBloc() : super(new UnFeedbackState()) {
+  FeedbackBloc() : super(const UnFeedbackState()) {
     on<GetFeedbackCategoryEvent>(_mapGetFeedbackCategoryToState);
     on<SubmitFeedbackEvent>(_mapSubmitFeedbackToState);
     on<UploadImageEvent>(_mapUploadImageToState);
   }
-
-  // @override
-  // void mapEventToState(
-  //   FeedbackEvent event,
-  // ) async {
-  //   if (event is GetFeedbackCategoryEvent) {
-  //     yield* _mapGetFeedbackCategoryToState(event);
-  //   } else if (event is SubmitFeedbackEvent) {
-  //     yield* _mapSubmitFeedbackToState(event);
-  //   } else if (event is UploadImageEvent) {
-  //     yield* _mapUploadImageToState(event);
-  //   }
-  // }
 
   void _mapGetFeedbackCategoryToState(
       GetFeedbackCategoryEvent event, Emitter<FeedbackState> emit) async {

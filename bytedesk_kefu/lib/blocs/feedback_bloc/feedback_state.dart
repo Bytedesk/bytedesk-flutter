@@ -2,7 +2,7 @@ import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FeedbackState extends Equatable {
-  FeedbackState();
+  const FeedbackState();
 
   @override
   List<Object> get props => [];
@@ -10,7 +10,7 @@ abstract class FeedbackState extends Equatable {
 
 /// UnInitialized
 class UnFeedbackState extends FeedbackState {
-  UnFeedbackState();
+  const UnFeedbackState();
 
   @override
   String toString() => 'UnFeedbackState';
@@ -35,7 +35,7 @@ class FeedbackLoadError extends FeedbackState {
 class FeedbackCategoryState extends FeedbackState {
   final List<HelpCategory> categoryList;
 
-  FeedbackCategoryState(this.categoryList) : super();
+  const FeedbackCategoryState(this.categoryList) : super();
 
   @override
   String toString() => 'GetFeedbackCategoryState';
@@ -64,7 +64,7 @@ class ImageUploading extends FeedbackState {
 class UploadImageSuccess extends FeedbackState {
   //
   final String url;
-  UploadImageSuccess(this.url);
+  const UploadImageSuccess(this.url);
   @override
   List<Object> get props => [url];
   @override

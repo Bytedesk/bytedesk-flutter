@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/markThread.dart';
 import 'package:bytedesk_kefu/model/requestThread.dart';
+import 'package:bytedesk_kefu/model/requestThreadFileHelper.dart';
 import 'package:bytedesk_kefu/model/thread.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
@@ -16,13 +17,12 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   Future<List<Thread>> getThreads() async {
     // final threadUrl = '$baseUrl/api/thread/get?client=$client';
     final threadUrl =
-        Uri.http(BytedeskConstants.host, '/api/thread/get', {'client': client});
+        BytedeskUtils.getHostUri('/api/thread/get', {'client': client});
     // BytedeskUtils.printLog("thread Url $threadUrl");
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -65,11 +65,10 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
         '/api/thread/history/records',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
     // BytedeskUtils.printLog("thread Url $threadUrl");
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -97,11 +96,10 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
         BytedeskConstants.host,
         '/api/thread/visitor/history',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
     //
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -121,13 +119,12 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   // 访客端-加载访客会话列表-全部
   Future<List<Thread>> getVisitorThreadsAll() async {
     //
-    final threadUrl = Uri.http(BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
         '/api/thread/visitor/history/all', {'client': client});
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
     //
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -148,14 +145,13 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   Future<RequestThreadResult> requestThread(
       String? wid, String? type, String? aid) async {
     //
-    final threadUrl = Uri.http(BytedeskConstants.host, '/api/thread/request',
+    final threadUrl = BytedeskUtils.getHostUri('/api/thread/request',
         {'wId': wid, 'type': type, 'aId': aid, 'client': client});
     BytedeskUtils.printLog(threadUrl);
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -169,17 +165,40 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     return RequestThreadResult.fromJson(responseJson);
   }
 
+  // 请求客服会话
+  Future<RequestThreadFileHelperResult> requestFileHelperThread() async {
+    /// sp初始化
+    await SpUtil.getInstance();
+    //
+    final threadUrl =
+        BytedeskUtils.getHostUri('/api/thread/filehelper', {'client': client});
+    BytedeskUtils.printLog(threadUrl);
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
+
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    BytedeskUtils.printLog("requestFileHelperThread:$responseJson");
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+
+    return RequestThreadFileHelperResult.fromJson(responseJson);
+  }
+
   // 机器人分类会话
   Future<RequestThreadResult> requestWorkGroupThreadV2(String? wid) async {
     //
-    final threadUrl = Uri.http(BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
         '/api/v2/thread/workGroup', {'wId': wid, 'client': client});
     BytedeskUtils.printLog(threadUrl);
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -202,11 +221,10 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
         '/api/thread/request/agent',
         {'wId': wid, 'type': type, 'aId': aid, 'client': client});
     BytedeskUtils.printLog("request agent Url $threadUrl");
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -222,14 +240,13 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   // 请求一对一会话
   Future<RequestThreadResult> requestContactThread(String? cid) async {
     //
-    final threadUrl = Uri.http(BytedeskConstants.host, '/api/thread/contact',
-        {'cid': cid, 'client': client});
+    final threadUrl = BytedeskUtils.getHostUri(
+        '/api/thread/contact', {'cid': cid, 'client': client});
     BytedeskUtils.printLog("request contact thread Url $threadUrl");
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -245,14 +262,13 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   // 请求群组会话
   Future<RequestThreadResult> requestGroupThread(String? gid) async {
     //
-    final threadUrl = Uri.http(BytedeskConstants.host, '/api/thread/group',
-        {'gid': gid, 'client': client});
+    final threadUrl = BytedeskUtils.getHostUri(
+        '/api/thread/group', {'gid': gid, 'client': client});
     BytedeskUtils.printLog("request contact thread Url $threadUrl");
-    final initResponse =
-        await this.httpClient.get(threadUrl, headers: getHeaders());
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -275,12 +291,11 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       BytedeskConstants.host,
       '/api/v2/thread/mark/top',
     );
-    final initResponse = await this
-        .httpClient
-        .post(threadUrl, headers: getHeaders(), body: body);
+    final initResponse =
+        await httpClient.post(threadUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -303,12 +318,11 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       BytedeskConstants.host,
       '/api/v2/thread/unmark/top',
     );
-    final initResponse = await this
-        .httpClient
-        .post(threadUrl, headers: getHeaders(), body: body);
+    final initResponse =
+        await httpClient.post(threadUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -331,12 +345,11 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       BytedeskConstants.host,
       '/api/v2/thread/mark/nodisturb',
     );
-    final initResponse = await this
-        .httpClient
-        .post(threadUrl, headers: getHeaders(), body: body);
+    final initResponse =
+        await httpClient.post(threadUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -359,12 +372,11 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       BytedeskConstants.host,
       '/api/v2/thread/unmark/nodisturb',
     );
-    final initResponse = await this
-        .httpClient
-        .post(threadUrl, headers: getHeaders(), body: body);
+    final initResponse =
+        await httpClient.post(threadUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -387,12 +399,11 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       BytedeskConstants.host,
       '/api/v2/thread/mark/unread',
     );
-    final initResponse = await this
-        .httpClient
-        .post(threadUrl, headers: getHeaders(), body: body);
+    final initResponse =
+        await httpClient.post(threadUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -415,12 +426,11 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       BytedeskConstants.host,
       '/api/v2/thread/unmark/unread',
     );
-    final initResponse = await this
-        .httpClient
-        .post(threadUrl, headers: getHeaders(), body: body);
+    final initResponse =
+        await httpClient.post(threadUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -437,12 +447,12 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   Future<MarkThreadResult> delete(String? tid) async {
     //
     var body = json.encode({"tid": tid, "client": client});
-    final initUrl = Uri.http(BytedeskConstants.host, '/api/thread/delete');
+    final initUrl = BytedeskUtils.getHostUri('/api/thread/delete');
     final initResponse =
-        await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+        await httpClient.post(initUrl, headers: getHeaders(), body: body);
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));

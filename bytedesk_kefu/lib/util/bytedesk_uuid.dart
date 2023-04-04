@@ -21,12 +21,7 @@ class BytedeskUuid {
   static String uuid() {
     String timestamp = BytedeskUtils.formatedTimestampNow();
     final int special = 8 + Random().nextInt(4);
-    return timestamp +
-        '${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}'
-            '${_bitsDigits(16, 4)}'
-            '4${_bitsDigits(12, 3)}'
-            '${_printDigits(special, 1)}${_bitsDigits(12, 3)}'
-            '${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}';
+    return '$timestamp${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}4${_bitsDigits(12, 3)}${_printDigits(special, 1)}${_bitsDigits(12, 3)}${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}${_bitsDigits(16, 4)}';
   }
   /// Generate a version 4 (random) uuid. This is a uuid scheme that only uses
   /// random numbers as the source of the generated uuid.

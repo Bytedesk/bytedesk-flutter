@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:equatable/equatable.dart';
 
 class UploadJsonResult extends Equatable {
@@ -5,7 +7,7 @@ class UploadJsonResult extends Equatable {
   final int? statusCode;
   final String? url;
 
-  UploadJsonResult({this.message, this.statusCode, this.url}) : super();
+  const UploadJsonResult({this.message, this.statusCode, this.url}) : super();
 
   static UploadJsonResult fromJson(dynamic json) {
     return UploadJsonResult(
@@ -15,5 +17,5 @@ class UploadJsonResult extends Equatable {
   }
 
   @override
-  List<Object> get props => [this.url!];
+  List<Object> get props => [url!];
 }

@@ -11,9 +11,9 @@ class OnlineStatusPage extends StatefulWidget {
 
 class _OnlineStatusPageState extends State<OnlineStatusPage> {
   // 到 客服管理->技能组-有一列 ‘唯一ID（wId）’
-  String _workGroupWid = "201807171659201";
+  final String _workGroupWid = "201807171659201";
   // 到 客服管理->客服账号-有一列 ‘唯一ID（uId）’
-  String _agentUid = "201808221551193";
+  final String _agentUid = "201808221551193";
   //
   String _workGroupStatus = ''; // 注：online 代表在线，offline 代表离线
   String _agentStatus = ''; // 注：online 代表在线，offline 代表离线

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'dart:convert';
 
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
@@ -34,7 +36,7 @@ class BytedeskMqtt {
   int keepAlivePeriod = 20;
   // final key = Key.fromUtf8('16BytesLengthKey');
   // final iv = IV.fromUtf8('A-16-Byte-String');
-  MessageProvider messageProvider = new MessageProvider();
+  MessageProvider messageProvider = MessageProvider();
   List<String> midList = [];
   // bool _isConnected = false;
   String? currentUid;
@@ -175,22 +177,17 @@ class BytedeskMqtt {
       var timestamp = messageProto.timestamp;
       var client = messageProto.client;
       //
-      BytedeskUtils.printLog('bytedesk_mqtt.dart receive type:' +
-          type +
-          ' client:' +
-          client +
-          ' mid:' +
-          mid);
+      BytedeskUtils.printLog('bytedesk_mqtt.dart receive type:$type client:$client mid:$mid');
       // 非会话消息，如：会议通知等, 另行处理
       if (type == BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_NOTICE) {
         // TODO: 待处理
         return;
       }
       //
-      User user = new User(
+      User user = User(
           uid: uid, username: username, nickname: nickname, avatar: avatar);
       //
-      Thread thread = new Thread(
+      Thread thread = Thread(
           tid: messageProto.thread.tid,
           type: messageProto.thread.type,
           // uid: '',
@@ -201,7 +198,7 @@ class BytedeskMqtt {
           unreadCount: messageProto.thread.unreadCount,
           topic: messageProto.thread.topic,
           client: client);
-      Message message = new Message(
+      Message message = Message(
           mid: mid,
           content: content,
           imageUrl: content,
@@ -228,7 +225,7 @@ class BytedeskMqtt {
             sendReceipt = true;
             // TODO: 判断是否加密，暂时不需要
             message.content = messageProto.text.content;
-            BytedeskUtils.printLog('receive text:' + message.content!);
+            BytedeskUtils.printLog('receive text:${message.content!}');
             break;
           }
         case BytedeskConstants.MESSAGE_TYPE_IMAGE:
@@ -547,7 +544,7 @@ class BytedeskMqtt {
             return;
           }
         default:
-          BytedeskUtils.printLog('other message type:' + type);
+          BytedeskUtils.printLog('other message type:$type');
       }
       // 客服端使用
       // if (autoReply) {
@@ -641,7 +638,7 @@ class BytedeskMqtt {
 
   // 消息撤回
   void sendRecallMessage(String mid, Thread currentThread) {
-    ExtraParam extraParam = new ExtraParam();
+    ExtraParam extraParam = ExtraParam();
     extraParam.recallMid = mid;
     publish(mid, BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_RECALL,
         currentThread, extraParam);
@@ -660,7 +657,7 @@ class BytedeskMqtt {
   }
 
   void sendReceiptMessage(String mid, String status, Thread currentThread) {
-    ExtraParam extraParam = new ExtraParam();
+    ExtraParam extraParam = ExtraParam();
     extraParam.receiptMid = mid;
     extraParam.receiptStatus = status;
     publish('content', BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_RECEIPT,
@@ -681,7 +678,7 @@ class BytedeskMqtt {
     // final decrypted = encrypter.decrypt(encrypted, iv: iv);
     // BytedeskUtils.printLog(decrypted);
     // thread
-    protothread.Thread thread = new protothread.Thread();
+    protothread.Thread thread = protothread.Thread();
     thread.tid = currentThread.tid!;
     thread.type = currentThread.type!;
     thread.topic = currentThread.topic!;
@@ -693,13 +690,13 @@ class BytedeskMqtt {
     var extra = {'top': false, 'undisturb': false};
     thread.extra = jsonEncode(extra);
     // user
-    protouser.User user = new protouser.User();
+    protouser.User user = protouser.User();
     user.uid = SpUtil.getString(BytedeskConstants.uid)!;
     user.username = SpUtil.getString(BytedeskConstants.username)!;
     user.nickname = SpUtil.getString(BytedeskConstants.nickname)!;
     user.avatar = SpUtil.getString(BytedeskConstants.avatar)!;
     // msg
-    protomsg.Message messageProto = new protomsg.Message();
+    protomsg.Message messageProto = protomsg.Message();
     messageProto.mid = BytedeskUuid.uuid();
     messageProto.type = type;
     messageProto.timestamp = BytedeskUtils.formatedDateNow();
@@ -707,7 +704,7 @@ class BytedeskMqtt {
     messageProto.version = '1';
     messageProto.encrypted = false;
     // 用来在发送之前显示到界面
-    Message message = new Message();
+    Message message = Message();
     message.mid = messageProto.mid;
     message.type = messageProto.type;
     message.timestamp = messageProto.timestamp;
@@ -726,7 +723,7 @@ class BytedeskMqtt {
     bool shouldInsertLocal = false;
     // 发送protobuf
     if (type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-      protomsg.Text text = new protomsg.Text();
+      protomsg.Text text = protomsg.Text();
       text.content = content;
       messageProto.text = text;
       //
@@ -735,7 +732,7 @@ class BytedeskMqtt {
       shouldInsertLocal = true;
       message.content = content;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-      protomsg.Image image = new protomsg.Image();
+      protomsg.Image image = protomsg.Image();
       image.imageUrl = content;
       messageProto.image = image;
       //
@@ -744,7 +741,7 @@ class BytedeskMqtt {
       shouldInsertLocal = true;
       message.imageUrl = content;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
-      protomsg.Voice voice = new protomsg.Voice();
+      protomsg.Voice voice = protomsg.Voice();
       voice.voiceUrl = content;
       // voice.length
       // voice.format
@@ -755,7 +752,7 @@ class BytedeskMqtt {
       shouldInsertLocal = true;
       message.voiceUrl = content;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_FILE) {
-      protomsg.File file = new protomsg.File();
+      protomsg.File file = protomsg.File();
       file.fileUrl = content;
       messageProto.file = file;
       //
@@ -765,7 +762,7 @@ class BytedeskMqtt {
       message.fileUrl = content;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_VIDEO ||
         type == BytedeskConstants.MESSAGE_TYPE_SHORT_VIDEO) {
-      protomsg.Video video = new protomsg.Video();
+      protomsg.Video video = protomsg.Video();
       video.videoOrShortUrl = content;
       messageProto.video = video;
       //
@@ -774,7 +771,7 @@ class BytedeskMqtt {
       shouldInsertLocal = true;
       message.videoUrl = content;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_COMMODITY) {
-      protomsg.Text text = new protomsg.Text();
+      protomsg.Text text = protomsg.Text();
       text.content = content;
       messageProto.text = text;
       //
@@ -783,19 +780,19 @@ class BytedeskMqtt {
       shouldInsertLocal = true;
       message.content = content;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_PREVIEW) {
-      protomsg.Preview preview = new protomsg.Preview();
+      protomsg.Preview preview = protomsg.Preview();
       preview.content = content;
       messageProto.preview = preview;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_RECEIPT) {
       // 发送消息回执
-      protomsg.Receipt receipt = new protomsg.Receipt();
+      protomsg.Receipt receipt = protomsg.Receipt();
       receipt.mid = extraParam!.receiptMid!;
       receipt.status = extraParam.receiptStatus!;
       //
       messageProto.receipt = receipt;
     } else if (type == BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_RECALL) {
       //
-      protomsg.Recall recall = new protomsg.Recall();
+      protomsg.Recall recall = protomsg.Recall();
       recall.mid = extraParam!.recallMid!;
       //
       messageProto.recall = recall;
@@ -956,7 +953,7 @@ class BytedeskMqtt {
       return;
     } else {
       // 其他类型消息
-      BytedeskUtils.printLog('other type:' + type);
+      BytedeskUtils.printLog('other type:$type');
     }
     //
     messageProto.user = user;
@@ -1015,7 +1012,7 @@ class BytedeskMqtt {
     //   BytedeskUtils.printLog('OnDisconnected callback is solicited, this is correct');
     // }
     // 延时10s执行重连
-    Future.delayed(Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 10), () {
       // BytedeskUtils.printLog('start reconnecting');
       // reconnect();
     });

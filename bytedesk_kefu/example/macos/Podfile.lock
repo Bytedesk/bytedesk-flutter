@@ -55,15 +55,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   bytedesk_kefu: d27c539812e9d660117ba1b6e1804c478e498b7d
-  FlutterMacOS: ae6af50a8ea7d6103d888583d46bd8328a7e9811
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  package_info: 625f8f14fc7e8d9b16276d18a72163c722e57929
-  path_provider_foundation: 779d6f57e23c1654d7bbc80538d9a445efb876cb
-  shared_preferences_foundation: 6ba071dca4c6b27a4171cebbb1d52a8d3af9496f
-  sqflite: 5c95035b48b4152774f4c67ed811f217917bdb47
-  url_launcher_macos: 4451108d8be731c747ac060de15ade9ba9c8209f
-  wakelock_macos: 8dafd5425dcdb437fc5a98db9c88198d4e74ff03
+  package_info: 6eba2fd8d3371dda2d85c8db6fe97488f24b74b2
+  path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
+  shared_preferences_foundation: 297b3ebca31b34ec92be11acd7fb0ba932c822ca
+  sqflite: a5789cceda41d54d23f31d6de539d65bb14100ea
+  url_launcher_macos: c04e4fa86382d4f94f6b38f14625708be3ae52e2
+  wakelock_macos: bc3f2a9bd8d2e6c89fee1e1822e7ddac3bd004a9
 
-PODFILE CHECKSUM: a884f6dd3f7494f3892ee6c81feea3a3abbf9153
+PODFILE CHECKSUM: 353c8bcc5d5b0994e508d035b5431cfe18c1dea7
 
 COCOAPODS: 1.11.3

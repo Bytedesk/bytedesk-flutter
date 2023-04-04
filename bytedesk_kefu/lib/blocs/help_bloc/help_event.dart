@@ -11,11 +11,11 @@ abstract class HelpEvent extends Equatable {
 
 class GetHelpCategoryEvent extends HelpEvent {
   final String? uid;
-  GetHelpCategoryEvent({@required this.uid}) : super();
+  const GetHelpCategoryEvent({@required this.uid}) : super();
 }
 
 class GetHelpArticleEvent extends HelpEvent {
   final int? categoryId;
 
-  GetHelpArticleEvent({@required this.categoryId}) : super();
+  const GetHelpArticleEvent({@required this.categoryId}) : super();
 }

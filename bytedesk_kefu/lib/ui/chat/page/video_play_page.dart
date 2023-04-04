@@ -1,11 +1,12 @@
-import 'package:bytedesk_kefu/vendors/chewie/chewie.dart';
+// import 'package:bytedesk_kefu/vendors/chewie/chewie.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPlayPage extends StatefulWidget {
   final String? videoUrl;
   final String? title;
-  const VideoPlayPage({this.title = '视频播放', @required this.videoUrl});
+  const VideoPlayPage({super.key, this.title = '视频播放', @required this.videoUrl});
 
   @override
   State<StatefulWidget> createState() {

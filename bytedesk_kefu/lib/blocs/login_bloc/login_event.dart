@@ -14,7 +14,7 @@ class LoginButtonPressed extends LoginEvent {
   final String? username;
   final String? password;
 
-  LoginButtonPressed({@required this.username, @required this.password})
+  const LoginButtonPressed({@required this.username, @required this.password})
       : super();
 
   @override
@@ -28,7 +28,7 @@ class SMSLoginButtonPressed extends LoginEvent {
   final String? mobile;
   final String? code;
 
-  SMSLoginButtonPressed({@required this.mobile, @required this.code}) : super();
+  const SMSLoginButtonPressed({@required this.mobile, @required this.code}) : super();
 
   @override
   String toString() {
@@ -41,7 +41,7 @@ class RegisterButtonPressed extends LoginEvent {
   final String? mobile;
   final String? password;
   //
-  RegisterButtonPressed({@required this.mobile, @required this.password})
+  const RegisterButtonPressed({@required this.mobile, @required this.password})
       : super();
   @override
   String toString() {
@@ -52,7 +52,7 @@ class RegisterButtonPressed extends LoginEvent {
 class RequestCodeButtonPressed extends LoginEvent {
   //
   final String? mobile;
-  RequestCodeButtonPressed({@required this.mobile}) : super();
+  const RequestCodeButtonPressed({@required this.mobile}) : super();
   @override
   String toString() {
     return 'RequestCodeButtonPressed { mobile: $mobile}';
@@ -62,7 +62,7 @@ class RequestCodeButtonPressed extends LoginEvent {
 class BindMobileEvent extends LoginEvent {
   //
   final String? mobile;
-  BindMobileEvent({@required this.mobile}) : super();
+  const BindMobileEvent({@required this.mobile}) : super();
   @override
   String toString() {
     return 'BindMobileEvent { mobile: $mobile}';
@@ -72,7 +72,7 @@ class BindMobileEvent extends LoginEvent {
 class UnionidOAuthEvent extends LoginEvent {
   //
   final String? unionid;
-  UnionidOAuthEvent({@required this.unionid}) : super();
+  const UnionidOAuthEvent({@required this.unionid}) : super();
   //
   @override
   String toString() {
@@ -84,7 +84,7 @@ class ResetPasswordButtonPressed extends LoginEvent {
   //
   final String? mobile;
   final String? password;
-  ResetPasswordButtonPressed({@required this.mobile, @required this.password})
+  const ResetPasswordButtonPressed({@required this.mobile, @required this.password})
       : super();
   @override
   String toString() {
@@ -97,7 +97,7 @@ class UpdatePasswordButtonPressed extends LoginEvent {
   final String? mobile;
   final String? password;
 
-  UpdatePasswordButtonPressed({@required this.mobile, @required this.password})
+  const UpdatePasswordButtonPressed({@required this.mobile, @required this.password})
       : super();
 
   @override
@@ -112,7 +112,7 @@ class BindWechatMobileEvent extends LoginEvent {
   final String? mobile;
   final String? unionid;
   //
-  BindWechatMobileEvent({@required this.mobile, @required this.unionid})
+  const BindWechatMobileEvent({@required this.mobile, @required this.unionid})
       : super();
   //
   @override

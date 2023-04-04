@@ -3,9 +3,6 @@
 import 'dart:io';
 import 'dart:math';
 
-/// 使用 Uint8List 数据类型
-import 'dart:typed_data';
-
 import 'package:bytedesk_kefu/mqtt/bytedesk_mqtt.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:sp_util/sp_util.dart';
@@ -52,6 +49,12 @@ class BytedeskUtils {
       return 'flutter_android';
     } else if (isIOS) {
       return 'flutter_ios';
+    } else if (isMacOS) {
+      return 'flutter_mac';
+    } else if (isWindows) {
+      return 'flutter_windows';
+    } else if (isLinux) {
+      return 'flutter_linux';
     } else {
       return 'flutter_web';
     }
@@ -64,6 +67,12 @@ class BytedeskUtils {
       return 'flutter_android_school';
     } else if (isIOS) {
       return 'flutter_ios_school';
+    } else if (isMacOS) {
+      return 'flutter_mac_school';
+    } else if (isWindows) {
+      return 'flutter_windows_school';
+    } else if (isLinux) {
+      return 'flutter_linux_school';
     } else {
       return 'flutter_web_school';
     }
@@ -87,6 +96,14 @@ class BytedeskUtils {
       return BytedeskConstants.httpBaseUrliOS;
     } else {
       return BytedeskConstants.httpBaseUrl;
+    }
+  }
+
+  static Uri getHostUri(String path, [Map<String, dynamic>? queryParameters,]) {
+    if (BytedeskConstants.isDebug) {
+      return Uri.http(BytedeskConstants.host, path, queryParameters);
+    } else {
+      return Uri.https(BytedeskConstants.host, path, queryParameters);
     }
   }
 
@@ -129,27 +146,27 @@ class BytedeskUtils {
   static bool mqttConnect() {
     var isLogin = SpUtil.getBool(BytedeskConstants.isLogin);
     if (isLogin!) {
-      new BytedeskMqtt().connect();
+      BytedeskMqtt().connect();
       return true;
     }
     return false;
   }
 
   static bool mqttReConnect() {
-    bool isConnected = new BytedeskMqtt().isConnected();
+    bool isConnected = BytedeskMqtt().isConnected();
     if (!isConnected) {
-      new BytedeskMqtt().connect();
+      BytedeskMqtt().connect();
       return true;
     }
     return false;
   }
 
   static bool isMqttConnected() {
-    return new BytedeskMqtt().isConnected();
+    return BytedeskMqtt().isConnected();
   }
 
   static void mqttDisconnect() {
-    new BytedeskMqtt().disconnect();
+    BytedeskMqtt().disconnect();
   }
 
   static double? getLatitude() {
@@ -190,18 +207,18 @@ class BytedeskUtils {
   // }
 
   static String formatedDateNow() {
-    var format = new DateFormat('yyyy-MM-dd HH:mm:ss');
-    return format.format(new DateTime.now());
+    var format = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return format.format(DateTime.now());
   }
 
   static String formatedTimestampNow() {
-    var format = new DateFormat('yyyyMMddHHmmss');
-    return format.format(new DateTime.now());
+    var format = DateFormat('yyyyMMddHHmmss');
+    return format.format(DateTime.now());
   }
 
   static Map url2query(String url) {
-    var search = new RegExp('([^&=]+)=?([^&]*)');
-    var result = new Map();
+    var search = RegExp('([^&=]+)=?([^&]*)');
+    var result = {};
 
     // Get rid off the beginning ? in query strings.
     if (url.startsWith('?')) url = url.substring(1);
@@ -236,7 +253,7 @@ class BytedeskUtils {
   }
 
   static int currentTimeMillis() {
-    return new DateTime.now().millisecondsSinceEpoch;
+    return DateTime.now().millisecondsSinceEpoch;
   }
 
   // 图片压缩 https://pub.dev/packages/flutter_image_compress
@@ -271,13 +288,13 @@ class BytedeskUtils {
     if (subTime < MILLIS_LIMIT) {
       return "刚刚";
     } else if (subTime < SECONDS_LIMIT) {
-      return (subTime / MILLIS_LIMIT).round().toString() + " 秒前";
+      return "${(subTime / MILLIS_LIMIT).round()} 秒前";
     } else if (subTime < MINUTES_LIMIT) {
-      return (subTime / SECONDS_LIMIT).round().toString() + " 分钟前";
+      return "${(subTime / SECONDS_LIMIT).round()} 分钟前";
     } else if (subTime < HOURS_LIMIT) {
-      return (subTime / MINUTES_LIMIT).round().toString() + " 小时前";
+      return "${(subTime / MINUTES_LIMIT).round()} 小时前";
     } else if (subTime < DAYS_LIMIT) {
-      return (subTime / HOURS_LIMIT).round().toString() + " 天前";
+      return "${(subTime / HOURS_LIMIT).round()} 天前";
     } else {
       return getDateStr(date);
     }
@@ -293,21 +310,17 @@ class BytedeskUtils {
             // if (nowTime.hour == compareTime.hour) {
             //   if (nowTime.minute == compareTime.minute) {
             //
-            return compareTime.hour.toString() +
-                ':' +
-                ((compareTime.minute < 10)
-                    ? '0' + compareTime.minute.toString()
-                    : compareTime.minute.toString());
+            return '${compareTime.hour}:${(compareTime.minute < 10) ? '0${compareTime.minute}' : compareTime.minute.toString()}';
             //   }
             //   return (nowTime.minute - compareTime.minute).toString() + '分钟前';
             // }
             // return (nowTime.hour - compareTime.hour).toString() + '小时前';
           }
-          return (nowTime.day - compareTime.day).toString() + '天前';
+          return '${nowTime.day - compareTime.day}天前';
         }
-        return (nowTime.month - compareTime.month).toString() + '月前';
+        return '${nowTime.month - compareTime.month}月前';
       }
-      return (nowTime.year - compareTime.year).toString() + '年前';
+      return '${nowTime.year - compareTime.year}年前';
     }
     return 'time error';
   }

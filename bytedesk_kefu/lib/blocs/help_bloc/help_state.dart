@@ -3,7 +3,7 @@ import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HelpState extends Equatable {
-  HelpState();
+  const HelpState();
 
   @override
   List<Object> get props => [];
@@ -11,7 +11,7 @@ abstract class HelpState extends Equatable {
 
 /// UnInitialized
 class UnHelpState extends HelpState {
-  UnHelpState();
+  const UnHelpState();
 
   @override
   String toString() => 'UnHelpState';
@@ -36,7 +36,7 @@ class HelpLoadError extends HelpState {
 class HelpCategoryState extends HelpState {
   final List<HelpCategory> categoryList;
 
-  HelpCategoryState(this.categoryList) : super();
+  const HelpCategoryState(this.categoryList) : super();
 
   @override
   String toString() => 'GetHelpCategoryState';
@@ -45,7 +45,7 @@ class HelpCategoryState extends HelpState {
 class HelpArticleState extends HelpState {
   final List<HelpArticle> articleList;
 
-  HelpArticleState(this.articleList) : super();
+  const HelpArticleState(this.articleList) : super();
 
   @override
   String toString() => 'GetHelpArticleState';

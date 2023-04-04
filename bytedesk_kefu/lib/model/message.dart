@@ -202,6 +202,25 @@ class Message {
         answersJson: json['answers'].toString());
   }
 
+  static Message fromJsonFileHelper(dynamic json) {
+    //
+    return Message(
+        mid: json['mid'],
+        // topic: json['thread']['topic'],
+        content: json['content'],
+        imageUrl: json['imageUrl'],
+        voiceUrl: json['voiceUrl'],
+        fileUrl: json['fileUrl'],
+        videoUrl: json['videoOrShortUrl'],
+        nickname: json['user']['nickname'],
+        avatar: json['user']['avatar'],
+        type: json['type'],
+        timestamp: json['createdAt'],
+        client: json['client'],
+        isSend: 1,
+        currentUid: SpUtil.getString(BytedeskConstants.uid));
+  }
+
   // @override
   // List<Object> get props => [mid];
 

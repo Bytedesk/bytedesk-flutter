@@ -32,7 +32,7 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
 
   /// Auto reconnect in progress
   @override
-  bool? autoReconnectInProgress = false;
+  bool autoReconnectInProgress = false;
 
   // Server name, needed for auto reconnect.
   @override
@@ -41,14 +41,13 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
   // Port number, needed for auto reconnect.
   @override
   int? port;
-
   // Connection message, needed for auto reconnect.
   @override
   MqttConnectMessage? connectionMessage;
 
   /// Callback function to handle bad certificate. if true, ignore the error.
   @override
-  bool Function(dynamic certificate)? onBadCertificate;
+  bool Function(Object certificate)? onBadCertificate;
 
   /// Max connection attempts
   final int? maxConnectionAttempts;
@@ -62,12 +61,11 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
   events.EventBus? clientEventBus;
 
   /// User supplied websocket protocols
-  @protected
   List<String>? websocketProtocols;
 
   /// The connection
   @protected
-  late dynamic connection;
+  late MqttConnectionBase connection;
 
   /// Registry of message processors
   @protected
@@ -90,7 +88,7 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
   /// Connect to the specific Mqtt Connection.
   @override
   Future<MqttClientConnectionStatus> connect(
-      String? server, int? port, MqttConnectMessage? message) async {
+      String server, int port, MqttConnectMessage? message) async {
     // Save the parameters for auto reconnect.
     this.server = server;
     this.port = port;
@@ -110,14 +108,14 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
   /// Connect to the specific Mqtt Connection internally.
   @protected
   Future<MqttClientConnectionStatus> internalConnect(
-      String? hostname, int? port, MqttConnectMessage? message);
+      String hostname, int port, MqttConnectMessage? message);
 
   /// Auto reconnect
   @protected
   void autoReconnect(AutoReconnect reconnectEvent) async {
     MqttLogger.log('MqttConnectionHandlerBase::autoReconnect entered');
     // If already in progress exit and we were not connected return
-    if (autoReconnectInProgress! && !reconnectEvent.wasConnected) {
+    if (autoReconnectInProgress && !reconnectEvent.wasConnected) {
       return;
     }
     autoReconnectInProgress = true;
@@ -137,7 +135,7 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
     connection.onDisconnected = null;
     MqttLogger.log(
         'MqttConnectionHandlerBase::autoReconnect - attempting reconnection');
-    connectionStatus = await connect(server, port, connectionMessage);
+    connectionStatus = await connect(server!, port!, connectionMessage);
     autoReconnectInProgress = false;
     if (connectionStatus.state == MqttConnectionState.connected) {
       connection.onDisconnected = onDisconnected;
@@ -187,6 +185,7 @@ abstract class MqttConnectionHandlerBase implements IMqttConnectionHandler {
   @override
   void stopListening() {
     connection.stopListening();
+    connection.closeClient();
   }
 
   /// Registers for the receipt of messages when they arrive.

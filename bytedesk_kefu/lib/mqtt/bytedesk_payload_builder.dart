@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'dart:typed_data';
 
 import 'package:bytedesk_kefu/mqtt/lib/mqtt_client.dart';

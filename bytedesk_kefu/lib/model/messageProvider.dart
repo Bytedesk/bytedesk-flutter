@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:async';
 // import 'dart:convert';
 
@@ -60,9 +62,7 @@ class MessageProvider {
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database. autoincrement
         return db.execute(
-          "CREATE TABLE $tableMessage($columnId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-              "$columnMid TEXT, $columnType TEXT, $columnTopic TEXT, $columnContent TEXT, $columnImageUrl TEXT, $columnVoiceUrl TEXT,$columnVideoUrl TEXT, $columnFileUrl TEXT, $columnNickname TEXT, $columnAvatar TEXT, $columnStatus TEXT, " +
-              "$columnIsSend INTEGER, $columnTimestamp TEXT, $columnCurrentUid TEXT, $columnClient TEXT, $columnAnswers TEXT, $columnCategories TEXT)",
+          "CREATE TABLE $tableMessage($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnMid TEXT, $columnType TEXT, $columnTopic TEXT, $columnContent TEXT, $columnImageUrl TEXT, $columnVoiceUrl TEXT,$columnVideoUrl TEXT, $columnFileUrl TEXT, $columnNickname TEXT, $columnAvatar TEXT, $columnStatus TEXT, $columnIsSend INTEGER, $columnTimestamp TEXT, $columnCurrentUid TEXT, $columnClient TEXT, $columnAnswers TEXT, $columnCategories TEXT)",
         );
       },
       // Set the version. This executes the onCreate function and provides a
@@ -70,7 +70,7 @@ class MessageProvider {
       version: 10,
     );
     // database path:/Users/ningjinpeng/Library/Developer/CoreSimulator/Devices/715CBA02-A602-4DE1-8C57-75A64B53BF03/data/Containers/Data/Application/8F46273D-9492-4C42-A618-4DF3815562BA/Documents/bytedesk-message-v9.db
-    BytedeskUtils.printLog('database path:' + database!.path);
+    BytedeskUtils.printLog('database path:${database!.path}');
   }
 
   Future<int> insert(Message message) async {

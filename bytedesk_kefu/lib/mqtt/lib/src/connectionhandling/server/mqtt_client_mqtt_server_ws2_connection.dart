@@ -92,20 +92,18 @@ class _DetachedSocket extends Stream<Uint8List> implements Socket {
 }
 
 /// The MQTT server alternative websocket connection class
-class MqttServerWs2Connection extends MqttServerConnection {
+class MqttServerWs2Connection extends MqttServerWsConnection {
   /// Default constructor
-  MqttServerWs2Connection(this.context, events.EventBus? eventBus)
-      : super(eventBus);
+  MqttServerWs2Connection(this.context, events.EventBus? eventBus,
+      List<RawSocketOption> socketOptions)
+      : super(eventBus, socketOptions);
 
   /// Initializes a new instance of the MqttWs2Connection class.
-  MqttServerWs2Connection.fromConnect(
-      String server, int port, events.EventBus eventBus)
-      : super(eventBus) {
+  MqttServerWs2Connection.fromConnect(String server, int port,
+      events.EventBus eventBus, List<RawSocketOption> socketOptions)
+      : super(eventBus, socketOptions) {
     connect(server, port);
   }
-
-  /// The websocket subprotocol list
-  List<String> protocols = MqttClientConstants.protocolsMultipleDefault;
 
   /// The security context for secure usage
   SecurityContext? context;
@@ -139,10 +137,9 @@ class MqttServerWs2Connection extends MqttServerConnection {
         'MqttWs2Connection::connect - WS URL is $uriString, protocols are $protocols');
 
     try {
-      SecureSocket.connect(uri.host, uri.port, context: context)
-          .then((Socket socket) {
+      SecureSocket.connect(uri.host, uri.port, context: context).then((socket) {
         MqttLogger.log('MqttWs2Connection::connect - securing socket');
-        _performWSHandshake(socket, uri).then((bool b) {
+        _performWSHandshake(socket, uri).then((_) {
           client = WebSocket.fromUpgradedSocket(
               _DetachedSocket(
                   socket, _subscription as StreamSubscription<Uint8List>?),
@@ -153,7 +150,7 @@ class MqttServerWs2Connection extends MqttServerConnection {
           _startListening();
           completer.complete(MqttClientConnectionStatus()
             ..state = MqttConnectionState.connected);
-        }).catchError((dynamic e) {
+        }).catchError((e) {
           onError(e);
           completer.completeError(e);
         });
@@ -206,10 +203,9 @@ class MqttServerWs2Connection extends MqttServerConnection {
         'MqttWs2Connection::connectAuto - WS URL is $uriString, protocols are $protocols');
 
     try {
-      SecureSocket.connect(uri.host, uri.port, context: context)
-          .then((Socket socket) {
+      SecureSocket.connect(uri.host, uri.port, context: context).then((socket) {
         MqttLogger.log('MqttWs2Connection::connectAuto - securing socket');
-        _performWSHandshake(socket, uri).then((bool b) {
+        _performWSHandshake(socket, uri).then((_) {
           client = WebSocket.fromUpgradedSocket(
               _DetachedSocket(
                   socket, _subscription as StreamSubscription<Uint8List>?),
@@ -217,7 +213,7 @@ class MqttServerWs2Connection extends MqttServerConnection {
           MqttLogger.log('MqttWs2Connection::connectAuto - start listening');
           _startListening();
           completer.complete();
-        }).catchError((dynamic e) {
+        }).catchError((e) {
           onError(e);
           completer.completeError(e);
         });
@@ -241,15 +237,6 @@ class MqttServerWs2Connection extends MqttServerConnection {
       throw NoConnectionException(message);
     }
     return completer.future;
-  }
-
-  /// Stops listening and closes the socket immediately.
-  @override
-  void stopListening() {
-    if (client != null) {
-      listener?.cancel();
-      client.close();
-    }
   }
 
   Future<bool> _performWSHandshake(Socket socket, Uri uri) async {
@@ -287,6 +274,7 @@ class MqttServerWs2Connection extends MqttServerConnection {
 }
 
 late String _response;
+
 bool _parseResponse(String resp, String key) {
   _response += resp;
   final bodyOffset = _response.indexOf('\n\n');

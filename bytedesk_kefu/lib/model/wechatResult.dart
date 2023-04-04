@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:bytedesk_kefu/model/wechatId.dart';
 import 'package:bytedesk_kefu/model/wechatUserinfo.dart';
 import 'package:equatable/equatable.dart';
@@ -9,7 +11,7 @@ class WeChatResult extends Equatable {
   final WechatId? wechatId;
   final WechatUserinfo? wechatUserinfo;
 
-  WeChatResult(
+  const WeChatResult(
       {this.message, this.statusCode, this.wechatId, this.wechatUserinfo})
       : super();
 
@@ -27,5 +29,5 @@ class WeChatResult extends Equatable {
   }
 
   @override
-  List<Object> get props => [this.wechatUserinfo!.openid!];
+  List<Object> get props => [wechatUserinfo!.openid!];
 }

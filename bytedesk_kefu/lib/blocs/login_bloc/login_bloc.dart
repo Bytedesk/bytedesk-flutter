@@ -8,6 +8,7 @@ import 'package:bytedesk_kefu/repositories/repositories.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   //
+  // ignore: unnecessary_new
   final UserRepository _userRepository = new UserRepository();
 
   LoginBloc() : super(LoginInitial()) {
@@ -20,28 +21,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<ResetPasswordButtonPressed>(_mapResetPasswordState);
     on<UpdatePasswordButtonPressed>(_mapUpdatePasswordState);
   }
-
-  // @override
-  // void mapEventToState(LoginEvent event, Emitter<LoginState> emit) async {
-  //   //
-  //   if (event is LoginButtonPressed) {
-  //     yield* _mapLoginState(event);
-  //   } else if (event is SMSLoginButtonPressed) {
-  //     yield* _mapSMSLoginState(event);
-  //   } else if (event is RegisterButtonPressed) {
-  //     yield* _mapRegisterState(event);
-  //   } else if (event is RequestCodeButtonPressed) {
-  //     yield* _mapRequestCodeState(event);
-  //   } else if (event is BindMobileEvent) {
-  //     yield* _mapBindMobileState(event);
-  //   } else if (event is UnionidOAuthEvent) {
-  //     yield* _mapUnionidOAuthState(event);
-  //   } else if (event is ResetPasswordButtonPressed) {
-  //     yield* _mapResetPasswordState(event);
-  //   } else if (event is UpdatePasswordButtonPressed) {
-  //     yield* _mapUpdatePasswordState(event);
-  //   }
-  // }
 
   void _mapLoginState(LoginButtonPressed event, Emitter<LoginState> emit) async {
     emit(LoginInProgress());

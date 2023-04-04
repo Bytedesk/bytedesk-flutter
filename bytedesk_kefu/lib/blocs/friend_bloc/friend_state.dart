@@ -9,7 +9,7 @@ abstract class FriendState extends Equatable {
 
 /// UnInitialized
 class UnFriendState extends FriendState {
-  UnFriendState();
+  const UnFriendState();
 
   @override
   String toString() => 'UnFriendState';
@@ -17,14 +17,14 @@ class UnFriendState extends FriendState {
 
 /// Initialized
 class FriendLoading extends FriendState {
-  FriendLoading() : super();
+  const FriendLoading() : super();
 
   @override
   String toString() => 'FriendLoading';
 }
 
 class FriendUpdateSuccess extends FriendState {
-  FriendUpdateSuccess() : super();
+  const FriendUpdateSuccess() : super();
 
   @override
   String toString() => 'FriendUpdateSuccess';
@@ -32,7 +32,7 @@ class FriendUpdateSuccess extends FriendState {
 
 class FriendCreateSuccess extends FriendState {
   final Friend? friend;
-  FriendCreateSuccess({this.friend});
+  const FriendCreateSuccess({this.friend});
 
   @override
   String toString() => 'FriendCreateSuccess';
@@ -41,7 +41,7 @@ class FriendCreateSuccess extends FriendState {
 class FriendLoadSuccess extends FriendState {
   final List<Friend> friendList;
 
-  FriendLoadSuccess(this.friendList);
+  const FriendLoadSuccess(this.friendList);
 
   @override
   List<Object> get props => [friendList];
@@ -53,7 +53,7 @@ class FriendLoadSuccess extends FriendState {
 class ErrorFriendState extends FriendState {
   final String errorMessage;
 
-  ErrorFriendState(this.errorMessage);
+  const ErrorFriendState(this.errorMessage);
 
   @override
   String toString() => 'ErrorFriendState';

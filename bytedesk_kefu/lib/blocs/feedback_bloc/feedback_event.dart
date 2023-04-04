@@ -11,19 +11,19 @@ abstract class FeedbackEvent extends Equatable {
 
 class GetFeedbackCategoryEvent extends FeedbackEvent {
   final String? uid;
-  GetFeedbackCategoryEvent({@required this.uid}) : super();
+  const GetFeedbackCategoryEvent({@required this.uid}) : super();
 }
 
 class SubmitFeedbackEvent extends FeedbackEvent {
   final List<String>? imageUrls;
   final String? content;
 
-  SubmitFeedbackEvent({@required this.content, @required this.imageUrls})
+  const SubmitFeedbackEvent({@required this.content, @required this.imageUrls})
       : super();
 }
 
 class UploadImageEvent extends FeedbackEvent {
   final String? filePath;
 
-  UploadImageEvent({@required this.filePath}) : super();
+  const UploadImageEvent({@required this.filePath}) : super();
 }

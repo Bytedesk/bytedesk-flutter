@@ -13,22 +13,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:flutter_html/flutter_html.dart';
-import 'package:bytedesk_kefu/vendors/flutter_html/flutter_html.dart';
+import './flutter_html/flutter_html.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 // 系统消息居中显示
 class MessageWidget extends StatelessWidget {
   //
   final Message? message;
-  final themeColor = Color(0xfff5a623);
-  final primaryColor = Color(0xff203152);
-  final greyColor = Color(0xffaeaeae);
-  final greyColor2 = Color(0xffE8E8E8);
+  final themeColor = const Color(0xfff5a623);
+  final primaryColor = const Color(0xff203152);
+  final greyColor = const Color(0xffaeaeae);
+  final greyColor2 = const Color(0xffE8E8E8);
 
   final ValueSetter<String>? customCallback;
   final AnimationController? animationController;
 
-  MessageWidget({this.message, this.customCallback, this.animationController});
+  const MessageWidget({super.key, this.message, this.customCallback, this.animationController});
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +55,8 @@ class MessageWidget extends StatelessWidget {
       status = '失败';
     }
     return Container(
-        margin: EdgeInsets.only(top: 8.0, left: 8.0),
-        padding: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.only(top: 8.0, left: 8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
             // 时间戳
@@ -71,7 +71,7 @@ class MessageWidget extends StatelessWidget {
                     Expanded(flex: 1, child: Container()),
                     Text(
                       status,
-                      style: TextStyle(fontSize: 10),
+                      style: const TextStyle(fontSize: 10),
                     ),
                     Container(
                       width: 5,
@@ -83,10 +83,10 @@ class MessageWidget extends StatelessWidget {
                         // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
                         FLBubble(
                             from: FLBubbleFrom.right,
-                            backgroundColor: Color.fromRGBO(160, 231, 90, 1),
+                            backgroundColor: const Color.fromRGBO(160, 231, 90, 1),
                             child: Container(
                               constraints: BoxConstraints(maxWidth: tWidth),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 2, vertical: 2),
                               child: _buildSendMenuWidget(context, message!),
                             )),
@@ -165,7 +165,7 @@ class MessageWidget extends StatelessWidget {
         message.content ?? '',
         textAlign: TextAlign.right,
         softWrap: true,
-        style: TextStyle(color: Colors.black, fontSize: 16.0),
+        style: const TextStyle(color: Colors.black, fontSize: 16.0),
       );
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
       return InkWell(
@@ -201,7 +201,7 @@ class MessageWidget extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: message.imageUrl!,
             // placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       );
@@ -224,7 +224,7 @@ class MessageWidget extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
+            SizedBox(
               width: 90.0,
               height: 90.0,
               child: CachedNetworkImage(
@@ -238,7 +238,7 @@ class MessageWidget extends StatelessWidget {
                 children: <Widget>[
                   // Gaps.vGap10,
                   Container(
-                    margin: EdgeInsets.only(left: 8),
+                    margin: const EdgeInsets.only(left: 8),
                     child: Text(
                       title,
                       maxLines: 1,
@@ -246,19 +246,19 @@ class MessageWidget extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 8),
+                    margin: const EdgeInsets.only(top: 10, left: 8),
                     child: Text(
                       '¥$price',
-                      style: TextStyle(fontSize: 12, color: Colors.red),
+                      style: const TextStyle(fontSize: 12, color: Colors.red),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 8),
+                    margin: const EdgeInsets.only(top: 10, left: 8),
                     child: Text(
                       '$content',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -274,8 +274,8 @@ class MessageWidget extends StatelessWidget {
       return InkWell(
         onTap: () {
           BytedeskUtils.printLog('play video');
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-            return new VideoPlayPage(videoUrl: message.videoUrl);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return VideoPlayPage(videoUrl: message.videoUrl);
           }));
         },
         child: SizedBox(
@@ -283,7 +283,7 @@ class MessageWidget extends StatelessWidget {
           height: 100,
           child: CachedNetworkImage(
             imageUrl: BytedeskConstants.VIDEO_PLAY,
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       );
@@ -292,7 +292,7 @@ class MessageWidget extends StatelessWidget {
         message.content ?? '',
         textAlign: TextAlign.right,
         softWrap: true,
-        style: TextStyle(color: Colors.black, fontSize: 16.0),
+        style: const TextStyle(color: Colors.black, fontSize: 16.0),
       );
     }
   }
@@ -300,9 +300,9 @@ class MessageWidget extends StatelessWidget {
   // 接收消息widget
   Widget _buildReceiveWidget(BuildContext context) {
     double tWidth = MediaQuery.of(context).size.width - 160;
-    return new Container(
-        margin: EdgeInsets.only(top: 8.0, right: 8.0),
-        padding: EdgeInsets.all(8.0),
+    return Container(
+        margin: const EdgeInsets.only(top: 8.0, right: 8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Column(children: <Widget>[
           // 时间戳
           _buildTimestampWidget(),
@@ -325,10 +325,10 @@ class MessageWidget extends StatelessWidget {
                         // 昵称
                         Container(
                           // color: Colors.grey,
-                          margin: EdgeInsets.only(left: 18, bottom: 2),
+                          margin: const EdgeInsets.only(left: 18, bottom: 2),
                           child: Text(
                             message!.nickname!,
-                            style: TextStyle(fontSize: 10),
+                            style: const TextStyle(fontSize: 10),
                           ),
                         ),
                         // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
@@ -337,7 +337,7 @@ class MessageWidget extends StatelessWidget {
                             backgroundColor: Colors.white,
                             child: Container(
                               constraints: BoxConstraints(maxWidth: tWidth),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 2, vertical: 2),
                               child: _buildReceiveMenuWidget(context, message!),
                             ))
@@ -404,7 +404,7 @@ class MessageWidget extends StatelessWidget {
         message.content ?? '',
         textAlign: TextAlign.left,
         softWrap: true,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 16.0,
         ),
@@ -443,7 +443,7 @@ class MessageWidget extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: message.imageUrl!,
             // placeholder: (context, url) => CircularProgressIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       );
@@ -457,7 +457,7 @@ class MessageWidget extends StatelessWidget {
           //   style: TextStyle(color: Colors.black, fontSize: 16.0),
           // ),
           Visibility(
-            visible: message.content != null && message.content!.length > 0,
+            visible: message.content != null && message.content!.isNotEmpty,
             child: Html(
               data: message.content ?? '',
               onLinkTap: (url, _, __, ___) {
@@ -498,51 +498,48 @@ class MessageWidget extends StatelessWidget {
             ),
           ),
           Visibility(
-              visible: message.answers != null && message.answers!.length > 0,
+              visible: message.answers != null && message.answers!.isNotEmpty,
               // visible: false,
-              child: Container(
-                // color: Colors.black,
-                child: ListView.builder(
-                  // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
-                  shrinkWrap: true,
-                  // 禁用ListView滑动，使用外层的ScrollView滑动
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.all(0),
-                  itemCount:
-                      message.answers == null ? 0 : message.answers!.length,
-                  itemBuilder: (_, index) {
-                    //
-                    var answer = message.answers![index];
-                    // return Text(answer.question!);
-                    return DecoratedBox(
-                        decoration: BoxDecoration(
-                            border: Border(
-                          bottom: Divider.createBorderSide(context, width: 0.8),
-                        )),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 6, left: 8, bottom: 8),
-                          // color: Colors.pink,
-                          child: InkWell(
-                              child: Text(
-                                answer.question!,
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                              onTap: () => {
-                                    // BytedeskUtils.printLog('object:' + answer.question),
-                                    bytedeskEventBus.fire(QueryAnswerEventBus(
-                                        answer.aid!,
-                                        answer.question!,
-                                        answer.answer!))
-                                  }),
-                        ));
-                  },
-                ),
+              child: ListView.builder(
+                // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
+                shrinkWrap: true,
+                // 禁用ListView滑动，使用外层的ScrollView滑动
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(0),
+                itemCount:
+                    message.answers == null ? 0 : message.answers!.length,
+                itemBuilder: (_, index) {
+                  //
+                  var answer = message.answers![index];
+                  // return Text(answer.question!);
+                  return DecoratedBox(
+                      decoration: BoxDecoration(
+                          border: Border(
+                        bottom: Divider.createBorderSide(context, width: 0.8),
+                      )),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 6, left: 8, bottom: 8),
+                        // color: Colors.pink,
+                        child: InkWell(
+                            child: Text(
+                              answer.question!,
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                            onTap: () => {
+                                  // BytedeskUtils.printLog('object:' + answer.question),
+                                  bytedeskEventBus.fire(QueryAnswerEventBus(
+                                      answer.aid!,
+                                      answer.question!,
+                                      answer.answer!))
+                                }),
+                      ));
+                },
               )),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 10),
+            margin: const EdgeInsets.only(left: 10, top: 10),
             child: Row(
               children: [
-                Text('没有找到答案？'),
+                const Text('没有找到答案？'),
                 GestureDetector(
                   child: Text(
                     '人工客服',
@@ -565,57 +562,54 @@ class MessageWidget extends StatelessWidget {
             message.content ?? '',
             textAlign: TextAlign.left,
             softWrap: true,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16.0,
             ),
           ),
           Visibility(
               visible:
-                  message.categories != null && message.categories!.length > 0,
+                  message.categories != null && message.categories!.isNotEmpty,
               // visible: false,
-              child: Container(
-                // color: Colors.black,
-                child: ListView.builder(
-                  // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
-                  shrinkWrap: true,
-                  // 禁用ListView滑动，使用外层的ScrollView滑动
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.all(0),
-                  itemCount: message.categories == null
-                      ? 0
-                      : message.categories!.length,
-                  itemBuilder: (_, index) {
-                    //
-                    var category = message.categories![index];
-                    // return Text(answer.question!);
-                    return DecoratedBox(
-                        decoration: BoxDecoration(
-                            border: Border(
-                          bottom: Divider.createBorderSide(context, width: 0.8),
-                        )),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 6, left: 8, bottom: 8),
-                          // color: Colors.pink,
-                          child: InkWell(
-                              child: Text(
-                                category.name!,
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                              onTap: () => {
-                                    // BytedeskUtils.printLog(category.name),
-                                    bytedeskEventBus.fire(QueryCategoryEventBus(
-                                        category.cid!, category.name!))
-                                  }),
-                        ));
-                  },
-                ),
+              child: ListView.builder(
+                // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
+                shrinkWrap: true,
+                // 禁用ListView滑动，使用外层的ScrollView滑动
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.all(0),
+                itemCount: message.categories == null
+                    ? 0
+                    : message.categories!.length,
+                itemBuilder: (_, index) {
+                  //
+                  var category = message.categories![index];
+                  // return Text(answer.question!);
+                  return DecoratedBox(
+                      decoration: BoxDecoration(
+                          border: Border(
+                        bottom: Divider.createBorderSide(context, width: 0.8),
+                      )),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 6, left: 8, bottom: 8),
+                        // color: Colors.pink,
+                        child: InkWell(
+                            child: Text(
+                              category.name!,
+                              style: const TextStyle(color: Colors.blue),
+                            ),
+                            onTap: () => {
+                                  // BytedeskUtils.printLog(category.name),
+                                  bytedeskEventBus.fire(QueryCategoryEventBus(
+                                      category.cid!, category.name!))
+                                }),
+                      ));
+                },
               )),
           Container(
-            margin: EdgeInsets.only(left: 10, top: 10),
+            margin: const EdgeInsets.only(left: 10, top: 10),
             child: Row(
               children: [
-                Text('没有找到答案？'),
+                const Text('没有找到答案？'),
                 GestureDetector(
                   child: Text(
                     '人工客服',
@@ -636,7 +630,7 @@ class MessageWidget extends StatelessWidget {
         message.content ?? '',
         textAlign: TextAlign.left,
         softWrap: true,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 16.0,
         ),
@@ -660,7 +654,7 @@ class MessageWidget extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
+            SizedBox(
               width: 90.0,
               height: 90.0,
               child: CachedNetworkImage(
@@ -674,7 +668,7 @@ class MessageWidget extends StatelessWidget {
                 children: <Widget>[
                   // Gaps.vGap10,
                   Container(
-                    margin: EdgeInsets.only(left: 8),
+                    margin: const EdgeInsets.only(left: 8),
                     child: Text(
                       title,
                       maxLines: 1,
@@ -682,19 +676,19 @@ class MessageWidget extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 8),
+                    margin: const EdgeInsets.only(top: 10, left: 8),
                     child: Text(
                       '¥$price',
-                      style: TextStyle(fontSize: 12, color: Colors.red),
+                      style: const TextStyle(fontSize: 12, color: Colors.red),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, left: 8),
+                    margin: const EdgeInsets.only(top: 10, left: 8),
                     child: Text(
                       '$content',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -710,8 +704,8 @@ class MessageWidget extends StatelessWidget {
       return InkWell(
         onTap: () {
           BytedeskUtils.printLog('play video');
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-            return new VideoPlayPage(videoUrl: message.videoUrl);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return VideoPlayPage(videoUrl: message.videoUrl);
           }));
         },
         child: SizedBox(
@@ -719,7 +713,7 @@ class MessageWidget extends StatelessWidget {
           height: 100,
           child: CachedNetworkImage(
             imageUrl: BytedeskConstants.VIDEO_PLAY,
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       );
@@ -728,7 +722,7 @@ class MessageWidget extends StatelessWidget {
         message.content ?? '',
         textAlign: TextAlign.left,
         softWrap: true,
-        style: TextStyle(color: Colors.black, fontSize: 16.0),
+        style: const TextStyle(color: Colors.black, fontSize: 16.0),
       );
     }
   }
@@ -739,11 +733,11 @@ class MessageWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(bottom: 5, top: 5),
+          padding: const EdgeInsets.only(bottom: 5, top: 5),
           child: Text(
             message!.timestamp ?? '',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10.0),
+            style: const TextStyle(fontSize: 10.0),
           ),
         )
       ],
@@ -756,11 +750,11 @@ class MessageWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(bottom: 5, top: 5),
+          padding: const EdgeInsets.only(bottom: 5, top: 5),
           child: Text(
             message!.content ?? '',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 10.0),
+            style: const TextStyle(fontSize: 10.0),
           ),
         )
       ],
@@ -773,8 +767,8 @@ class MessageWidget extends StatelessWidget {
       width: 35,
       height: 35,
       child: CachedNetworkImage(
-        imageUrl: message!.avatar!,
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        imageUrl: message!.avatar ?? BytedeskConstants.DEFAULT_AVATA,
+        errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
     );
   }

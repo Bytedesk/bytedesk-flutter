@@ -8,14 +8,16 @@
 part of mqtt_server_client;
 
 /// The MQTT normal(insecure TCP) server connection class
-class MqttServerNormalConnection extends MqttServerConnection {
+class MqttServerNormalConnection extends MqttServerConnection<Socket> {
   /// Default constructor
-  MqttServerNormalConnection(events.EventBus? eventBus) : super(eventBus);
+  MqttServerNormalConnection(
+      events.EventBus? eventBus, List<RawSocketOption> socketOptions)
+      : super(eventBus, socketOptions);
 
   /// Initializes a new instance of the MqttConnection class.
-  MqttServerNormalConnection.fromConnect(
-      String server, int port, events.EventBus eventBus)
-      : super(eventBus) {
+  MqttServerNormalConnection.fromConnect(String server, int port,
+      events.EventBus eventBus, List<RawSocketOption> socketOptions)
+      : super(eventBus, socketOptions) {
     connect(server, port);
   }
 
@@ -26,13 +28,19 @@ class MqttServerNormalConnection extends MqttServerConnection {
     MqttLogger.log('MqttNormalConnection::connect - entered');
     try {
       // Connect and save the socket.
-      Socket.connect(server, port).then((dynamic socket) {
+      Socket.connect(server, port).then((socket) {
+        // Socket options
+        final applied = _applySocketOptions(socket, socketOptions);
+        if (applied) {
+          MqttLogger.log(
+              'MqttNormalConnection::connect - socket options applied');
+        }
         client = socket;
         readWrapper = ReadWrapper();
         messageStream = MqttByteBuffer(typed.Uint8Buffer());
         _startListening();
         completer.complete();
-      }).catchError((dynamic e) {
+      }).catchError((e) {
         onError(e);
         completer.completeError(e);
       });
@@ -59,11 +67,17 @@ class MqttServerNormalConnection extends MqttServerConnection {
     MqttLogger.log('MqttNormalConnection::connectAuto - entered');
     try {
       // Connect and save the socket.
-      Socket.connect(server, port).then((dynamic socket) {
+      Socket.connect(server, port).then((socket) {
+        // Socket options
+        final applied = _applySocketOptions(socket, socketOptions);
+        if (applied) {
+          MqttLogger.log(
+              'MqttNormalConnection::connectAuto - socket options applied');
+        }
         client = socket;
         _startListening();
         completer.complete();
-      }).catchError((dynamic e) {
+      }).catchError((e) {
         onError(e);
         completer.completeError(e);
       });
@@ -81,5 +95,49 @@ class MqttServerNormalConnection extends MqttServerConnection {
       throw NoConnectionException(message);
     }
     return completer.future;
+  }
+
+  /// Sends the message in the stream to the broker.
+  @override
+  void send(MqttByteBuffer message) {
+    final messageBytes = message.read(message.length);
+    client?.add(messageBytes.toList());
+  }
+
+  /// Stops listening the socket immediately.
+  @override
+  void stopListening() {
+    for (final listener in listeners) {
+      listener.cancel();
+    }
+
+    listeners.clear();
+  }
+
+  /// Closes the socket immediately.
+  @override
+  void closeClient() {
+    client?.destroy();
+    client?.close();
+  }
+
+  /// Closes and dispose the socket immediately.
+  @override
+  void disposeClient() {
+    closeClient();
+    if (client != null) {
+      client = null;
+    }
+  }
+
+  /// Implement stream subscription
+  @override
+  StreamSubscription onListen() {
+    final socket = client;
+    if (socket == null) {
+      throw StateError('socket is null');
+    }
+
+    return socket.listen(onData, onError: onError, onDone: onDone);
   }
 }

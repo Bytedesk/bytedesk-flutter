@@ -30,6 +30,7 @@ import 'package:flutter/material.dart';
 import 'model/user.dart';
 
 class BytedeskKefu {
+  //
   Future<String?> getPlatformVersion() {
     return BytedeskKefuPlatform.instance.getPlatformVersion();
   }
@@ -68,7 +69,7 @@ class BytedeskKefu {
       await BytedeskUserHttpApi()
           .registerUser(username, nickname, password, avatar, subDomain);
       // 注册成功之后，调用登录接口
-      String usernameCompose = username + "@" + subDomain;
+      String usernameCompose = "$username@$subDomain";
       userLogin(usernameCompose, password, appKey, subDomain);
     }
   }
@@ -80,6 +81,10 @@ class BytedeskKefu {
       return false;
     }
     return true;
+  }
+
+  static bool? isAuthenticated() {
+    return SpUtil.getBool(BytedeskConstants.isAuthenticated);
   }
 
   // 访客匿名登录接口
@@ -126,7 +131,7 @@ class BytedeskKefu {
     SpUtil.putString(BytedeskConstants.role, role);
     if (role == BytedeskConstants.ROLE_ADMIN) {
       if (!username.contains("@")) {
-        username = username + "@" + subDomain;
+        username = "$username@$subDomain";
       }
     }
     await BytedeskUserHttpApi().oauth(username, password);
@@ -266,8 +271,8 @@ class BytedeskKefu {
       String postScript,
       bool isV2Robot,
       ValueSetter<String>? customCallback) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChatKFProvider(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ChatKFProvider(
         wid: uuid,
         aid: uuid,
         type: type,
@@ -283,8 +288,8 @@ class BytedeskKefu {
   // 从历史会话或者点击通知栏进入
   static void startChatThread(BuildContext context, Thread thread,
       {String title = ''}) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChatThreadProvider(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ChatThreadProvider(
         thread: thread,
         title: title,
       );
@@ -293,8 +298,8 @@ class BytedeskKefu {
 
   // 应用内打开H5客服页面
   static void startH5Chat(BuildContext context, String url, String title) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChatWebViewPage(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ChatWebViewPage(
         url: url,
         title: title,
       );
@@ -303,8 +308,8 @@ class BytedeskKefu {
 
   // 应用内打开网页
   static void openWebView(BuildContext context, String url, String title) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChatWebViewPage(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ChatWebViewPage(
         url: url,
         title: title,
       );
@@ -313,8 +318,8 @@ class BytedeskKefu {
 
   // TODO: 好友一对一聊天
   static void startContactChat(BuildContext context, String cid, String title) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChatIMProvider(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ChatIMProvider(
         // cid: cid,
         title: title,
       );
@@ -335,8 +340,8 @@ class BytedeskKefu {
 
   // TODO: 客服端-进入接待访客对话页面
   static void startChatThreadIM(BuildContext context, Thread thread) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new ChatIMProvider(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return ChatIMProvider(
         thread: thread,
         isThread: true,
       );
@@ -359,16 +364,16 @@ class BytedeskKefu {
 
   // TODO: 提交工单
   static void showTicket(BuildContext context, String uid) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new TicketProvider(uid: uid);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return TicketProvider(uid: uid);
     }));
   }
 
   // TODO: 留言
   static void showLeaveMessage(
       BuildContext context, String uuid, String type, String tip) {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new LeaveMsgProvider(
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return LeaveMsgProvider(
         wid: uuid,
         aid: uuid,
         type: type,

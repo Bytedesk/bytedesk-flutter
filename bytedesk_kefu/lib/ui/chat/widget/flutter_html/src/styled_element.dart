@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_collection_literals, avoid_function_literals_in_foreach_calls, unnecessary_this
+
 import 'package:flutter/material.dart';
 import './css_parser.dart';
 import '../style.dart';
@@ -114,7 +116,7 @@ StyledElement parseStyledElement(
       break;
     case "body":
       styledElement.style = Style(
-        margin: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
         display: Display.BLOCK,
       );
       break;
@@ -134,7 +136,7 @@ StyledElement parseStyledElement(
       break;
     case "dd":
       styledElement.style = Style(
-        margin: EdgeInsets.only(left: 40.0),
+        margin: const EdgeInsets.only(left: 40.0),
         display: Display.BLOCK,
       );
       break;
@@ -148,13 +150,13 @@ StyledElement parseStyledElement(
       continue italics;
     case "div":
       styledElement.style = Style(
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         display: Display.BLOCK,
       );
       break;
     case "dl":
       styledElement.style = Style(
-        margin: EdgeInsets.symmetric(vertical: 14.0),
+        margin: const EdgeInsets.symmetric(vertical: 14.0),
         display: Display.BLOCK,
       );
       break;
@@ -172,7 +174,7 @@ StyledElement parseStyledElement(
       break;
     case "figure":
       styledElement.style = Style(
-        margin: EdgeInsets.symmetric(vertical: 14.0, horizontal: 40.0),
+        margin: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 40.0),
         display: Display.BLOCK,
       );
       break;
@@ -196,7 +198,7 @@ StyledElement parseStyledElement(
       styledElement.style = Style(
         fontSize: FontSize.xxLarge,
         fontWeight: FontWeight.bold,
-        margin: EdgeInsets.symmetric(vertical: 18.67),
+        margin: const EdgeInsets.symmetric(vertical: 18.67),
         display: Display.BLOCK,
       );
       break;
@@ -204,15 +206,15 @@ StyledElement parseStyledElement(
       styledElement.style = Style(
         fontSize: FontSize.xLarge,
         fontWeight: FontWeight.bold,
-        margin: EdgeInsets.symmetric(vertical: 17.5),
+        margin: const EdgeInsets.symmetric(vertical: 17.5),
         display: Display.BLOCK,
       );
       break;
     case "h3":
       styledElement.style = Style(
-        fontSize: FontSize(16.38),
+        fontSize: const FontSize(16.38),
         fontWeight: FontWeight.bold,
-        margin: EdgeInsets.symmetric(vertical: 16.5),
+        margin: const EdgeInsets.symmetric(vertical: 16.5),
         display: Display.BLOCK,
       );
       break;
@@ -220,23 +222,23 @@ StyledElement parseStyledElement(
       styledElement.style = Style(
         fontSize: FontSize.medium,
         fontWeight: FontWeight.bold,
-        margin: EdgeInsets.symmetric(vertical: 18.5),
+        margin: const EdgeInsets.symmetric(vertical: 18.5),
         display: Display.BLOCK,
       );
       break;
     case "h5":
       styledElement.style = Style(
-        fontSize: FontSize(11.62),
+        fontSize: const FontSize(11.62),
         fontWeight: FontWeight.bold,
-        margin: EdgeInsets.symmetric(vertical: 19.25),
+        margin: const EdgeInsets.symmetric(vertical: 19.25),
         display: Display.BLOCK,
       );
       break;
     case "h6":
       styledElement.style = Style(
-        fontSize: FontSize(9.38),
+        fontSize: const FontSize(9.38),
         fontWeight: FontWeight.bold,
-        margin: EdgeInsets.symmetric(vertical: 22),
+        margin: const EdgeInsets.symmetric(vertical: 22),
         display: Display.BLOCK,
       );
       break;
@@ -247,7 +249,7 @@ StyledElement parseStyledElement(
       break;
     case "hr":
       styledElement.style = Style(
-        margin: EdgeInsets.symmetric(vertical: 7.0),
+        margin: const EdgeInsets.symmetric(vertical: 7.0),
         width: double.infinity,
         height: 1,
         backgroundColor: Colors.black,
@@ -318,14 +320,14 @@ StyledElement parseStyledElement(
       break;
     case "p":
       styledElement.style = Style(
-        margin: EdgeInsets.symmetric(vertical: 14.0),
+        margin: const EdgeInsets.symmetric(vertical: 14.0),
         display: Display.BLOCK,
       );
       break;
     case "pre":
       styledElement.style = Style(
         fontFamily: 'monospace',
-        margin: EdgeInsets.symmetric(vertical: 14.0),
+        margin: const EdgeInsets.symmetric(vertical: 14.0),
         whiteSpace: WhiteSpace.PRE,
         display: Display.BLOCK,
       );

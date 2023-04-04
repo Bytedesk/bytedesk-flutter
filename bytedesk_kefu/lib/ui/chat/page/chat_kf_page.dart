@@ -10,7 +10,7 @@ import 'package:bytedesk_kefu/mqtt/bytedesk_mqtt.dart';
 import 'package:bytedesk_kefu/ui/chat/widget/message_widget.dart';
 import 'package:bytedesk_kefu/ui/leavemsg/provider/leavemsg_provider.dart';
 import 'package:bytedesk_kefu/ui/widget/expanded_viewport.dart';
-import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
+// import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
@@ -52,7 +52,7 @@ class ChatKFPage extends StatefulWidget {
   final Thread? thread;
   final ValueSetter<String>? customCallback;
   //
-  ChatKFPage(
+  const ChatKFPage(
       {Key? key,
       this.wid,
       this.aid,
@@ -78,24 +78,24 @@ class _ChatKFPageState extends State<ChatKFPage>
   //
   String? _title;
   // 下拉刷新
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
   // 输入文字
-  TextEditingController _textController = new TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   // 滚动监听
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
   // 聊天记录本地存储
-  MessageProvider _messageProvider = new MessageProvider();
+  final MessageProvider _messageProvider = MessageProvider();
   // 聊天记录内存存储
-  List<MessageWidget> _messages = <MessageWidget>[];
+  final List<MessageWidget> _messages = <MessageWidget>[];
   // 图片
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   // 长连接
-  BytedeskMqtt _bdMqtt = new BytedeskMqtt();
+  final BytedeskMqtt _bdMqtt = BytedeskMqtt();
   // 当前用户uid
-  String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
-  String? _currentUsername = SpUtil.getString(BytedeskConstants.username);
-  String? _currentNickname = SpUtil.getString(BytedeskConstants.nickname);
-  String? _currentAvatar = SpUtil.getString(BytedeskConstants.avatar);
+  final String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
+  final String? _currentUsername = SpUtil.getString(BytedeskConstants.username);
+  final String? _currentNickname = SpUtil.getString(BytedeskConstants.nickname);
+  final String? _currentAvatar = SpUtil.getString(BytedeskConstants.avatar);
   // 当前会话
   Thread? _currentThread;
   User? _robotUser;
@@ -103,7 +103,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   bool _isRobot = false;
   // 分页加载聊天记录
   int _page = 0;
-  int _size = 20;
+  final int _size = 20;
   // 延迟发送preview消息
   Timer? _debounce;
   // 定时拉取聊天记录
@@ -122,7 +122,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     if (widget.isThread! && widget.thread != null) {
       _currentThread = widget.thread;
       // FIXME: 在访客端-标题显示访客的名字，应该显示客服或技能组名字或固定写死
-      _title = widget.title!.trim().length > 0
+      _title = widget.title!.trim().isNotEmpty
           ? widget.title
           : widget.thread!.nickname;
       // _getMessages(_page, _size);
@@ -139,7 +139,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     _listener();
     super.initState();
     // 定时拉取聊天记录 10s
-    _loadHistoryTimer = Timer.periodic(Duration(seconds: 15), (timer) {
+    _loadHistoryTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
       // BytedeskUtils.printLog('从服务器 load history');
       //   // TODO: 暂时禁用从服务器加载历史记录
       // BlocProvider.of<MessageBloc>(context)
@@ -147,7 +147,7 @@ class _ChatKFPageState extends State<ChatKFPage>
       //   // 每隔 1 秒钟会调用一次，如果要结束调用
       //   // timer.cancel();
     });
-    _resendTimer = Timer.periodic(Duration(seconds: 2), (timer) {
+    _resendTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
       // TODO: 检测-消息是否超时发送失败
       for (var i = 0; i < _messages.length; i++) {
         Message? message = _messages[i].message;
@@ -177,7 +177,7 @@ class _ChatKFPageState extends State<ChatKFPage>
             } else {
               content = message.content!;
             }
-            this.sendMessageRest(message.mid!, message.type!, content);
+            sendMessageRest(message.mid!, message.type!, content);
           }
         }
       }
@@ -204,17 +204,17 @@ class _ChatKFPageState extends State<ChatKFPage>
               child: Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                      padding: new EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       width: 60,
                       child: InkWell(
                         onTap: () {
                           BlocProvider.of<ThreadBloc>(context)
-                            ..add(RequestAgentEvent(
+                            .add(RequestAgentEvent(
                                 wid: widget.wid,
                                 aid: widget.aid,
                                 type: widget.type));
                         },
-                        child: Text(
+                        child: const Text(
                           '转人工',
                           // style: TextStyle(color: Colors.black),
                         ),
@@ -242,21 +242,19 @@ class _ChatKFPageState extends State<ChatKFPage>
                     _getMessages(_page, _size);
                     // 加载未读消息
                     BlocProvider.of<MessageBloc>(context)
-                      ..add(LoadUnreadVisitorMessagesEvent(page: 0, size: 10));
+                      .add(const LoadUnreadVisitorMessagesEvent(page: 0, size: 10));
                     // 结果解析
                     if (state.threadResult.statusCode == 200 ||
                         state.threadResult.statusCode == 201) {
                       BytedeskUtils.printLog('创建新会话');
                       // TODO: 参考拼多多，在发送按钮上方显示pop商品信息，用户确认之后才会发送商品信息
                       // 发送商品信息
-                      if (widget.custom != null &&
-                          widget.custom!.trim().length > 0) {
+                      if (widget.custom!.trim().isNotEmpty) {
                         _bdMqtt.sendCommodityMessage(
                             widget.custom!, _currentThread!);
                       }
                       // 发送附言消息
-                      if (widget.postscript != null &&
-                          widget.postscript!.trim().length > 0) {
+                      if (widget.postscript!.trim().isNotEmpty) {
                         _bdMqtt.sendTextMessage(
                             widget.postscript!, _currentThread!);
                       }
@@ -267,14 +265,12 @@ class _ChatKFPageState extends State<ChatKFPage>
                       // 加载本地历史消息
                       _appendMessage(state.threadResult.msg!);
                       // 发送商品信息
-                      if (widget.custom != null &&
-                          widget.custom!.trim().length > 0) {
+                      if (widget.custom!.trim().isNotEmpty) {
                         _bdMqtt.sendCommodityMessage(
                             widget.custom!, _currentThread!);
                       }
                       // 发送附言消息
-                      if (widget.postscript != null &&
-                          widget.postscript!.trim().length > 0) {
+                      if (widget.postscript!.trim().isNotEmpty) {
                         _bdMqtt.sendTextMessage(
                             widget.postscript!, _currentThread!);
                       }
@@ -289,11 +285,11 @@ class _ChatKFPageState extends State<ChatKFPage>
                       _appendMessage(state.threadResult.msg!);
                       // 跳转留言页面，TODO: 关闭当前页面？
                       Navigator.of(context)
-                          .push(new MaterialPageRoute(builder: (context) {
-                        return new LeaveMsgProvider(
-                            wid: this.widget.wid,
-                            aid: this.widget.aid,
-                            type: this.widget.type,
+                          .push(MaterialPageRoute(builder: (context) {
+                        return LeaveMsgProvider(
+                            wid: widget.wid,
+                            aid: widget.aid,
+                            type: widget.type,
                             tip: state.threadResult.msg!.content);
                       }));
                     } else if (state.threadResult.statusCode == 204) {
@@ -308,11 +304,11 @@ class _ChatKFPageState extends State<ChatKFPage>
                       _appendMessage(state.threadResult.msg!);
                       // 跳转留言页面, TODO: 关闭当前页面？
                       Navigator.of(context)
-                          .push(new MaterialPageRoute(builder: (context) {
-                        return new LeaveMsgProvider(
-                            wid: this.widget.wid,
-                            aid: this.widget.aid,
-                            type: this.widget.type,
+                          .push(MaterialPageRoute(builder: (context) {
+                        return LeaveMsgProvider(
+                            wid: widget.wid,
+                            aid: widget.aid,
+                            type: widget.type,
                             tip: state.threadResult.msg!.content);
                       }));
                     } else if (state.threadResult.statusCode == 205) {
@@ -413,7 +409,7 @@ class _ChatKFPageState extends State<ChatKFPage>
                     //
                     if (state.query!.content!.contains('人工')) {
                       BlocProvider.of<ThreadBloc>(context)
-                        ..add(RequestAgentEvent(
+                        .add(RequestAgentEvent(
                             wid: widget.wid,
                             aid: widget.aid,
                             type: widget.type));
@@ -432,7 +428,7 @@ class _ChatKFPageState extends State<ChatKFPage>
                     }
                   } else if (state is LoadUnreadVisitorMessageSuccess) {
                     // 插入历史聊天记录
-                    if (state.messageList!.length > 0) {
+                    if (state.messageList!.isNotEmpty) {
                       // for (var i = 0; i < state.messageList!.length; i++) {
                       for (var i = state.messageList!.length - 1; i >= 0; i--) {
                         Message message = state.messageList![i];
@@ -463,9 +459,9 @@ class _ChatKFPageState extends State<ChatKFPage>
             ],
             child: _isRequestingThread
                 ? Container(
-                    margin: EdgeInsets.only(top: 50),
+                    margin: const EdgeInsets.only(top: 50),
                     alignment: Alignment.center,
-                    child: Column(children: <Widget>[
+                    child: Column(children: const <Widget>[
                       CircularProgressIndicator(
                         strokeWidth: 2,
                       ),
@@ -473,7 +469,7 @@ class _ChatKFPageState extends State<ChatKFPage>
                     ]))
                 : Container(
                     alignment: Alignment.bottomCenter,
-                    color: Color(0xFFDEEEEEE),
+                    color: const Color(0xFFDEEEEEE),
                     child: Column(
                       children: <Widget>[
                         // 参考pull_to_refresh库中 QQChatList例子
@@ -488,10 +484,12 @@ class _ChatKFPageState extends State<ChatKFPage>
                               setState(() {});
                               _refreshController.loadComplete();
                             },
-                            footer: ClassicFooter(
+                            footer: const ClassicFooter(
                               loadStyle: LoadStyle.ShowWhenLoading,
                             ),
                             enablePullUp: true,
+                            //
+                            controller: _refreshController,
                             //
                             child: Scrollable(
                               controller: _scrollController,
@@ -511,11 +509,9 @@ class _ChatKFPageState extends State<ChatKFPage>
                                 );
                               },
                             ),
-                            //
-                            controller: _refreshController,
                           ),
                         ),
-                        Divider(
+                        const Divider(
                           height: 1.0,
                         ),
                         Container(
@@ -599,68 +595,68 @@ class _ChatKFPageState extends State<ChatKFPage>
   }
 
   //
-  Widget _textComposerWidget() {
-    return IconTheme(
-      data: IconThemeData(color: Colors.blue),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
-        height: 54,
-        child: Row(
-          children: <Widget>[
-            Container(
-              // margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: new IconButton(
-                icon: new Icon(Icons.add),
-                onPressed: () {
-                  // _getImage();
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return ImageChooseWidget(pickImageCallBack: () {
-                          _pickImage();
-                        }, takeImageCallBack: () {
-                          _takeImage();
-                        }, pickVideoCallBack: () {
-                          _pickVideo();
-                        }, captureVideoCallBack: () {
-                          _captureVideo();
-                        });
-                      });
-                },
-              ),
-            ),
-            Flexible(
-              child: TextField(
-                onChanged: (value) {
-                  if (_debounce?.isActive ?? false) _debounce!.cancel();
-                  // 积累500毫秒，再发送。否则发送过于频繁
-                  _debounce = Timer(const Duration(milliseconds: 500), () {
-                    // BytedeskUtils.printLog('send preview $value');
-                    // 发送预知消息
-                    if (value.trim().length > 0) {
-                      _bdMqtt.sendPreviewMessage(value, _currentThread!);
-                    } else {
-                      _bdMqtt.sendPreviewMessage('', _currentThread!);
-                    }
-                  });
-                },
-                decoration: InputDecoration.collapsed(hintText: "输入内容..."),
-                controller: _textController,
-                onSubmitted: _handleSubmitted,
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: IconButton(
-                icon: Icon(Icons.send),
-                onPressed: () => _handleSubmitted(_textController.text),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _textComposerWidget() {
+  //   return IconTheme(
+  //     data: const IconThemeData(color: Colors.blue),
+  //     child: Container(
+  //       margin: const EdgeInsets.symmetric(horizontal: 8.0),
+  //       height: 54,
+  //       child: Row(
+  //         children: <Widget>[
+  //           Container(
+  //             // margin: const EdgeInsets.symmetric(horizontal: 4.0),
+  //             child: IconButton(
+  //               icon: const Icon(Icons.add),
+  //               onPressed: () {
+  //                 // _getImage();
+  //                 showModalBottomSheet(
+  //                     context: context,
+  //                     builder: (context) {
+  //                       return ImageChooseWidget(pickImageCallBack: () {
+  //                         _pickImage();
+  //                       }, takeImageCallBack: () {
+  //                         _takeImage();
+  //                       }, pickVideoCallBack: () {
+  //                         _pickVideo();
+  //                       }, captureVideoCallBack: () {
+  //                         _captureVideo();
+  //                       });
+  //                     });
+  //               },
+  //             ),
+  //           ),
+  //           Flexible(
+  //             child: TextField(
+  //               onChanged: (value) {
+  //                 if (_debounce?.isActive ?? false) _debounce!.cancel();
+  //                 // 积累500毫秒，再发送。否则发送过于频繁
+  //                 _debounce = Timer(const Duration(milliseconds: 500), () {
+  //                   // BytedeskUtils.printLog('send preview $value');
+  //                   // 发送预知消息
+  //                   if (value.trim().length > 0) {
+  //                     _bdMqtt.sendPreviewMessage(value, _currentThread!);
+  //                   } else {
+  //                     _bdMqtt.sendPreviewMessage('', _currentThread!);
+  //                   }
+  //                 });
+  //               },
+  //               decoration: const InputDecoration.collapsed(hintText: "输入内容..."),
+  //               controller: _textController,
+  //               onSubmitted: _handleSubmitted,
+  //             ),
+  //           ),
+  //           Container(
+  //             margin: const EdgeInsets.symmetric(horizontal: 4.0),
+  //             child: IconButton(
+  //               icon: const Icon(Icons.send),
+  //               onPressed: () => _handleSubmitted(_textController.text),
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   //
   @override
@@ -670,7 +666,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   void _handleSubmitted(String? text) {
     _textController.clear();
     // 内容为空，直接返回
-    if (text!.trim().length == 0) {
+    if (text!.trim().isEmpty) {
       return;
     }
     //
@@ -679,7 +675,7 @@ class _ChatKFPageState extends State<ChatKFPage>
       appendQueryMessage(text);
       // 请求机器人答案
       BlocProvider.of<MessageBloc>(context)
-        ..add(MessageAnswerEvent(
+        .add(MessageAnswerEvent(
             // type: widget.type,
             wid: widget.wid,
             // aid: widget.aid,
@@ -719,7 +715,6 @@ class _ChatKFPageState extends State<ChatKFPage>
     String? client = BytedeskUtils.getClient();
     //
     var jsonContent;
-
     if (type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
       jsonContent = {
         "mid": mid,
@@ -729,20 +724,20 @@ class _ChatKFPageState extends State<ChatKFPage>
         "type": type,
         "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
         "user": {
-          "uid": this._currentUid,
-          "username": this._currentUsername,
-          "nickname": this._currentNickname,
-          "avatar": this._currentAvatar,
+          "uid": _currentUid,
+          "username": _currentUsername,
+          "nickname": _currentNickname,
+          "avatar": _currentAvatar,
           "extra": {"agent": false}
         },
         "text": {"content": content},
         "thread": {
-          "tid": this._currentThread!.tid,
-          "type": this._currentThread!.type,
+          "tid": _currentThread!.tid,
+          "type": _currentThread!.type,
           "content": content,
-          "nickname": this._currentThread!.nickname,
-          "avatar": this._currentThread!.avatar,
-          "topic": this._currentThread!.topic,
+          "nickname": _currentThread!.nickname,
+          "avatar": _currentThread!.avatar,
+          "topic": _currentThread!.topic,
           "client": client,
           "timestamp": timestamp,
           "unreadCount": 0
@@ -757,20 +752,20 @@ class _ChatKFPageState extends State<ChatKFPage>
         "type": type,
         "status": "sending",
         "user": {
-          "uid": this._currentUid,
-          "username": this._currentUsername,
-          "nickname": this._currentNickname,
-          "avatar": this._currentAvatar,
+          "uid": _currentUid,
+          "username": _currentUsername,
+          "nickname": _currentNickname,
+          "avatar": _currentAvatar,
           "extra": {"agent": false}
         },
         "image": {"imageUrl": content},
         "thread": {
-          "tid": this._currentThread!.tid,
-          "type": this._currentThread!.type,
+          "tid": _currentThread!.tid,
+          "type": _currentThread!.type,
           "content": "[图片]",
-          "nickname": this._currentThread!.nickname,
-          "avatar": this._currentThread!.avatar,
-          "topic": this._currentThread!.topic,
+          "nickname": _currentThread!.nickname,
+          "avatar": _currentThread!.avatar,
+          "topic": _currentThread!.topic,
           "client": client,
           "timestamp": timestamp,
           "unreadCount": 0
@@ -785,20 +780,20 @@ class _ChatKFPageState extends State<ChatKFPage>
         "type": type,
         "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
         "user": {
-          "uid": this._currentUid,
-          "username": this._currentUsername,
-          "nickname": this._currentNickname,
-          "avatar": this._currentAvatar,
+          "uid": _currentUid,
+          "username": _currentUsername,
+          "nickname": _currentNickname,
+          "avatar": _currentAvatar,
           "extra": {"agent": false}
         },
         "file": {"fileUrl": content},
         "thread": {
-          "tid": this._currentThread!.tid,
-          "type": this._currentThread!.type,
+          "tid": _currentThread!.tid,
+          "type": _currentThread!.type,
           "content": "[文件]",
-          "nickname": this._currentThread!.nickname,
-          "avatar": this._currentThread!.avatar,
-          "topic": this._currentThread!.topic,
+          "nickname": _currentThread!.nickname,
+          "avatar": _currentThread!.avatar,
+          "topic": _currentThread!.topic,
           "client": client,
           "timestamp": timestamp,
           "unreadCount": 0
@@ -813,10 +808,10 @@ class _ChatKFPageState extends State<ChatKFPage>
         "type": type,
         "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
         "user": {
-          "uid": this._currentUid,
-          "username": this._currentUsername,
-          "nickname": this._currentNickname,
-          "avatar": this._currentAvatar,
+          "uid": _currentUid,
+          "username": _currentUsername,
+          "nickname": _currentNickname,
+          "avatar": _currentAvatar,
           "extra": {"agent": false}
         },
         "voice": {
@@ -825,12 +820,12 @@ class _ChatKFPageState extends State<ChatKFPage>
           "format": "wav",
         },
         "thread": {
-          "tid": this._currentThread!.tid,
-          "type": this._currentThread!.type,
+          "tid": _currentThread!.tid,
+          "type": _currentThread!.type,
           "content": content,
-          "nickname": this._currentThread!.nickname,
-          "avatar": this._currentThread!.avatar,
-          "topic": this._currentThread!.topic,
+          "nickname": _currentThread!.nickname,
+          "avatar": _currentThread!.avatar,
+          "topic": _currentThread!.topic,
           "client": client,
           "timestamp": timestamp,
           "unreadCount": 0
@@ -845,20 +840,20 @@ class _ChatKFPageState extends State<ChatKFPage>
         "type": type,
         "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
         "user": {
-          "uid": this._currentUid,
-          "username": this._currentUsername,
-          "nickname": this._currentNickname,
-          "avatar": this._currentAvatar,
+          "uid": _currentUid,
+          "username": _currentUsername,
+          "nickname": _currentNickname,
+          "avatar": _currentAvatar,
           "extra": {"agent": false}
         },
         "video": {"videoOrShortUrl": content},
         "thread": {
-          "tid": this._currentThread!.tid,
-          "type": this._currentThread!.type,
+          "tid": _currentThread!.tid,
+          "type": _currentThread!.type,
           "content": content,
-          "nickname": this._currentThread!.nickname,
-          "avatar": this._currentThread!.avatar,
-          "topic": this._currentThread!.topic,
+          "nickname": _currentThread!.nickname,
+          "avatar": _currentThread!.avatar,
+          "topic": _currentThread!.topic,
           "client": client,
           "timestamp": timestamp,
           "unreadCount": 0
@@ -868,24 +863,24 @@ class _ChatKFPageState extends State<ChatKFPage>
 
     String? jsonString = json.encode(jsonContent);
     BlocProvider.of<MessageBloc>(context)
-      ..add(SendMessageRestEvent(json: jsonString));
+      .add(SendMessageRestEvent(json: jsonString));
     // 暂时没有将插入本地函数独立出来，暂时
-    Message message = new Message();
+    Message message = Message();
     message.mid = mid;
     message.type = type;
     message.timestamp = timestamp;
     message.client = client;
     message.avatar = _currentAvatar;
-    message.topic = this._currentThread!.topic;
+    message.topic = _currentThread!.topic;
     message.status = BytedeskConstants.MESSAGE_STATUS_SENDING;
     message.isSend = 1;
-    message.currentUid = this._currentUid;
+    message.currentUid = _currentUid;
     message.answersJson = '';
-    message.thread = this._currentThread;
+    message.thread = _currentThread;
     message.user = User(
-        uid: this._currentUid,
-        avatar: this._currentAvatar,
-        nickname: this._currentNickname);
+        uid: _currentUid,
+        avatar: _currentAvatar,
+        nickname: _currentNickname);
     //
     message.content = content;
     // 插入本地数据库
@@ -902,23 +897,23 @@ class _ChatKFPageState extends State<ChatKFPage>
     String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT;
     //
     // 暂时没有将插入本地函数独立出来，暂时
-    Message message = new Message();
+    Message message = Message();
     message.mid = mid;
     message.type = type;
     message.timestamp = timestamp;
     message.client = client;
     message.nickname = _currentNickname;
     message.avatar = _currentAvatar;
-    message.topic = this._currentThread!.topic;
+    message.topic = _currentThread!.topic;
     message.status = BytedeskConstants.MESSAGE_STATUS_STORED;
     message.isSend = 1;
-    message.currentUid = this._currentUid;
+    message.currentUid = _currentUid;
     message.answersJson = '';
-    message.thread = this._currentThread;
+    message.thread = _currentThread;
     message.user = User(
-        uid: this._currentUid,
-        avatar: this._currentAvatar,
-        nickname: this._currentNickname);
+        uid: _currentUid,
+        avatar: _currentAvatar,
+        nickname: _currentNickname);
     //
     message.content = content;
     // 插入本地数据库
@@ -935,23 +930,23 @@ class _ChatKFPageState extends State<ChatKFPage>
     String? type = BytedeskConstants.MESSAGE_TYPE_ROBOT;
     //
     // 暂时没有将插入本地函数独立出来，暂时R
-    Message message = new Message();
+    Message message = Message();
     message.mid = mid;
     message.type = type;
     message.timestamp = timestamp;
     message.client = client;
     message.nickname = _robotUser!.nickname;
     message.avatar = _robotUser!.avatar;
-    message.topic = this._currentThread!.topic;
+    message.topic = _currentThread!.topic;
     message.status = BytedeskConstants.MESSAGE_STATUS_STORED;
     message.isSend = 0;
-    message.currentUid = this._currentUid;
+    message.currentUid = _currentUid;
     message.answersJson = '';
-    message.thread = this._currentThread;
+    message.thread = _currentThread;
     message.user = User(
-        uid: this._robotUser!.uid,
-        avatar: this._robotUser!.avatar,
-        nickname: this._robotUser!.nickname);
+        uid: _robotUser!.uid,
+        avatar: _robotUser!.avatar,
+        nickname: _robotUser!.nickname);
     //
     message.content = content;
     // 插入本地数据库
@@ -965,7 +960,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     // 更新消息状态
     bytedeskEventBus.on<ReceiveMessageReceiptEventBus>().listen((event) {
       // BytedeskUtils.printLog('更新状态:' + event.mid + '-' + event.status);
-      if (this.mounted) {
+      if (mounted) {
         // 更新界面
         for (var i = 0; i < _messages.length; i++) {
           MessageWidget messageWidget = _messages[i];
@@ -979,11 +974,11 @@ class _ChatKFPageState extends State<ChatKFPage>
             // 必须重新创建一个messageWidget才会更新
             Message message = messageWidget.message!;
             message.status = event.status;
-            MessageWidget messageWidget2 = new MessageWidget(
+            MessageWidget messageWidget2 = MessageWidget(
                 message: message,
                 customCallback: widget.customCallback,
-                animationController: new AnimationController(
-                    vsync: this, duration: Duration(milliseconds: 500)));
+                animationController: AnimationController(
+                    vsync: this, duration: const Duration(milliseconds: 500)));
             setState(() {
               _messages[i] = messageWidget2;
             });
@@ -993,7 +988,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     });
     bytedeskEventBus.on<ReceiveMessagePreviewEventBus>().listen((event) {
       // BytedeskUtils.printLog('消息预知');
-      if (this.mounted) {
+      if (mounted) {
         setState(() {
           // TODO: 国际化，支持英文
           _title = '对方正在输入';
@@ -1001,10 +996,10 @@ class _ChatKFPageState extends State<ChatKFPage>
       }
       // 还原title
       Timer(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
         () {
           // BytedeskUtils.printLog('timer');
-          if (this.mounted) {
+          if (mounted) {
             setState(() {
               _title = widget.title;
             });
@@ -1042,7 +1037,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     // 删除消息
     bytedeskEventBus.on<DeleteMessageEventBus>().listen((event) {
       //
-      if (this.mounted) {
+      if (mounted) {
         // 从sqlite中删除
         _messageProvider.delete(event.mid);
         // 更新界面
@@ -1053,7 +1048,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     });
     // 查询机器人消息
     bytedeskEventBus.on<QueryAnswerEventBus>().listen((event) {
-      if (this.mounted) {
+      if (mounted) {
         // BytedeskUtils.printLog('aid ${event.aid}, question ${event.question}, answer ${event.answer}');
         // 可以直接将问题和答案插入本地，并显示，但为了服务器保存查询记录，特将请求发送给服务器
         appendQueryMessage(event.question);
@@ -1062,26 +1057,26 @@ class _ChatKFPageState extends State<ChatKFPage>
         appendReplyMessage(event.aid, mid, event.answer);
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(QueryAnswerEvent(
+          .add(QueryAnswerEvent(
               tid: _currentThread!.tid, aid: event.aid, mid: mid));
       }
     });
     // 查询分类下属问题
     bytedeskEventBus.on<QueryCategoryEventBus>().listen((event) {
-      if (this.mounted) {
+      if (mounted) {
         BytedeskUtils.printLog('cid ${event.cid}, name ${event.name}');
         // 可以直接将问题和答案插入本地，并显示，但为了服务器保存查询记录，特将请求发送给服务器
         appendQueryMessage(event.name);
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(QueryCategoryEvent(tid: _currentThread!.tid, cid: event.cid));
+          .add(QueryCategoryEvent(tid: _currentThread!.tid, cid: event.cid));
       }
     });
     // 点击机器人消息 ‘人工客服’
     bytedeskEventBus.on<RequestAgentThreadEventBus>().listen((event) {
-      if (this.mounted) {
+      if (mounted) {
         BlocProvider.of<ThreadBloc>(context)
-          ..add(RequestAgentEvent(
+          .add(RequestAgentEvent(
               wid: widget.wid, aid: widget.aid, type: widget.type));
       }
     });
@@ -1121,7 +1116,7 @@ class _ChatKFPageState extends State<ChatKFPage>
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadImageEvent(filePath: pickedFile.path));
+          .add(UploadImageEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取图片');
       }
@@ -1154,7 +1149,7 @@ class _ChatKFPageState extends State<ChatKFPage>
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadImageEvent(filePath: pickedFile.path));
+          .add(UploadImageEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未拍照');
       }
@@ -1176,7 +1171,7 @@ class _ChatKFPageState extends State<ChatKFPage>
         BytedeskUtils.printLog('pick video path: ${pickedFile.path}');
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: pickedFile.path));
+          .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取视频');
       }
@@ -1238,7 +1233,7 @@ class _ChatKFPageState extends State<ChatKFPage>
         //   ..add(UploadVideoEvent(filePath: afterPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: pickedFile.path));
+          .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未录制视频');
       }
@@ -1258,7 +1253,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   // 分页加载本地历史聊天记录
   // TODO: 从服务器加载聊天记录
   // FIXME: 消息排序错乱
-  Future<Null> _getMessages(int page, int size) async {
+  Future<void> _getMessages(int page, int size) async {
     // BlocProvider.of<MessageBloc>(context)
     //     ..add(LoadHistoryMessageEvent(uid: _currentUid, page: page, size: size));
     //
@@ -1294,7 +1289,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   }
 
   void pushToMessageArray(Message message, bool append) {
-    if (this.mounted) {
+    if (mounted) {
       bool contains = false;
       for (var i = 0; i < _messages.length; i++) {
         Message? element = _messages[i].message;
@@ -1305,11 +1300,11 @@ class _ChatKFPageState extends State<ChatKFPage>
         }
       }
       if (!contains) {
-        MessageWidget messageWidget = new MessageWidget(
+        MessageWidget messageWidget = MessageWidget(
             message: message,
             customCallback: widget.customCallback,
-            animationController: new AnimationController(
-                vsync: this, duration: Duration(milliseconds: 500)));
+            animationController: AnimationController(
+                vsync: this, duration: const Duration(milliseconds: 500)));
         setState(() {
           if (append) {
             _messages.insert(0, messageWidget);
@@ -1332,9 +1327,9 @@ class _ChatKFPageState extends State<ChatKFPage>
     }
   }
 
-  Future<Null> _appendMessage(Message message) async {
+  Future<void> _appendMessage(Message message) async {
     BytedeskUtils.printLog(
-        'append:' + message.mid! + 'content:' + message.content!);
+        'append:${message.mid!}content:${message.content!}');
     pushToMessageArray(message, true);
   }
 
@@ -1346,7 +1341,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     // );
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
   }

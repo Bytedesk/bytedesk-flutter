@@ -5,21 +5,12 @@ import 'package:bytedesk_kefu/repositories/contact_repository.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class ContactBloc extends Bloc<ContactEvent, ContactState> {
+  // ignore: unnecessary_new
   final ContactRepository contactRepository = new ContactRepository();
 
   ContactBloc() : super(ContactUninitialized()) {
     on<RefreshContactEvent>(_mapRefreshContactToState);
   }
-
-  // @override
-  // Stream<ContactState> mapEventToState(ContactEvent event) async* {
-  //   //
-  //   if (event is RefreshContactEvent) {
-  //     yield* _mapRefreshContactToState(event);
-  //   } else {
-  //     //
-  //   }
-  // }
 
   void _mapRefreshContactToState(
       RefreshContactEvent event, Emitter<ContactState> emit) async {

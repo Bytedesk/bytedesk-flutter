@@ -8,7 +8,7 @@ import './bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   //
-  final UserRepository userRepository = new UserRepository();
+  final UserRepository userRepository = UserRepository();
 
   ProfileBloc() : super(InitialProfileState()) {
     on<GetProfileEvent>(_mapProfileState);
@@ -26,36 +26,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     on<UserUnfollowEvent>(_mapUserUnfollowToState);
   }
-
-  // @override
-  // void mapEventToState(ProfileEvent event, Emitter<ProfileState> emit) async {
-  //   //
-  //   if (event is GetProfileEvent) {
-  //     yield* _mapProfileState();
-  //   } else if (event is UploadImageEvent) {
-  //     yield* _mapUploadImageToState(event);
-  //   } else if (event is UpdateAvatarEvent) {
-  //     yield* _mapUpdateAvatarToState(event);
-  //   } else if (event is UpdateNicknameEvent) {
-  //     yield* _mapUpdateNicknameToState(event);
-  //   } else if (event is UpdateDescriptionEvent) {
-  //     yield* _mapUpdateDescriptionToState(event);
-  //   } else if (event is UpdateMobileEvent) {
-  //     yield* _mapUpdateMobileToState(event);
-  //   } else if (event is UpdateSexEvent) {
-  //     yield* _mapUpdateSexToState(event);
-  //   } else if (event is UpdateLocationEvent) {
-  //     yield* _mapUpdateLocationToState(event);
-  //   } else if (event is UpdateBirthdayEvent) {
-  //     yield* _mapUpdateBirthdayToState(event);
-  //   } else if (event is QueryFollowEvent) {
-  //     yield* _mapQueryFollowToState(event);
-  //   } else if (event is UserFollowEvent) {
-  //     yield* _mapUserFollowToState(event);
-  //   } else if (event is UserUnfollowEvent) {
-  //     yield* _mapUserUnfollowToState(event);
-  //   }
-  // }
 
   void _mapProfileState(
       GetProfileEvent event, Emitter<ProfileState> emit) async {

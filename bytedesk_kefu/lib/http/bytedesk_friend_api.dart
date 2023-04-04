@@ -4,7 +4,7 @@ import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/friend.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
-import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
+// import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 
 class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
   //
@@ -12,14 +12,14 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //
     // final friendsUrl =
     //     '$baseUrl/api/friend/query?page=$page&size=$size&client=$client';
-    final friendsUrl = Uri.http(BytedeskConstants.host, '/api/friend/query',
+    final friendsUrl = BytedeskUtils.getHostUri('/api/friend/query',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
     BytedeskUtils.printLog("get friends Url $friendsUrl");
     final initResponse =
-        await this.httpClient.get(friendsUrl, headers: getHeaders());
+        await httpClient.get(friendsUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -39,18 +39,15 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
   // 加载通讯录列表
   Future<List<Friend>> getFriendsAddress(int? page, int? size) async {
     //
-    // final addressUrl =
-    //     '$baseUrl/api/friend/address/query?page=$page&size=$size&client=$client';
-    final addressUrl = Uri.http(
-        BytedeskConstants.host,
+    final addressUrl = BytedeskUtils.getHostUri(
         '/api/friend/address/query',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
     BytedeskUtils.printLog("address Url $addressUrl");
     final initResponse =
-        await this.httpClient.get(addressUrl, headers: getHeaders());
+        await httpClient.get(addressUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -73,13 +70,11 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     var body =
         json.encode({"nickname": nickname, "mobile": mobile, "client": client});
     //
-    // final initUrl = '$baseUrl/api/friend/address/create';
-    final initUrl =
-        Uri.http(BytedeskConstants.host, '/api/friend/address/create');
+    final initUrl = BytedeskUtils.getHostUri('/api/friend/address/create');
     final initResponse =
-        await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+        await httpClient.post(initUrl, headers: getHeaders(), body: body);
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -100,8 +95,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //
     // final addressUrl =
     //     '$baseUrl/api/friend/nearby/query?lat=$latitude&lng=$longtitude&page=$page&size=$size&client=$client';
-    final addressUrl =
-        Uri.http(BytedeskConstants.host, '/api/friend/nearby/query', {
+    final addressUrl = BytedeskUtils.getHostUri('/api/friend/nearby/query', {
       'lat': latitude,
       'lng': longtitude,
       'page': page.toString(),
@@ -110,10 +104,10 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     });
     BytedeskUtils.printLog("address Url $addressUrl");
     final initResponse =
-        await this.httpClient.get(addressUrl, headers: getHeaders());
+        await httpClient.get(addressUrl, headers: getHeaders());
 
     //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = Utf8Decoder(); // fix 中文乱码
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
@@ -140,8 +134,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     var body =
         json.encode({"lat": latitude, "lng": longtitude, "client": client});
     // final initUrl = '$baseUrl/api/friend/nearby/update';
-    final initUrl =
-        Uri.http(BytedeskConstants.host, '/api/friend/nearby/update');
-    await this.httpClient.post(initUrl, headers: getHeaders(), body: body);
+    final initUrl = BytedeskUtils.getHostUri('/api/friend/nearby/update');
+    await httpClient.post(initUrl, headers: getHeaders(), body: body);
   }
 }

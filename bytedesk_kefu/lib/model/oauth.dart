@@ -9,7 +9,7 @@ class OAuth extends Equatable {
   final String? scope;
   final String? tokenType;
 
-  OAuth(
+  const OAuth(
       {this.statusCode,
       this.accessToken,
       this.expiresIn,

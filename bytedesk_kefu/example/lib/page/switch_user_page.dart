@@ -6,7 +6,7 @@ import 'user_info_page.dart';
 
 // 切换用户
 class SwitchUserPage extends StatefulWidget {
-  SwitchUserPage({Key? key}) : super(key: key);
+  const SwitchUserPage({Key? key}) : super(key: key);
 
   @override
   _SwitchUserPageState createState() => _SwitchUserPageState();
@@ -14,9 +14,9 @@ class SwitchUserPage extends StatefulWidget {
 
 class _SwitchUserPageState extends State<SwitchUserPage> {
   // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
-  String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
+  final String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
   // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
-  String _subDomain = "vip";
+  final String _subDomain = "vip";
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('切换用户'),
+        title: const Text('切换用户'),
         elevation: 0,
       ),
       body: ListView(
@@ -35,26 +35,26 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
         context: context,
         tiles: [
           ListTile(
-            title: Text('用户信息'),
-            trailing: Icon(Icons.keyboard_arrow_right),
+            title: const Text('用户信息'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               _userInfo();
             },
           ),
           ListTile(
-            title: Text('用户1男'),
+            title: const Text('用户1男'),
             onTap: () {
               _userBoyLogin();
             },
           ),
           ListTile(
-            title: Text('用户2女'),
+            title: const Text('用户2女'),
             onTap: () {
               _userGirlLogin();
             },
           ),
           ListTile(
-            title: Text('退出登录'),
+            title: const Text('退出登录'),
             onTap: () {
               _userLogout();
             },
@@ -65,8 +65,8 @@ class _SwitchUserPageState extends State<SwitchUserPage> {
   }
 
   void _userInfo() {
-    Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-      return new UserInfoPage();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return const UserInfoPage();
     }));
   }
 

@@ -13,33 +13,33 @@ class QueryFriendEvent extends FriendEvent {
   final int? page;
   final int? size;
 
-  QueryFriendEvent({@required this.page, @required this.size});
+  const QueryFriendEvent({@required this.page, @required this.size});
 }
 
 class UploadFriendAddressEvent extends FriendEvent {
   final String? nickname;
   final String? mobile;
 
-  UploadFriendAddressEvent({@required this.nickname, @required this.mobile});
+  const UploadFriendAddressEvent({@required this.nickname, @required this.mobile});
 }
 
 class QueryFriendAddressEvent extends FriendEvent {
   final int? page;
   final int? size;
 
-  QueryFriendAddressEvent({@required this.page, @required this.size});
+  const QueryFriendAddressEvent({@required this.page, @required this.size});
 }
 
 class QueryFriendNearbyEvent extends FriendEvent {
   final int? page;
   final int? size;
 
-  QueryFriendNearbyEvent({@required this.page, @required this.size});
+  const QueryFriendNearbyEvent({@required this.page, @required this.size});
 }
 
 class UpdateFriendNearbyEvent extends FriendEvent {
   final double? latitude;
   final double? longtitude;
 
-  UpdateFriendNearbyEvent({@required this.latitude, @required this.longtitude});
+  const UpdateFriendNearbyEvent({@required this.latitude, @required this.longtitude});
 }

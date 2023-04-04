@@ -68,28 +68,28 @@ class _ChatLSPageState extends State<ChatLSPage>
   //
   String? _title;
   // 下拉刷新
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
   // 输入文字
-  TextEditingController _textController = new TextEditingController();
+  final TextEditingController _textController = TextEditingController();
   // 滚动监听
-  ScrollController _scrollController = new ScrollController();
+  final ScrollController _scrollController = ScrollController();
   // 聊天记录本地存储
-  MessageProvider _messageProvider = new MessageProvider();
+  final MessageProvider _messageProvider = MessageProvider();
   // 聊天记录内存存储
-  List<MessageWidget> _messages = <MessageWidget>[];
+  final List<MessageWidget> _messages = <MessageWidget>[];
   // 图片
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   // 长连接
-  BytedeskMqtt _bdMqtt = new BytedeskMqtt();
+  final BytedeskMqtt _bdMqtt = BytedeskMqtt();
   // 当前用户uid
-  String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
+  final String? _currentUid = SpUtil.getString(BytedeskConstants.uid);
   // 当前会话
   Thread? _currentThread;
   // 判断是否机器人对话状态
   bool _isRobot = false;
   // 分页加载聊天记录
   int _page = 0;
-  int _size = 20;
+  final int _size = 20;
   // 延迟发送preview消息
   Timer? _debounce;
   // 视频压缩
@@ -138,7 +138,7 @@ class _ChatLSPageState extends State<ChatLSPage>
               child: Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                      padding: new EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.only(right: 10),
                       width: 60,
                       child: InkWell(
                         onTap: () {
@@ -403,8 +403,8 @@ class _ChatLSPageState extends State<ChatLSPage>
           children: <Widget>[
             Container(
               // margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: new IconButton(
-                icon: new Icon(Icons.add),
+              child: IconButton(
+                icon: Icon(Icons.add),
                 onPressed: () {
                   // _getImage();
                   showModalBottomSheet(
@@ -542,10 +542,10 @@ class _ChatLSPageState extends State<ChatLSPage>
             event.message.mid!, event.message.thread!);
       }
       // 界面显示
-      MessageWidget messageWidget = new MessageWidget(
+      MessageWidget messageWidget = MessageWidget(
           message: event.message,
           customCallback: widget.customCallback,
-          animationController: new AnimationController(
+          animationController: AnimationController(
               vsync: this, duration: Duration(milliseconds: 500)));
       if (this.mounted) {
         setState(() {
@@ -756,10 +756,10 @@ class _ChatLSPageState extends State<ChatLSPage>
     List<Message> messageList = await _messageProvider.getTopicMessages(
         _currentThread!.topic, _currentUid, page, size);
     messageList.forEach((message) {
-      MessageWidget messageWidget = new MessageWidget(
+      MessageWidget messageWidget = MessageWidget(
           message: message,
           customCallback: widget.customCallback,
-          animationController: new AnimationController(
+          animationController: AnimationController(
               vsync: this, duration: Duration(milliseconds: 500)));
       if (this.mounted) {
         setState(() {
@@ -775,10 +775,10 @@ class _ChatLSPageState extends State<ChatLSPage>
   Future<Null> _appendMessage(Message message) async {
     // BytedeskUtils.printLog('append:' + message!.mid);
     _messageProvider.insert(message);
-    MessageWidget messageWidget = new MessageWidget(
+    MessageWidget messageWidget = MessageWidget(
         message: message,
         customCallback: widget.customCallback,
-        animationController: new AnimationController(
+        animationController: AnimationController(
             vsync: this, duration: Duration(milliseconds: 500)));
     if (this.mounted) {
       setState(() {

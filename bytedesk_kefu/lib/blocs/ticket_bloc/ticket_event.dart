@@ -15,12 +15,12 @@ class SubmitTicketEvent extends TicketEvent {
   final List<String>? imageUrls;
   final String? content;
 
-  SubmitTicketEvent({@required this.content, @required this.imageUrls})
+  const SubmitTicketEvent({@required this.content, @required this.imageUrls})
       : super();
 }
 
 class UploadImageEvent extends TicketEvent {
   final String? filePath;
 
-  UploadImageEvent({@required this.filePath}) : super();
+  const UploadImageEvent({@required this.filePath}) : super();
 }

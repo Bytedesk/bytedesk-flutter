@@ -17,7 +17,7 @@ class RefreshHistoryThreadEvent extends ThreadEvent {
   final int? page;
   final int? size;
   //
-  RefreshHistoryThreadEvent({@required this.page, @required this.size})
+  const RefreshHistoryThreadEvent({@required this.page, @required this.size})
       : super();
 }
 
@@ -25,19 +25,19 @@ class RefreshVisitorThreadEvent extends ThreadEvent {
   final int? page;
   final int? size;
   //
-  RefreshVisitorThreadEvent({@required this.page, @required this.size})
+  const RefreshVisitorThreadEvent({@required this.page, @required this.size})
       : super();
 }
 
 class RefreshVisitorThreadAllEvent extends ThreadEvent {
   //
-  RefreshVisitorThreadAllEvent() : super();
+  const RefreshVisitorThreadAllEvent() : super();
 }
 
 class UpdateThreadEvent extends ThreadEvent {
   final String? tid;
 
-  UpdateThreadEvent({@required this.tid})
+  const UpdateThreadEvent({@required this.tid})
       : assert(tid != null),
         super();
 }
@@ -45,7 +45,7 @@ class UpdateThreadEvent extends ThreadEvent {
 class DeleteThreadEvent extends ThreadEvent {
   final String? tid;
 
-  DeleteThreadEvent({@required this.tid})
+  const DeleteThreadEvent({@required this.tid})
       : assert(tid != null),
         super();
 }
@@ -57,7 +57,7 @@ class RequestThreadEvent extends ThreadEvent {
   final String? aid;
   final bool? isV2Robot;
 
-  RequestThreadEvent(
+  const RequestThreadEvent(
       {@required this.wid, @required this.type, @required this.aid, @required this.isV2Robot})
       : super();
 }
@@ -68,7 +68,7 @@ class RequestAgentEvent extends ThreadEvent {
   final String? type;
   final String? aid;
 
-  RequestAgentEvent(
+  const RequestAgentEvent(
       {@required this.wid, @required this.type, @required this.aid})
       : super();
 }
@@ -76,47 +76,47 @@ class RequestAgentEvent extends ThreadEvent {
 class RequestContactThreadEvent extends ThreadEvent {
   final String? cid;
 
-  RequestContactThreadEvent({@required this.cid}) : super();
+  const RequestContactThreadEvent({@required this.cid}) : super();
 }
 
 class RequestGroupThreadEvent extends ThreadEvent {
   final String? gid;
 
-  RequestGroupThreadEvent({@required this.gid}) : super();
+  const RequestGroupThreadEvent({@required this.gid}) : super();
 }
 
 class MarkTopThreadEvent extends ThreadEvent {
   final String? tid;
 
-  MarkTopThreadEvent({@required this.tid}) : super();
+  const MarkTopThreadEvent({@required this.tid}) : super();
 }
 
 class UnMarkTopThreadEvent extends ThreadEvent {
   final String? tid;
 
-  UnMarkTopThreadEvent({@required this.tid}) : super();
+  const UnMarkTopThreadEvent({@required this.tid}) : super();
 }
 
 class MarkNodisturbThreadEvent extends ThreadEvent {
   final String? tid;
 
-  MarkNodisturbThreadEvent({@required this.tid}) : super();
+  const MarkNodisturbThreadEvent({@required this.tid}) : super();
 }
 
 class UnMarkNodisturbThreadEvent extends ThreadEvent {
   final String? tid;
 
-  UnMarkNodisturbThreadEvent({@required this.tid}) : super();
+  const UnMarkNodisturbThreadEvent({@required this.tid}) : super();
 }
 
 class MarkUnreadThreadEvent extends ThreadEvent {
   final String? tid;
 
-  MarkUnreadThreadEvent({@required this.tid}) : super();
+  const MarkUnreadThreadEvent({@required this.tid}) : super();
 }
 
 class UnMarkUnreadThreadEvent extends ThreadEvent {
   final String? tid;
 
-  UnMarkUnreadThreadEvent({@required this.tid}) : super();
+  const UnMarkUnreadThreadEvent({@required this.tid}) : super();
 }
