@@ -44,6 +44,28 @@ assets:
     - assets/images/feedback/
 ```
 
+### iOS
+
+Add the following keys to your **Info.plist** file, located in **ios/Runner/Info.plist**:
+
+```dart
+<key>NSLocalNetworkUsageDescription</key>
+<string>Looking for local tcp Bonjour service</string>
+<key>NSBonjourServices</key>
+<array>
+  <string>mqtt.tcp</string>
+</array>
+```
+
+### Android
+
+Add the following Android permissions to the **AndroidManifest.xml** file, located in **android/app/src/main/AndroidManifest.xml**:
+
+```dart
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+```
+
 ### 第二步：初始化
 
 - 获取appkey，登录后台->客服管理->渠道管理->添加应用->appkey
