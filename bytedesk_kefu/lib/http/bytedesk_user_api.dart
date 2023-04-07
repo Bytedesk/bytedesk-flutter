@@ -258,22 +258,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   // 请求验证码
   Future<CodeResult> requestCode(String? mobile) async {
     //
-    Map<String, String> headers = {"Content-Type": "application/json"};
-    final initUrl = BytedeskUtils.getHostUri(
-        '/sms/api/send/liangshibao', {'mobile': mobile, 'client': client});
-    final initResponse = await httpClient.get(initUrl, headers: headers);
-    //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
-    //将string类型数据 转换为json类型的数据
-    final responseJson =
-        json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("requestCode:");
-    // BytedeskUtils.printLog(responseJson);
-
-    SpUtil.putBool(BytedeskConstants.exist, responseJson['data']['exist']);
-    SpUtil.putString(BytedeskConstants.code, responseJson['data']['code']);
-
-    return CodeResult.fromJson(responseJson);
+    return CodeResult.fromJson("");
   }
 
   // 绑定手机号
