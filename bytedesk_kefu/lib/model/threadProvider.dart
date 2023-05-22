@@ -58,7 +58,7 @@ class ThreadProvider {
   }
 
   Future<int> insert(Thread thread) async {
-    // BytedeskUtils.printLog('insert avatar:' + message.avatar + ' conten:' + message.content + ' timestamp:' + message.timestamp);
+    // debugPrint('insert avatar:' + message.avatar + ' conten:' + message.content + ' timestamp:' + message.timestamp);
     return await database!.insert(tableThread!, thread.toMap());
   }
 

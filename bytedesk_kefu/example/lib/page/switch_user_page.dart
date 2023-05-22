@@ -9,7 +9,7 @@ class SwitchUserPage extends StatefulWidget {
   const SwitchUserPage({Key? key}) : super(key: key);
 
   @override
-  _SwitchUserPageState createState() => _SwitchUserPageState();
+  State<SwitchUserPage> createState() => _SwitchUserPageState();
 }
 
 class _SwitchUserPageState extends State<SwitchUserPage> {

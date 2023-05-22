@@ -9,6 +9,7 @@ import 'package:bytedesk_kefu/model/wechatResult.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+import 'package:flutter/material.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +20,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   Future<OAuth> oauth(String? username, String? password) async {
     //
     var oauthUrl = BytedeskUtils.getHostUri('/oauth/token');
-    // BytedeskUtils.printLog("http api client: oauthUrl $oauthUrl");
     Map<String, String> headers = {
       "Authorization": "Basic Y2xpZW50OnNlY3JldA=="
     };
@@ -31,12 +31,43 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     };
     final oauthResponse =
         await httpClient.post(oauthUrl, headers: headers, body: bodyMap);
-    // BytedeskUtils.printLog('oauth result: $oauthResponse');
+    // debugPrint('oauth result: $oauthResponse');
     int statusCode = oauthResponse.statusCode;
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
+    debugPrint('statusCode:$statusCode, oauth:$oauthJson');
+    if (statusCode == 200) {
+      SpUtil.putBool(BytedeskConstants.isLogin, true);
+      SpUtil.putString(
+          BytedeskConstants.accessToken, oauthJson['access_token']);
+    } else if (statusCode == 400) {
+      // token过期
+      //  TODO: {error: invalid_grant, error_description: Bad credentials}
+    }
     //
-    BytedeskUtils.printLog('statusCode:$statusCode, oauth:$oauthJson');
+    return OAuth.fromJson(statusCode, oauthJson);
+  }
+
+  // 授权
+  Future<OAuth> visitorOauth(String? username, String? password) async {
+    //
+    var oauthUrl = BytedeskUtils.getHostUri('/visitor/token');
+    Map<String, String> headers = {
+      "Authorization": "Basic Y2xpZW50OnNlY3JldA=="
+    };
+    Map<String, String> bodyMap = {
+      "username": "$username",
+      "password": "$password",
+      "grant_type": "password",
+      "scope": "all"
+    };
+    final oauthResponse =
+        await httpClient.post(oauthUrl, headers: headers, body: bodyMap);
+    // debugPrint('oauth result: $oauthResponse');
+    int statusCode = oauthResponse.statusCode;
+    // 200: 授权成功，否则授权失败
+    final oauthJson = jsonDecode(oauthResponse.body);
+    debugPrint('statusCode:$statusCode, oauth:$oauthJson');
     if (statusCode == 200) {
       SpUtil.putBool(BytedeskConstants.isLogin, true);
       SpUtil.putString(
@@ -65,11 +96,11 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //
     final oauthResponse =
         await httpClient.post(oauthUrl, headers: headers, body: bodyMap);
-    // BytedeskUtils.printLog('oauth result: $oauthResponse');
+    // debugPrint('oauth result: $oauthResponse');
     int statusCode = oauthResponse.statusCode;
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
-    BytedeskUtils.printLog('statusCode:$statusCode, smsOAuth:$oauthJson');
+    debugPrint('statusCode:$statusCode, smsOAuth:$oauthJson');
     if (statusCode == 200) {
       SpUtil.putBool(BytedeskConstants.isLogin, true);
       SpUtil.putBool(BytedeskConstants.isAuthenticated, true);
@@ -87,7 +118,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   Future<OAuth> unionIdOAuth(String? unionid) async {
     //
     final oauthUrl = BytedeskUtils.getHostUri('/wechat/token');
-    // BytedeskUtils.printLog("http api client: oauthUrl $oauthUrl");
+    // debugPrint("http api client: oauthUrl $oauthUrl");
     Map<String, String> headers = {
       "Authorization": "Basic Y2xpZW50OnNlY3JldA=="
     };
@@ -99,13 +130,13 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //
     final oauthResponse =
         await httpClient.post(oauthUrl, headers: headers, body: bodyMap);
-    // BytedeskUtils.printLog('oauth result: $oauthResponse');
+    // debugPrint('oauth result: $oauthResponse');
     // check the status code for the result
     int statusCode = oauthResponse.statusCode;
-    // BytedeskUtils.printLog("statusCode $statusCode");
+    // debugPrint("statusCode $statusCode");
     // 200: 授权成功，否则授权失败
     final oauthJson = jsonDecode(oauthResponse.body);
-    BytedeskUtils.printLog('statusCode:$statusCode, unionIdOAuth:$oauthJson');
+    debugPrint('statusCode:$statusCode, unionIdOAuth:$oauthJson');
     if (statusCode == 200) {
       SpUtil.putBool(BytedeskConstants.isLogin, true);
       SpUtil.putBool(BytedeskConstants.isAuthenticated, true);
@@ -141,7 +172,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("register:");
+    // debugPrint("register:");
     // BytedeskUtils.printLog(responseJson);
 
     return JsonResult.fromJson(responseJson);
@@ -161,7 +192,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("registerAnonymous:");
+    // debugPrint("registerAnonymous:");
     // BytedeskUtils.printLog(responseJson);
     //
     User user = User.fromJson(responseJson['data']);
@@ -199,7 +230,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("registerUser:$responseJson");
+    debugPrint("registerUser:$responseJson");
     //
     int statusCode = responseJson['status_code'];
     if (statusCode == 200) {
@@ -245,7 +276,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
     // final responseJson = json.decode(initResponse.body);
-    // BytedeskUtils.printLog("changePassword");
+    // debugPrint("changePassword");
     // BytedeskUtils.printLog(responseJson);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
@@ -255,10 +286,97 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     return JsonResult.fromJson(responseJson);
   }
 
-  // 请求验证码
+  // 良师宝-请求验证码
   Future<CodeResult> requestCode(String? mobile) async {
     //
-    return CodeResult.fromJson("");
+    Map<String, String> headers = {"Content-Type": "application/json"};
+    final initUrl = BytedeskUtils.getHostUri(
+        '/sms/api/send/liangshibao', {'mobile': mobile, 'client': client});
+    final initResponse = await httpClient.get(initUrl, headers: headers);
+    // .timeout(
+    //   const Duration(seconds: 1),
+    //   onTimeout: () {
+    //     return http.Response('Error', 408); // Request Timeout response status code
+    //   },
+    // );
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    // debugPrint("requestCode: ${responseJson}");
+
+    SpUtil.putBool(BytedeskConstants.exist, responseJson['data']['exist']);
+    SpUtil.putString(BytedeskConstants.code, responseJson['data']['code']);
+    //
+    User user = User.fromJson(responseJson['data']['user']);
+    SpUtil.putString(BytedeskConstants.uid, user.uid!);
+    SpUtil.putString(BytedeskConstants.username, user.username!);
+    SpUtil.putString(BytedeskConstants.nickname, user.nickname!);
+    SpUtil.putString(BytedeskConstants.avatar, user.avatar!);
+    SpUtil.putString(BytedeskConstants.mobile, user.mobile ?? '');
+    SpUtil.putString(BytedeskConstants.description, user.description!);
+    SpUtil.putString(BytedeskConstants.subDomain, user.subDomain!);
+
+    return CodeResult.fromJson(responseJson);
+  }
+
+  // 剪贴助手-请求验证码
+  Future<CodeResult> requestCodeJianTie(String? mobile) async {
+    //
+    Map<String, String> headers = {"Content-Type": "application/json"};
+    final initUrl = BytedeskUtils.getHostUri(
+        '/sms/api/send/jiantie', {'mobile': mobile, 'client': client});
+    final initResponse = await httpClient.get(initUrl, headers: headers);
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    // debugPrint("requestCode: ${responseJson}");
+
+    SpUtil.putBool(BytedeskConstants.exist, responseJson['data']['exist']);
+    SpUtil.putString(BytedeskConstants.code, responseJson['data']['code']);
+    //
+    User user = User.fromJson(responseJson['data']['user']);
+    SpUtil.putString(BytedeskConstants.uid, user.uid!);
+    SpUtil.putString(BytedeskConstants.username, user.username!);
+    SpUtil.putString(BytedeskConstants.nickname, user.nickname!);
+    SpUtil.putString(BytedeskConstants.avatar, user.avatar!);
+    SpUtil.putString(BytedeskConstants.mobile, user.mobile ?? '');
+    SpUtil.putString(BytedeskConstants.description, user.description!);
+    SpUtil.putString(BytedeskConstants.subDomain, user.subDomain!);
+    //
+    return CodeResult.fromJson(responseJson);
+  }
+
+  // 微语AI-请求验证码
+  Future<CodeResult> requestCodeWeiyu(String? mobile) async {
+    //
+    Map<String, String> headers = {"Content-Type": "application/json"};
+    final initUrl = BytedeskUtils.getHostUri(
+        '/sms/api/send/weiyu', {'mobile': mobile, 'client': client});
+    final initResponse = await httpClient.get(initUrl, headers: headers);
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    // debugPrint("requestCode: ${responseJson}");
+
+    SpUtil.putBool(BytedeskConstants.exist, responseJson['data']['exist']);
+    SpUtil.putString(BytedeskConstants.code, responseJson['data']['code']);
+    //
+    User user = User.fromJson(responseJson['data']['user']);
+    SpUtil.putString(BytedeskConstants.uid, user.uid!);
+    SpUtil.putString(BytedeskConstants.username, user.username!);
+    SpUtil.putString(BytedeskConstants.nickname, user.nickname!);
+    SpUtil.putString(BytedeskConstants.avatar, user.avatar!);
+    SpUtil.putString(BytedeskConstants.mobile, user.mobile ?? '');
+    SpUtil.putString(BytedeskConstants.description, user.description!);
+    SpUtil.putString(BytedeskConstants.subDomain, user.subDomain!);
+
+    return CodeResult.fromJson(responseJson);
   }
 
   // 绑定手机号
@@ -275,7 +393,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -291,16 +409,23 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
 
   /// 初始化
   Future<User> getProfile() async {
+    // /// sp初始化
+    // await SpUtil.getInstance();
+    // //
+    // bool? isAuthenticated = SpUtil.getBool(BytedeskConstants.isAuthenticated);
+    // if (!isAuthenticated!) {
+    //   return const User();
+    // }
     //
-    final initUrl = Uri.http(
-        BytedeskConstants.host, '/api/user/profile/simple', {'client': client});
+    final initUrl = BytedeskUtils.getHostUri(
+        '/api/user/profile/simple', {'client': client});
     final initResponse = await httpClient.get(initUrl, headers: getHeaders());
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("getProfile:$responseJson");
+    debugPrint("$initUrl, getProfile:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -332,7 +457,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("updateNickname:$responseJson");
+    debugPrint("updateNickname:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -348,7 +473,6 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //
     var body = json.encode({"avatar": avatar, "client": client});
     //
-    // final initUrl = '$baseUrl/api/user/avatar';
     final initUrl = BytedeskUtils.getHostUri('/api/user/avatar');
     final initResponse =
         await httpClient.post(initUrl, headers: getHeaders(), body: body);
@@ -357,7 +481,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("updateAvatar:$responseJson");
+    debugPrint("updateAvatar:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -382,7 +506,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("updateDescription:$responseJson");
+    debugPrint("updateDescription:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -413,7 +537,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("updateProfile:$responseJson");
+    debugPrint("updateProfile:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -440,7 +564,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("updateSex $responseJson");
+    // debugPrint("updateSex $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -465,7 +589,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("updateLocation $responseJson");
+    debugPrint("updateLocation $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -490,7 +614,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("updateBirthday $responseJson");
+    // debugPrint("updateBirthday $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -515,7 +639,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("updateMobile $responseJson");
+    // debugPrint("updateMobile $responseJson");
     // 更新本地数据
     SpUtil.putString(BytedeskConstants.mobile, mobile!);
 
@@ -540,25 +664,23 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
 
     http.Response response =
         await http.Response.fromStream(await request.send());
-    // BytedeskUtils.printLog("Result: ${response.body}");
+    // debugPrint("Result: ${response.body}");
 
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     // TODO: 根据status_code判断结果，并解析
 
     String? url = responseJson['data'];
-    // BytedeskUtils.printLog('url:' + url);
+    // debugPrint('url:' + url);
     return url!;
   }
 
   // 获取技能组在线状态
   Future<String> getWorkGroupStatus(String? workGroupWid) async {
     //
-    // final initUrl =
-    //     '$baseUrl/api/status/workGroup?wid=$workGroupWid&client=$client';
     final initUrl = BytedeskUtils.getHostUri(
         '/api/status/workGroup', {'wid': workGroupWid, 'client': client});
     final initResponse = await httpClient.get(initUrl, headers: getHeaders());
@@ -567,7 +689,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -588,7 +710,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -611,7 +733,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -632,7 +754,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -654,7 +776,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -675,7 +797,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("checkAppVersion:$responseJson");
+    debugPrint("checkAppVersion:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -699,7 +821,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -722,7 +844,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 解析
     return WeChatResult.fromJson(responseJson);
   }
@@ -754,7 +876,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     //
     UserJsonResult userJsonResult = UserJsonResult.fromJson(responseJson);
     if (userJsonResult.statusCode == 200) {
@@ -788,7 +910,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     //
     UserJsonResult userJsonResult = UserJsonResult.fromJson(responseJson);
     if (userJsonResult.statusCode == 200) {
@@ -811,7 +933,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("responseJson $responseJson");
+    // debugPrint("responseJson $responseJson");
     // 解析
     return responseJson['data'];
   }
@@ -828,7 +950,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     //
     return JsonResult.fromJson(responseJson);
   }
@@ -845,7 +967,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // BytedeskUtils.printLog("unfollow:");
+    // debugPrint("unfollow:");
     // BytedeskUtils.printLog(responseJson);
     return JsonResult.fromJson(responseJson);
   }
@@ -866,7 +988,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       //将string类型数据 转换为json类型的数据
       final responseJson =
           json.decode(utf8decoder.convert(initResponse.bodyBytes));
-      BytedeskUtils.printLog("logout:$responseJson");
+      debugPrint("logout:$responseJson");
       BytedeskUtils.clearUserCache();
     }
   }

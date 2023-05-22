@@ -12,19 +12,29 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-        // TextButton
+    final themeData = Theme.of(context);
+    return Material(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+        side: BorderSide(
+          color: themeData.colorScheme.primary,
+          width: 1,
+        ),
+      ),
+      child: TextButton(
         onPressed: onPressed,
-        // textColor: Colors.white,
         child: Container(
-            height: 48,
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: Text(
-              text!,
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            )));
+          height: 36,
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: Text(
+            text!,
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

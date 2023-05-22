@@ -91,7 +91,7 @@ class ChatInput extends StatefulWidget {
 class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
   InputType inputType = _initType;
   final _inputFocusNode = FocusNode();
-  bool _sendButtonVisible = false;
+  // bool _sendButtonVisible = false;
   final _textController = TextEditingController();
   late AnimationController _bottomHeightController;
   bool emojiShowing = false;
@@ -120,10 +120,10 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
       return;
     }
     if (widget.sendButtonVisibilityMode == SendButtonVisibilityMode.editing) {
-      _sendButtonVisible = _textController.text.trim() != '';
+      // _sendButtonVisible = _textController.text.trim() != '';
       _textController.addListener(_handleTextControllerChange);
     } else {
-      _sendButtonVisible = true;
+      // _sendButtonVisible = true;
     }
 
     _bottomHeightController = AnimationController(
@@ -176,7 +176,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
 
   void _handleTextControllerChange() {
     setState(() {
-      _sendButtonVisible = _textController.text.trim() != '';
+      // _sendButtonVisible = _textController.text.trim() != '';
     });
   }
 
@@ -391,9 +391,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
 
   // FIXME: 表情在web和Android有问题？暂时不在web和Android启用表情
   Widget buildEmojiButton() {
-    if (BytedeskUtils.isWeb) {
-      return const Text('');
-    } else if (BytedeskUtils.isIOS) {
+    if (BytedeskUtils.isIOS) {
       return ImageButton(
             image: AssetImage(inputType != InputType.emoji
                 ? 'assets/images/chat/input_emoji.png'
@@ -446,8 +444,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
       child: Focus(
         autofocus: true,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-              0, 0, 0, 0), //InheritedChatTheme.of(context).theme.inputPadding,
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0), //InheritedChatTheme.of(context).theme.inputPadding,
           child: Material(
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(10),

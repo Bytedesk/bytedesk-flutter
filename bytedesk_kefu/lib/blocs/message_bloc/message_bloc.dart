@@ -62,7 +62,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
       emit(UploadVideoSuccess(uploadJsonResult));
     } catch (error) {
       BytedeskUtils.printLog(error);
-      emit(UpLoadImageError());
+      emit(UpLoadVideoError());
     }
   }
 

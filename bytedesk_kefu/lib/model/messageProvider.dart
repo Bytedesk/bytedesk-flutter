@@ -7,6 +7,7 @@ import 'package:bytedesk_kefu/model/answer.dart';
 import 'package:bytedesk_kefu/model/category.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:bytedesk_kefu/model/model.dart';
@@ -70,7 +71,7 @@ class MessageProvider {
       version: 10,
     );
     // database path:/Users/ningjinpeng/Library/Developer/CoreSimulator/Devices/715CBA02-A602-4DE1-8C57-75A64B53BF03/data/Containers/Data/Application/8F46273D-9492-4C42-A618-4DF3815562BA/Documents/bytedesk-message-v9.db
-    BytedeskUtils.printLog('database path:${database!.path}');
+    debugPrint('database path:${database!.path}');
   }
 
   Future<int> insert(Message message) async {
@@ -78,19 +79,19 @@ class MessageProvider {
     if (BytedeskUtils.isWeb) {
       return 0;
     }
-    // BytedeskUtils.printLog('insert avatar:' + message.avatar + ' conten:' + message.content + ' timestamp:' + message.timestamp);
+    // debugPrint('insert avatar:' + message.avatar + ' conten:' + message.content + ' timestamp:' + message.timestamp);
     return await database!.insert(tableMessage!, message.toMap());
   }
 
   //
   Future<List<Message>> getTopicMessages(
       String? topic, String? currentUid, int? page, int? size) async {
-    // BytedeskUtils.printLog('1: ' + topic! + ' currentUid:' + currentUid!);
+    // debugPrint('1: ' + topic! + ' currentUid:' + currentUid!);
     // FIXME: 暂不支持web
     if (BytedeskUtils.isWeb) {
       return [];
     }
-    // BytedeskUtils.printLog('2');
+    // debugPrint('2');
     //
     List<Map> maps = await database!.query(tableMessage!,
         columns: [
@@ -117,7 +118,7 @@ class MessageProvider {
         limit: size,
         offset: page! * size!);
     //
-    // BytedeskUtils.printLog('3');
+    // debugPrint('3');
     // BytedeskUtils.printLog(maps.length);
     //
     return List.generate(maps.length, (i) {
@@ -140,7 +141,7 @@ class MessageProvider {
       //           .map((item) => Category.fromJson(item))
       //           .toList();
       // }
-      // BytedeskUtils.printLog('4');
+      // debugPrint('4');
       return Message(
           mid: maps[i]['mid'],
           content: maps[i]['content'],

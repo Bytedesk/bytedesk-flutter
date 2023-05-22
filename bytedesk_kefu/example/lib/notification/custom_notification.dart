@@ -27,7 +27,7 @@ class MessageNotification extends StatelessWidget {
           title: Text(nickname!),
           subtitle: Text(content!),
           trailing: IconButton(
-              icon: Icon(Icons.reply),
+              icon: const Icon(Icons.reply),
               onPressed: () {
                 if (onReply != null) onReply!();
               }),

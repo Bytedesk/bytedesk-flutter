@@ -3,6 +3,7 @@ import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 
 class LeaveMsgRepository {
+  //
   final BytedeskLeaveMsgHttpApi bytedeskHttpApi = BytedeskLeaveMsgHttpApi();
 
   LeaveMsgRepository();
@@ -12,8 +13,8 @@ class LeaveMsgRepository {
   }
 
   // , List<String>? imageUrls
-  Future<JsonResult> submitLeaveMsg(String? wid, String? aid, String? type, String? mobile, String? email, String? content) async {
-    return await bytedeskHttpApi.submitLeaveMsg(wid, aid, type, mobile, email, content);
+  Future<JsonResult> submitLeaveMsg(String? wid, String? aid, String? type, String? mobile, String? email, String? content, List<String>? imageUrls) async {
+    return await bytedeskHttpApi.submitLeaveMsg(wid, aid, type, mobile, email, content, imageUrls);
   }
 
   Future<String> upload(String? filePath) async {

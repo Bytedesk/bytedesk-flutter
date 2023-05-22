@@ -186,7 +186,7 @@
 //     debugPrint(
 //         ">>> on record hideVoiceView isUp ${isUp}, filepath: ${filePath}");
 //     if (isUp) {
-//       // print("取消发送");
+//       // debugPrint("取消发送");
 //     } else {
 //       debugPrint("进行发送");
 
@@ -204,7 +204,7 @@
 //   }
 
 //   moveVoiceView() {
-//     // print(offset - start);
+//     // debugPrint(offset - start);
 //     setState(() {
 //       isUp = starty - offset > 100 ? true : false;
 //       if (isUp) {
@@ -393,7 +393,7 @@
 //       // _getDuration();
 //       return filepath;
 //     } catch (err) {
-//       print('stopRecorder error: $err');
+//       debugPrint('stopRecorder error: $err');
 //     }
 //   }
 

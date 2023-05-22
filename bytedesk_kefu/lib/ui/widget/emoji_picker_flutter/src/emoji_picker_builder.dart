@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 /// Inhert this class to create your own EmojiPicker
 abstract class EmojiPickerBuilder extends StatefulWidget {
   /// Constructor
-  EmojiPickerBuilder(
+  const EmojiPickerBuilder(
     this.config,
     this.state, {
     Key? key,

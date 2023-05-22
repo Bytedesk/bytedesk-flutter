@@ -198,7 +198,7 @@ class EmojiPickerInternalUtils {
   Emoji removeSkinTone(Emoji emoji) {
     return emoji.copyWith(
       emoji: emoji.emoji.replaceFirst(
-        RegExp('${SkinTone.values.join('|')}'),
+        RegExp(SkinTone.values.join('|')),
         '',
       ),
     );

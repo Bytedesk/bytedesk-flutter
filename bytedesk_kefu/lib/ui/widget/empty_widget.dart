@@ -9,15 +9,15 @@ class EmptyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Container(
+        child: SizedBox(
       height: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Expanded(
-            child: SizedBox(),
+          const Expanded(
             flex: 2,
+            child: SizedBox(),
           ),
           SizedBox(
             width: 100.0,
@@ -28,9 +28,9 @@ class EmptyWidget extends StatelessWidget {
             tip!,
             style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
           ),
-          Expanded(
-            child: SizedBox(),
+          const Expanded(
             flex: 3,
+            child: SizedBox(),
           ),
         ],
       ),

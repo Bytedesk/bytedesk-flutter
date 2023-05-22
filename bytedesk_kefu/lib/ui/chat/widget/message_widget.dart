@@ -82,7 +82,7 @@ class MessageWidget extends StatelessWidget {
                       children: <Widget>[
                         // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
                         FLBubble(
-                            from: FLBubbleFrom.right,
+                            bubbleFrom: FLBubbleFrom.right,
                             backgroundColor: const Color.fromRGBO(160, 231, 90, 1),
                             child: Container(
                               constraints: BoxConstraints(maxWidth: tWidth),
@@ -126,16 +126,22 @@ class MessageWidget extends StatelessWidget {
         ];
       },
       onSelected: (value) {
-        BytedeskUtils.printLog('send menu $value');
+        debugPrint('send menu $value');
         // 删除消息
         if (value == 'copy') {
           /// 把文本复制进入粘贴板
           if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-            Clipboard.setData(ClipboardData(text: message.content));
+            Clipboard.setData(ClipboardData(text: message.content!));
           } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-            Clipboard.setData(ClipboardData(text: message.imageUrl));
+            Clipboard.setData(ClipboardData(text: message.imageUrl!));
+          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+            Clipboard.setData(ClipboardData(text: message.videoUrl!));
+          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
+            Clipboard.setData(ClipboardData(text: message.fileUrl!));
+          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
+            Clipboard.setData(ClipboardData(text: message.voiceUrl!));
           } else {
-            Clipboard.setData(ClipboardData(text: message.content));
+            Clipboard.setData(ClipboardData(text: message.content!));
           }
           // Toast
           Fluttertoast.showToast(
@@ -152,7 +158,7 @@ class MessageWidget extends StatelessWidget {
         }
       },
       onCancelled: () {
-        // BytedeskUtils.printLog('cancel');
+        // debugPrint('cancel');
       },
     );
   }
@@ -161,10 +167,10 @@ class MessageWidget extends StatelessWidget {
   Widget _buildSendContent(BuildContext context, Message message) {
     //
     if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-      return Text(
+      return SelectableText(
         message.content ?? '',
-        textAlign: TextAlign.right,
-        softWrap: true,
+        textAlign: TextAlign.left,
+        // softWrap: true,
         style: const TextStyle(color: Colors.black, fontSize: 16.0),
       );
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
@@ -214,11 +220,11 @@ class MessageWidget extends StatelessWidget {
       String imageUrl = commodityJson['imageUrl'].toString();
       return InkWell(
         onTap: () {
-          // BytedeskUtils.printLog('message!.type ${message!.type}, message!.content ${message!.content}');
+          // debugPrint('message!.type ${message!.type}, message!.content ${message!.content}');
           if (customCallback != null) {
             customCallback!(message.content!);
           } else {
-            BytedeskUtils.printLog('customCallback is null');
+            debugPrint('customCallback is null');
           }
         },
         child: Row(
@@ -257,7 +263,7 @@ class MessageWidget extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 10, left: 8),
                     child: Text(
-                      '$content',
+                      content,
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -273,7 +279,7 @@ class MessageWidget extends StatelessWidget {
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
-          BytedeskUtils.printLog('play video');
+          debugPrint('play video');
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return VideoPlayPage(videoUrl: message.videoUrl);
           }));
@@ -288,10 +294,10 @@ class MessageWidget extends StatelessWidget {
         ),
       );
     } else {
-      return Text(
+      return SelectableText(
         message.content ?? '',
-        textAlign: TextAlign.right,
-        softWrap: true,
+        textAlign: TextAlign.left,
+        // softWrap: true,
         style: const TextStyle(color: Colors.black, fontSize: 16.0),
       );
     }
@@ -326,14 +332,14 @@ class MessageWidget extends StatelessWidget {
                         Container(
                           // color: Colors.grey,
                           margin: const EdgeInsets.only(left: 18, bottom: 2),
-                          child: Text(
+                          child: SelectableText(
                             message!.nickname!,
                             style: const TextStyle(fontSize: 10),
                           ),
                         ),
                         // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
                         FLBubble(
-                            from: FLBubbleFrom.left,
+                            bubbleFrom: FLBubbleFrom.left,
                             backgroundColor: Colors.white,
                             child: Container(
                               constraints: BoxConstraints(maxWidth: tWidth),
@@ -367,16 +373,22 @@ class MessageWidget extends StatelessWidget {
         ];
       },
       onSelected: (value) {
-        BytedeskUtils.printLog('send menu $value');
+        debugPrint('send menu $value');
         // 删除消息
         if (value == 'copy') {
           /// 把文本复制进入粘贴板
           if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-            Clipboard.setData(ClipboardData(text: message.content));
+            Clipboard.setData(ClipboardData(text: message.content!));
           } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-            Clipboard.setData(ClipboardData(text: message.imageUrl));
+            Clipboard.setData(ClipboardData(text: message.imageUrl!));
+          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+            Clipboard.setData(ClipboardData(text: message.videoUrl!));
+          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
+            Clipboard.setData(ClipboardData(text: message.fileUrl!));
+          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
+            Clipboard.setData(ClipboardData(text: message.voiceUrl!));
           } else {
-            Clipboard.setData(ClipboardData(text: message.content));
+            Clipboard.setData(ClipboardData(text: message.content!));
           }
           // Toast
           Fluttertoast.showToast(
@@ -391,7 +403,7 @@ class MessageWidget extends StatelessWidget {
         }
       },
       onCancelled: () {
-        // BytedeskUtils.printLog('cancel');
+        // debugPrint('cancel');
       },
     );
   }
@@ -400,10 +412,10 @@ class MessageWidget extends StatelessWidget {
   Widget _buildReceivedContent(BuildContext context, Message message) {
     //
     if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-      return Text(
+      return SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
-        softWrap: true,
+        // softWrap: true,
         style: const TextStyle(
           color: Colors.black,
           fontSize: 16.0,
@@ -466,7 +478,7 @@ class MessageWidget extends StatelessWidget {
               },
               onImageTap: (src, _, __, ___) {
                 // 查看大图
-                // BytedeskUtils.printLog("open image $src");
+                // debugPrint("open image $src");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -526,7 +538,7 @@ class MessageWidget extends StatelessWidget {
                               style: const TextStyle(color: Colors.blue),
                             ),
                             onTap: () => {
-                                  // BytedeskUtils.printLog('object:' + answer.question),
+                                  // debugPrint('object:' + answer.question),
                                   bytedeskEventBus.fire(QueryAnswerEventBus(
                                       answer.aid!,
                                       answer.question!,
@@ -546,7 +558,7 @@ class MessageWidget extends StatelessWidget {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onTap: () {
-                    BytedeskUtils.printLog('请求人工客服');
+                    debugPrint('请求人工客服');
                     bytedeskEventBus.fire(RequestAgentThreadEventBus());
                   },
                 )
@@ -558,10 +570,10 @@ class MessageWidget extends StatelessWidget {
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_V2) {
       return Column(
         children: <Widget>[
-          Text(
+          SelectableText(
             message.content ?? '',
             textAlign: TextAlign.left,
-            softWrap: true,
+            // softWrap: true,
             style: const TextStyle(
               color: Colors.black,
               fontSize: 16.0,
@@ -616,7 +628,7 @@ class MessageWidget extends StatelessWidget {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onTap: () {
-                    BytedeskUtils.printLog('请求人工客服');
+                    debugPrint('请求人工客服');
                     bytedeskEventBus.fire(RequestAgentThreadEventBus());
                   },
                 )
@@ -626,10 +638,10 @@ class MessageWidget extends StatelessWidget {
         ],
       );
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT) {
-      return Text(
+      return SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
-        softWrap: true,
+        // softWrap: true,
         style: const TextStyle(
           color: Colors.black,
           fontSize: 16.0,
@@ -644,11 +656,11 @@ class MessageWidget extends StatelessWidget {
       String imageUrl = commodityJson['imageUrl'].toString();
       return InkWell(
         onTap: () {
-          // BytedeskUtils.printLog('message!.type ${message!.type}, message!.content ${message!.content}');
+          // debugPrint('message!.type ${message!.type}, message!.content ${message!.content}');
           if (customCallback != null) {
             customCallback!(message.content!);
           } else {
-            BytedeskUtils.printLog('customCallback is null');
+            debugPrint('customCallback is null');
           }
         },
         child: Row(
@@ -687,7 +699,7 @@ class MessageWidget extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.only(top: 10, left: 8),
                     child: Text(
-                      '$content',
+                      content,
                       style: const TextStyle(fontSize: 12, color: Colors.grey),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -703,7 +715,7 @@ class MessageWidget extends StatelessWidget {
     } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
-          BytedeskUtils.printLog('play video');
+          debugPrint('play video');
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             return VideoPlayPage(videoUrl: message.videoUrl);
           }));
@@ -718,10 +730,10 @@ class MessageWidget extends StatelessWidget {
         ),
       );
     } else {
-      return Text(
+      return SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
-        softWrap: true,
+        // softWrap: true,
         style: const TextStyle(color: Colors.black, fontSize: 16.0),
       );
     }

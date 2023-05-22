@@ -6,14 +6,14 @@ class OnlineStatusPage extends StatefulWidget {
   const OnlineStatusPage({Key? key}) : super(key: key);
 
   @override
-  _OnlineStatusPageState createState() => _OnlineStatusPageState();
+  State<OnlineStatusPage> createState() => _OnlineStatusPageState();
 }
 
 class _OnlineStatusPageState extends State<OnlineStatusPage> {
   // 到 客服管理->技能组-有一列 ‘唯一ID（wId）’
-  String _workGroupWid = "201807171659201";
+  final String _workGroupWid = "201807171659201";
   // 到 客服管理->客服账号-有一列 ‘唯一ID（uId）’
-  String _agentUid = "201808221551193";
+  final String _agentUid = "201808221551193";
   //
   String _workGroupStatus = ''; // 注：online 代表在线，offline 代表离线
   String _agentStatus = ''; // 注：online 代表在线，offline 代表离线
@@ -61,7 +61,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   void _getWorkGroupStatus() {
     // 获取技能组在线状态：当技能组中至少有一个客服在线时，显示在线
     BytedeskKefu.getWorkGroupStatus(_workGroupWid).then((status) => {
-          print(status),
+          debugPrint(status),
           setState(() {
             _workGroupStatus = status;
           })
@@ -71,7 +71,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   void _getAgentStatus() {
     // 获取指定客服在线状态
     BytedeskKefu.getAgentStatus(_agentUid).then((status) => {
-          print(status),
+          debugPrint(status),
           setState(() {
             _agentStatus = status;
           })

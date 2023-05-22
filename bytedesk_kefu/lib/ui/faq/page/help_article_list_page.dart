@@ -44,7 +44,7 @@
 //       body: BlocConsumer<HelpBloc, HelpState>(listener: (context, state) {
 //         // do stuff here based on BlocA's state
 //         if (state is HelpArticleState) {
-//           BytedeskUtils.printLog('help article load success length: ' +
+//           debugPrint('help article load success length: ' +
 //               state.articleList.length.toString());
 //           if (state.articleList.length == 0) {
 //             // Toast.show('没有更多了哦');

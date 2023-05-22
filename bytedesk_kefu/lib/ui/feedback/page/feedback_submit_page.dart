@@ -7,11 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
 class FeedbackSubmitPage extends StatefulWidget {
   final HelpCategory? helpCategory;
-  FeedbackSubmitPage({Key? key, this.helpCategory}) : super(key: key);
+  const FeedbackSubmitPage({Key? key, this.helpCategory}) : super(key: key);
 
   @override
   _FeedbackSubmitPageState createState() => _FeedbackSubmitPageState();
@@ -19,11 +18,11 @@ class FeedbackSubmitPage extends StatefulWidget {
 
 class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   //
-  ScrollController _scrollController = new ScrollController(); // 滚动监听
-  TextEditingController _textEditController = new TextEditingController();
+  final ScrollController _scrollController = ScrollController(); // 滚动监听
+  final TextEditingController _textEditController = TextEditingController();
   ImagePicker picker = ImagePicker();
-  List<String> _imageUrls = [];
-  List<File> _fileList = [];
+  final List<String> _imageUrls = [];
+  final List<File> _fileList = [];
   File? _selectedImageFile;
   // List<MultipartFile> mSubmitFileList = [];
 
@@ -36,7 +35,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
       // 如果滑动到底部
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        // BytedeskUtils.printLog('scroll to bottom');
+        // debugPrint('scroll to bottom');
       }
     });
     super.initState();
@@ -45,7 +44,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   @override
   Widget build(BuildContext context) {
     //
-    BytedeskUtils.printLog('fileList的内容: $_fileList');
+    debugPrint('fileList的内容: $_fileList');
     if (_selectedImageFile != null) {
       _fileList.add(_selectedImageFile!);
     }
@@ -60,17 +59,17 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
             Align(
               alignment: Alignment.centerRight,
               child: Container(
-                margin: EdgeInsets.only(right: 10),
+                margin: const EdgeInsets.only(right: 10),
                 child: InkWell(
                   onTap: () {
-                    BytedeskUtils.printLog('submit');
+                    debugPrint('submit');
                     // TODO: 提交
                     BlocProvider.of<FeedbackBloc>(context)
-                      ..add(SubmitFeedbackEvent(
+                      .add(SubmitFeedbackEvent(
                           imageUrls: _imageUrls,
                           content: _textEditController.text));
                   },
-                  child: Text(
+                  child: const Text(
                     '提交',
                     style: TextStyle(color: Colors.black),
                   ),
@@ -103,20 +102,20 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
           return SingleChildScrollView(
             controller: _scrollController,
             child: Container(
-                padding: EdgeInsets.only(top: 5.0, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 5.0, left: 10, right: 10),
                 child: Column(
                   children: <Widget>[
                     Container(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         minHeight: 150,
                       ),
                       // color: Color(0xffffffff),
-                      margin: EdgeInsets.only(top: 15),
+                      margin: const EdgeInsets.only(top: 15),
                       child: TextField(
                         controller: _textEditController,
                         maxLines: 5,
                         maxLength: 500,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "快说点儿什么吧......",
                           hintStyle:
                               TextStyle(color: Color(0xff999999), fontSize: 16),
@@ -131,7 +130,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                       crossAxisCount: 3,
                       children: List.generate(_fileList.length + 1, (index) {
                         // 这个方法体用于生成GridView中的一个item
-                        var content;
+                        Widget content;
                         if (index == _fileList.length) {
                           // 添加图片按钮
                           var addCell = Center(
@@ -202,7 +201,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                       onPressed: () {
                         //
                         BlocProvider.of<FeedbackBloc>(context)
-                          ..add(SubmitFeedbackEvent(
+                          .add(SubmitFeedbackEvent(
                               imageUrls: _imageUrls,
                               content: _textEditController.text));
                       },
@@ -223,15 +222,15 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
     try {
       XFile? pickedFile = await picker.pickImage(
           source: ImageSource.gallery, maxWidth: 800, imageQuality: 95);
-      BytedeskUtils.printLog('pick image path: ${pickedFile!.path}');
+      debugPrint('pick image path: ${pickedFile!.path}');
       setState(() {
         _selectedImageFile = File(pickedFile.path);
       });
       //
       BlocProvider.of<FeedbackBloc>(context)
-        ..add(UploadImageEvent(filePath: pickedFile.path));
+        .add(UploadImageEvent(filePath: pickedFile.path));
     } catch (e) {
-      BytedeskUtils.printLog('pick image error ${e.toString()}');
+      debugPrint('pick image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
@@ -245,15 +244,15 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
     try {
       XFile? pickedFile = await picker.pickImage(
           source: ImageSource.camera, maxWidth: 800, imageQuality: 95);
-      BytedeskUtils.printLog('take image path: ${pickedFile!.path}');
+      debugPrint('take image path: ${pickedFile!.path}');
       setState(() {
         _selectedImageFile = File(pickedFile.path);
       });
       //
       BlocProvider.of<FeedbackBloc>(context)
-        ..add(UploadImageEvent(filePath: pickedFile.path));
+        .add(UploadImageEvent(filePath: pickedFile.path));
     } catch (e) {
-      BytedeskUtils.printLog('take image error ${e.toString()}');
+      debugPrint('take image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
@@ -271,7 +270,7 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   //       ImagePicker.pickImage(source: source).then((result) {
   //         setState(() {
   //           _selectedImageFile = result;
-  //           BytedeskUtils.printLog("执行刷新:");
+  //           debugPrint("执行刷新:");
   //         });
   //       });
   //     },

@@ -16,6 +16,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<SMSLoginButtonPressed>(_mapSMSLoginState);
     on<RegisterButtonPressed>(_mapRegisterState);
     on<RequestCodeButtonPressed>(_mapRequestCodeState);
+    on<RequestCodeJianTieButtonPressed>(_mapRequestCodeJianTieState);
+    on<RequestCodeWeiyuButtonPressed>(_mapRequestCodeWeiyuState);
     on<BindMobileEvent>(_mapBindMobileState);
     on<UnionidOAuthEvent>(_mapUnionidOAuthState);
     on<ResetPasswordButtonPressed>(_mapResetPasswordState);
@@ -88,7 +90,44 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } catch (error) {
       // 网络或其他错误
-      emit(LoginFailure(error: error.toString()));
+      emit(RequestCodeError(message: error.toString(), statusCode: -1));
+    }
+  }
+
+  void _mapRequestCodeJianTieState(
+      RequestCodeJianTieButtonPressed event, Emitter<LoginState> emit) async {
+    emit(RequestCodeInProgress());
+    try {
+      //
+      CodeResult codeResult = await _userRepository.requestCodeJianTie(event.mobile);
+      if (codeResult.statusCode == 200) {
+        emit(RequestCodeSuccess(codeResult: codeResult));
+      } else {
+        emit(RequestCodeError(
+            message: codeResult.message, statusCode: codeResult.statusCode));
+      }
+    } catch (error) {
+      // 网络或其他错误
+      emit(RequestCodeError(message: error.toString(), statusCode: -1));
+    }
+  }
+
+  void _mapRequestCodeWeiyuState(
+      RequestCodeWeiyuButtonPressed event, Emitter<LoginState> emit) async {
+    emit(RequestCodeInProgress());
+    try {
+      //
+      CodeResult codeResult =
+          await _userRepository.requestCodeWeiyu(event.mobile);
+      if (codeResult.statusCode == 200) {
+        emit(RequestCodeSuccess(codeResult: codeResult));
+      } else {
+        emit(RequestCodeError(
+            message: codeResult.message, statusCode: codeResult.statusCode));
+      }
+    } catch (error) {
+      // 网络或其他错误
+      emit(RequestCodeError(message: error.toString(), statusCode: -1));
     }
   }
 

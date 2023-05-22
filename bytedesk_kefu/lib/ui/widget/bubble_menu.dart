@@ -32,7 +32,7 @@ typedef FLBubbleMenuItemSelected<T> = void Function(T value);
 enum FLBubbleMenuInteraction { tap, longPress }
 
 class FLBubbleMenuWidget<T> extends StatefulWidget {
-  FLBubbleMenuWidget(
+  const FLBubbleMenuWidget(
       {Key? key,
       @required this.itemBuilder,
       this.onSelected,
@@ -138,7 +138,7 @@ class FLBubbleMenuItem<T> {
 }
 
 class _FLBubbleMenu<T> extends StatelessWidget {
-  _FLBubbleMenu(
+  const _FLBubbleMenu(
       {Key? key,
       this.route,
       this.semanticLabel,
@@ -157,7 +157,7 @@ class _FLBubbleMenu<T> extends StatelessWidget {
     final List<Widget> children = <Widget>[];
     for (int i = 0; i < route!.items!.length; i += 1) {
       final CurvedAnimation opacity = CurvedAnimation(
-          parent: route!.animation!, curve: Interval(0.0, 1.0 / 3.0));
+          parent: route!.animation!, curve: const Interval(0.0, 1.0 / 3.0));
       FLBubbleMenuItem item = route!.items![i];
       Widget itemWidget = _buildMenuButton(context, item, isDarkMode);
       children.add(_transitionWrapper(itemWidget, opacity));
@@ -183,7 +183,7 @@ class _FLBubbleMenu<T> extends StatelessWidget {
           explicitChildNodes: true,
           label: semanticLabel,
           child: FLBubble(
-              from: from!,
+              bubbleFrom: from!,
               padding: EdgeInsets.zero,
               backgroundColor: backgroundColor,
               child: Row(
@@ -215,7 +215,6 @@ class _FLBubbleMenu<T> extends StatelessWidget {
         ? _kToolbarButtonFontStyle.copyWith(color: Colors.black)
         : _kToolbarButtonFontStyle;
     return CupertinoButton(
-      child: Text(menuItem.text!, style: textStyle),
       minSize: _kMenuButtonMinHeight,
       padding: _kMenuButtonPadding,
       borderRadius: null,
@@ -223,6 +222,7 @@ class _FLBubbleMenu<T> extends StatelessWidget {
       onPressed: () {
         Navigator.pop(context, menuItem.value);
       },
+      child: Text(menuItem.text!, style: textStyle),
     );
   }
 
@@ -261,15 +261,17 @@ class _FLBubbleMenuRouteLayoutDelegate extends SingleChildLayoutDelegate {
     double pW = size.width - position!.right - position!.left;
     double x = position!.left + (pW - childSize.width) / 2;
     // check horizontal edge
-    if (x < _kMenuScreenPadding)
+    if (x < _kMenuScreenPadding) {
       x = _kMenuScreenPadding;
-    else if (x + childSize.width > size.width - _kMenuScreenPadding)
+    } else if (x + childSize.width > size.width - _kMenuScreenPadding) {
       x = size.width - childSize.width - _kMenuScreenPadding;
+    }
     // vertical
-    if (y < _kMenuScreenPadding)
+    if (y < _kMenuScreenPadding) {
       y = _kMenuScreenPadding;
-    else if (y + childSize.height > size.height - _kMenuScreenPadding)
+    } else if (y + childSize.height > size.height - _kMenuScreenPadding) {
       y = size.height - childSize.height - _kMenuScreenPadding;
+    }
 
     return Offset(x, y);
   }

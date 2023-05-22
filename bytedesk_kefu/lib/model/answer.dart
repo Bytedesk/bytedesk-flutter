@@ -9,8 +9,8 @@ class Answer extends Equatable {
   const Answer({this.aid, this.question, this.answer}) : super();
   //
   static Answer fromJson(dynamic json) {
-    // BytedeskUtils.printLog('aid:' + json['aid']);
-    // BytedeskUtils.printLog('question:' + json['question']);
+    // debugPrint('aid:' + json['aid']);
+    // debugPrint('question:' + json['question']);
     return Answer(
         aid: json['aid'], question: json['question'], answer: json['answer']);
   }

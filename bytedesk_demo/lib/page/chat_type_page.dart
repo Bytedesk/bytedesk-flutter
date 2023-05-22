@@ -9,7 +9,7 @@ class ChatTypePage extends StatefulWidget {
   const ChatTypePage({Key? key}) : super(key: key);
 
   @override
-  _ChatTypePageState createState() => _ChatTypePageState();
+  State<ChatTypePage> createState() => _ChatTypePageState();
 }
 
 class _ChatTypePageState extends State<ChatTypePage> {
@@ -41,7 +41,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
       body: ListView(
         children: ListTile.divideTiles(context: context, tiles: [
           ListTile(
-            title: Text('未读消息数目：' + _unreadMessageCount),
+            title: Text('未读消息数目：$_unreadMessageCount'),
             // trailing: Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 加载未读消息数目
@@ -128,7 +128,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
               });
               BytedeskKefu.startWorkGroupChatShopCallback(
                   context, _workGroupWid, "技能组客服-电商-回调", custom, (value) {
-                print('value为custom参数原样返回 $value');
+                debugPrint('value为custom参数原样返回 $value');
                 // 主要用途：用户在聊天页面点击商品消息，回调此接口，开发者可在此打开进入商品详情页
               });
             },
@@ -201,7 +201,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
               });
               BytedeskKefu.startAppointedChatShopCallback(
                   context, _agentUid, "指定一对一客服-电商-回调", custom, (value) {
-                print('value为custom参数原样返回 $value');
+                debugPrint('value为custom参数原样返回 $value');
                 // 主要用途：用户在聊天页面点击商品消息，回调此接口，开发者可在此打开进入商品详情页
               });
             },
@@ -222,7 +222,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
             title: const Text('H5网页会话'),
             trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
-              print('h5 chat');
+              debugPrint('h5 chat');
               // 注意: 登录后台->客服管理->技能组(或客服账号)->获取客服代码 获取相应URL
               String url =
                   "https://h2.kefux.com/chat/h5/index.html?sub=vip&uid=201808221551193&wid=201807171659201&type=workGroup&aid=&hidenav=1&ph=ph";
@@ -238,7 +238,7 @@ class _ChatTypePageState extends State<ChatTypePage> {
   void _getUnreadCountVisitor() {
     // 获取消息未读数目
     BytedeskKefu.getUnreadCountVisitor().then((count) => {
-          print('unreadcount:' + count),
+          debugPrint('unreadcount:$count'),
           setState(() {
             _unreadMessageCount = count;
           })

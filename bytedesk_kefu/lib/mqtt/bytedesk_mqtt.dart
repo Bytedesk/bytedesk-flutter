@@ -17,6 +17,7 @@ import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_extraparam.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bytedesk_kefu/util/bytedesk_uuid.dart';
+import 'package:flutter/material.dart';
 import 'package:sp_util/sp_util.dart';
 // FIXME: proto文件重新生成兼容null-safty报错
 // ignore: import_of_legacy_library_into_null_safe
@@ -119,7 +120,7 @@ class BytedeskMqtt {
     // .withWillMessage('My Will message')
     // .startClean() // Non persistent session for testing
     // .withWillQos(MqttQos.atLeastOnce);
-    BytedeskUtils.printLog('mqttClient connecting....');
+    debugPrint('mqttClient connecting....');
     mqttClient.connectionMessage = connMessage;
 
     /// Connect the client, any errors here are communicated by raising of the appropriate exception. Note
@@ -128,17 +129,16 @@ class BytedeskMqtt {
     try {
       await mqttClient.connect();
     } on Exception catch (e) {
-      BytedeskUtils.printLog('mqttClient exception - $e');
+      debugPrint('mqttClient exception - $e');
       mqttClient.disconnect();
     }
 
     /// Check we are connected
     if (mqttClient.connectionStatus.state == MqttConnectionState.connected) {
-      BytedeskUtils.printLog('mqttClient connected');
+      debugPrint('mqttClient connected');
     } else {
       /// Use status here rather than state if you also want the broker return code.
-      BytedeskUtils.printLog(
-          'ERROR mqttClient connection failed - disconnecting, status is ${mqttClient.connectionStatus}');
+      debugPrint('ERROR mqttClient connection failed - disconnecting, status is ${mqttClient.connectionStatus}');
       mqttClient.disconnect();
       // exit(-1);
     }
@@ -149,14 +149,14 @@ class BytedeskMqtt {
     //   final MqttPublishMessage recMess = c[0].payload;
     //   final String pt =
     //       MqttPublishPayload.bytesToStringAsString(recMess.payload.message);
-    //   // BytedeskUtils.printLog('Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
+    //   // debugPrint('Change notification:: topic is <${c[0].topic}>, payload is <-- $pt -->');
     // });
 
     /// 收到的消息
     // if (mqttClient != null && mqttClient.published != null) {
     //
     mqttClient.published!.listen((MqttPublishMessage messageBinary) {
-      // BytedeskUtils.printLog('Published notification:: topic is ${messageBinary.variableHeader.topicName}, with Qos ${messageBinary.header.qos}');
+      // debugPrint('Published notification:: topic is ${messageBinary.variableHeader.topicName}, with Qos ${messageBinary.header.qos}');
       //
       protomsg.Message messageProto =
           protomsg.Message.fromBuffer(messageBinary.payload.message);
@@ -177,7 +177,7 @@ class BytedeskMqtt {
       var timestamp = messageProto.timestamp;
       var client = messageProto.client;
       //
-      BytedeskUtils.printLog('bytedesk_mqtt.dart receive type:$type client:$client mid:$mid');
+      debugPrint('bytedesk_mqtt.dart receive type:$type client:$client mid:$mid');
       // 非会话消息，如：会议通知等, 另行处理
       if (type == BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_NOTICE) {
         // TODO: 待处理
@@ -225,7 +225,7 @@ class BytedeskMqtt {
             sendReceipt = true;
             // TODO: 判断是否加密，暂时不需要
             message.content = messageProto.text.content;
-            BytedeskUtils.printLog('receive text:${message.content!}');
+            debugPrint('receive text:${message.content!}');
             break;
           }
         case BytedeskConstants.MESSAGE_TYPE_IMAGE:
@@ -544,7 +544,7 @@ class BytedeskMqtt {
             return;
           }
         default:
-          BytedeskUtils.printLog('other message type:$type');
+          debugPrint('other message type:$type');
       }
       // 客服端使用
       // if (autoReply) {
@@ -558,7 +558,7 @@ class BytedeskMqtt {
       //
       // final encrypter = Encrypter(AES(key, mode: AESMode.cbc));
       // final decrypted = encrypter.decrypt64(messageProto.text.content, iv: iv);
-      // BytedeskUtils.printLog('content: ' + decrypted);
+      // debugPrint('content: ' + decrypted);
       //
       // 忽略连接信息
       if (message.content == 'visitorConnect' ||
@@ -573,18 +573,18 @@ class BytedeskMqtt {
       bytedeskEventBus.fire(ReceiveMessageEventBus(message));
       // 接收消息播放提示音，放到SDK外实现，迁移到demo中
       if (BytedeskKefu.getPlayAudioOnReceiveMessage()! && message.isSend == 0) {
-        // BytedeskUtils.printLog('play audio');
+        // debugPrint('play audio');
         SystemSound.play(SystemSoundType.click);
       }
       // 振动，放到SDK外实现，迁移到demo中
       if (BytedeskKefu.getVibrateOnReceiveMessage()! && message.isSend == 0) {
-        // BytedeskUtils.printLog('should vibrate');
+        // debugPrint('should vibrate');
         vibrate();
       }
     });
     //
     // } else {
-    //   BytedeskUtils.printLog('mqttClient.published is null');
+    //   debugPrint('mqttClient.published is null');
     // }
   }
 
@@ -596,7 +596,7 @@ class BytedeskMqtt {
   }
 
   void subscribe(String topic) {
-    // BytedeskUtils.printLog('Subscribing to the hello topic');
+    // debugPrint('Subscribing to the hello topic');
     mqttClient.subscribe(topic, MqttQos.exactlyOnce);
   }
 
@@ -667,7 +667,7 @@ class BytedeskMqtt {
   void publish(String content, String type, Thread currentThread,
       ExtraParam? extraParam) {
     // if (currentThread == null) {
-    //   BytedeskUtils.printLog('连接客服失败,请退出页面重新进入。注意: 请在App启动的时候，调用init接口');
+    //   debugPrint('连接客服失败,请退出页面重新进入。注意: 请在App启动的时候，调用init接口');
     //   Fluttertoast.showToast(msg: '连接客服失败,请退出页面重新进入');
     //   return;
     // }
@@ -953,7 +953,7 @@ class BytedeskMqtt {
       return;
     } else {
       // 其他类型消息
-      BytedeskUtils.printLog('other type:$type');
+      debugPrint('other type:$type');
     }
     //
     messageProto.user = user;
@@ -988,46 +988,46 @@ class BytedeskMqtt {
 
   /// The subscribed callback
   void _onSubscribed(String? topic) {
-    // BytedeskUtils.printLog('Subscription confirmed for topic $topic');
+    // debugPrint('Subscription confirmed for topic $topic');
   }
 
   /// The unsubscribed callback
   void _onUnSubscribed(String? topic) {
-    // BytedeskUtils.printLog('UnSubscription confirmed for topic $topic');
+    // debugPrint('UnSubscription confirmed for topic $topic');
   }
 
   /// The subscribed callback
   void _onSubscribeFailed(String? topic) {
-    // BytedeskUtils.printLog('Subscribe Failed confirmed for topic $topic');
+    // debugPrint('Subscribe Failed confirmed for topic $topic');
   }
 
   /// The unsolicited disconnect callback
   void _onDisconnected() {
     // _isConnected = false;
-    // BytedeskUtils.printLog('OnDisconnected client callback - Client disconnection');
+    // debugPrint('OnDisconnected client callback - Client disconnection');
     // eventbus发广播，通知长连接断开
     bytedeskEventBus
         .fire(ConnectionEventBus(BytedeskConstants.USER_STATUS_DISCONNECTED));
     // if (mqttClient.connectionStatus.returnCode == MqttConnectReturnCode.solicited) {
-    //   BytedeskUtils.printLog('OnDisconnected callback is solicited, this is correct');
+    //   debugPrint('OnDisconnected callback is solicited, this is correct');
     // }
     // 延时10s执行重连
     Future.delayed(const Duration(seconds: 10), () {
-      // BytedeskUtils.printLog('start reconnecting');
+      // debugPrint('start reconnecting');
       // reconnect();
     });
   }
 
   /// The unsolicited disconnect callback
   // void _onAutoReconnect() {
-  //   // BytedeskUtils.printLog('EXAMPLE::onAutoReconnect client callback - Client auto reconnection sequence will start');
+  //   // debugPrint('EXAMPLE::onAutoReconnect client callback - Client auto reconnection sequence will start');
   //   // connect();
   // }
 
   /// The successful connect callback
   void _onConnected() {
     // _isConnected = true;
-    // BytedeskUtils.printLog('OnConnected client callback - Client connection was sucessful');
+    // debugPrint('OnConnected client callback - Client connection was sucessful');
     // TODO: eventbus发广播，通知长连接建立
     bytedeskEventBus
         .fire(ConnectionEventBus(BytedeskConstants.USER_STATUS_CONNECTED));
@@ -1035,7 +1035,7 @@ class BytedeskMqtt {
 
   /// Pong callback
   void _onPong() {
-    // BytedeskUtils.printLog('Ping response client callback invoked');
+    // debugPrint('Ping response client callback invoked');
   }
 
   bool isConnected() {

@@ -1,4 +1,3 @@
-
 import 'bytedesk_kefu_platform_interface.dart';
 import 'dart:async';
 // import 'dart:io';
@@ -28,6 +27,7 @@ import 'package:sp_util/sp_util.dart';
 import 'package:flutter/material.dart';
 
 import 'model/user.dart';
+import 'ui/leavemsg/provider/leavemsg_history_provider.dart';
 
 class BytedeskKefu {
   //
@@ -113,8 +113,7 @@ class BytedeskKefu {
   // 匿名访客登录
   static void visitorLogin(String username, String appkey, String subDomain) {
     String password = username;
-    login(
-        username, password, appkey, subDomain, BytedeskConstants.ROLE_VISITOR);
+    loginVisitor(username, password, appkey, subDomain);
   }
 
   // 开发者自定义用户名登录接口
@@ -135,6 +134,21 @@ class BytedeskKefu {
       }
     }
     await BytedeskUserHttpApi().oauth(username, password);
+    // 登录成功之后，建立长连接
+    connect();
+    // if (role == BytedeskConstants.ROLE_ADMIN) {
+    //   // TODO: 如果是客服账号，加载个人信息
+    // }
+    // 上传设备信息
+    await BytedeskDeviceHttpApi().setDeviceInfo();
+  }
+
+  // 访客用户名登录
+  static void loginVisitor(String username, String password, String appkey, String subDomain) async {
+    //
+    SpUtil.putString(BytedeskConstants.role, BytedeskConstants.ROLE_VISITOR);
+    //
+    await BytedeskUserHttpApi().visitorOauth(username, password);
     // 登录成功之后，建立长连接
     connect();
     // if (role == BytedeskConstants.ROLE_ADMIN) {
@@ -369,19 +383,43 @@ class BytedeskKefu {
     }));
   }
 
-  // TODO: 留言
+  static void showWorkGroupLeaveMessage(
+      BuildContext context, String wid, String tip) {
+    showLeaveMessage(context, wid, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, tip);
+  }
+
+  static void showAppointedLeaveMessage(
+      BuildContext context, String aid, String tip) {
+    showLeaveMessage(context, aid, aid, BytedeskConstants.CHAT_TYPE_APPOINTED, tip);
+  }
+
+  // 留言
   static void showLeaveMessage(
-      BuildContext context, String uuid, String type, String tip) {
+      BuildContext context, String wid, String aid, String type, String tip) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return LeaveMsgProvider(
-        wid: uuid,
-        aid: uuid,
+        wid: wid,
+        aid: aid,
         type: type,
         tip: tip,
       );
     }));
   }
 
+  // 留言历史
+  static void showLeaveMessageHistory(
+      BuildContext context, String wid, String aid, String type) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return LeaveMsgHistoryProvider(
+        wid: wid,
+        aid: aid,
+        type: type,
+      );
+    }));
+  }
+
+
+  // TODO: 提交工单
   // 频道消息
   // static void showChannel(BuildContext context, Thread thread) {
   //   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
@@ -514,6 +552,11 @@ class BytedeskKefu {
     return BytedeskUserHttpApi().checkAppVersion(iosKey);
   }
 
+    // 从服务器检测当前APP是否有新版
+  static Future<App> checkAppVersion2(String flutterKey) {
+    return BytedeskUserHttpApi().checkAppVersion(flutterKey);
+  }
+
   // 退出登录
   static Future<void> logout() {
     // 断开长链接
@@ -551,5 +594,4 @@ class BytedeskKefu {
       String mobile, String unionid) async {
     return BytedeskUserHttpApi().bindWeChatMobile(mobile, unionid);
   }
-
 }

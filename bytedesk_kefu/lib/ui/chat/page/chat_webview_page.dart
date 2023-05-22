@@ -57,24 +57,24 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
             _controller.complete(webViewController);
           },
           onProgress: (int progress) {
-            print('WebView is loading (progress : $progress%)');
+            debugPrint('WebView is loading (progress : $progress%)');
           },
           javascriptChannels: <JavascriptChannel>{
             _toasterJavascriptChannel(context),
           },
           navigationDelegate: (NavigationRequest request) {
             // if (request.url.startsWith('')) {
-            //   print('blocking navigation to $request}');
+            //   debugPrint('blocking navigation to $request}');
             //   return NavigationDecision.prevent;
             // }
-            print('allowing navigation to $request');
+            debugPrint('allowing navigation to $request');
             return NavigationDecision.navigate;
           },
           onPageStarted: (String url) {
-            print('Page started loading: $url');
+            debugPrint('Page started loading: $url');
           },
           onPageFinished: (String url) {
-            print('Page finished loading: $url');
+            debugPrint('Page finished loading: $url');
           },
           gestureNavigationEnabled: true,
           // geolocationEnabled: false,//support geolocation or not

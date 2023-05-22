@@ -4,6 +4,7 @@ import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/friend.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+import 'package:flutter/material.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 
 class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
@@ -14,7 +15,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //     '$baseUrl/api/friend/query?page=$page&size=$size&client=$client';
     final friendsUrl = BytedeskUtils.getHostUri('/api/friend/query',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
-    BytedeskUtils.printLog("get friends Url $friendsUrl");
+    debugPrint("get friends Url $friendsUrl");
     final initResponse =
         await httpClient.get(friendsUrl, headers: getHeaders());
 
@@ -23,7 +24,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -42,7 +43,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     final addressUrl = BytedeskUtils.getHostUri(
         '/api/friend/address/query',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
-    BytedeskUtils.printLog("address Url $addressUrl");
+    debugPrint("address Url $addressUrl");
     final initResponse =
         await httpClient.get(addressUrl, headers: getHeaders());
 
@@ -51,7 +52,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -78,7 +79,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -102,7 +103,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
       'size': size.toString(),
       'client': client
     });
-    BytedeskUtils.printLog("address Url $addressUrl");
+    debugPrint("address Url $addressUrl");
     final initResponse =
         await httpClient.get(addressUrl, headers: getHeaders());
 
@@ -111,7 +112,7 @@ class BytedeskFriendHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());

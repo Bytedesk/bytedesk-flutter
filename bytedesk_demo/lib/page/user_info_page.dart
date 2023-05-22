@@ -9,7 +9,7 @@ class UserInfoPage extends StatefulWidget {
   const UserInfoPage({Key? key}) : super(key: key);
 
   @override
-  _UserInfoPageState createState() => _UserInfoPageState();
+  State<UserInfoPage> createState() => _UserInfoPageState();
 }
 
 class _UserInfoPageState extends State<UserInfoPage> {
@@ -124,7 +124,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   }
 
   // 一次调用接口，同时设置：昵称、头像、备注
-  void _updateProfile() {
+  void updateProfile() {
     //
     String mynickname = '自定义APP昵称flutter';
     String myavatarurl =

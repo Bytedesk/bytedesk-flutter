@@ -10,6 +10,7 @@ import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -29,7 +30,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(sendMessageResponse.bodyBytes));
-    BytedeskUtils.printLog("responseJson $responseJson");
+    debugPrint("responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -48,7 +49,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       'uid': uid,
       'client': client
     });
-    // BytedeskUtils.printLog("loadHistoryMessages Url $loadHistoryMessages");
+    // debugPrint("loadHistoryMessages Url $loadHistoryMessages");
     final initResponse =
         await httpClient.get(loadHistoryMessagesUrl, headers: getHeaders());
     //
@@ -80,7 +81,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       'topic': topic,
       'client': client
     });
-    BytedeskUtils.printLog("loadTopicMessages Url $loadTopicMessagesUrl");
+    debugPrint("loadTopicMessages Url $loadTopicMessagesUrl");
     final initResponse =
         await httpClient.get(loadTopicMessagesUrl, headers: getHeaders());
     //
@@ -89,7 +90,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("loadTopicMessages:$responseJson");
+    debugPrint("loadTopicMessages:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -107,7 +108,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       String? topic, int? page, int? size) async {
     //
     final loadTopicMessagesUrl =
-        BytedeskUtils.getHostUri('/api/messages/topic', {
+        BytedeskUtils.getHostUri('/api/messages/file/topic', {
       'page': page.toString(),
       'size': size.toString(),
       'topic': topic,
@@ -123,7 +124,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("loadTopicMessagesFileHelper:$responseJson");
+    debugPrint("loadTopicMessagesFileHelper:$responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -147,7 +148,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       'cid': cid,
       'client': client
     });
-    // BytedeskUtils.printLog("loadChannelMessagesUrl Url $loadHistoryMessages");
+    // debugPrint("loadChannelMessagesUrl Url $loadHistoryMessages");
     final initResponse =
         await httpClient.get(loadChannelMessagesUrl, headers: getHeaders());
 
@@ -182,7 +183,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       'wid': wid,
       'client': client
     });
-    // BytedeskUtils.printLog("loadHistoryMessages Url $loadHistoryMessages");
+    // debugPrint("loadHistoryMessages Url $loadHistoryMessages");
     final initResponse =
         await httpClient.get(loadUnreadMessagesUrl, headers: getHeaders());
     //
@@ -210,7 +211,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     final loadUnreadMessagesUrl = BytedeskUtils.getHostUri(
         '/api/messages/unread/message/visitor',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
-    // BytedeskUtils.printLog("loadHistoryMessages Url $loadHistoryMessages");
+    // debugPrint("loadHistoryMessages Url $loadHistoryMessages");
     final initResponse =
         await httpClient.get(loadUnreadMessagesUrl, headers: getHeaders());
     //
@@ -238,7 +239,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     final loadUnreadMessagesAgentUrl = BytedeskUtils.getHostUri(
         '/api/messages/unread/message/agent',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
-    // BytedeskUtils.printLog("loadHistoryMessages Url $loadHistoryMessages");
+    // debugPrint("loadHistoryMessages Url $loadHistoryMessages");
     final initResponse =
         await httpClient.get(loadUnreadMessagesAgentUrl, headers: getHeaders());
     //
@@ -265,7 +266,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //
     final queryAnswerUrl = BytedeskUtils.getHostUri(
         '/api/answer/query', {'tid': tid, 'aid': aid, 'client': client});
-    BytedeskUtils.printLog("query Url $queryAnswerUrl");
+    debugPrint("query Url $queryAnswerUrl");
     final initResponse =
         await httpClient.get(queryAnswerUrl, headers: getHeaders());
     //
@@ -289,7 +290,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     final queryAnswerUrl = BytedeskUtils.getHostUri(
         '/api/v2/answer/query',
         {'tid': tid, 'aid': aid, 'mid': mid, 'client': client});
-    BytedeskUtils.printLog("query Url $queryAnswerUrl");
+    debugPrint("query Url $queryAnswerUrl");
     final initResponse =
         await httpClient.get(queryAnswerUrl, headers: getHeaders());
     //
@@ -311,7 +312,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //
     final queryCategoryUrl = BytedeskUtils.getHostUri(
         '/api/v2/answer/category', {'tid': tid, 'cid': cid, 'client': client});
-    BytedeskUtils.printLog("query Url $queryCategoryUrl");
+    debugPrint("query Url $queryCategoryUrl");
     final initResponse =
         await httpClient.get(queryCategoryUrl, headers: getHeaders());
     //
@@ -340,7 +341,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       'content': content,
       'client': client
     });
-    BytedeskUtils.printLog("message Url $messageAnswerUrl");
+    debugPrint("message Url $messageAnswerUrl");
     final initResponse =
         await httpClient.get(messageAnswerUrl, headers: getHeaders());
     //
@@ -349,7 +350,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    BytedeskUtils.printLog("messageAnswer:");
+    debugPrint("messageAnswer:");
     BytedeskUtils.printLog(responseJson);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
@@ -365,7 +366,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //
     final rateAnswerUrl = BytedeskUtils.getHostUri('/api/answer/rate',
         {'aid': aid, 'mid': mid, 'rate': rate, 'client': client});
-    BytedeskUtils.printLog("rate Url $rateAnswerUrl");
+    debugPrint("rate Url $rateAnswerUrl");
     final initResponse =
         await httpClient.get(rateAnswerUrl, headers: getHeaders());
     //
@@ -401,13 +402,13 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
 
     http.Response response =
         await http.Response.fromStream(await request.send());
-    // BytedeskUtils.printLog("Result: ${response.body}");
+    // debugPrint("Result: ${response.body}");
 
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
-    BytedeskUtils.printLog("upload image responseJson $responseJson");
+    debugPrint("upload image responseJson $responseJson");
     //
     return UploadJsonResult.fromJson(responseJson);
   }
@@ -436,13 +437,13 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
 
     http.Response response =
         await http.Response.fromStream(await request.send());
-    // BytedeskUtils.printLog("Result: ${response.body}");
+    // debugPrint("Result: ${response.body}");
 
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
     final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
-    BytedeskUtils.printLog("upload Video responseJson $responseJson");
+    debugPrint("upload Video responseJson $responseJson");
     //
     return UploadJsonResult.fromJson(responseJson);
   }

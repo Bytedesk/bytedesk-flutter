@@ -14,10 +14,10 @@ import 'package:flutter/material.dart';
 /// EmojiPicker Implementation
 class EmojiPickerView extends EmojiPickerBuilder {
   /// Constructor
-  EmojiPickerView(
+  const EmojiPickerView(
     Config config,
     EmojiViewState state,
-    this.handleSendPressed,
+    this.handleSendPressed, {super.key}
   ) : super(config, state);
 
   @override
@@ -54,7 +54,7 @@ class _EmojiPickerViewState extends State<EmojiPickerView>
         final emojiSize = widget.config.getEmojiSize(constraints.maxWidth);
 
         return Container(
-          color: Color.fromRGBO(251, 251, 251, 1.0), //widget.config.bgColor,
+          color: const Color.fromRGBO(251, 251, 251, 1.0), //widget.config.bgColor,
           child: Column(
             children: [
               Row(
@@ -111,7 +111,7 @@ class _EmojiPickerViewState extends State<EmojiPickerView>
                       _buildPage(emojiSize, widget.state.categoryEmoji[index]),
                 ),
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [],
               ),
@@ -135,8 +135,8 @@ class _EmojiPickerViewState extends State<EmojiPickerView>
     if (widget.config.buttonMode == ButtonMode.MATERIAL) {
       return TextButton(
         onPressed: onPressed,
-        child: child,
         style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.zero)),
+        child: child,
       );
     }
     return CupertinoButton(
@@ -188,7 +188,7 @@ class _EmojiPickerViewState extends State<EmojiPickerView>
   }
 
   Widget _buildNoRecent() {
-    return Center(
+    return const Center(
         child: Text( '无最近使用表情',
       // widget.config.noRecentsText,
       // style: widget.config.noRecentsStyle,

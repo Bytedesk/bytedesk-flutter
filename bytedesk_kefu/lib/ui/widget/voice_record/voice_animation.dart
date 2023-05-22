@@ -1,123 +1,123 @@
-import 'package:flutter/material.dart';
+// // ignore_for_file: must_be_immutable
 
-class VoiceAnimation extends StatefulWidget {
-  final double width;
-  final double height;
-  int interval;
-  bool isStop = false;
-  bool userIsAuthor;
-  var callStart;
-  late VoiceAnimationState voiceAnimationImageState;
+// import 'package:flutter/material.dart';
 
-  VoiceAnimation({
-    required this.width,
-    required this.height,
-    required this.isStop,
-    required this.userIsAuthor,
-    this.interval = 200,
-  });
+// class VoiceAnimation extends StatefulWidget {
+//   final double width;
+//   final double height;
+//   int interval;
+//   bool isStop = false;
+//   bool userIsAuthor;
+//   var callStart;
+//   late VoiceAnimationState voiceAnimationImageState;
 
-  @override
-  State<StatefulWidget> createState() {
-    voiceAnimationImageState = VoiceAnimationState();
-    return voiceAnimationImageState;
-  }
+//   VoiceAnimation({super.key, 
+//     required this.width,
+//     required this.height,
+//     required this.isStop,
+//     required this.userIsAuthor,
+//     this.interval = 200,
+//   });
 
-  start() {
-    voiceAnimationImageState.start();
-  }
+//   @override
+//   State<StatefulWidget> createState() {
+//     voiceAnimationImageState = VoiceAnimationState();
+//     return voiceAnimationImageState;
+//   }
 
-  stop() {
-    voiceAnimationImageState.stop();
-  }
-}
+//   start() {
+//     voiceAnimationImageState.start();
+//   }
 
-class VoiceAnimationState extends State<VoiceAnimation>
-    with SingleTickerProviderStateMixin {
-  // 动画控制
-  late Animation<double> _animation;
-  late AnimationController _controller;
-  int interval = 200;
+//   stop() {
+//     voiceAnimationImageState.stop();
+//   }
+// }
 
-  List<String> voicePlayingAsset = [];
+// class VoiceAnimationState extends State<VoiceAnimation>
+//     with SingleTickerProviderStateMixin {
+//   // 动画控制
+//   late Animation<double> _animation;
+//   late AnimationController _controller;
+//   int interval = 200;
 
-  @override
-  void initState() {
-    super.initState();
+//   List<String> voicePlayingAsset = [];
 
-    voicePlayingAsset.add("voice_playing_1.png");
-    voicePlayingAsset.add("voice_playing_2.png");
-    voicePlayingAsset.add("voice_playing_3.png");
+//   @override
+//   void initState() {
+//     super.initState();
 
-    if (widget.interval != null) {
-      interval = widget.interval;
-    }
-    final int imageCount = 3;
-    final int maxTime = interval * imageCount;
+//     voicePlayingAsset.add("voice_playing_1.png");
+//     voicePlayingAsset.add("voice_playing_2.png");
+//     voicePlayingAsset.add("voice_playing_3.png");
 
-    // 启动动画controller
-    _controller = AnimationController(
-      duration: Duration(milliseconds: maxTime),
-      vsync: this,
-    );
-    _controller.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.completed) {
-        _controller.forward(from: 2.0); // 完成后重新开始
-      }
-    });
+//     interval = widget.interval;
+//     const int imageCount = 3;
+//     final int maxTime = interval * imageCount;
 
-    _animation = Tween<double>(begin: -(imageCount - 2).toDouble(), end: 2)
-        .animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
-  }
+//     // 启动动画controller
+//     _controller = AnimationController(
+//       duration: Duration(milliseconds: maxTime),
+//       vsync: this,
+//     );
+//     _controller.addStatusListener((AnimationStatus status) {
+//       if (status == AnimationStatus.completed) {
+//         _controller.forward(from: 2.0); // 完成后重新开始
+//       }
+//     });
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+//     _animation = Tween<double>(begin: -(imageCount - 2).toDouble(), end: 2)
+//         .animate(_controller)
+//       ..addListener(() {
+//         setState(() {});
+//       });
+//   }
 
-  stop() {
-    _controller.stop();
-  }
+//   @override
+//   void dispose() {
+//     _controller.dispose();
+//     super.dispose();
+//   }
 
-  start() {
-    _controller.forward();
-  }
+//   stop() {
+//     _controller.stop();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    if (widget.isStop) {
-      start();
-    } else {
-      stop();
-    }
-    int ix = _animation.value.floor() % voicePlayingAsset.length;
+//   start() {
+//     _controller.forward();
+//   }
 
-    List<Widget> images = [];
-    String prefix = "assets/images/chat/";
-    // 把所有图片都加载进内容，否则每一帧加载时会卡顿
-    // receiverImages
-    for (int i = 0; i < voicePlayingAsset.length; ++i) {
-      if (i != ix) {
-        images.add(Image.asset(
-          prefix + voicePlayingAsset[i],
-          width: 0,
-          height: 0,
-        ));
-      }
-    }
-    images.add(Image.asset(
-      prefix + voicePlayingAsset[ix],
-      width: widget.width,
-      height: widget.height,
-      color: Colors.black,
-    ));
-    return Stack(
-      alignment: AlignmentDirectional.centerEnd,
-      children: images,
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     if (widget.isStop) {
+//       start();
+//     } else {
+//       stop();
+//     }
+//     int ix = _animation.value.floor() % voicePlayingAsset.length;
+
+//     List<Widget> images = [];
+//     String prefix = "assets/images/chat/";
+//     // 把所有图片都加载进内容，否则每一帧加载时会卡顿
+//     // receiverImages
+//     for (int i = 0; i < voicePlayingAsset.length; ++i) {
+//       if (i != ix) {
+//         images.add(Image.asset(
+//           prefix + voicePlayingAsset[i],
+//           width: 0,
+//           height: 0,
+//         ));
+//       }
+//     }
+//     images.add(Image.asset(
+//       prefix + voicePlayingAsset[ix],
+//       width: widget.width,
+//       height: widget.height,
+//       color: Colors.black,
+//     ));
+//     return Stack(
+//       alignment: AlignmentDirectional.centerEnd,
+//       children: images,
+//     );
+//   }
+// }

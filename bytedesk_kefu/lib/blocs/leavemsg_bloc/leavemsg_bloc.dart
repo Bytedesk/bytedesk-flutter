@@ -18,7 +18,7 @@ class LeaveMsgBloc extends Bloc<LeaveMsgEvent, LeaveMsgState> {
     emit(LeaveMsgSubmiting());
     try {
       await leaveMsgRepository.submitLeaveMsg(event.wid, event.aid, event.type,
-          event.mobile, event.email, event.content);
+          event.mobile, event.email, event.content, event.imageUrls);
       emit(const LeaveMsgSubmitSuccessState());
     } catch (error) {
       BytedeskUtils.printLog(error);

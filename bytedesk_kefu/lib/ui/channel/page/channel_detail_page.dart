@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ChannelDetailPage extends StatefulWidget {
   //
   final Message? message;
-  ChannelDetailPage({Key? key, @required this.message}) : super(key: key);
+  const ChannelDetailPage({Key? key, @required this.message}) : super(key: key);
 
   @override
   _ChannelDetailPageState createState() => _ChannelDetailPageState();

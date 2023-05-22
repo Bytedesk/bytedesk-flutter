@@ -7,7 +7,7 @@ class HistoryThreadPage extends StatefulWidget {
   const HistoryThreadPage({Key? key}) : super(key: key);
 
   @override
-  _HistoryThreadPageState createState() => _HistoryThreadPageState();
+  State<HistoryThreadPage> createState() => _HistoryThreadPageState();
 }
 
 // TODO: 点击thread会话直接进入对话页面

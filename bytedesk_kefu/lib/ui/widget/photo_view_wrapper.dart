@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view.dart';
 // TODO: 保存到本地相册
 class PhotoViewWrapper extends StatelessWidget {
   //
-  const PhotoViewWrapper({
+  const PhotoViewWrapper({super.key, 
     this.imageUrl,
     this.imageProvider,
     this.loadingBuilder,
@@ -57,17 +57,14 @@ class PhotoViewWrapper extends StatelessWidget {
               ),
               Positioned(
                 bottom: 100,
-                child: Container(
-                  // color: Colors.pink,
-                  child: InkWell(
-                    onTap: () {
-                      BytedeskUtils.printLog('imageurl: $imageUrl');
-                      BytedeskUtils.saveImage(imageUrl!);
-                    },
-                    child: Text(
-                      '保存到相册',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                child: InkWell(
+                  onTap: () {
+                    debugPrint('imageurl: $imageUrl');
+                    BytedeskUtils.saveImage(imageUrl!);
+                  },
+                  child: const Text(
+                    '保存到相册',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               )

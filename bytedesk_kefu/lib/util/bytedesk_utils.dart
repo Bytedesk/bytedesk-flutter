@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, constant_identifier_names
 
 import 'dart:io';
 import 'dart:math';
@@ -38,7 +38,7 @@ class BytedeskUtils {
 
   static void printLog(content) {
     if (BytedeskConstants.isDebug) {
-      print(content);
+      debugPrint(content);
     }
   }
 
@@ -99,7 +99,10 @@ class BytedeskUtils {
     }
   }
 
-  static Uri getHostUri(String path, [Map<String, dynamic>? queryParameters,]) {
+  static Uri getHostUri(
+    String path, [
+    Map<String, dynamic>? queryParameters,
+  ]) {
     if (BytedeskConstants.isDebug) {
       return Uri.http(BytedeskConstants.host, path, queryParameters);
     } else {
@@ -258,7 +261,7 @@ class BytedeskUtils {
 
   // 图片压缩 https://pub.dev/packages/flutter_image_compress
   // static Future<File> compressImage(File file, String targetPath) async {
-  //   // BytedeskUtils.printLog("compressImage");
+  //   // debugPrint("compressImage");
   //   final result = await FlutterImageCompress.compressAndGetFile(
   //     file.absolute.path,
   //     targetPath,
@@ -326,7 +329,7 @@ class BytedeskUtils {
   }
 
   static Future<bool> requestPermission() async {
-    BytedeskUtils.printLog('请求定位');
+    debugPrint('请求定位');
     return true;
     // FIXME:
     // if (await Permission.location.request().isGranted) {
@@ -384,7 +387,7 @@ class BytedeskUtils {
 
   /// 保存图片到相册
   /// 默认为下载网络图片，如需下载资源图片，需要指定 [isAsset] 为 `true`。
-  static Future<void> saveImage(String imageUrl, {bool isAsset: false}) async {
+  static Future<void> saveImage(String imageUrl, {bool isAsset = false}) async {
     try {
       // if (imageUrl == null) throw '保存失败，图片不存在！';
 
@@ -421,7 +424,7 @@ class BytedeskUtils {
       if (result == null || result == '') throw '图片保存失败';
       // 提示
       Fluttertoast.showToast(msg: "保存成功");
-      BytedeskUtils.printLog("保存成功");
+      debugPrint("保存成功");
     } catch (e) {
       BytedeskUtils.printLog(e.toString());
     }

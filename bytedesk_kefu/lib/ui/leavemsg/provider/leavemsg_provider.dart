@@ -21,10 +21,10 @@ class LeaveMsgProvider extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) => LeaveMsgBloc(),
       child: LeaveMsgPage(
-        wid: this.wid,
-        aid: this.aid,
-        type: this.type,
-        tip: this.tip,
+        wid: wid,
+        aid: aid,
+        type: type,
+        tip: tip,
       ),
     );
   }

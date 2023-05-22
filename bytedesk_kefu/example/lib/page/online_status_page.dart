@@ -6,7 +6,7 @@ class OnlineStatusPage extends StatefulWidget {
   const OnlineStatusPage({Key? key}) : super(key: key);
 
   @override
-  _OnlineStatusPageState createState() => _OnlineStatusPageState();
+  State<OnlineStatusPage> createState() => _OnlineStatusPageState();
 }
 
 class _OnlineStatusPageState extends State<OnlineStatusPage> {
@@ -61,7 +61,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   void _getWorkGroupStatus() {
     // 获取技能组在线状态：当技能组中至少有一个客服在线时，显示在线
     BytedeskKefu.getWorkGroupStatus(_workGroupWid).then((status) => {
-          print(status),
+          debugPrint(status),
           setState(() {
             _workGroupStatus = status;
           })
@@ -71,7 +71,7 @@ class _OnlineStatusPageState extends State<OnlineStatusPage> {
   void _getAgentStatus() {
     // 获取指定客服在线状态
     BytedeskKefu.getAgentStatus(_agentUid).then((status) => {
-          print(status),
+          debugPrint(status),
           setState(() {
             _agentStatus = status;
           })

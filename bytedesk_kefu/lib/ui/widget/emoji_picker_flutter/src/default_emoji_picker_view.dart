@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 /// Default EmojiPicker Implementation
 class DefaultEmojiPickerView extends EmojiPickerBuilder {
   /// Constructor
-  DefaultEmojiPickerView(Config config, EmojiViewState state, {super.key})
+  const DefaultEmojiPickerView(Config config, EmojiViewState state, {super.key})
       : super(config, state);
 
   @override
@@ -176,19 +176,19 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
         children: categoryEmoji.emoji.asMap().entries.map((item) {
           final index = item.key;
           final emoji = item.value;
-          final onPressed = () {
+          onPressed() {
             _closeSkinToneDialog();
             widget.state.onEmojiSelected(categoryEmoji.category, emoji);
-          };
+          }
 
-          final onLongPressed = () {
+          onLongPressed() {
             if (!emoji.hasSkinTone || !widget.config.enableSkinTones) {
               _closeSkinToneDialog();
               return;
             }
             _closeSkinToneDialog();
             _openSkinToneDialog(emoji, emojiSize, categoryEmoji, index);
-          };
+          }
 
           return _buildButtonWidget(
             onPressed: onPressed,
@@ -248,12 +248,12 @@ class _DefaultEmojiPickerViewState extends State<DefaultEmojiPickerView>
       return TextButton(
         onPressed: onPressed,
         onLongPress: onLongPressed,
-        child: child,
         style: ButtonStyle(
           padding: MaterialStateProperty.all(EdgeInsets.zero),
           minimumSize: MaterialStateProperty.all(Size.zero),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
+        child: child,
       );
     }
     return GestureDetector(

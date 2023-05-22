@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,7 +20,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 2.0.0+2
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ">=2.18.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,23 +32,26 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://github.com/jonataslaw/getx/blob/master/README.zh-cn.md
+  # 通用框架：国际化、状态管理、路由管理、主题管理 https://pub.dev/packages/get/install
+  get: ^4.6.5
   # 事件通知总线
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.1.2
+  fluttertoast: ^8.2.1
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
-  overlay_support: ^1.2.1
+  # overlay_support: ^1.2.1
   # 播放提示音 https://pub.dev/packages/audioplayers
-  audioplayers: ^0.20.1
+  # audioplayers: ^0.20.1
   # 振动 https://pub.dev/packages/vibration
   # 针对报错fatal error: 'vibration/vibration-Swift.h' file not found #import <vibration/vibration-Swift.h>, ld: library not found for -lvibration
   # 请在ios/Podfile中添加：use_frameworks!
-  vibration: ^1.7.5
+  # vibration: ^1.7.5
   # 在线客服 https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^1.4.5
+  bytedesk_kefu: ^1.5.4
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -70,7 +73,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

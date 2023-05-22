@@ -3,8 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  bytedesk_kefu
-  devicelocale
   url_launcher_linux
 )
 

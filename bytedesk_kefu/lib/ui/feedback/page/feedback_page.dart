@@ -46,7 +46,7 @@
 //           BlocConsumer<FeedbackBloc, FeedbackState>(listener: (context, state) {
 //         // do stuff here based on BlocA's state
 //         if (state is FeedbackCategoryState) {
-//           BytedeskUtils.printLog('help category load success length: ' +
+//           debugPrint('help category load success length: ' +
 //               state.categoryList.length.toString());
 //           if (state.categoryList.length == 0) {
 //             // Toast.show('没有更多了哦');

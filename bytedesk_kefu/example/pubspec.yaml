@@ -8,7 +8,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 2.0.0+2
 
 environment:
-  sdk: ">=2.18.0 <3.0.0"
+  sdk: '>=2.18.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -20,6 +20,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # https://github.com/jonataslaw/getx/blob/master/README.zh-cn.md
+  # 通用框架：国际化、状态管理、路由管理、主题管理 https://pub.dev/packages/get/install
+  get: ^4.6.5
   # 事件通知总线
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
@@ -28,7 +31,7 @@ dependencies:
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
   # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
-  overlay_support: ^1.2.1
+  # overlay_support: ^1.2.1
   # 播放提示音 https://pub.dev/packages/audioplayers
   # audioplayers: ^0.20.1
   # 振动 https://pub.dev/packages/vibration

@@ -10,8 +10,8 @@ class ExtraItem extends StatelessWidget {
     Key? key,
     required this.onPressed,
     required this.image,
-    double? this.width,
-    double? this.height,
+    this.width,
+    this.height,
     required this.title,
   }) : super(key: key);
 
@@ -24,25 +24,25 @@ class ExtraItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: this.onPressed ?? () => {print('功能暂未实现')},
+      onTap: onPressed ?? () => {debugPrint('功能暂未实现')},
       child: Padding(
-        padding: EdgeInsets.only(left: 15, top: 13, right: 15, bottom: 0),
+        padding: const EdgeInsets.only(left: 15, top: 13, right: 15, bottom: 0),
         child: Column(
           children: [
-            Container(
-              width: this.width ?? 56,
-              height: this.height ?? 56,
+            SizedBox(
+              width: width ?? 56,
+              height: height ?? 56,
               // margin: EdgeInsets.symmetric(horizontal: 10),
               child: Material(
                 color: AppColors.ChatInputBackgroundColor,
                 // INK可以实现装饰容器
-                child: new Ink(
+                child: Ink(
                   // 用ink圆角矩形
                   decoration: BoxDecoration(
                     // 背景
                     color: AppColors.ChatInputBackgroundColor,
                     // 设置四周圆角 角度
-                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     // 设置四周边框
                     border: Border.all(
                       width: 1,
@@ -50,12 +50,12 @@ class ExtraItem extends StatelessWidget {
                     ),
                   ),
                   child: Image(
-                    image: this.image,
+                    image: image,
                   ),
                 ),
               ),
             ),
-            Text(this.title),
+            Text(title),
           ],
         ),
       ),
@@ -90,29 +90,30 @@ class _ExtraItemsState extends State<ExtraItems> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 8),
+      padding: const EdgeInsets.only(left: 8),
       child: Column(
         children: <Widget>[
           Row(
             children: [
               ExtraItem(
                 title: "照片",
-                image: AssetImage('assets/images/chat/extra_photo.webp'),
+                image: const AssetImage('assets/images/chat/extra_photo.webp'),
                 onPressed: widget.handleImageSelection,
               ),
               ExtraItem(
                 title: "拍摄",
-                image: AssetImage('assets/images/chat/extra_camera.webp'),
+                image: const AssetImage('assets/images/chat/extra_camera.webp'),
                 onPressed: widget.handlePickerSelection,
               ),
               ExtraItem(
                 title: "上传视频",
-                image: AssetImage('assets/images/chat/extra_media.webp'),
+                image: const AssetImage('assets/images/chat/extra_media.webp'),
                 onPressed: widget.handleUploadVideo,
               ),
               ExtraItem(
                 title: "录制视频",
-                image: AssetImage('assets/images/chat/extra_videocall.webp'),
+                image:
+                    const AssetImage('assets/images/chat/extra_videocall.webp'),
                 onPressed: widget.handleCaptureVideo,
               ),
               // ExtraItem(
@@ -216,7 +217,6 @@ class _ExtraItemsState extends State<ExtraItems> {
   //     ],
   //   );
   // }
-
 }
 
 class AppColors {

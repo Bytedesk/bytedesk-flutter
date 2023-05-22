@@ -59,6 +59,26 @@ class RequestCodeButtonPressed extends LoginEvent {
   }
 }
 
+class RequestCodeJianTieButtonPressed extends LoginEvent {
+  //
+  final String? mobile;
+  const RequestCodeJianTieButtonPressed({@required this.mobile}) : super();
+  @override
+  String toString() {
+    return 'RequestCodeJianTieButtonPressed { mobile: $mobile}';
+  }
+}
+
+class RequestCodeWeiyuButtonPressed extends LoginEvent {
+  //
+  final String? mobile;
+  const RequestCodeWeiyuButtonPressed({@required this.mobile}) : super();
+  @override
+  String toString() {
+    return 'RequestCodeWeiyuButtonPressed { mobile: $mobile}';
+  }
+}
+
 class BindMobileEvent extends LoginEvent {
   //
   final String? mobile;

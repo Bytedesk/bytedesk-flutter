@@ -8,7 +8,7 @@ import 'package:bytedesk_kefu/model/model.dart';
 import 'package:bytedesk_kefu/mqtt/bytedesk_mqtt.dart';
 import 'package:bytedesk_kefu/ui/chat/widget/message_widget.dart';
 import 'package:bytedesk_kefu/ui/widget/expanded_viewport.dart';
-import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
+// import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
@@ -22,6 +22,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+
+import '../../widget/media_choose_widget.dart';
 // import 'package:path_provider/path_provider.dart' as path_provider;
 
 // TODO: 良师APP对话页面
@@ -43,7 +45,7 @@ class ChatLSPage extends StatefulWidget {
   final Thread? thread;
   final ValueSetter<String>? customCallback;
   //
-  ChatLSPage(
+  const ChatLSPage(
       {Key? key,
       this.wid,
       this.aid,
@@ -97,13 +99,13 @@ class _ChatLSPageState extends State<ChatLSPage>
   //
   @override
   void initState() {
-    // BytedeskUtils.printLog('chat_kf_page init');
+    // debugPrint('chat_kf_page init');
     SpUtil.putBool(BytedeskConstants.isCurrentChatKfPage, true);
     // 从历史会话或者顶部通知栏进入
     if (widget.isThread! && widget.thread != null) {
       _currentThread = widget.thread;
       // FIXME: 在访客端-标题显示访客的名字，应该显示客服或技能组名字或固定写死
-      _title = widget.title!.trim().length > 0
+      _title = widget.title!.trim().isNotEmpty
           ? widget.title
           : widget.thread!.nickname;
       _getMessages(_page, _size);
@@ -114,7 +116,7 @@ class _ChatLSPageState extends State<ChatLSPage>
     WidgetsBinding.instance.addObserver(this);
     // 监听build完成，https://blog.csdn.net/baoolong/article/details/85097318
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   BytedeskUtils.printLog('addPostFrameCallback');
+    //   debugPrint('addPostFrameCallback');
     // });
     _listener();
     super.initState();
@@ -138,17 +140,17 @@ class _ChatLSPageState extends State<ChatLSPage>
               child: Align(
                   alignment: Alignment.centerRight,
                   child: Container(
-                      padding: EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 10),
                       width: 60,
                       child: InkWell(
                         onTap: () {
                           BlocProvider.of<ThreadBloc>(context)
-                            ..add(RequestAgentEvent(
+                            .add(RequestAgentEvent(
                                 wid: widget.wid,
                                 aid: widget.aid,
                                 type: widget.type));
                         },
-                        child: Text(
+                        child: const Text(
                           '转人工',
                           style: TextStyle(color: Colors.black),
                         ),
@@ -173,24 +175,24 @@ class _ChatLSPageState extends State<ChatLSPage>
                     //
                     if (state.threadResult.statusCode == 200 ||
                         state.threadResult.statusCode == 201) {
-                      BytedeskUtils.printLog('创建新会话');
+                      debugPrint('创建新会话');
                       // 插入本地
                       // _messageProvider.insert(state.threadResult.msg!);
                       // TODO: 参考拼多多，在发送按钮上方显示pop商品信息，用户确认之后才会发送商品信息
                       // 发送商品信息
                       if (widget.custom != null &&
-                          widget.custom!.trim().length > 0) {
+                          widget.custom!.trim().isNotEmpty) {
                         _bdMqtt.sendCommodityMessage(
                             widget.custom!, _currentThread!);
                       }
                       // 发送附言消息
                       if (widget.postscript != null &&
-                          widget.postscript!.trim().length > 0) {
+                          widget.postscript!.trim().isNotEmpty) {
                         _bdMqtt.sendTextMessage(
                             widget.postscript!, _currentThread!);
                       }
                     } else if (state.threadResult.statusCode == 202) {
-                      BytedeskUtils.printLog('提示排队中');
+                      debugPrint('提示排队中');
                       // 插入本地
                       _messageProvider.insert(state.threadResult.msg!);
                       // 加载本地历史消息
@@ -198,18 +200,18 @@ class _ChatLSPageState extends State<ChatLSPage>
                       _appendMessage(state.threadResult.msg!);
                       // 发送商品信息
                       if (widget.custom != null &&
-                          widget.custom!.trim().length > 0) {
+                          widget.custom!.trim().isNotEmpty) {
                         _bdMqtt.sendCommodityMessage(
                             widget.custom!, _currentThread!);
                       }
                       // 发送附言消息
                       if (widget.postscript != null &&
-                          widget.postscript!.trim().length > 0) {
+                          widget.postscript!.trim().isNotEmpty) {
                         _bdMqtt.sendTextMessage(
                             widget.postscript!, _currentThread!);
                       }
                     } else if (state.threadResult.statusCode == 203) {
-                      BytedeskUtils.printLog('当前非工作时间，请自助查询或留言');
+                      debugPrint('当前非工作时间，请自助查询或留言');
                       // TODO: 显示留言页面
                       setState(() {
                         _currentThread = state.threadResult.msg!.thread;
@@ -220,7 +222,7 @@ class _ChatLSPageState extends State<ChatLSPage>
                       _getMessages(_page, _size);
                       _appendMessage(state.threadResult.msg!);
                     } else if (state.threadResult.statusCode == 204) {
-                      BytedeskUtils.printLog('当前无客服在线，请自助查询或留言');
+                      debugPrint('当前无客服在线，请自助查询或留言');
                       // TODO: 显示留言页面
                       setState(() {
                         _currentThread = state.threadResult.msg!.thread;
@@ -231,7 +233,7 @@ class _ChatLSPageState extends State<ChatLSPage>
                       _getMessages(_page, _size);
                       _appendMessage(state.threadResult.msg!);
                     } else if (state.threadResult.statusCode == 205) {
-                      BytedeskUtils.printLog('咨询前问卷');
+                      debugPrint('咨询前问卷');
                       setState(() {
                         _currentThread = state.threadResult.msg!.thread;
                       });
@@ -242,7 +244,7 @@ class _ChatLSPageState extends State<ChatLSPage>
                       _appendMessage(state.threadResult.msg!);
                       //
                     } else if (state.threadResult.statusCode == 206) {
-                      BytedeskUtils.printLog('返回机器人初始欢迎语 + 欢迎问题列表');
+                      debugPrint('返回机器人初始欢迎语 + 欢迎问题列表');
                       // TODO: 显示问题列表
                       setState(() {
                         _isRobot = true;
@@ -277,10 +279,10 @@ class _ChatLSPageState extends State<ChatLSPage>
               ),
               BlocListener<MessageBloc, MessageState>(
                 listener: (context, state) {
-                  BytedeskUtils.printLog('message state change');
+                  debugPrint('message state change');
                   if (state is ReceiveMessageState) {
                     BytedeskUtils.printLog(
-                        'receive message:' + state.message!.content!);
+                        'receive message:${state.message!.content!}');
                   } else if (state is UploadImageSuccess) {
                     _bdMqtt.sendImageMessage(
                         state.uploadJsonResult.url!, _currentThread!);
@@ -303,7 +305,7 @@ class _ChatLSPageState extends State<ChatLSPage>
                     //
                     if (state.query!.content!.contains('人工')) {
                       BlocProvider.of<ThreadBloc>(context)
-                        ..add(RequestAgentEvent(
+                        .add(RequestAgentEvent(
                             wid: widget.wid,
                             aid: widget.aid,
                             type: widget.type));
@@ -317,7 +319,7 @@ class _ChatLSPageState extends State<ChatLSPage>
             ],
             child: Container(
               alignment: Alignment.bottomCenter,
-              color: Color(0xFFDEEEEEE),
+              color: const Color(0xffdeeeeee),
               child: Column(
                 children: <Widget>[
                   // Expanded(
@@ -347,16 +349,17 @@ class _ChatLSPageState extends State<ChatLSPage>
                     child: SmartRefresher(
                       enablePullDown: false,
                       onLoading: () async {
-                        BytedeskUtils.printLog('TODO: 下拉刷新'); // 注意：方向跟默认是反着的
+                        debugPrint('TODO: 下拉刷新'); // 注意：方向跟默认是反着的
                         // await Future.delayed(Duration(milliseconds: 1000));
                         _getMessages(_page, _size);
                         setState(() {});
                         _refreshController.loadComplete();
                       },
-                      footer: ClassicFooter(
+                      footer: const ClassicFooter(
                         loadStyle: LoadStyle.ShowWhenLoading,
                       ),
                       enablePullUp: true,
+                      controller: _refreshController,
                       child: Scrollable(
                         controller: _scrollController,
                         axisDirection: AxisDirection.up,
@@ -375,10 +378,9 @@ class _ChatLSPageState extends State<ChatLSPage>
                           );
                         },
                       ),
-                      controller: _refreshController,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 1.0,
                   ),
                   Container(
@@ -395,7 +397,7 @@ class _ChatLSPageState extends State<ChatLSPage>
   //
   Widget _textComposerWidget() {
     return IconTheme(
-      data: IconThemeData(color: Colors.blue),
+      data: const IconThemeData(color: Colors.blue),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         height: 54,
@@ -404,19 +406,19 @@ class _ChatLSPageState extends State<ChatLSPage>
             Container(
               // margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
                 onPressed: () {
                   // _getImage();
                   showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return ImageChooseWidget(pickImageCallBack: () {
+                        return MediaChooseWidget(pickImageCallBack: () {
                           _pickImage();
                         }, takeImageCallBack: () {
                           _takeImage();
                         }, pickVideoCallBack: () {
                           _pickVideo();
-                        }, captureVideoCallBack: () {
+                        }, takeVideoCallBack: () {
                           _captureVideo();
                         });
                       });
@@ -429,16 +431,16 @@ class _ChatLSPageState extends State<ChatLSPage>
                   if (_debounce?.isActive ?? false) _debounce!.cancel();
                   // 积累500毫秒，再发送。否则发送过于频繁
                   _debounce = Timer(const Duration(milliseconds: 500), () {
-                    BytedeskUtils.printLog('send preview $value');
+                    debugPrint('send preview $value');
                     // 发送预知消息 value != null &&
-                    if (value.trim().length > 0) {
+                    if (value.trim().isNotEmpty) {
                       _bdMqtt.sendPreviewMessage(value, _currentThread!);
                     } else {
                       _bdMqtt.sendPreviewMessage('', _currentThread!);
                     }
                   });
                 },
-                decoration: InputDecoration.collapsed(hintText: "输入内容..."),
+                decoration: const InputDecoration.collapsed(hintText: "输入内容..."),
                 controller: _textController,
                 onSubmitted: _handleSubmitted,
               ),
@@ -446,7 +448,7 @@ class _ChatLSPageState extends State<ChatLSPage>
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: () => _handleSubmitted(_textController.text),
               ),
             )
@@ -464,13 +466,13 @@ class _ChatLSPageState extends State<ChatLSPage>
   void _handleSubmitted(String? text) {
     _textController.clear();
     //
-    if (text!.trim().length == 0) {
+    if (text!.trim().isEmpty) {
       return;
     }
     //
     if (_isRobot) {
       BlocProvider.of<MessageBloc>(context)
-        ..add(MessageAnswerEvent(
+        .add(MessageAnswerEvent(
             // type: widget.type,
             wid: widget.wid,
             // aid: widget.aid,
@@ -488,8 +490,8 @@ class _ChatLSPageState extends State<ChatLSPage>
   _listener() {
     // 更新消息状态
     bytedeskEventBus.on<ReceiveMessageReceiptEventBus>().listen((event) {
-      // BytedeskUtils.printLog('更新状态:' + event.status);
-      if (!this.mounted) {
+      // debugPrint('更新状态:' + event.status);
+      if (!mounted) {
         return;
       }
       // 更新界面, FIXME: 只有插入新消息，才会更新？
@@ -505,8 +507,8 @@ class _ChatLSPageState extends State<ChatLSPage>
       }
     });
     bytedeskEventBus.on<ReceiveMessagePreviewEventBus>().listen((event) {
-      // BytedeskUtils.printLog('消息预知');
-      if (this.mounted) {
+      // debugPrint('消息预知');
+      if (mounted) {
         setState(() {
           // TODO: 国际化，支持英文
           _title = '对方正在输入';
@@ -514,10 +516,10 @@ class _ChatLSPageState extends State<ChatLSPage>
       }
       // 还原title
       Timer(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
         () {
-          // BytedeskUtils.printLog('timer');
-          if (this.mounted) {
+          // debugPrint('timer');
+          if (mounted) {
             setState(() {
               _title = widget.title;
             });
@@ -527,11 +529,11 @@ class _ChatLSPageState extends State<ChatLSPage>
     });
     // 同 DeleteMessageEventBus 事件
     // bytedeskEventBus.on<ReceiveMessageRecallEventBus>().listen((event) {
-    //   BytedeskUtils.printLog('消息撤回');
+    //   debugPrint('消息撤回');
     // });
     // 接收到新消息
     bytedeskEventBus.on<ReceiveMessageEventBus>().listen((event) {
-      // BytedeskUtils.printLog('receive message:' + event.message!.content);
+      // debugPrint('receive message:' + event.message!.content);
       if (_currentThread != null &&
           (event.message.thread!.topic != _currentThread!.topic)) {
         return;
@@ -546,8 +548,8 @@ class _ChatLSPageState extends State<ChatLSPage>
           message: event.message,
           customCallback: widget.customCallback,
           animationController: AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
-      if (this.mounted) {
+              vsync: this, duration: const Duration(milliseconds: 500)));
+      if (mounted) {
         setState(() {
           _messages.insert(0, messageWidget);
           // _messages.add(messageWidget);
@@ -557,7 +559,7 @@ class _ChatLSPageState extends State<ChatLSPage>
     // 删除消息
     bytedeskEventBus.on<DeleteMessageEventBus>().listen((event) {
       //
-      if (this.mounted) {
+      if (mounted) {
         // 从sqlite中删除
         _messageProvider.delete(event.mid);
         // 更新界面
@@ -569,7 +571,7 @@ class _ChatLSPageState extends State<ChatLSPage>
     // 查询机器人消息
     bytedeskEventBus.on<QueryAnswerEventBus>().listen((event) {
       //
-      if (this.mounted) {
+      if (mounted) {
         BytedeskUtils.printLog(
             'aid ${event.aid}, question ${event.question}, answer ${event.answer}');
         // 可以直接将问题和答案插入本地，并显示，但为了服务器保存查询记录，特将请求发送给服务器
@@ -587,7 +589,7 @@ class _ChatLSPageState extends State<ChatLSPage>
       // 如果滑动到底部
       // if (_scrollController.position.pixels ==
       //     _scrollController.position.maxScrollExtent) {
-      //   BytedeskUtils.printLog('已经到底了');
+      //   debugPrint('已经到底了');
       // }
     });
   }
@@ -599,7 +601,7 @@ class _ChatLSPageState extends State<ChatLSPage>
           source: ImageSource.gallery, maxWidth: 800, imageQuality: 95);
       //
       if (pickedFile != null) {
-        BytedeskUtils.printLog('pick image path: ${pickedFile.path}');
+        debugPrint('pick image path: ${pickedFile.path}');
         // TODO: 将图片显示到对话消息中
         // TODO: 显示处理中loading
         // 压缩
@@ -608,19 +610,19 @@ class _ChatLSPageState extends State<ChatLSPage>
         //     "/" +
         //     BytedeskUtils.currentTimeMillis().toString() +
         //     ".jpg";
-        // BytedeskUtils.printLog('targetPath: $targetPath');
+        // debugPrint('targetPath: $targetPath');
         // await BytedeskUtils.compressImage(File(pickedFile.path), targetPath);
         // // 上传压缩后图片
         // BlocProvider.of<MessageBloc>(context)
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadImageEvent(filePath: pickedFile.path));
+          .add(UploadImageEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取图片');
       }
     } catch (e) {
-      BytedeskUtils.printLog('pick image error ${e.toString()}');
+      debugPrint('pick image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
@@ -632,7 +634,7 @@ class _ChatLSPageState extends State<ChatLSPage>
           source: ImageSource.camera, maxWidth: 800, imageQuality: 95);
       //
       if (pickedFile != null) {
-        BytedeskUtils.printLog('take image path: ${pickedFile.path}');
+        debugPrint('take image path: ${pickedFile.path}');
         // TODO: 将图片显示到对话消息中
         // TODO: 显示处理中loading
         // 压缩
@@ -641,19 +643,19 @@ class _ChatLSPageState extends State<ChatLSPage>
         //     "/" +
         //     BytedeskUtils.currentTimeMillis().toString() +
         //     ".jpg";
-        // BytedeskUtils.printLog('targetPath: $targetPath');
+        // debugPrint('targetPath: $targetPath');
         // await BytedeskUtils.compressImage(File(pickedFile.path), targetPath);
         // // 上传压缩后图片
         // BlocProvider.of<MessageBloc>(context)
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadImageEvent(filePath: pickedFile.path));
+          .add(UploadImageEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未拍照');
       }
     } catch (e) {
-      BytedeskUtils.printLog('take image error ${e.toString()}');
+      debugPrint('take image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
@@ -664,13 +666,14 @@ class _ChatLSPageState extends State<ChatLSPage>
   Future<void> _pickVideo() async {
     try {
       XFile? pickedFile = await _picker.pickVideo(
-          source: ImageSource.gallery, maxDuration: const Duration(seconds: 10));
-      
+          source: ImageSource.gallery,
+          maxDuration: const Duration(seconds: 10));
+
       if (pickedFile != null) {
-        BytedeskUtils.printLog('pick video path: ${pickedFile.path}');
-        // 
+        debugPrint('pick video path: ${pickedFile.path}');
+        //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: pickedFile.path));
+          .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取视频');
       }
@@ -693,7 +696,7 @@ class _ChatLSPageState extends State<ChatLSPage>
       //   // );
       //   // // debugBytedeskUtils.printLog(info.toJson().toString());
       //   // String? afterPath = info.toJson()['path'];
-      //   // // BytedeskUtils.printLog('video path: ${_paths[0].path}, compress path: $afterPath');
+      //   // // debugPrint('video path: ${_paths[0].path}, compress path: $afterPath');
       //   // // 上传
       //   // BlocProvider.of<MessageBloc>(context)
       //   //   ..add(UploadVideoEvent(filePath: afterPath));
@@ -702,7 +705,7 @@ class _ChatLSPageState extends State<ChatLSPage>
       //     ..add(UploadVideoEvent(filePath: _paths[0].path));
       // }
     } catch (e) {
-      BytedeskUtils.printLog('pick video error ${e.toString()}');
+      debugPrint('pick video error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取视频");
     }
   }
@@ -714,7 +717,7 @@ class _ChatLSPageState extends State<ChatLSPage>
           source: ImageSource.camera, maxDuration: const Duration(seconds: 10));
       //
       if (pickedFile != null) {
-        BytedeskUtils.printLog('take video path: ${pickedFile.path}');
+        debugPrint('take video path: ${pickedFile.path}');
         // TODO: 将图片显示到对话消息中
         // TODO: 显示处理中loading
         // 压缩
@@ -726,61 +729,61 @@ class _ChatLSPageState extends State<ChatLSPage>
         // );
         // // debugBytedeskUtils.printLog(info.toJson().toString());
         // String? afterPath = info.toJson()['path'];
-        // // BytedeskUtils.printLog('video path: ${pickedFile.path}, compress path: $afterPath');
+        // // debugPrint('video path: ${pickedFile.path}, compress path: $afterPath');
         // // 上传
         // BlocProvider.of<MessageBloc>(context)
         //   ..add(UploadVideoEvent(filePath: afterPath));
         //
         BlocProvider.of<MessageBloc>(context)
-          ..add(UploadVideoEvent(filePath: pickedFile.path));
+          .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未录制视频');
       }
     } catch (e) {
-      BytedeskUtils.printLog('take video error ${e.toString()}');
+      debugPrint('take video error ${e.toString()}');
       Fluttertoast.showToast(msg: "未录制视频");
     }
   }
 
   // 加载更多聊天记录
   // Future<void> _loadMoreMessages() async {
-  //   BytedeskUtils.printLog('load more');
+  //   debugPrint('load more');
   //   // TODO: 从服务器加载
   //   _getMessages(_page, _size);
   // }
 
   // 分页加载本地历史聊天记录
   // TODO: 从服务器加载聊天记录
-  Future<Null> _getMessages(int page, int size) async {
+  Future<void> _getMessages(int page, int size) async {
     //
     List<Message> messageList = await _messageProvider.getTopicMessages(
         _currentThread!.topic, _currentUid, page, size);
-    messageList.forEach((message) {
+    for (var message in messageList) {
       MessageWidget messageWidget = MessageWidget(
           message: message,
           customCallback: widget.customCallback,
           animationController: AnimationController(
-              vsync: this, duration: Duration(milliseconds: 500)));
-      if (this.mounted) {
+              vsync: this, duration: const Duration(milliseconds: 500)));
+      if (mounted) {
         setState(() {
           // _messages.insert(0, messageWidget);
           _messages.add(messageWidget);
         });
       }
-    });
+    }
     //
     _page += 1;
   }
 
-  Future<Null> _appendMessage(Message message) async {
-    // BytedeskUtils.printLog('append:' + message!.mid);
+  Future<void> _appendMessage(Message message) async {
+    // debugPrint('append:' + message!.mid);
     _messageProvider.insert(message);
     MessageWidget messageWidget = MessageWidget(
         message: message,
         customCallback: widget.customCallback,
         animationController: AnimationController(
-            vsync: this, duration: Duration(milliseconds: 500)));
-    if (this.mounted) {
+            vsync: this, duration: const Duration(milliseconds: 500)));
+    if (mounted) {
       setState(() {
         _messages.insert(0, messageWidget);
       });
@@ -795,14 +798,14 @@ class _ChatLSPageState extends State<ChatLSPage>
     // );
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // BytedeskUtils.printLog("didChangeAppLifecycleState:" + state.toString());
+    // debugPrint("didChangeAppLifecycleState:" + state.toString());
     switch (state) {
       case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
         break;
@@ -820,7 +823,7 @@ class _ChatLSPageState extends State<ChatLSPage>
 
   @override
   void dispose() {
-    // BytedeskUtils.printLog('chat_kf_page dispose');
+    // debugPrint('chat_kf_page dispose');
     SpUtil.putBool(BytedeskConstants.isCurrentChatKfPage, false);
     WidgetsBinding.instance.removeObserver(this);
     _debounce?.cancel();

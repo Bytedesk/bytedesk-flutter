@@ -17,6 +17,10 @@ class UserRepository {
     return bytedeskHttpApi.oauth(username, password);
   }
 
+  Future<OAuth> loginVisitor(String? username, String? password) {
+    return bytedeskHttpApi.visitorOauth(username, password);
+  }
+
   Future<OAuth> smsOAuth(String? mobile, String? code) {
     return bytedeskHttpApi.smsOAuth(mobile, code);
   }
@@ -35,6 +39,14 @@ class UserRepository {
 
   Future<CodeResult> requestCode(String? mobile) {
     return bytedeskHttpApi.requestCode(mobile);
+  }
+
+  Future<CodeResult> requestCodeJianTie(String? mobile) {
+    return bytedeskHttpApi.requestCodeJianTie(mobile);
+  }
+
+  Future<CodeResult> requestCodeWeiyu(String? mobile) {
+    return bytedeskHttpApi.requestCodeWeiyu(mobile);
   }
 
   Future<JsonResult> bindMobile(String? mobile) {
@@ -86,12 +98,12 @@ class UserRepository {
   }
 
   Future<void> logout() {
-    // BytedeskUtils.printLog("user_repository logout");
+    // debugPrint("user_repository logout");
     return Future.wait([bytedeskHttpApi.logout()]);
   }
 
   // Future<bool> isLogin() {
-  //   BytedeskUtils.printLog("user_repository isSignedIn");
+  //   debugPrint("user_repository isSignedIn");
   //   // final currentUser = BytedeskHttpApi.currentUser();
   //   // return currentUser != null;
   // }
@@ -101,7 +113,7 @@ class UserRepository {
   }
 
   // Future<String> getUsername() {
-  //   BytedeskUtils.printLog("user_repository getUsername");
+  //   debugPrint("user_repository getUsername");
   //   return (BytedeskHttpApi.currentUser()).username;
   // }
 

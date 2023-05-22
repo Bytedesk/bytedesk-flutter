@@ -11,7 +11,7 @@ class TicketProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => TicketBloc(),
-      child: TicketPage(uid: this.uid),
+      child: TicketPage(uid: uid),
     );
   }
 }

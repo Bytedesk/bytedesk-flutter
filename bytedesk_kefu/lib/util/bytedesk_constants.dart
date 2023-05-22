@@ -20,7 +20,7 @@ class BytedeskConstants {
   // static const String httpUploadUrl = 'http://$mqttHost:8000';
   // static const String host = '$mqttHost:8000';
   // static const int mqttPort = 3883; // not secure
-  // static const String mqttHost = '192.168.3.171';
+  // static const String mqttHost = '172.20.10.7';
 
   // 本机测试
   // static const bool isDebug = true;
@@ -47,7 +47,7 @@ class BytedeskConstants {
   // static const String httpBaseUrliOS = 'http://$mqttHost:8000';
   // static const String httpUploadUrl = 'http://$mqttHost:8000';
   // static const String host = '$mqttHost:8000';
-  // static const String mqttHost = '192.168.0.102';
+  // static const String mqttHost = '192.168.0.105';
 
   // 线上
   static const bool isDebug = false; // false;
@@ -286,8 +286,10 @@ class BytedeskConstants {
   // 发送表单请求
   static const String MESSAGE_TYPE_NOTIFICATION_FORM = 'notification_form';
   // 表单内嵌类型
-  static const String MESSAGE_TYPE_NOTIFICATION_FORM_REQUEST = "notification_form_request";
-  static const String MESSAGE_TYPE_NOTIFICATION_FORM_RESULT = "notification_form_result";
+  static const String MESSAGE_TYPE_NOTIFICATION_FORM_REQUEST =
+      "notification_form_request";
+  static const String MESSAGE_TYPE_NOTIFICATION_FORM_RESULT =
+      "notification_form_result";
   // 通知初始化localStream
   // static const String MESSAGE_TYPE_NOTIFICATION_WEBRTC_INVITE = 'notification_webrtc_invite'
   static const String MESSAGE_TYPE_NOTIFICATION_WEBRTC_INVITE_VIDEO =

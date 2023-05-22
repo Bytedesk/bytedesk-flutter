@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RatePage extends StatefulWidget {
-  RatePage({Key? key}) : super(key: key);
+  const RatePage({Key? key}) : super(key: key);
 
   @override
   _RatePageState createState() => _RatePageState();

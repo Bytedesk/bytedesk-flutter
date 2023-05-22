@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TicketSubmitPage extends StatefulWidget {
-  TicketSubmitPage({Key? key}) : super(key: key);
+  const TicketSubmitPage({Key? key}) : super(key: key);
 
   @override
   _TicketSubmitPageState createState() => _TicketSubmitPageState();
@@ -12,10 +12,10 @@ class _TicketSubmitPageState extends State<TicketSubmitPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('提交工单'),
+        title: const Text('提交工单'),
         centerTitle: true,
       ),
-      body: Text('ticket'),
+      body: const Text('ticket'),
     );
   }
 }

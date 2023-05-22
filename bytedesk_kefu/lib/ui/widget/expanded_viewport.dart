@@ -138,7 +138,7 @@ class _RenderExpandedViewport extends RenderViewport {
 
 //tag
 class SliverExpanded extends SingleChildRenderObjectWidget {
-  SliverExpanded() : super(child: Container());
+  SliverExpanded({super.key}) : super(child: Container());
 
   @override
   RenderSliver createRenderObject(BuildContext context) {

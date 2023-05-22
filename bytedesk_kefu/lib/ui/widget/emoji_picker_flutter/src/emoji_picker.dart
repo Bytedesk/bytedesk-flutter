@@ -79,10 +79,10 @@ enum ButtonMode {
 ///
 /// The function returns the selected [Emoji] as well
 /// as the [Category] from which it originated
-typedef void OnEmojiSelected(Category category, Emoji emoji);
+typedef OnEmojiSelected = void Function(Category category, Emoji emoji);
 
 /// Callback function for backspace button
-typedef void OnBackspacePressed();
+typedef OnBackspacePressed = void Function();
 
 /// Callback function for custom view
 typedef EmojiViewBuilder = Widget Function(Config config, EmojiViewState state);
@@ -284,14 +284,15 @@ class EmojiPickerState extends State<EmojiPicker> {
       _categoryEmoji.add(
         CategoryEmoji(
             category,
-            emojis.entries.map((emoji) {
-              var _emoji = Emoji(emoji.key, emoji.value);
+            emojis.entries.map((emojiMap) {
+              var emoji = Emoji(emojiMap.key, emojiMap.value);
               // Emoji with skin tone are only in SMILEY & ACTIVITIES category
               if (category == Category.SMILEYS ||
                   category == Category.ACTIVITIES) {
-                return _updateSkinToneSupport(_emoji);
-              } else
-                return _emoji;
+                return _updateSkinToneSupport(emoji);
+              } else {
+                return emoji;
+              }
             }).toList()),
       );
     });

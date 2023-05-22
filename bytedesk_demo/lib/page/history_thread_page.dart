@@ -7,14 +7,14 @@ class HistoryThreadPage extends StatefulWidget {
   const HistoryThreadPage({Key? key}) : super(key: key);
 
   @override
-  _HistoryThreadPageState createState() => _HistoryThreadPageState();
+  State<HistoryThreadPage> createState() => _HistoryThreadPageState();
 }
 
 // TODO: 点击thread会话直接进入对话页面
 class _HistoryThreadPageState extends State<HistoryThreadPage> {
   //
   int _page = 0;
-  int _size = 20;
+  final int _size = 20;
   List<Thread> _historyThreadList = [];
   //
   @override
@@ -31,6 +31,7 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
           elevation: 0,
         ),
         body: RefreshIndicator(
+          onRefresh: _onRefresh,
           child: ListView.builder(
             padding: const EdgeInsets.all(8.0),
             itemBuilder: (_, int index) => ListTile(
@@ -46,7 +47,6 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
             ),
             itemCount: _historyThreadList.length,
           ),
-          onRefresh: _onRefresh,
         ));
   }
 

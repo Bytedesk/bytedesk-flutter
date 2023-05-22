@@ -5,7 +5,8 @@
 
 bytedesk flutter helpdesk sdk
 
-- [Website](https://www.bytedesk.com)
+- [Website](https://www.kefux.com)
+- [Web Demo](https://cdn.bytedesk.com/flutter/)
 - [Download Gitee Demo](https://git.oschina.net/270580156/bytedesk-flutter)
 - [Download Github Demo](https://github.com/Bytedesk/bytedesk-flutter)
 <!-- - [Download ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk) -->
@@ -31,7 +32,7 @@ bytedesk flutter helpdesk sdk
 
 ```dart
 //
-bytedesk_kefu: ^1.5.1
+bytedesk_kefu: ^1.5.4
 //
 assets:
     - assets/audio/
