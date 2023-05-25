@@ -1,5 +1,9 @@
 # Upgrade Log
 
+## 1.5.5
+
+* optimize user experience
+
 ## 1.5.4
 
 * optimize user experience
