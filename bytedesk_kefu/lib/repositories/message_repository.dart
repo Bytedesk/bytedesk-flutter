@@ -64,7 +64,16 @@ class MessageRepository {
     return await bytedeskHttpApi.uploadImage(filePath);
   }
 
+  Future<UploadJsonResult> uploadImageBytes(String? fileName, List<int>? fileBytes, String? mimeType) async {
+    return await bytedeskHttpApi.uploadImageBytes(fileName, fileBytes, mimeType);
+  }
+
   Future<UploadJsonResult> uploadVideo(String? filePath) async {
     return await bytedeskHttpApi.uploadVideo(filePath);
+  }
+
+  Future<UploadJsonResult> uploadVideoBytes(
+      String? fileName, List<int>? fileBytes, String? mimeType) async {
+    return await bytedeskHttpApi.uploadVideoBytes(fileName, fileBytes, mimeType);
   }
 }

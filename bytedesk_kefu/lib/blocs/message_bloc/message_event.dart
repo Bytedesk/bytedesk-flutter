@@ -22,10 +22,31 @@ class UploadImageEvent extends MessageEvent {
   const UploadImageEvent({@required this.filePath}) : super();
 }
 
+class UploadImageBytesEvent extends MessageEvent {
+  final String? fileName;
+  final List<int>? fileBytes;
+  final String? mimeType;
+
+  const UploadImageBytesEvent(
+      {@required this.fileName, @required this.fileBytes, @required this.mimeType}) : super();
+}
+
 class UploadVideoEvent extends MessageEvent {
   final String? filePath;
 
   const UploadVideoEvent({@required this.filePath}) : super();
+}
+
+class UploadVideoBytesEvent extends MessageEvent {
+  final String? fileName;
+  final List<int>? fileBytes;
+  final String? mimeType;
+
+  const UploadVideoBytesEvent(
+      {@required this.fileName,
+      @required this.fileBytes,
+      @required this.mimeType})
+      : super();
 }
 
 class SendMessageRestEvent extends MessageEvent {
@@ -96,15 +117,16 @@ class QueryAnswerEvent extends MessageEvent {
   final String? aid;
   final String? mid;
 
-  const QueryAnswerEvent({@required this.tid, @required this.aid, @required this.mid}) : super();
+  const QueryAnswerEvent(
+      {@required this.tid, @required this.aid, @required this.mid})
+      : super();
 }
 
 class QueryCategoryEvent extends MessageEvent {
   final String? tid;
   final String? cid;
 
-  const QueryCategoryEvent({@required this.tid, @required this.cid})
-      : super();
+  const QueryCategoryEvent({@required this.tid, @required this.cid}) : super();
 }
 
 class MessageAnswerEvent extends MessageEvent {
@@ -115,7 +137,7 @@ class MessageAnswerEvent extends MessageEvent {
 
   const MessageAnswerEvent(
       {
-        // @required this.type,
+      // @required this.type,
       @required this.wid,
       // @required this.aid,
       @required this.content})
@@ -127,6 +149,7 @@ class RateAnswerEvent extends MessageEvent {
   final String? mid;
   final bool? rate;
 
-  const RateAnswerEvent({@required this.aid, @required this.mid, @required this.rate})
+  const RateAnswerEvent(
+      {@required this.aid, @required this.mid, @required this.rate})
       : super();
 }

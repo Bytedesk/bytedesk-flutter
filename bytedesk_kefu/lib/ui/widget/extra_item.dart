@@ -100,22 +100,22 @@ class _ExtraItemsState extends State<ExtraItems> {
                 image: const AssetImage('assets/images/chat/extra_photo.webp'),
                 onPressed: widget.handleImageSelection,
               ),
-              // ExtraItem(
-              //   title: "拍摄",
-              //   image: const AssetImage('assets/images/chat/extra_camera.webp'),
-              //   onPressed: widget.handlePickerSelection,
-              // ),
-              // ExtraItem(
-              //   title: "上传视频",
-              //   image: const AssetImage('assets/images/chat/extra_media.webp'),
-              //   onPressed: widget.handleUploadVideo,
-              // ),
-              // ExtraItem(
-              //   title: "录制视频",
-              //   image:
-              //       const AssetImage('assets/images/chat/extra_videocall.webp'),
-              //   onPressed: widget.handleCaptureVideo,
-              // ),
+              ExtraItem(
+                title: "拍摄",
+                image: const AssetImage('assets/images/chat/extra_camera.webp'),
+                onPressed: widget.handlePickerSelection,
+              ),
+              ExtraItem(
+                title: "上传视频",
+                image: const AssetImage('assets/images/chat/extra_media.webp'),
+                onPressed: widget.handleUploadVideo,
+              ),
+              ExtraItem(
+                title: "录制视频",
+                image:
+                    const AssetImage('assets/images/chat/extra_videocall.webp'),
+                onPressed: widget.handleCaptureVideo,
+              ),
               // ExtraItem(
               //   title: "位置",
               //   image: AssetImage('assets/images/chat/extra_localtion.webp'),

@@ -287,8 +287,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
   Future<RequestAnswerResult> queryAnswer2(
       String? tid, String? aid, String? mid) async {
     //
-    final queryAnswerUrl = BytedeskUtils.getHostUri(
-        '/api/v2/answer/query',
+    final queryAnswerUrl = BytedeskUtils.getHostUri('/api/v2/answer/query',
         {'tid': tid, 'aid': aid, 'mid': mid, 'client': client});
     debugPrint("query Url $queryAnswerUrl");
     final initResponse =
@@ -394,6 +393,8 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     BytedeskUtils.printLog(
         "uploadImage fileName $fileName, username $username, upload Url $uploadUrl");
 
+    // FIXME: web browser 浏览器中不支持此种上传图片方式
+    // FIXME: Unsupported operation: MultipartFile is only supported where dart:io is available.
     var uri = Uri.parse(uploadUrl);
     var request = http.MultipartRequest('POST', uri)
       ..fields['file_name'] = "${username!}_$fileName"
@@ -409,6 +410,35 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
     debugPrint("upload image responseJson $responseJson");
+    //
+    return UploadJsonResult.fromJson(responseJson);
+  }
+
+  Future<UploadJsonResult> uploadImageBytes(
+      String? fileName, List<int>? fileBytes, String? mimeType) async {
+    //
+    String? username = SpUtil.getString(BytedeskConstants.uid);
+    const uploadUrl =
+        '${BytedeskConstants.httpUploadUrl}/visitor/api/upload/image';
+    BytedeskUtils.printLog(
+      "web uploadImageBytes fileName $fileName, username $username, upload Url $uploadUrl, bytes ${fileBytes!.length}, mimeType $mimeType",
+    );
+
+    var uri = Uri.parse(uploadUrl);
+    var request = http.MultipartRequest('POST', uri)
+      ..fields['file_name'] = "${username!}_$fileName"
+      ..fields['username'] = username
+      ..files.add(http.MultipartFile.fromBytes('file', fileBytes, filename: fileName, contentType: MediaType.parse(mimeType!)));
+
+    http.Response response =
+        await http.Response.fromStream(await request.send());
+    // debugPrint("Result: ${response.body}");
+
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
+    debugPrint("web upload image responseJson $responseJson");
     //
     return UploadJsonResult.fromJson(responseJson);
   }
@@ -432,6 +462,41 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       ..fields['username'] = username
       ..headers.addAll(headers)
       ..files.add(await http.MultipartFile.fromPath('file', filePath,
+          // FIXME: 设置不起作用？
+          contentType: MediaType('video', 'mp4')));
+
+    http.Response response =
+        await http.Response.fromStream(await request.send());
+    // debugPrint("Result: ${response.body}");
+
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
+    debugPrint("upload Video responseJson $responseJson");
+    //
+    return UploadJsonResult.fromJson(responseJson);
+  }
+
+  Future<UploadJsonResult> uploadVideoBytes(String? fileName, List<int>? fileBytes, String? mimeType) async {
+    // FIXME: image_picker有bug，选择视频后缀为.jpg，此处替换一下
+    // String? fileName = filePath!.split("/").last.replaceAll(".jpg", ".mp4");
+    String? username = SpUtil.getString(BytedeskConstants.uid);
+    const uploadUrl =
+        '${BytedeskConstants.httpUploadUrl}/visitor/api/upload/video';
+    BytedeskUtils.printLog(
+        "uploadVideo fileName $fileName, username $username, upload Url $uploadUrl, bytes ${fileBytes!.length}, mimeType $mimeType");
+    //
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "video/mp4",
+    };
+    var uri = Uri.parse(uploadUrl);
+    var request = http.MultipartRequest('POST', uri)
+      ..fields['file_name'] = "${username!}_$fileName"
+      ..fields['username'] = username
+      ..headers.addAll(headers)
+      ..files.add(http.MultipartFile.fromBytes('file', fileBytes,
+          filename: fileName,
           // FIXME: 设置不起作用？
           contentType: MediaType('video', 'mp4')));
 

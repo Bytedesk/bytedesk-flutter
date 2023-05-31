@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 // import 'dart:io';
 
 import 'package:bytedesk_kefu/blocs/message_bloc/bloc.dart';
@@ -1071,8 +1072,19 @@ class _ChatKFPageState extends State<ChatKFPage>
         // BlocProvider.of<MessageBloc>(context)
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
-        BlocProvider.of<MessageBloc>(context)
-            .add(UploadImageEvent(filePath: pickedFile.path));
+        if (BytedeskUtils.isWeb) {
+          // web
+          String? fileName = pickedFile.path.split("/").last;
+          Uint8List? fileBytes = await pickedFile.readAsBytes();
+          String? mimeType = pickedFile.mimeType;
+          //
+          BlocProvider.of<MessageBloc>(context).add(UploadImageBytesEvent(
+              fileName: fileName, fileBytes: fileBytes, mimeType: mimeType,));
+        } else {
+          // 其他
+          BlocProvider.of<MessageBloc>(context)
+              .add(UploadImageEvent(filePath: pickedFile.path));
+        }
       } else {
         Fluttertoast.showToast(msg: '未选取图片');
       }
@@ -1081,6 +1093,7 @@ class _ChatKFPageState extends State<ChatKFPage>
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
+
 
   // 拍照
   Future<void> _takeImage() async {
@@ -1104,8 +1117,22 @@ class _ChatKFPageState extends State<ChatKFPage>
         // BlocProvider.of<MessageBloc>(context)
         //   ..add(UploadImageEvent(filePath: targetPath));
         //
-        BlocProvider.of<MessageBloc>(context)
-            .add(UploadImageEvent(filePath: pickedFile.path));
+        if (BytedeskUtils.isWeb) {
+          // web
+          String? fileName = pickedFile.path.split("/").last;
+          Uint8List? fileBytes = await pickedFile.readAsBytes();
+          String? mimeType = pickedFile.mimeType;
+          //
+          BlocProvider.of<MessageBloc>(context).add(UploadImageBytesEvent(
+            fileName: fileName,
+            fileBytes: fileBytes,
+            mimeType: mimeType,
+          ));
+        } else {
+          // 其他
+          BlocProvider.of<MessageBloc>(context)
+              .add(UploadImageEvent(filePath: pickedFile.path));
+        }
       } else {
         Fluttertoast.showToast(msg: '未拍照');
       }
@@ -1127,8 +1154,24 @@ class _ChatKFPageState extends State<ChatKFPage>
       if (pickedFile != null) {
         debugPrint('pick video path: ${pickedFile.path}');
         //
-        BlocProvider.of<MessageBloc>(context)
-            .add(UploadVideoEvent(filePath: pickedFile.path));
+        if (BytedeskUtils.isWeb) {
+          // web
+          String? fileName = pickedFile.path.split("/").last.replaceAll(".jpg", ".mp4");
+          Uint8List? fileBytes = await pickedFile.readAsBytes();
+          String? mimeType = pickedFile.mimeType;
+          //
+          BlocProvider.of<MessageBloc>(context).add(UploadVideoBytesEvent(
+            fileName: fileName,
+            fileBytes: fileBytes,
+            mimeType: mimeType,
+          ));
+        } else {
+          // 其他
+          BlocProvider.of<MessageBloc>(context)
+              .add(UploadVideoEvent(filePath: pickedFile.path));
+        }
+        // BlocProvider.of<MessageBloc>(context)
+        //     .add(UploadVideoEvent(filePath: pickedFile.path));
       } else {
         Fluttertoast.showToast(msg: '未选取视频');
       }
@@ -1189,8 +1232,23 @@ class _ChatKFPageState extends State<ChatKFPage>
         // BlocProvider.of<MessageBloc>(context)
         //   ..add(UploadVideoEvent(filePath: afterPath));
         //
-        BlocProvider.of<MessageBloc>(context)
-            .add(UploadVideoEvent(filePath: pickedFile.path));
+        //
+        if (BytedeskUtils.isWeb) {
+          // web
+          String? fileName = pickedFile.path.split("/").last.replaceAll(".jpg", ".mp4");
+          Uint8List? fileBytes = await pickedFile.readAsBytes();
+          String? mimeType = pickedFile.mimeType;
+          //
+          BlocProvider.of<MessageBloc>(context).add(UploadVideoBytesEvent(
+            fileName: fileName,
+            fileBytes: fileBytes,
+            mimeType: mimeType,
+          ));
+        } else {
+          // 其他
+          BlocProvider.of<MessageBloc>(context)
+              .add(UploadVideoEvent(filePath: pickedFile.path));
+        }
       } else {
         Fluttertoast.showToast(msg: '未录制视频');
       }

@@ -16,7 +16,9 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
   MessageBloc() : super(InitialMessageState()) {
     on<ReceiveMessageEvent>(_mapRefreshCourseToState);
     on<UploadImageEvent>(_mapUploadImageToState);
+    on<UploadImageBytesEvent>(_mapUploadImageBytesToState);
     on<UploadVideoEvent>(_mapUploadVideoToState);
+    on<UploadVideoBytesEvent>(_mapUploadVideoBytesToState);
     on<SendMessageRestEvent>(_mapSendMessageRestToState);
     on<LoadHistoryMessageEvent>(_mapLoadHistoryMessageToState);
     on<LoadUnreadMessagesEvent>(_mapLoadUnreadMessageToState);
@@ -53,12 +55,38 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     }
   }
 
+  void _mapUploadImageBytesToState(
+      UploadImageBytesEvent event, Emitter<MessageState> emit) async {
+    emit(MessageUpLoading());
+    try {
+      final UploadJsonResult uploadJsonResult =
+          await messageRepository.uploadImageBytes(event.fileName, event.fileBytes, event.mimeType);
+      emit(UploadImageSuccess(uploadJsonResult));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(UpLoadImageError());
+    }
+  }
+
   void _mapUploadVideoToState(
       UploadVideoEvent event, Emitter<MessageState> emit) async {
     emit(MessageUpLoading());
     try {
       final UploadJsonResult uploadJsonResult =
           await messageRepository.uploadVideo(event.filePath);
+      emit(UploadVideoSuccess(uploadJsonResult));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(UpLoadVideoError());
+    }
+  }
+
+  void _mapUploadVideoBytesToState(
+      UploadVideoBytesEvent event, Emitter<MessageState> emit) async {
+    emit(MessageUpLoading());
+    try {
+      final UploadJsonResult uploadJsonResult = await messageRepository
+          .uploadVideoBytes(event.fileName, event.fileBytes, event.mimeType);
       emit(UploadVideoSuccess(uploadJsonResult));
     } catch (error) {
       BytedeskUtils.printLog(error);
