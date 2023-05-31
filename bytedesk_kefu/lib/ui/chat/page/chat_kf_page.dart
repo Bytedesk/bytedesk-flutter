@@ -28,9 +28,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 // import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:bytedesk_kefu/ui/widget/chat_input.dart';
 import 'package:bytedesk_kefu/ui/widget/extra_item.dart';
+
+import '../../widget/send_button_visibility_mode.dart';
 // import 'package:bytedesk_kefu/ui/widget/send_button_visibility_mode.dart';
 // import 'package:bytedesk_kefu/ui/widget/voice_record/voice_widget.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
+// import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 // TODO: 接通客服之前，在title显示loading
@@ -547,7 +549,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     return ChatInput(
       // 发送触发事件
       onSendPressed: _handleSendPressed,
-      sendButtonVisibilityMode: chat_ui.SendButtonVisibilityMode.editing,
+      sendButtonVisibilityMode: SendButtonVisibilityMode.editing,
       // voiceWidget: VoiceRecord(),
       // voiceWidget: VoiceWidget(
       //   startRecord: () {},

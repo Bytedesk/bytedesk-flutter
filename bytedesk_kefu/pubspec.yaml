@@ -1,10 +1,10 @@
 name: bytedesk_kefu
 description: the best app chat sdk in china, you can chat with the agent freely at anytime. the agent can chat with the visitor by web/pc/mac/ios/android client.
-version: 1.5.4
+version: 1.5.5
 homepage: https://gitee.com/270580156/bytedesk-flutter
 
 environment:
-  sdk: '>=2.18.0 <4.0.0'
+  sdk: ">=2.18.0 <4.0.0"
   flutter: ">=2.5.0"
 
 dependencies:
@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   # Localization https://github.com/dart-lang/intl
-  intl: ^0.17.0
+  intl: ^0.18.0
   # https://pub.dev/packages/meta/install
   meta: ^1.9.1
   # https://pub.dev/packages/equatable
@@ -100,7 +100,7 @@ dependencies:
   # https://pub.dev/packages/carousel_slider
   # carousel_slider: ^4.2.1
   # https://pub.dev/packages/flutter_chat_ui
-  flutter_chat_ui: ^1.6.6
+  # flutter_chat_ui: ^1.6.8
   # https://pub.dev/packages/custom_pop_up_menu
   custom_pop_up_menu: ^1.2.4
   # 录音

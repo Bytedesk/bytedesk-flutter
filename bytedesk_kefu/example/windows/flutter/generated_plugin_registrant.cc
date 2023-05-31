@@ -7,11 +7,8 @@
 #include "generated_plugin_registrant.h"
 
 #include <bytedesk_kefu/bytedesk_kefu_plugin_c_api.h>
-#include <url_launcher_windows/url_launcher_windows.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   BytedeskKefuPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("BytedeskKefuPluginCApi"));
-  UrlLauncherWindowsRegisterWithRegistrar(
-      registry->GetRegistrarForPlugin("UrlLauncherWindows"));
 }

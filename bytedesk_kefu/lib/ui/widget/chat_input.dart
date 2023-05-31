@@ -9,8 +9,10 @@ import './emoji_picker_flutter/emoji_picker_flutter.dart';
 // import 'package:emoji_picker_flutter/src/emoji_view_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import 'send_button_visibility_mode.dart';
 // import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+// import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 // import 'package:flutter_chat_ui/src/widgets/inherited_chat_theme.dart';
 
 // 部分代码来自该项目，感谢作者 CaiJingLong https://github.com/CaiJingLong/flutter_like_wechat_input
