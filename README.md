@@ -2,6 +2,12 @@
 
 萝卜丝(bytedesk) flutter 客服SDK
 
+- [官网](https://www.weikefu.net/)
+- [价格](https://www.weikefu.net/pages/price.html)
+- [管理后台](https://www.weikefu.net/admin)
+- [客服工作台](https://www.weikefu.net/chaty)
+- [客服端下载](https://www.weikefu.net/pages/download.html)
+
 ## 部分功能
 
 - SDK源码100%开源
