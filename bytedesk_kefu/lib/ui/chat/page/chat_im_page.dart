@@ -60,7 +60,7 @@ class ChatIMPage extends StatefulWidget {
       : super(key: key);
   //
   @override
-  _ChatIMPageState createState() => _ChatIMPageState();
+  State<ChatIMPage> createState() => _ChatIMPageState();
 }
 
 class _ChatIMPageState extends State<ChatIMPage>
@@ -433,27 +433,24 @@ class _ChatIMPageState extends State<ChatIMPage>
         height: 54,
         child: Row(
           children: <Widget>[
-            Container(
-              // margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                  // _getImage();
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (context) {
-                        return MediaChooseWidget(pickImageCallBack: () {
-                          _pickImage();
-                        }, takeImageCallBack: () {
-                          _takeImage();
-                        }, pickVideoCallBack: () {
-                          _pickVideo();
-                        }, takeVideoCallBack: () {
-                          _captureVideo();
-                        });
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                // _getImage();
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return MediaChooseWidget(pickImageCallBack: () {
+                        _pickImage();
+                      }, takeImageCallBack: () {
+                        _takeImage();
+                      }, pickVideoCallBack: () {
+                        _pickVideo();
+                      }, takeVideoCallBack: () {
+                        _captureVideo();
                       });
-                },
-              ),
+                    });
+              },
             ),
             Flexible(
               child: TextField(

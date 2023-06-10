@@ -11,7 +11,10 @@ class JsonResult extends Equatable {
 
   static JsonResult fromJson(dynamic json) {
     return JsonResult(
-        message: json["message"], statusCode: json["status_code"]);
+        message: json["message"], 
+        statusCode: json["status_code"], 
+        data: json["data"]
+      );
   }
 
   @override

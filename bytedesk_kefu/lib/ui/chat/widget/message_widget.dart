@@ -3,16 +3,18 @@ import 'dart:convert';
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/ui/chat/page/video_play_page.dart';
-import 'package:bytedesk_kefu/ui/widget/bubble.dart';
-import 'package:bytedesk_kefu/ui/widget/bubble_menu.dart';
+// import 'package:bytedesk_kefu/ui/widget/bubble.dart';
+// import 'package:bytedesk_kefu/ui/widget/bubble_menu.dart';
 import 'package:bytedesk_kefu/ui/widget/photo_view_wrapper.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:flutter_html/flutter_html.dart';
+import '../../widget/pop_up_menu.dart';
 import './flutter_html/flutter_html.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 
@@ -27,8 +29,22 @@ class MessageWidget extends StatelessWidget {
 
   final ValueSetter<String>? customCallback;
   final AnimationController? animationController;
+  final BytedeskPopupMenuController popupMenuController =
+      BytedeskPopupMenuController();
 
-  const MessageWidget({super.key, this.message, this.customCallback, this.animationController});
+  final List<ItemModel> menuItems = [
+    ItemModel('copy', '复制', Icons.content_copy),
+    // ItemModel('转发', Icons.send),
+    // ItemModel('收藏', Icons.collections),
+    ItemModel('delete', '删除', Icons.delete),
+    // ItemModel('多选', Icons.playlist_add_check),
+    // ItemModel('引用', Icons.format_quote),
+    // ItemModel('提醒', Icons.add_alert),
+    // ItemModel('搜一搜', Icons.search),
+  ];
+
+  MessageWidget(
+      {super.key, this.message, this.customCallback, this.animationController});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +56,7 @@ class MessageWidget extends StatelessWidget {
 
   // 发送消息widget
   Widget _buildSendWidget(BuildContext context) {
-    double tWidth = MediaQuery.of(context).size.width - 160;
+    // double tWidth = MediaQuery.of(context).size.width - 160;
     // FIXME: 消息状态，待完善
     String status = '';
     if (message!.status == BytedeskConstants.MESSAGE_STATUS_SENDING) {
@@ -66,34 +82,63 @@ class MessageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
-                    child: Row(
-                  children: <Widget>[
-                    Expanded(flex: 1, child: Container()),
-                    Text(
-                      status,
-                      style: const TextStyle(fontSize: 10),
-                    ),
-                    Container(
-                      width: 5,
-                    ),
-                    Column(
-                      // Column被Expanded包裹起来，使其内部文本可自动换行
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
-                        FLBubble(
-                            bubbleFrom: FLBubbleFrom.right,
-                            backgroundColor: const Color.fromRGBO(160, 231, 90, 1),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(flex: 1, child: Container()),
+                      Text(
+                        status,
+                        style: const TextStyle(fontSize: 10),
+                      ),
+                      Container(
+                        width: 5,
+                      ),
+                      Column(
+                        // Column被Expanded包裹起来，使其内部文本可自动换行
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          BytedeskPopupMenu(
+                            menuBuilder: _buildPopupMenuWidget(context, message!),
+                            // menuBuilder: () => GestureDetector(
+                            //   child: _buildSendMenuWidget(context, message!),
+                            //   onLongPress: () {
+                            //     print("onLongPress");
+                            //   },
+                            //   onTap: () {
+                            //     print("onTap");
+                            //   },
+                            // ),
+                            barrierColor: Colors.transparent,
+                            pressType: PressType.longPress,
+                            controller: popupMenuController,
                             child: Container(
-                              constraints: BoxConstraints(maxWidth: tWidth),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 2, vertical: 2),
-                              child: _buildSendMenuWidget(context, message!),
-                            )),
-                      ],
-                    )
-                  ],
-                )),
+                              padding: const EdgeInsets.all(10),
+                              constraints: const BoxConstraints(maxWidth: 240, minHeight: 40),
+                              decoration: BoxDecoration(
+                                color: const Color(0xff98e165),
+                                borderRadius: BorderRadius.circular(3.0),
+                              ),
+                              child: _buildSendContent(context, message!),
+                            ),
+                          )
+                          // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
+                          // FLBubble(
+                          //     bubbleFrom: FLBubbleFrom.right,
+                          //     backgroundColor:
+                          //         const Color.fromRGBO(160, 231, 90, 1),
+                          //     child: Container(
+                          //       constraints: BoxConstraints(maxWidth: tWidth),
+                          //       padding: const EdgeInsets.symmetric(
+                          //           horizontal: 2, vertical: 2),
+                          //       child: _buildSendMenuWidget(context, message!),
+                          //     )),
+                        ],
+                      ),
+                      Container(
+                        width: 5,
+                      ),
+                    ],
+                  )
+                ),
                 // 头像
                 _buildAvatarWidget()
               ],
@@ -103,63 +148,89 @@ class MessageWidget extends StatelessWidget {
   }
 
   // 点击消息体菜单
-  Widget _buildSendMenuWidget(BuildContext context, Message message) {
-    return FLBubbleMenuWidget(
-      interaction: FLBubbleMenuInteraction.tap,
-      child: _buildSendContent(context, message),
-      itemBuilder: (BuildContext context) {
-        return [
-          FLBubbleMenuItem(
-            text: '复制',
-            value: 'copy',
-          ),
-          FLBubbleMenuItem(
-            text: '删除',
-            value: 'delete',
-          ),
-          // TODO: 消息撤回
-          // FLBubbleMenuItem(
-          //   text: '撤回',
-          //   value: 'recall',
-          // ),
-          // TODO: 回复此条消息
-        ];
-      },
-      onSelected: (value) {
-        debugPrint('send menu $value');
-        // 删除消息
-        if (value == 'copy') {
-          /// 把文本复制进入粘贴板
-          if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-            Clipboard.setData(ClipboardData(text: message.content!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-            Clipboard.setData(ClipboardData(text: message.imageUrl!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
-            Clipboard.setData(ClipboardData(text: message.videoUrl!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
-            Clipboard.setData(ClipboardData(text: message.fileUrl!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
-            Clipboard.setData(ClipboardData(text: message.voiceUrl!));
-          } else {
-            Clipboard.setData(ClipboardData(text: message.content!));
-          }
-          // Toast
-          Fluttertoast.showToast(
-              msg: '复制成功',
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 30,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-        } else if (value == 'delete') {
-          bytedeskEventBus.fire(DeleteMessageEventBus(message.mid!));
-        } else if (value == 'recall') {
-          // TODO: 消息撤回, 限制在5分钟之内允许撤回
-        }
-      },
-      onCancelled: () {
-        // debugPrint('cancel');
-      },
+  Widget _buildPopupMenuWidget(BuildContext context, Message message) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Container(
+        width: 220,
+        color: const Color(0xFF4C4C4C),
+        child: GridView.count(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          crossAxisCount: 5,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 10,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: menuItems
+              .map((item) => GestureDetector(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Icon(
+                          item.icon,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 2),
+                          child: Text(
+                            item.title,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // onLongPress: () {
+                    //   print("onLongPress ${item.name}, ${message.mid}");
+                    //   popupMenuController.hideMenu();
+                    //   Fluttertoast.showToast(msg: "onLongPress ${item.name}, ${message.mid}");
+                    // },
+                    onTap: () {
+                      print("onTap ${item.name}, ${message.mid}");
+                      popupMenuController.hideMenu();
+                      // Fluttertoast.showToast(
+                      //     msg: "onTap ${item.name}, ${message.mid}");
+                      String value = item.name;
+                      if (value == 'copy') {
+                        /// 把文本复制进入粘贴板
+                        if (message.type ==
+                            BytedeskConstants.MESSAGE_TYPE_TEXT) {
+                          Clipboard.setData(
+                              ClipboardData(text: message.content!));
+                        } else if (message.type ==
+                            BytedeskConstants.MESSAGE_TYPE_IMAGE) {
+                          Clipboard.setData(
+                              ClipboardData(text: message.imageUrl!));
+                        } else if (message.type ==
+                            BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+                          Clipboard.setData(
+                              ClipboardData(text: message.videoUrl!));
+                        } else if (message.type ==
+                            BytedeskConstants.MESSAGE_TYPE_FILE) {
+                          Clipboard.setData(
+                              ClipboardData(text: message.fileUrl!));
+                        } else if (message.type ==
+                            BytedeskConstants.MESSAGE_TYPE_VOICE) {
+                          Clipboard.setData(
+                              ClipboardData(text: message.voiceUrl!));
+                        } else {
+                          Clipboard.setData(
+                              ClipboardData(text: message.content!));
+                        }
+                        // Toast
+                        Fluttertoast.showToast(msg: '复制成功',);
+                      } else if (value == 'delete') {
+                        bytedeskEventBus
+                            .fire(DeleteMessageEventBus(message.mid!));
+                      } else if (value == 'recall') {
+                        // TODO: 消息撤回, 限制在5分钟之内允许撤回
+                      }
+                    },
+                  ))
+              .toList(),
+        ),
+      ),
     );
   }
 
@@ -167,7 +238,8 @@ class MessageWidget extends StatelessWidget {
   Widget _buildSendContent(BuildContext context, Message message) {
     //
     if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-      return SelectableText(
+      return Text(
+        //SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
         // softWrap: true,
@@ -294,7 +366,8 @@ class MessageWidget extends StatelessWidget {
         ),
       );
     } else {
-      return SelectableText(
+      return Text(
+        //SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
         // softWrap: true,
@@ -305,7 +378,7 @@ class MessageWidget extends StatelessWidget {
 
   // 接收消息widget
   Widget _buildReceiveWidget(BuildContext context) {
-    double tWidth = MediaQuery.of(context).size.width - 160;
+    // double tWidth = MediaQuery.of(context).size.width - 160;
     return Container(
         margin: const EdgeInsets.only(top: 8.0, right: 8.0),
         padding: const EdgeInsets.all(8.0),
@@ -325,28 +398,58 @@ class MessageWidget extends StatelessWidget {
                   children: <Widget>[
                     // 头像
                     _buildAvatarWidget(),
+                    Container(
+                      width: 5,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // 昵称
                         Container(
                           // color: Colors.grey,
-                          margin: const EdgeInsets.only(left: 18, bottom: 2),
+                          margin: const EdgeInsets.only(bottom: 5),
                           child: SelectableText(
                             message!.nickname!,
                             style: const TextStyle(fontSize: 10),
                           ),
                         ),
+                        
+                        BytedeskPopupMenu(
+                          menuBuilder: _buildPopupMenuWidget(context, message!),
+                          // menuBuilder:_buildReceiveMenuWidget(context, message!),
+                          // menuBuilder: () => GestureDetector(
+                          //   child: _buildReceiveMenuWidget(context, message!),
+                          //   onLongPress: () {
+                          //     print("onLongPress");
+                          //   },
+                          //   onTap: () {
+                          //     print("onTap");
+                          //   },
+                          // ),
+                          barrierColor: Colors.transparent,
+                          pressType: PressType.longPress,
+                          controller: popupMenuController,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            constraints: const BoxConstraints(
+                                maxWidth: 240, minHeight: 40),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(3.0),
+                            ),
+                            child: _buildReceivedContent(context, message!),
+                          ),
+                        )
                         // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
-                        FLBubble(
-                            bubbleFrom: FLBubbleFrom.left,
-                            backgroundColor: Colors.white,
-                            child: Container(
-                              constraints: BoxConstraints(maxWidth: tWidth),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 2, vertical: 2),
-                              child: _buildReceiveMenuWidget(context, message!),
-                            ))
+                        // FLBubble(
+                        //     bubbleFrom: FLBubbleFrom.left,
+                        //     backgroundColor: Colors.white,
+                        //     child: Container(
+                        //       constraints: BoxConstraints(maxWidth: tWidth),
+                        //       padding: const EdgeInsets.symmetric(
+                        //           horizontal: 2, vertical: 2),
+                        //       child: _buildReceiveMenuWidget(context, message!),
+                        //     ))
                       ],
                     )
                   ],
@@ -354,65 +457,12 @@ class MessageWidget extends StatelessWidget {
         ]));
   }
 
-  // 点击消息体菜单
-  Widget _buildReceiveMenuWidget(BuildContext context, Message message) {
-    return FLBubbleMenuWidget(
-      interaction: FLBubbleMenuInteraction.tap,
-      child: _buildReceivedContent(context, message),
-      itemBuilder: (BuildContext context) {
-        return [
-          FLBubbleMenuItem(
-            text: '复制',
-            value: 'copy',
-          ),
-          FLBubbleMenuItem(
-            text: '删除',
-            value: 'delete',
-          ),
-          // TODO: 消息回复
-        ];
-      },
-      onSelected: (value) {
-        debugPrint('send menu $value');
-        // 删除消息
-        if (value == 'copy') {
-          /// 把文本复制进入粘贴板
-          if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-            Clipboard.setData(ClipboardData(text: message.content!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-            Clipboard.setData(ClipboardData(text: message.imageUrl!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
-            Clipboard.setData(ClipboardData(text: message.videoUrl!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_FILE) {
-            Clipboard.setData(ClipboardData(text: message.fileUrl!));
-          } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VOICE) {
-            Clipboard.setData(ClipboardData(text: message.voiceUrl!));
-          } else {
-            Clipboard.setData(ClipboardData(text: message.content!));
-          }
-          // Toast
-          Fluttertoast.showToast(
-              msg: '复制成功',
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 30,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
-        } else if (value == 'delete') {
-          bytedeskEventBus.fire(DeleteMessageEventBus(message.mid!));
-        }
-      },
-      onCancelled: () {
-        // debugPrint('cancel');
-      },
-    );
-  }
-
   // 接收消息体
   Widget _buildReceivedContent(BuildContext context, Message message) {
     //
     if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
-      return SelectableText(
+      return Text(
+        //SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
         // softWrap: true,
@@ -530,7 +580,8 @@ class MessageWidget extends StatelessWidget {
                         bottom: Divider.createBorderSide(context, width: 0.8),
                       )),
                       child: Container(
-                        margin: const EdgeInsets.only(top: 6, left: 8, bottom: 8),
+                        margin:
+                            const EdgeInsets.only(top: 6, left: 8, bottom: 8),
                         // color: Colors.pink,
                         child: InkWell(
                             child: Text(
@@ -589,9 +640,8 @@ class MessageWidget extends StatelessWidget {
                 // 禁用ListView滑动，使用外层的ScrollView滑动
                 physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(0),
-                itemCount: message.categories == null
-                    ? 0
-                    : message.categories!.length,
+                itemCount:
+                    message.categories == null ? 0 : message.categories!.length,
                 itemBuilder: (_, index) {
                   //
                   var category = message.categories![index];
@@ -602,7 +652,8 @@ class MessageWidget extends StatelessWidget {
                         bottom: Divider.createBorderSide(context, width: 0.8),
                       )),
                       child: Container(
-                        margin: const EdgeInsets.only(top: 6, left: 8, bottom: 8),
+                        margin:
+                            const EdgeInsets.only(top: 6, left: 8, bottom: 8),
                         // color: Colors.pink,
                         child: InkWell(
                             child: Text(
@@ -730,7 +781,8 @@ class MessageWidget extends StatelessWidget {
         ),
       );
     } else {
-      return SelectableText(
+      return Text(
+        //SelectableText(
         message.content ?? '',
         textAlign: TextAlign.left,
         // softWrap: true,

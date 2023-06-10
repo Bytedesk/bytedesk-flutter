@@ -71,7 +71,7 @@ class ChatKFPage extends StatefulWidget {
       : super(key: key);
   //
   @override
-  _ChatKFPageState createState() => _ChatKFPageState();
+  State<ChatKFPage> createState() => _ChatKFPageState();
 }
 
 class _ChatKFPageState extends State<ChatKFPage>
@@ -549,6 +549,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   Widget _chatInput() {
     return ChatInput(
       // 发送触发事件
+      isRobot: _isRobot,
       onSendPressed: _handleSendPressed,
       sendButtonVisibilityMode: SendButtonVisibilityMode.editing,
       // voiceWidget: VoiceRecord(),

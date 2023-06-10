@@ -38,7 +38,7 @@ class BytedeskUtils {
 
   static void printLog(content) {
     if (BytedeskConstants.isDebug) {
-      debugPrint(content);
+      print(content);
     }
   }
 

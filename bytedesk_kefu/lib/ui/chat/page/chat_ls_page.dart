@@ -59,7 +59,7 @@ class ChatLSPage extends StatefulWidget {
       : super(key: key);
   //
   @override
-  _ChatLSPageState createState() => _ChatLSPageState();
+  State<ChatLSPage> createState() => _ChatLSPageState();
 }
 
 class _ChatLSPageState extends State<ChatLSPage>

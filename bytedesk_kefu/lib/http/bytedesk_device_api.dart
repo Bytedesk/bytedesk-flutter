@@ -7,6 +7,7 @@ import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 // import 'package:device_info/device_info.dart';
 // import 'package:devicelocale/devicelocale.dart';
 import 'package:package_info/package_info.dart';
+// import 'package:package_info_plus/package_info_plus.dart';
 
 class BytedeskDeviceHttpApi extends BytedeskBaseHttpApi {
   //

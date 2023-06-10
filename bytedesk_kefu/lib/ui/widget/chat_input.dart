@@ -47,6 +47,7 @@ double _softKeyHeight = 210;
 class ChatInput extends StatefulWidget {
   const ChatInput({
     Key? key,
+    required this.isRobot,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
     required this.onSendPressed,
@@ -59,6 +60,9 @@ class ChatInput extends StatefulWidget {
 
   /// See [AttachmentButton.onPressed]
   final void Function()? onAttachmentPressed;
+
+  // 是否是机器人状态
+  final bool? isRobot;
 
   /// Whether attachment is uploading. Will replace attachment button with a
   /// [CircularProgressIndicator]. Since we don't have libraries for
@@ -86,7 +90,7 @@ class ChatInput extends StatefulWidget {
   final Widget? voiceWidget;
 
   @override
-  _ChatInputState createState() => _ChatInputState();
+  State<ChatInput> createState() => _ChatInputState();
 }
 
 /// [Input] widget state
@@ -395,17 +399,17 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
   Widget buildEmojiButton() {
     if (BytedeskUtils.isIOS) {
       return ImageButton(
-            image: AssetImage(inputType != InputType.emoji
-                ? 'assets/images/chat/input_emoji.png'
-                : 'assets/images/chat/input_keyboard.png'),
-            onPressed: () {
-              if (inputType != InputType.emoji) {
-                updateState(InputType.emoji);
-              } else {
-                updateState(InputType.text);
-              }
-            },
-          );
+        image: AssetImage(inputType != InputType.emoji
+            ? 'assets/images/chat/input_emoji.png'
+            : 'assets/images/chat/input_keyboard.png'),
+        onPressed: () {
+          if (inputType != InputType.emoji) {
+            updateState(InputType.emoji);
+          } else {
+            updateState(InputType.text);
+          }
+        },
+      );
     }
     return const Text('');
   }
@@ -446,7 +450,8 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
       child: Focus(
         autofocus: true,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0), //InheritedChatTheme.of(context).theme.inputPadding,
+          padding: const EdgeInsets.fromLTRB(
+              0, 0, 0, 0), //InheritedChatTheme.of(context).theme.inputPadding,
           child: Material(
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(10),
@@ -466,7 +471,9 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                     children: [
                       // TODO: 录制语音
                       // buildLeftButton(),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       // input
                       Expanded(
                         child: _buildInputButton(context),
@@ -508,13 +515,14 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
                       // emoji
                       // buildEmojiButton(),
                       //extra
-                      _textController.text.isEmpty
-                          ? buildExtra()
-                          : IconButton(
-                              icon: const Icon(Icons.send),
-                              onPressed: _handleSendPressed,
-                              padding: const EdgeInsets.only(left: 0),
-                            ),
+                      getExtraWidget(),
+                      // _textController.text.isEmpty
+                      //     ? buildExtra()
+                      //     : IconButton(
+                      //         icon: const Icon(Icons.send),
+                      //         onPressed: _handleSendPressed,
+                      //         padding: const EdgeInsets.only(left: 0),
+                      //       ),
                     ],
                   ),
                   inputType == InputType.emoji || inputType == InputType.extra
@@ -528,5 +536,22 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  Widget getExtraWidget() {
+    if (widget.isRobot!) {
+      return IconButton(
+        icon: const Icon(Icons.send),
+        onPressed: _handleSendPressed,
+        padding: const EdgeInsets.only(left: 0),
+      );
+    }
+    return _textController.text.isEmpty
+        ? buildExtra()
+        : IconButton(
+            icon: const Icon(Icons.send),
+            onPressed: _handleSendPressed,
+            padding: const EdgeInsets.only(left: 0),
+          );
   }
 }
