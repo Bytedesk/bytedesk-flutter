@@ -415,6 +415,10 @@ class BytedeskConstants {
   // 工单
   static const String THREAD_TYPE_TICKET_WORKGROUP = "ticket_workgroup";
   static const String THREAD_TYPE_TICKET_APPOINTED = "ticket_appointed";
+  // 文件助手
+  static const String THREAD_TYPE_FILEHELPER = "filehelper";
+  // 智谱AI
+  static const String THREAD_TYPE_ZHIPUAI = "zhipuai";
 
   // 访客会话、同事一对一、群组会话
   static const String MESSAGE_SESSION_TYPE_WORKGROUP = THREAD_TYPE_WORKGROUP;

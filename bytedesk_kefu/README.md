@@ -32,7 +32,7 @@ bytedesk flutter helpdesk sdk
 
 ```dart
 //
-bytedesk_kefu: ^1.5.7
+bytedesk_kefu: ^1.5.8
 //
 assets:
     - assets/audio/

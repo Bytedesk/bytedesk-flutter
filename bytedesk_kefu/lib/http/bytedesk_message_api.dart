@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
+
   //
   Future<JsonResult> sendMessageRest(String? jsonString) async {
     //
@@ -31,6 +32,27 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     final responseJson =
         json.decode(utf8decoder.convert(sendMessageResponse.bodyBytes));
     debugPrint("responseJson $responseJson");
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+    //
+    return JsonResult(message: "发送消息成功", statusCode: 200, data: jsonString);
+  }
+
+  // 发送给智谱AI消息
+  Future<JsonResult> sendZhipuAIMessageRest(String? jsonString) async {
+    //
+    var body = json.encode({"json": jsonString, "client": client});
+    //
+    final sendMessageUrl = BytedeskUtils.getHostUri('/api/zhipu/send');
+    final sendMessageResponse = await httpClient.post(sendMessageUrl,
+        headers: getHeaders(), body: body);
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson = json.decode(utf8decoder.convert(sendMessageResponse.bodyBytes));
+    debugPrint("sendMessageUrl $sendMessageUrl, responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());

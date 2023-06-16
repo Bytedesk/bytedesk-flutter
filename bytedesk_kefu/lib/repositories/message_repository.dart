@@ -14,6 +14,10 @@ class MessageRepository {
     return await bytedeskHttpApi.sendMessageRest(jsonString);
   }
 
+  Future<JsonResult> sendZhipuAIMessageRest(String? jsonString) async {
+    return await bytedeskHttpApi.sendZhipuAIMessageRest(jsonString);
+  }
+
   Future<List<Message>> loadHistoryMessages(
       String? uid, int? page, int? size) async {
     return await bytedeskHttpApi.loadHistoryMessages(uid, page, size);

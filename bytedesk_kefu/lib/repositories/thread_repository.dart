@@ -35,6 +35,10 @@ class ThreadRepository {
     return await bytedeskHttpApi.requestThread(wid, type, aid);
   }
 
+  Future<RequestThreadResult> requestZhipuAIThread(String? wid, String? forceNew) async {
+    return await bytedeskHttpApi.requestZhipuAIThread(wid, forceNew);
+  }
+
   Future<RequestThreadResult> requestAgent(
       String? wid, String? type, String? aid) async {
     return await bytedeskHttpApi.requestAgent(wid, type, aid);

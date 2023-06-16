@@ -41,8 +41,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       SpUtil.putString(
           BytedeskConstants.accessToken, oauthJson['access_token']);
     } else if (statusCode == 400) {
-      // token过期
-      //  TODO: {error: invalid_grant, error_description: Bad credentials}
+      // token过期 {error: invalid_grant, error_description: Bad credentials}
+      bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     //
     return OAuth.fromJson(statusCode, oauthJson);
@@ -73,8 +73,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       SpUtil.putString(
           BytedeskConstants.accessToken, oauthJson['access_token']);
     } else if (statusCode == 400) {
-      // token过期
-      //  TODO: {error: invalid_grant, error_description: Bad credentials}
+      // token过期 {error: invalid_grant, error_description: Bad credentials}
+      bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     //
     return OAuth.fromJson(statusCode, oauthJson);
@@ -94,8 +94,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       "scope": "all"
     };
     //
-    final oauthResponse =
-        await httpClient.post(oauthUrl, headers: headers, body: bodyMap);
+    final oauthResponse = await httpClient.post(oauthUrl, headers: headers, body: bodyMap);
     // debugPrint('oauth result: $oauthResponse');
     int statusCode = oauthResponse.statusCode;
     // 200: 授权成功，否则授权失败
@@ -105,11 +104,10 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       SpUtil.putBool(BytedeskConstants.isLogin, true);
       SpUtil.putBool(BytedeskConstants.isAuthenticated, true);
       SpUtil.putString(BytedeskConstants.mobile, mobile!);
-      SpUtil.putString(
-          BytedeskConstants.accessToken, oauthJson['access_token']);
+      SpUtil.putString(BytedeskConstants.accessToken, oauthJson['access_token']);
     } else if (statusCode == 400) {
-      // token过期
-      //  TODO: {error: invalid_grant, error_description: Bad credentials}
+      // token过期 {error: invalid_grant, error_description: Bad credentials}
+      bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     return OAuth.fromJson(statusCode, oauthJson);
   }
@@ -144,8 +142,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
       SpUtil.putString(
           BytedeskConstants.accessToken, oauthJson['access_token']);
     } else if (statusCode == 400) {
-      // token过期
-      //  TODO: {error: invalid_grant, error_description: Bad credentials}
+      // token过期 {error: invalid_grant, error_description: Bad credentials}
+      bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     return OAuth.fromJson(statusCode, oauthJson);
   }
@@ -322,7 +320,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   }
 
   // 剪贴助手-请求验证码
-  Future<CodeResult> requestCodeJianTie(String? mobile) async {
+  Future<CodeResult> requestCodeWeiTongbu(String? mobile) async {
     //
     Map<String, String> headers = {"Content-Type": "application/json"};
     final initUrl = BytedeskUtils.getHostUri(
@@ -351,7 +349,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   }
 
   // 微语AI-请求验证码
-  Future<CodeResult> requestCodeWeiyu(String? mobile) async {
+  Future<CodeResult> requestCodeWeiyuAI(String? mobile) async {
     //
     Map<String, String> headers = {"Content-Type": "application/json"};
     final initUrl = BytedeskUtils.getHostUri(

@@ -7,7 +7,7 @@ import 'package:bytedesk_kefu/model/answer.dart';
 import 'package:bytedesk_kefu/model/category.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:bytedesk_kefu/model/model.dart';
@@ -70,8 +70,8 @@ class MessageProvider {
       // path to perform database upgrades and downgrades.
       version: 10,
     );
-    // database path:/Users/ningjinpeng/Library/Developer/CoreSimulator/Devices/715CBA02-A602-4DE1-8C57-75A64B53BF03/data/Containers/Data/Application/8F46273D-9492-4C42-A618-4DF3815562BA/Documents/bytedesk-message-v9.db
-    debugPrint('database path:${database!.path}');
+    // database path:/Users/ningjinpeng/Library/Developer/CoreSimulator/Devices/9B8D4445-E6DE-42A4-AEF0-6668B684D2DB/data/Containers/Data/Application/E7501356-E8A6-45A8-AF63-437348AEDCC3/Documents/bytedesk-message-v10.db
+    // debugPrint('database path:${database!.path}');
   }
 
   Future<int> insert(Message message) async {
@@ -179,6 +179,16 @@ class MessageProvider {
     return await database!.rawUpdate(
         'UPDATE $tableMessage SET $columnStatus = ? WHERE $columnMid = ?',
         [status, mid]);
+  }
+
+  Future<int> updateContent(String? mid, String? content) async {
+    // FIXME: 暂不支持web
+    if (BytedeskUtils.isWeb) {
+      return 0;
+    }
+    return await database!.rawUpdate(
+        'UPDATE $tableMessage SET $columnContent = ? WHERE $columnMid = ?',
+        [content, mid]);
   }
 
   Future close() async => database!.close();

@@ -62,6 +62,17 @@ class RequestThreadEvent extends ThreadEvent {
       : super();
 }
 
+// 请求智谱AI客服会话
+class RequestZhipuAIThreadEvent extends ThreadEvent {
+  final String? wid;
+  final String? forceNew;
+
+  const RequestZhipuAIThreadEvent(
+      {@required this.wid,
+      @required this.forceNew})
+      : super();
+}
+
 // 请求人工客服，不管此工作组是否设置为默认机器人，只要有人工客服在线，则可以直接对接人工
 class RequestAgentEvent extends ThreadEvent {
   final String? wid;

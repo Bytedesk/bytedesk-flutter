@@ -55,6 +55,12 @@ class SendMessageRestEvent extends MessageEvent {
   const SendMessageRestEvent({@required this.json}) : super();
 }
 
+class SendZhipuAIMessageRestEvent extends MessageEvent {
+  final String? json;
+
+  const SendZhipuAIMessageRestEvent({@required this.json}) : super();
+}
+
 class LoadHistoryMessageEvent extends MessageEvent {
   final String? uid;
   final int? page;

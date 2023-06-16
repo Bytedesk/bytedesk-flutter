@@ -38,7 +38,7 @@ class BytedeskMqtt {
   // final key = Key.fromUtf8('16BytesLengthKey');
   // final iv = IV.fromUtf8('A-16-Byte-String');
   MessageProvider messageProvider = MessageProvider();
-  List<String> midList = [];
+  // List<String> midList = [];
   // bool _isConnected = false;
   String? currentUid;
   String? client;
@@ -97,7 +97,7 @@ class BytedeskMqtt {
     /// you must set it here
     mqttClient.keepAlivePeriod = keepAlivePeriod;
     mqttClient.autoReconnect = true; // FIXME:
-    // mqttClient.onAutoReconnect = _onAutoReconnect; // FIXME:
+    mqttClient.onAutoReconnect = _onAutoReconnect; // FIXME:
     mqttClient.onDisconnected = _onDisconnected;
     mqttClient.onConnected = _onConnected;
     mqttClient.onSubscribed = _onSubscribed;
@@ -156,16 +156,16 @@ class BytedeskMqtt {
     // if (mqttClient != null && mqttClient.published != null) {
     //
     mqttClient.published!.listen((MqttPublishMessage messageBinary) {
-      // debugPrint('Published notification:: topic is ${messageBinary.variableHeader.topicName}, with Qos ${messageBinary.header.qos}');
+      // debugPrint('Published notification');
       //
       protomsg.Message messageProto =
           protomsg.Message.fromBuffer(messageBinary.payload.message);
       // FIXME: 自己发送的消息显示两条？此处根据mid去个重
       var mid = messageProto.mid;
-      if (midList.contains(mid)) {
-        return;
-      }
-      midList.add(mid);
+      // if (midList.contains(mid)) {
+      //   return;
+      // }
+      // midList.add(mid);
       //
       var uid = messageProto.user.uid;
       var username = messageProto.user.username;
@@ -225,7 +225,7 @@ class BytedeskMqtt {
             sendReceipt = true;
             // TODO: 判断是否加密，暂时不需要
             message.content = messageProto.text.content;
-            debugPrint('receive text:${message.content!}');
+            // debugPrint('receive text:${message.content!}');
             break;
           }
         case BytedeskConstants.MESSAGE_TYPE_IMAGE:
@@ -550,8 +550,8 @@ class BytedeskMqtt {
       // if (autoReply) {
       //   //
       // }
-      //
-      if (sendReceipt && message.isSend == 0) {
+      // 自己发送的消息、智谱AI返回信息不发送回执
+      if (sendReceipt && message.isSend == 0 && thread.type != BytedeskConstants.THREAD_TYPE_ZHIPUAI) {
         // 发送送达回执
         sendReceiptReceivedMessage(mid, thread);
       }
@@ -965,7 +965,7 @@ class BytedeskMqtt {
       messageProvider.insert(message);
       // }
       bytedeskEventBus.fire(ReceiveMessageEventBus(message));
-      midList.add(message.mid!);
+      // midList.add(message.mid!);
     }
     //
     final MqttClientPayloadBuilder builder = MqttClientPayloadBuilder();
@@ -988,23 +988,23 @@ class BytedeskMqtt {
 
   /// The subscribed callback
   void _onSubscribed(String? topic) {
-    // debugPrint('Subscription confirmed for topic $topic');
+    debugPrint('Subscription confirmed for topic $topic');
   }
 
   /// The unsubscribed callback
   void _onUnSubscribed(String? topic) {
-    // debugPrint('UnSubscription confirmed for topic $topic');
+    debugPrint('UnSubscription confirmed for topic $topic');
   }
 
   /// The subscribed callback
   void _onSubscribeFailed(String? topic) {
-    // debugPrint('Subscribe Failed confirmed for topic $topic');
+    debugPrint('Subscribe Failed confirmed for topic $topic');
   }
 
   /// The unsolicited disconnect callback
   void _onDisconnected() {
     // _isConnected = false;
-    // debugPrint('OnDisconnected client callback - Client disconnection');
+    debugPrint('OnDisconnected client callback - Client disconnection');
     // eventbus发广播，通知长连接断开
     bytedeskEventBus
         .fire(ConnectionEventBus(BytedeskConstants.USER_STATUS_DISCONNECTED));
@@ -1012,22 +1012,22 @@ class BytedeskMqtt {
     //   debugPrint('OnDisconnected callback is solicited, this is correct');
     // }
     // 延时10s执行重连
-    Future.delayed(const Duration(seconds: 10), () {
-      // debugPrint('start reconnecting');
-      // reconnect();
-    });
+    // Future.delayed(const Duration(seconds: 10), () {
+    //   debugPrint('start reconnecting');
+    //   // reconnect();
+    // });
   }
 
   /// The unsolicited disconnect callback
-  // void _onAutoReconnect() {
-  //   // debugPrint('EXAMPLE::onAutoReconnect client callback - Client auto reconnection sequence will start');
-  //   // connect();
-  // }
+  void _onAutoReconnect() {
+    debugPrint('EXAMPLE::onAutoReconnect client callback - Client auto reconnection sequence will start');
+    connect();
+  }
 
   /// The successful connect callback
   void _onConnected() {
     // _isConnected = true;
-    // debugPrint('OnConnected client callback - Client connection was sucessful');
+    debugPrint('OnConnected client callback - Client connection was sucessful');
     // TODO: eventbus发广播，通知长连接建立
     bytedeskEventBus
         .fire(ConnectionEventBus(BytedeskConstants.USER_STATUS_CONNECTED));

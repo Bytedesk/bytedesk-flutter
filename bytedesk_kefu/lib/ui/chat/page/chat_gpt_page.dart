@@ -42,7 +42,7 @@ import '../../widget/send_button_visibility_mode.dart';
 // TODO: 右上角增加按钮回调入口，支持用户自定义按钮，进入店铺/学校详情页面
 // TODO: 增加是否显示历史记录参数
 // 系统消息居中显示
-class ChatKFPage extends StatefulWidget {
+class ChatGPTPage extends StatefulWidget {
   //
   final String? wid;
   final String? aid;
@@ -56,7 +56,7 @@ class ChatKFPage extends StatefulWidget {
   final Thread? thread;
   final ValueSetter<String>? customCallback;
   //
-  const ChatKFPage(
+  const ChatGPTPage(
       {Key? key,
       this.wid,
       this.aid,
@@ -71,12 +71,12 @@ class ChatKFPage extends StatefulWidget {
       : super(key: key);
   //
   @override
-  State<ChatKFPage> createState() => _ChatKFPageState();
+  State<ChatGPTPage> createState() => _ChatGPTPageState();
 }
 
-class _ChatKFPageState extends State<ChatKFPage>
+class _ChatGPTPageState extends State<ChatGPTPage>
     with
-        AutomaticKeepAliveClientMixin<ChatKFPage>,
+        AutomaticKeepAliveClientMixin<ChatGPTPage>,
         TickerProviderStateMixin,
         WidgetsBindingObserver {
   //

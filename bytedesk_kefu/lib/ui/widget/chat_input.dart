@@ -324,7 +324,7 @@ class _ChatInputState extends State<ChatInput> with TickerProviderStateMixin {
     final inputButton = TextField(
       controller: _textController,
       decoration: InputDecoration(
-        hintText: '内容',
+        hintText: '请简单描述您的问题',
         suffixIcon: _textController.text.isNotEmpty
             ? IconButton(
                 onPressed: _textController.clear,

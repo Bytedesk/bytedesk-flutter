@@ -8,7 +8,6 @@ import 'package:bytedesk_kefu/model/oauth.dart';
 // import 'package:meta/meta.dart';
 
 class UserRepository {
-  
   final BytedeskUserHttpApi bytedeskHttpApi = BytedeskUserHttpApi();
 
   UserRepository();
@@ -42,11 +41,11 @@ class UserRepository {
   }
 
   Future<CodeResult> requestCodeJianTie(String? mobile) {
-    return bytedeskHttpApi.requestCodeJianTie(mobile);
+    return bytedeskHttpApi.requestCodeWeiTongbu(mobile);
   }
 
   Future<CodeResult> requestCodeWeiyu(String? mobile) {
-    return bytedeskHttpApi.requestCodeWeiyu(mobile);
+    return bytedeskHttpApi.requestCodeWeiyuAI(mobile);
   }
 
   Future<JsonResult> bindMobile(String? mobile) {
@@ -116,5 +115,4 @@ class UserRepository {
   //   debugPrint("user_repository getUsername");
   //   return (BytedeskHttpApi.currentUser()).username;
   // }
-
 }

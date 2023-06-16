@@ -20,6 +20,7 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<UploadVideoEvent>(_mapUploadVideoToState);
     on<UploadVideoBytesEvent>(_mapUploadVideoBytesToState);
     on<SendMessageRestEvent>(_mapSendMessageRestToState);
+    on<SendZhipuAIMessageRestEvent>(_mapSendZhipuAIMessageRestToState);
     on<LoadHistoryMessageEvent>(_mapLoadHistoryMessageToState);
     on<LoadUnreadMessagesEvent>(_mapLoadUnreadMessageToState);
     on<LoadUnreadVisitorMessagesEvent>(_mapLoadUnreadVisitorMessageToState);
@@ -100,6 +101,19 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     try {
       final JsonResult jsonResult =
           await messageRepository.sendMessageRest(event.json);
+      emit(SendMessageRestSuccess(jsonResult));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(SendMessageRestError(event.json!));
+    }
+  }
+
+  void _mapSendZhipuAIMessageRestToState(
+      SendZhipuAIMessageRestEvent event, Emitter<MessageState> emit) async {
+    emit(RestMessageSending());
+    try {
+      final JsonResult jsonResult =
+          await messageRepository.sendZhipuAIMessageRest(event.json);
       emit(SendMessageRestSuccess(jsonResult));
     } catch (error) {
       BytedeskUtils.printLog(error);
