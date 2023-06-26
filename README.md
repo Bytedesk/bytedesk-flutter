@@ -68,7 +68,7 @@ assets:
 | :----------: | :----------: | :----------: |
 | <img src="./home.jpeg" width="250"> | <img src="./robot1.jpeg" width="250"> | <img src="./robot2.jpeg" width="250"> |
 | <img src="./chat.png" width="250"> | <img src="./shop.png" width="250"> |<img src="./postscript.png" width="250"> |
-| <img src="./status.jpeg" width="250"> |<img src="./userinfo.jpeg" width="250"> |<img src="./notice.jpeg" width="250"> |
+| <img src="./feedback.png" width="250"> |<img src="./faq.png" width="250"> |<img src="./notice.jpeg" width="250"> |
 
 ## 以下步骤为非必须步骤，开发者可根据需要调用
 
