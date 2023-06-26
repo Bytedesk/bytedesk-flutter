@@ -39,19 +39,11 @@ dependencies:
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.2.1
+  fluttertoast: ^8.2.2
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
-  # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
-  # overlay_support: ^1.2.1
-  # 播放提示音 https://pub.dev/packages/audioplayers
-  # audioplayers: ^0.20.1
-  # 振动 https://pub.dev/packages/vibration
-  # 针对报错fatal error: 'vibration/vibration-Swift.h' file not found #import <vibration/vibration-Swift.h>, ld: library not found for -lvibration
-  # 请在ios/Podfile中添加：use_frameworks!
-  # vibration: ^1.7.5
   # 在线客服 https://pub.dev/packages/bytedesk_kefu
-  bytedesk_kefu: ^1.5.8
+  bytedesk_kefu: ^1.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -85,6 +77,7 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/chat/
+    - assets/images/common/
     - assets/images/feedback/
 
   # An image asset can refer to one or more resolution-specific "variants", see

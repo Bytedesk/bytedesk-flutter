@@ -24,6 +24,10 @@ class ExamplePage extends StatefulWidget {
 class _ExamplePageState extends State<ExamplePage> {
   //
   String _title = '萝卜丝客服Demo(连接中...)';
+  // 登录 萝卜丝客服管理后台-》客服-》客服账号-》在客服账号表中，唯一uid 列获取。
+  // 如果 有多个客服账号，请务必使用 管理员账号的 唯一uid
+  // 如图：https://bytedesk.oss-cn-shenzhen.aliyuncs.com/placeholder/kefuAdminUid.png
+  final String _kefuAdminUid = "201808221551193"; // 管理员uid
 
   // AudioCache audioCache = AudioCache();
   // bool _isConnected = false;
@@ -40,7 +44,7 @@ class _ExamplePageState extends State<ExamplePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(_title),
-        elevation: 0,
+        // elevation: 0,
       ),
       body: ListView(
           children: ListTile.divideTiles(
@@ -57,7 +61,21 @@ class _ExamplePageState extends State<ExamplePage> {
             },
           ),
           ListTile(
-            title: const Text('用户信息'), // 自定义用户资料，设置
+            title: const Text('常见问题/帮助中心'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              BytedeskKefu.showFaq(context, _kefuAdminUid, "常见问题");
+            },
+          ),
+          ListTile(
+            title: const Text('意见反馈'),
+            trailing: const Icon(Icons.keyboard_arrow_right),
+            onTap: () {
+              BytedeskKefu.showFeedback(context, _kefuAdminUid);
+            },
+          ),
+          ListTile(
+            title: const Text('自定义用户信息'), // 自定义用户资料，设置
             trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               // 需要首先调用anonymousLogin之后，再调用设置用户信息接口
@@ -137,6 +155,11 @@ class _ExamplePageState extends State<ExamplePage> {
 
   // 监听状态
   _listener() {
+    // token过期，要求重新登录
+    bytedeskEventBus.on<InvalidTokenEventBus>().listen((event) {
+      debugPrint("InvalidTokenEventBus token过期，请重新登录");
+      // 也即执行init初始接口 BytedeskKefu.init(appKey, subDomain);
+    });
     // 监听连接状态
     bytedeskEventBus.on<ConnectionEventBus>().listen((event) {
       // debugPrint('长连接状态:' + event.content);
