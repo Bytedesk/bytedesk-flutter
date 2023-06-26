@@ -1,5 +1,6 @@
 // import 'dart:async';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
+import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:bytedesk_kefu/model/user.dart';
 import 'package:bytedesk_kefu/repositories/user_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -12,7 +13,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc() : super(InitialProfileState()) {
     on<GetProfileEvent>(_mapProfileState);
+    // on<UploadImageEvent>(_mapUploadImageToState);
     on<UploadImageEvent>(_mapUploadImageToState);
+    on<UploadImageBytesEvent>(_mapUploadImageBytesToState);
     on<UpdateAvatarEvent>(_mapUpdateAvatarToState);
     on<UpdateNicknameEvent>(_mapUpdateNicknameToState);
     on<UpdateDescriptionEvent>(_mapUpdateDescriptionToState);
@@ -43,13 +46,39 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       UploadImageEvent event, Emitter<ProfileState> emit) async {
     emit(ProfileInProgress());
     try {
-      final String url = await userRepository.upload(event.filePath);
-      emit(UploadImageSuccess(url));
+      final UploadJsonResult uploadJsonResult =
+          await userRepository.uploadImage(event.filePath);
+      emit(UploadImageSuccess(uploadJsonResult));
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(UpLoadImageError());
     }
   }
+
+  void _mapUploadImageBytesToState(
+      UploadImageBytesEvent event, Emitter<ProfileState> emit) async {
+    emit(ProfileInProgress());
+    try {
+      final UploadJsonResult uploadJsonResult = await userRepository
+          .uploadImageBytes(event.fileName, event.fileBytes, event.mimeType);
+      emit(UploadImageSuccess(uploadJsonResult));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(UpLoadImageError());
+    }
+  }
+
+  // void _mapUploadImageToState(
+  //     UploadImageEvent event, Emitter<ProfileState> emit) async {
+  //   emit(ProfileInProgress());
+  //   try {
+  //     final String url = await userRepository.uploadImage(event.filePath);
+  //     emit(UploadImageSuccess(url));
+  //   } catch (error) {
+  //     BytedeskUtils.printLog(error);
+  //     emit(UpLoadImageError());
+  //   }
+  // }
 
   void _mapUpdateAvatarToState(
       UpdateAvatarEvent event, Emitter<ProfileState> emit) async {

@@ -138,7 +138,8 @@ class BytedeskMqtt {
       debugPrint('mqttClient connected');
     } else {
       /// Use status here rather than state if you also want the broker return code.
-      debugPrint('ERROR mqttClient connection failed - disconnecting, status is ${mqttClient.connectionStatus}');
+      debugPrint(
+          'ERROR mqttClient connection failed - disconnecting, status is ${mqttClient.connectionStatus}');
       mqttClient.disconnect();
       // exit(-1);
     }
@@ -177,7 +178,8 @@ class BytedeskMqtt {
       var timestamp = messageProto.timestamp;
       var client = messageProto.client;
       //
-      debugPrint('bytedesk_mqtt.dart receive type:$type client:$client mid:$mid');
+      debugPrint(
+          'bytedesk_mqtt.dart receive type:$type client:$client mid:$mid');
       // 非会话消息，如：会议通知等, 另行处理
       if (type == BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_NOTICE) {
         // TODO: 待处理
@@ -551,7 +553,9 @@ class BytedeskMqtt {
       //   //
       // }
       // 自己发送的消息、智谱AI返回信息不发送回执
-      if (sendReceipt && message.isSend == 0 && thread.type != BytedeskConstants.THREAD_TYPE_ZHIPUAI) {
+      if (sendReceipt &&
+          message.isSend == 0 &&
+          thread.type != BytedeskConstants.THREAD_TYPE_ZHIPUAI) {
         // 发送送达回执
         sendReceiptReceivedMessage(mid, thread);
       }
@@ -1020,7 +1024,11 @@ class BytedeskMqtt {
 
   /// The unsolicited disconnect callback
   void _onAutoReconnect() {
-    debugPrint('EXAMPLE::onAutoReconnect client callback - Client auto reconnection sequence will start');
+    if (isConnected()) {
+      return;
+    }
+    debugPrint(
+        'EXAMPLE::onAutoReconnect client callback - Client auto reconnection sequence will start');
     connect();
   }
 

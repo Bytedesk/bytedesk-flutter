@@ -1,4 +1,5 @@
-// import 'package:bytedesk_kefu/model/helpCategory.dart'; 
+// import 'package:bytedesk_kefu/model/helpCategory.dart';
+import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class LeaveMsgState extends Equatable {
@@ -45,14 +46,26 @@ class ImageUploading extends LeaveMsgState {
 }
 
 class UploadImageSuccess extends LeaveMsgState {
-  //
-  final String url;
-  const UploadImageSuccess(this.url);
+  final UploadJsonResult uploadJsonResult;
+
+  const UploadImageSuccess(this.uploadJsonResult);
+
   @override
-  List<Object> get props => [url];
+  List<Object> get props => [uploadJsonResult];
+
   @override
-  String toString() => 'UploadImageSuccess { logo: $url }';
+  String toString() => 'UploadImageSuccess { logo: ${uploadJsonResult.url} }';
 }
+
+// class UploadImageSuccess extends LeaveMsgState {
+//   //
+//   final String url;
+//   const UploadImageSuccess(this.url);
+//   @override
+//   List<Object> get props => [url];
+//   @override
+//   String toString() => 'UploadImageSuccess { logo: $url }';
+// }
 
 class UpLoadImageError extends LeaveMsgState {
   @override

@@ -24,3 +24,15 @@ class UploadImageEvent extends TicketEvent {
 
   const UploadImageEvent({@required this.filePath}) : super();
 }
+
+class UploadImageBytesEvent extends TicketEvent {
+  final String? fileName;
+  final List<int>? fileBytes;
+  final String? mimeType;
+
+  const UploadImageBytesEvent(
+      {@required this.fileName,
+      @required this.fileBytes,
+      @required this.mimeType})
+      : super();
+}

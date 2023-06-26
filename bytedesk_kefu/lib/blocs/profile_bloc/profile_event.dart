@@ -20,6 +20,18 @@ class UploadImageEvent extends ProfileEvent {
   const UploadImageEvent({@required this.filePath}) : super();
 }
 
+class UploadImageBytesEvent extends ProfileEvent {
+  final String? fileName;
+  final List<int>? fileBytes;
+  final String? mimeType;
+
+  const UploadImageBytesEvent(
+      {@required this.fileName,
+      @required this.fileBytes,
+      @required this.mimeType})
+      : super();
+}
+
 // 更新头像
 class UpdateAvatarEvent extends ProfileEvent {
   final String? avatar;

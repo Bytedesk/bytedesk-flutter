@@ -13,8 +13,8 @@ import 'package:bytedesk_kefu/model/wechatResult.dart';
 import 'package:bytedesk_kefu/ui/chat/page/chat_webview_page.dart';
 import 'package:bytedesk_kefu/ui/chat/provider/chat_im_provider.dart';
 import 'package:bytedesk_kefu/ui/chat/provider/chat_thread_provider.dart';
-// import 'package:bytedesk_kefu/ui/faq/provider/help_provider.dart';
-// import 'package:bytedesk_kefu/ui/feedback/provider/feedback_provider.dart';
+import 'package:bytedesk_kefu/ui/faq/provider/help_provider.dart';
+import 'package:bytedesk_kefu/ui/feedback/provider/feedback_provider.dart';
 import 'package:bytedesk_kefu/ui/leavemsg/provider/leavemsg_provider.dart';
 import 'package:bytedesk_kefu/ui/ticket/provider/ticket_provider.dart';
 // import 'package:flutter/services.dart';
@@ -363,18 +363,18 @@ class BytedeskKefu {
   }
 
   // 常见问题列表
-  // static void showFaq(BuildContext context, String uid) {
-  //   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-  //     return new HelpProvider(uid: uid);
-  //   }));
-  // }
+  static void showFaq(BuildContext context, String uid, String title) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return HelpProvider(uid: uid, title: title,);
+    }));
+  }
 
   // 意见反馈
-  // static void showFeedback(BuildContext context, String uid) {
-  //   Navigator.of(context).push(new MaterialPageRoute(builder: (context) {
-  //     return new FeedbackProvider(uid: uid);
-  //   }));
-  // }
+  static void showFeedback(BuildContext context, String uid) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return FeedbackProvider(uid: uid);
+    }));
+  }
 
   // TODO: 提交工单
   static void showTicket(BuildContext context, String uid) {

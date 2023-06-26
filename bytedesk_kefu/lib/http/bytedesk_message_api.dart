@@ -16,7 +16,6 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
-
   //
   Future<JsonResult> sendMessageRest(String? jsonString) async {
     //
@@ -51,7 +50,8 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
-    final responseJson = json.decode(utf8decoder.convert(sendMessageResponse.bodyBytes));
+    final responseJson =
+        json.decode(utf8decoder.convert(sendMessageResponse.bodyBytes));
     debugPrint("sendMessageUrl $sendMessageUrl, responseJson $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
@@ -408,6 +408,10 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
   Future<UploadJsonResult> uploadImage(String? filePath) async {
     //
     String? fileName = filePath!.split("/").last;
+    // 检测是否含有后缀，如果没有后缀，则添加 .png后缀
+    if (!fileName.contains(".")) {
+      fileName += '.png';
+    }
     String? username = SpUtil.getString(BytedeskConstants.uid);
 
     const uploadUrl =
@@ -415,8 +419,8 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     BytedeskUtils.printLog(
         "uploadImage fileName $fileName, username $username, upload Url $uploadUrl");
 
-    // FIXME: web browser 浏览器中不支持此种上传图片方式
-    // FIXME: Unsupported operation: MultipartFile is only supported where dart:io is available.
+    // web browser 浏览器中不支持此种上传图片方式
+    // Unsupported operation: MultipartFile is only supported where dart:io is available.
     var uri = Uri.parse(uploadUrl);
     var request = http.MultipartRequest('POST', uri)
       ..fields['file_name'] = "${username!}_$fileName"
@@ -436,9 +440,13 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     return UploadJsonResult.fromJson(responseJson);
   }
 
+  // 专门用于浏览器中上传图片
   Future<UploadJsonResult> uploadImageBytes(
       String? fileName, List<int>? fileBytes, String? mimeType) async {
-    //
+    // 检测是否含有后缀，如果没有后缀，则添加 .png后缀
+    if (!fileName!.contains(".")) {
+      fileName += '.png';
+    }
     String? username = SpUtil.getString(BytedeskConstants.uid);
     const uploadUrl =
         '${BytedeskConstants.httpUploadUrl}/visitor/api/upload/image';
@@ -450,7 +458,8 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     var request = http.MultipartRequest('POST', uri)
       ..fields['file_name'] = "${username!}_$fileName"
       ..fields['username'] = username
-      ..files.add(http.MultipartFile.fromBytes('file', fileBytes, filename: fileName, contentType: MediaType.parse(mimeType!)));
+      ..files.add(http.MultipartFile.fromBytes('file', fileBytes,
+          filename: fileName, contentType: MediaType.parse(mimeType!)));
 
     http.Response response =
         await http.Response.fromStream(await request.send());
@@ -500,7 +509,8 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     return UploadJsonResult.fromJson(responseJson);
   }
 
-  Future<UploadJsonResult> uploadVideoBytes(String? fileName, List<int>? fileBytes, String? mimeType) async {
+  Future<UploadJsonResult> uploadVideoBytes(
+      String? fileName, List<int>? fileBytes, String? mimeType) async {
     // FIXME: image_picker有bug，选择视频后缀为.jpg，此处替换一下
     // String? fileName = filePath!.split("/").last.replaceAll(".jpg", ".mp4");
     String? username = SpUtil.getString(BytedeskConstants.uid);

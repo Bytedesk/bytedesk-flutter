@@ -59,11 +59,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   // 客服端-历史客服会话
   Future<List<Thread>> getHistoryThreads(int? page, int? size) async {
     //
-    // final threadUrl =
-    //     '$baseUrl/api/thread/history/records?page=$page&size=$size&client=$client';
-    final threadUrl = Uri.http(
-        BytedeskConstants.host,
-        '/api/thread/history/records',
+    final threadUrl = BytedeskUtils.getHostUri('/api/thread/history/records',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
     // debugPrint("thread Url $threadUrl");
     final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
@@ -93,9 +89,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   // 访客端-加载访客会话列表-分页
   Future<List<Thread>> getVisitorThreads(int? page, int? size) async {
     //
-    final threadUrl = Uri.http(
-        BytedeskConstants.host,
-        '/api/thread/visitor/history',
+    final threadUrl = BytedeskUtils.getHostUri('/api/thread/visitor/history',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
     final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
     //
@@ -173,7 +167,8 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     //
     bool? isAuthenticated = SpUtil.getBool(BytedeskConstants.isAuthenticated);
     if (!isAuthenticated!) {
-      return const RequestThreadFileHelperResult(statusCode: -1, message: "not authenticated");
+      return const RequestThreadFileHelperResult(
+          statusCode: -1, message: "not authenticated");
     }
     //
     final threadUrl =
@@ -195,12 +190,15 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     return RequestThreadFileHelperResult.fromJson(responseJson);
   }
 
+  // TODO: 添加key验证，防止用户滥用
   // 请求智谱AI客服会话
-  Future<RequestThreadResult> requestZhipuAIThread(String? wid, String? forceNew) async {
+  Future<RequestThreadResult> requestZhipuAIThread(
+      String? wid, String? forceNew) async {
     //
     final threadUrl = BytedeskUtils.getHostUri('/api/thread/zhipuai',
         {'wId': wid, 'forcenew': forceNew, 'client': client});
-    debugPrint("requestZhipuAIThread: $threadUrl, wid: $wid, forceNew: $forceNew");
+    debugPrint(
+        "requestZhipuAIThread: $threadUrl, wid: $wid, forceNew: $forceNew");
     //
     final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
     //解决json解析中的乱码问题
@@ -214,6 +212,33 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     return RequestThreadResult.fromJson(responseJson);
+  }
+
+  // 用户-智谱AI会话历史记录
+  Future<List<Thread>> getZhipuAIThreadHistory(int? page, int? size) async {
+    //
+    final threadUrl = BytedeskUtils.getHostUri('/api/thread/zhipuai/history',
+        {'page': page.toString(), 'size': size.toString(), 'client': client});
+    debugPrint("getZhipuAIThreadHistory page $page, size:$size, Url $threadUrl, ");
+    final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
+
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    debugPrint("responseJson $responseJson");
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+
+    List<Thread> threadList =
+        (responseJson['data']['content'] as List<dynamic>)
+            .map((item) => Thread.fromHistoryJson(item))
+            .toList();
+
+    return threadList;
   }
 
   // 机器人分类会话
@@ -243,9 +268,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
   Future<RequestThreadResult> requestAgent(
       String? wid, String? type, String? aid) async {
     //
-    final threadUrl = Uri.http(
-        BytedeskConstants.host,
-        '/api/thread/request/agent',
+    final threadUrl = BytedeskUtils.getHostUri('/api/thread/request/agent',
         {'wId': wid, 'type': type, 'aId': aid, 'client': client});
     debugPrint("request agent Url $threadUrl");
     final initResponse = await httpClient.get(threadUrl, headers: getHeaders());
@@ -314,8 +337,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     String? uid = SpUtil.getString(BytedeskConstants.uid);
     //
     var body = json.encode({'tid': tid, 'uid': uid, 'client': client});
-    final threadUrl = Uri.http(
-      BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
       '/api/v2/thread/mark/top',
     );
     final initResponse =
@@ -341,8 +363,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     String? uid = SpUtil.getString(BytedeskConstants.uid);
     //
     var body = json.encode({'tid': tid, 'uid': uid, 'client': client});
-    final threadUrl = Uri.http(
-      BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
       '/api/v2/thread/unmark/top',
     );
     final initResponse =
@@ -368,8 +389,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     String? uid = SpUtil.getString(BytedeskConstants.uid);
     //
     var body = json.encode({'tid': tid, 'uid': uid, 'client': client});
-    final threadUrl = Uri.http(
-      BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
       '/api/v2/thread/mark/nodisturb',
     );
     final initResponse =
@@ -395,8 +415,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     String? uid = SpUtil.getString(BytedeskConstants.uid);
     //
     var body = json.encode({'tid': tid, 'uid': uid, 'client': client});
-    final threadUrl = Uri.http(
-      BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
       '/api/v2/thread/unmark/nodisturb',
     );
     final initResponse =
@@ -422,8 +441,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     String? uid = SpUtil.getString(BytedeskConstants.uid);
     //
     var body = json.encode({'tid': tid, 'uid': uid, 'client': client});
-    final threadUrl = Uri.http(
-      BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
       '/api/v2/thread/mark/unread',
     );
     final initResponse =
@@ -449,8 +467,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     String? uid = SpUtil.getString(BytedeskConstants.uid);
     //
     var body = json.encode({'tid': tid, 'uid': uid, 'client': client});
-    final threadUrl = Uri.http(
-      BytedeskConstants.host,
+    final threadUrl = BytedeskUtils.getHostUri(
       '/api/v2/thread/unmark/unread',
     );
     final initResponse =

@@ -1,8 +1,12 @@
-import 'dart:io';
+// import 'dart:io';
+import 'dart:typed_data';
 import 'package:bytedesk_kefu/blocs/feedback_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/helpCategory.dart';
+import 'package:bytedesk_kefu/ui/feedback/provider/feedback_history_provider.dart';
 import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
 import 'package:bytedesk_kefu/ui/widget/my_button.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,17 +17,21 @@ class FeedbackSubmitPage extends StatefulWidget {
   const FeedbackSubmitPage({Key? key, this.helpCategory}) : super(key: key);
 
   @override
-  _FeedbackSubmitPageState createState() => _FeedbackSubmitPageState();
+  State<FeedbackSubmitPage> createState() => _FeedbackSubmitPageState();
 }
 
 class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   //
   final ScrollController _scrollController = ScrollController(); // 滚动监听
-  final TextEditingController _textEditController = TextEditingController();
-  ImagePicker picker = ImagePicker();
+  final TextEditingController _mobileTextEditController =
+      TextEditingController();
+  final TextEditingController _contentTextEditController =
+      TextEditingController();
+  // 图片
+  final ImagePicker _picker = ImagePicker();
   final List<String> _imageUrls = [];
-  final List<File> _fileList = [];
-  File? _selectedImageFile;
+  // final List<File> _fileList = [];
+  // File? _selectedImageFile;
   // List<MultipartFile> mSubmitFileList = [];
 
   @override
@@ -44,13 +52,12 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
   @override
   Widget build(BuildContext context) {
     //
-    debugPrint('fileList的内容: $_fileList');
-    if (_selectedImageFile != null) {
-      _fileList.add(_selectedImageFile!);
-    }
-    _selectedImageFile = null;
+    // debugPrint('fileList的内容: $_fileList');
+    // if (_selectedImageFile != null) {
+    //   _fileList.add(_selectedImageFile!);
+    // }
+    // _selectedImageFile = null;
     //
-    // TODO: 右上角增加：我的反馈，查看反馈记录及回复
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.helpCategory!.name!),
@@ -62,16 +69,14 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                 margin: const EdgeInsets.only(right: 10),
                 child: InkWell(
                   onTap: () {
-                    debugPrint('submit');
-                    // TODO: 提交
-                    BlocProvider.of<FeedbackBloc>(context)
-                      .add(SubmitFeedbackEvent(
-                          imageUrls: _imageUrls,
-                          content: _textEditController.text));
+                    debugPrint('我的反馈');
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) {
+                      return const FeedbackHistoryProvider();
+                    }));
                   },
                   child: const Text(
-                    '提交',
-                    style: TextStyle(color: Colors.black),
+                    '我的反馈',
                   ),
                 ),
               ),
@@ -80,13 +85,15 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
         ),
         body: BlocConsumer<FeedbackBloc, FeedbackState>(
             listener: (context, state) {
-          // do stuff here based on BlocA's state
+          debugPrint("FeedbackBloc $state");
           if (state is ImageUploading) {
             Fluttertoast.showToast(msg: '上传图片中');
           } else if (state is UploadImageSuccess) {
             // 图片url
-            if (!_imageUrls.contains(state.url)) {
-              _imageUrls.add(state.url);
+            if (!_imageUrls.contains(state.uploadJsonResult.url)) {
+              setState(() {
+                _imageUrls.add(state.uploadJsonResult.url!);
+              });
             }
           } else if (state is UpLoadImageError) {
             Fluttertoast.showToast(msg: '上传图片失败');
@@ -94,6 +101,8 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
             Fluttertoast.showToast(msg: '提交反馈中');
           } else if (state is FeedbackSubmitSuccess) {
             Fluttertoast.showToast(msg: '提交反馈成功');
+            // 返回上一层
+            Navigator.of(context).pop();
           } else if (state is FeedbackSubmitError) {
             Fluttertoast.showToast(msg: '提交反馈失败');
           }
@@ -105,6 +114,16 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                 padding: const EdgeInsets.only(top: 5.0, left: 10, right: 10),
                 child: Column(
                   children: <Widget>[
+                    TextField(
+                      controller: _mobileTextEditController,
+                      decoration: const InputDecoration(
+                        hintText: "手机号",
+                        hintStyle:
+                            TextStyle(color: Color(0xff999999), fontSize: 16),
+                        contentPadding: EdgeInsets.only(left: 15, right: 15),
+                        // border: InputBorder.none,
+                      ),
+                    ),
                     Container(
                       constraints: const BoxConstraints(
                         minHeight: 150,
@@ -112,11 +131,11 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                       // color: Color(0xffffffff),
                       margin: const EdgeInsets.only(top: 15),
                       child: TextField(
-                        controller: _textEditController,
+                        controller: _contentTextEditController,
                         maxLines: 5,
                         maxLength: 500,
                         decoration: const InputDecoration(
-                          hintText: "快说点儿什么吧......",
+                          hintText: "请输入反馈内容",
                           hintStyle:
                               TextStyle(color: Color(0xff999999), fontSize: 16),
                           contentPadding: EdgeInsets.only(left: 15, right: 15),
@@ -128,10 +147,10 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                       shrinkWrap: true,
                       primary: false,
                       crossAxisCount: 3,
-                      children: List.generate(_fileList.length + 1, (index) {
+                      children: List.generate(_imageUrls.length + 1, (index) {
                         // 这个方法体用于生成GridView中的一个item
                         Widget content;
-                        if (index == _fileList.length) {
+                        if (index == _imageUrls.length) {
                           // 添加图片按钮
                           var addCell = Center(
                               child: Image.asset(
@@ -163,19 +182,24 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                           content = Stack(
                             children: <Widget>[
                               Center(
-                                child: Image.file(
-                                  _fileList[index],
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover,
+                                child: CachedNetworkImage(
+                                  imageUrl: _imageUrls[index],
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                 ),
+                                // child: Image.file(
+                                //   _fileList[index],
+                                //   width: double.infinity,
+                                //   height: double.infinity,
+                                //   fit: BoxFit.cover,
+                                // ),
                               ),
                               Align(
                                 alignment: Alignment.topRight,
                                 child: InkWell(
                                   onTap: () {
-                                    _fileList.removeAt(index);
-                                    _selectedImageFile = null;
+                                    _imageUrls.removeAt(index);
+                                    // _selectedImageFile = null;
                                     setState(() {});
                                   },
                                   child: Image.asset(
@@ -199,11 +223,14 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
                     ),
                     MyButton(
                       onPressed: () {
-                        //
-                        BlocProvider.of<FeedbackBloc>(context)
-                          .add(SubmitFeedbackEvent(
-                              imageUrls: _imageUrls,
-                              content: _textEditController.text));
+                        // TODO: 避免重复提交
+                        // 提交
+                        BlocProvider.of<FeedbackBloc>(context).add(
+                            SubmitFeedbackEvent(
+                                cid: widget.helpCategory!.cid,
+                                mobile: _mobileTextEditController.text,
+                                imageUrls: _imageUrls,
+                                content: _contentTextEditController.text));
                       },
                       text: '提交',
                     )
@@ -215,20 +242,30 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
 
   // 选择图片
   Future<void> _pickImage() async {
-    if (_fileList.length >= 9) {
+    if (_imageUrls.length >= 9) {
       Fluttertoast.showToast(msg: "最多选取9张图片");
       return;
     }
     try {
-      XFile? pickedFile = await picker.pickImage(
+      XFile? pickedFile = await _picker.pickImage(
           source: ImageSource.gallery, maxWidth: 800, imageQuality: 95);
       debugPrint('pick image path: ${pickedFile!.path}');
-      setState(() {
-        _selectedImageFile = File(pickedFile.path);
-      });
       //
-      BlocProvider.of<FeedbackBloc>(context)
-        .add(UploadImageEvent(filePath: pickedFile.path));
+      if (BytedeskUtils.isWeb) {
+        // web
+        String? fileName = pickedFile.path.split("/").last;
+        Uint8List? fileBytes = await pickedFile.readAsBytes();
+        String? mimeType = pickedFile.mimeType;
+        //
+        BlocProvider.of<FeedbackBloc>(context).add(UploadImageBytesEvent(
+          fileName: fileName,
+          fileBytes: fileBytes,
+          mimeType: mimeType,
+        ));
+      } else {
+        BlocProvider.of<FeedbackBloc>(context)
+            .add(UploadImageEvent(filePath: pickedFile.path));
+      }
     } catch (e) {
       debugPrint('pick image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
@@ -237,75 +274,33 @@ class _FeedbackSubmitPageState extends State<FeedbackSubmitPage> {
 
   // 拍照
   Future<void> _takeImage() async {
-    if (_fileList.length >= 9) {
+    if (_imageUrls.length >= 9) {
       Fluttertoast.showToast(msg: "最多选取9张图片");
       return;
     }
     try {
-      XFile? pickedFile = await picker.pickImage(
+      XFile? pickedFile = await _picker.pickImage(
           source: ImageSource.camera, maxWidth: 800, imageQuality: 95);
       debugPrint('take image path: ${pickedFile!.path}');
-      setState(() {
-        _selectedImageFile = File(pickedFile.path);
-      });
       //
-      BlocProvider.of<FeedbackBloc>(context)
-        .add(UploadImageEvent(filePath: pickedFile.path));
+      if (BytedeskUtils.isWeb) {
+        // web
+        String? fileName = pickedFile.path.split("/").last;
+        Uint8List? fileBytes = await pickedFile.readAsBytes();
+        String? mimeType = pickedFile.mimeType;
+        //
+        BlocProvider.of<FeedbackBloc>(context).add(UploadImageBytesEvent(
+          fileName: fileName,
+          fileBytes: fileBytes,
+          mimeType: mimeType,
+        ));
+      } else {
+        BlocProvider.of<FeedbackBloc>(context)
+            .add(UploadImageEvent(filePath: pickedFile.path));
+      }
     } catch (e) {
       debugPrint('take image error ${e.toString()}');
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
-
-  // //相机拍照或图库选择照片布局
-  // _renderBottomMenuItem(title, ImageSource source) {
-  //   var item = Container(
-  //     height: 60.0,
-  //     child: Center(child: Text(title)),
-  //   );
-  //   return InkWell(
-  //     child: item,
-  //     onTap: () {
-  //       Navigator.of(context).pop();
-  //       ImagePicker.pickImage(source: source).then((result) {
-  //         setState(() {
-  //           _selectedImageFile = result;
-  //           debugPrint("执行刷新:");
-  //         });
-  //       });
-  //     },
-  //   );
-  // }
-
-  // //弹出底部选择图片方式弹出框
-  // Widget _bottomSheetBuilder(BuildContext context) {
-  //   return Container(
-  //     height: 182.0,
-  //     child: Padding(
-  //       padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 30.0),
-  //       child: Column(
-  //         children: <Widget>[
-  //           _renderBottomMenuItem("相机拍照", ImageSource.camera),
-  //           Divider(
-  //             height: 2.0,
-  //           ),
-  //           _renderBottomMenuItem("图库选择照片", ImageSource.gallery)
-  //         ],
-  //       ),
-  //     ));
-  // }
-
-  // // 选择弹出相机拍照或者从图库选择图片
-  // pickImage(ctx) {
-  //   // 如果已添加了9张图片，则提示不允许添加更多
-  //   num size = _fileList.length;
-  //   if (size >= 9) {
-  //     Scaffold.of(ctx).showSnackBar(SnackBar(
-  //       content: Text("最多只能添加9张图片！"),
-  //     ));
-  //     return;
-  //   }
-  //   showModalBottomSheet<void>(context: context, builder: _bottomSheetBuilder);
-  // }
-
 }

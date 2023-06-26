@@ -32,3 +32,15 @@ class UploadImageEvent extends LeaveMsgEvent {
 
   const UploadImageEvent({@required this.filePath}) : super();
 }
+
+class UploadImageBytesEvent extends LeaveMsgEvent {
+  final String? fileName;
+  final List<int>? fileBytes;
+  final String? mimeType;
+
+  const UploadImageBytesEvent(
+      {@required this.fileName,
+      @required this.fileBytes,
+      @required this.mimeType})
+      : super();
+}

@@ -33,20 +33,20 @@ class HelpLoadError extends HelpState {
 }
 
 /// Initialized
-class HelpCategoryState extends HelpState {
+class GetCategorySuccess extends HelpState {
   final List<HelpCategory> categoryList;
 
-  const HelpCategoryState(this.categoryList) : super();
+  const GetCategorySuccess(this.categoryList) : super();
 
   @override
-  String toString() => 'GetHelpCategoryState';
+  String toString() => 'GetCategorySuccess';
 }
 
-class HelpArticleState extends HelpState {
+class GetArticleSuccess extends HelpState {
   final List<HelpArticle> articleList;
 
-  const HelpArticleState(this.articleList) : super();
+  const GetArticleSuccess(this.articleList) : super();
 
   @override
-  String toString() => 'GetHelpArticleState';
+  String toString() => 'GetArticleSuccess';
 }

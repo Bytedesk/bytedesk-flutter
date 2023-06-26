@@ -79,6 +79,7 @@ flutter:
   assets:
     - assets/audio/
     - assets/images/chat/
+    - assets/images/common/
     - assets/images/feedback/
 
   # An image asset can refer to one or more resolution-specific "variants", see

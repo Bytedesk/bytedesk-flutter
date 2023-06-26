@@ -95,8 +95,8 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
             Fluttertoast.showToast(msg: '上传图片中');
           } else if (state is UploadImageSuccess) {
             // 图片url
-            if (!_imageUrls.contains(state.url)) {
-              _imageUrls.add(state.url);
+            if (!_imageUrls.contains(state.uploadJsonResult.url)) {
+              _imageUrls.add(state.uploadJsonResult.url!);
             }
           } else if (state is LeaveMsgSubmiting) {
             Fluttertoast.showToast(msg: '提交留言中');

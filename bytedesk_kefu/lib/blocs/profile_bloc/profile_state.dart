@@ -1,4 +1,5 @@
 import 'package:bytedesk_kefu/model/jsonResult.dart';
+import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:bytedesk_kefu/model/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -42,14 +43,28 @@ class ProfileFailure extends ProfileState {
   String toString() => 'ProfileFailure { error: $error }';
 }
 
-class UploadImageSuccess extends ProfileState {
-  final String? url;
 
-  const UploadImageSuccess(this.url);
+class UploadImageSuccess extends ProfileState {
+  final UploadJsonResult uploadJsonResult;
+
+  const UploadImageSuccess(this.uploadJsonResult);
 
   @override
-  String toString() => 'UploadImageSuccess { logo: $url }';
+  List<Object> get props => [uploadJsonResult];
+
+  @override
+  String toString() => 'UploadImageSuccess { logo: ${uploadJsonResult.url} }';
 }
+
+
+// class UploadImageSuccess extends ProfileState {
+//   final String? url;
+
+//   const UploadImageSuccess(this.url);
+
+//   @override
+//   String toString() => 'UploadImageSuccess { logo: $url }';
+// }
 
 class UpLoadImageError extends ProfileState {
   @override

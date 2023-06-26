@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class EmptyWidget extends StatelessWidget {
   final String? tip;
 
-  const EmptyWidget({Key? key, this.tip = '未找到相关学校或课程，请尝试其他类别'})
+  const EmptyWidget({Key? key, this.tip = '内容为空'})
       : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class EmptyWidget extends StatelessWidget {
           SizedBox(
             width: 100.0,
             height: 100.0,
-            child: Image.asset('assets/images/nodata.png'),
+            child: Image.asset('assets/images/common/nodata.png'),
           ),
           Text(
             tip!,

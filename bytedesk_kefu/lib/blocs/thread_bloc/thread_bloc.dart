@@ -19,6 +19,7 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
 
     on<RequestThreadEvent>(_mapRequestThreadToState);
     on<RequestZhipuAIThreadEvent>(_mapRequestZhipuAIThreadToState);
+    on<RefreshZhipuAIThreadHistoryEvent>(_mapRefreshZhipuAIThreadHistoryToState);
     on<RequestAgentEvent>(_mapRequestAgentToState);
     on<RequestContactThreadEvent>(_mapRequestContactThreadToState);
     on<RequestGroupThreadEvent>(_mapRequestGroupThreadToState);
@@ -106,6 +107,19 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(RequestThreadError());
+    }
+  }
+
+  void _mapRefreshZhipuAIThreadHistoryToState(
+      RefreshZhipuAIThreadHistoryEvent event, Emitter<ThreadState> emit) async {
+    emit(ThreadHistoryLoading());
+    try {
+      final List<Thread> threadList =
+          await threadRepository.getZhipuAIThreadHistory(event.page, event.size);
+      emit(ThreadLoadSuccess(threadList));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(ThreadLoadError());
     }
   }
 

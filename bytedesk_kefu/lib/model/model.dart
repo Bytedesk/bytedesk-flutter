@@ -11,3 +11,4 @@ export './requestAnswer.dart';
 export './requestThread.dart';
 export './helpArticle.dart';
 export './helpCategory.dart';
+export './bfeedback.dart';

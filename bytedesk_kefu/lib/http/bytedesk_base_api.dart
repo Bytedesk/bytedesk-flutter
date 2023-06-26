@@ -22,4 +22,13 @@ class BytedeskBaseHttpApi {
     };
     return headers;
   }
+
+  //
+  Map<String, String> getHeadersForVisitor() {
+    Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: "application/json",
+    };
+    return headers;
+  }
+
 }

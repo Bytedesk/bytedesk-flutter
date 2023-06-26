@@ -13,7 +13,7 @@ class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
     //
     final categoriesUrl = BytedeskUtils.getHostUri(
         '/visitor/api/category/support', {'uid': uid, 'client': client});
-    debugPrint("categories Url $categoriesUrl");
+    debugPrint("getHelpSupportCategories Url $categoriesUrl");
     final initResponse = await httpClient.get(categoriesUrl);
     //
     //解决json解析中的乱码问题
@@ -33,10 +33,9 @@ class BytedeskFaqHttpApi extends BytedeskBaseHttpApi {
   // 常见问题分类-所属文章
   Future<List<HelpArticle>> getHelpSupportArticles(int? categoryId) async {
     //
-    final categoriesUrl = BytedeskUtils.getHostUri(
-        '/visitor/api/category/articles',
-        {'categoryId': categoryId, 'client': client});
-    debugPrint("categories Url $categoriesUrl");
+    final categoriesUrl = BytedeskUtils.getHostUri('/visitor/api/category/articles',
+        {'categoryId': categoryId.toString(), 'client': client});
+    debugPrint("getHelpSupportArticles Url $categoriesUrl");
     final initResponse = await httpClient.get(categoriesUrl);
     //
     //解决json解析中的乱码问题

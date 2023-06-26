@@ -12,7 +12,7 @@ import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:flutter/material.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:sp_util/sp_util.dart';
-import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
 //
 class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
@@ -645,36 +645,36 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   }
 
   // https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html
-  Future<String> upload(String? filePath) async {
-    //
-    String? fileName = filePath!.split("/").last;
-    String? username = SpUtil.getString(BytedeskConstants.uid);
+  // Future<String> upload(String? filePath) async {
+  //   //
+  //   String? fileName = filePath!.split("/").last;
+  //   String? username = SpUtil.getString(BytedeskConstants.uid);
 
-    final uploadUrl = '$baseUrl/visitor/api/upload/image';
-    BytedeskUtils.printLog(
-        "fileName $fileName, username $username, upload Url $uploadUrl");
+  //   final uploadUrl = '$baseUrl/visitor/api/upload/image';
+  //   BytedeskUtils.printLog(
+  //       "fileName $fileName, username $username, upload Url $uploadUrl");
 
-    var uri = Uri.parse(uploadUrl);
-    var request = http.MultipartRequest('POST', uri)
-      ..fields['file_name'] = fileName
-      ..fields['username'] = username!
-      ..files.add(await http.MultipartFile.fromPath('file', filePath));
+  //   var uri = Uri.parse(uploadUrl);
+  //   var request = http.MultipartRequest('POST', uri)
+  //     ..fields['file_name'] = fileName
+  //     ..fields['username'] = username!
+  //     ..files.add(await http.MultipartFile.fromPath('file', filePath));
 
-    http.Response response =
-        await http.Response.fromStream(await request.send());
-    // debugPrint("Result: ${response.body}");
+  //   http.Response response =
+  //       await http.Response.fromStream(await request.send());
+  //   // debugPrint("Result: ${response.body}");
 
-    //解决json解析中的乱码问题
-    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
-    //将string类型数据 转换为json类型的数据
-    final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
-    // debugPrint("responseJson $responseJson");
-    // TODO: 根据status_code判断结果，并解析
+  //   //解决json解析中的乱码问题
+  //   Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+  //   //将string类型数据 转换为json类型的数据
+  //   final responseJson = json.decode(utf8decoder.convert(response.bodyBytes));
+  //   // debugPrint("responseJson $responseJson");
+  //   // TODO: 根据status_code判断结果，并解析
 
-    String? url = responseJson['data'];
-    // debugPrint('url:' + url);
-    return url!;
-  }
+  //   String? url = responseJson['data'];
+  //   // debugPrint('url:' + url);
+  //   return url!;
+  // }
 
   // 获取技能组在线状态
   Future<String> getWorkGroupStatus(String? workGroupWid) async {
@@ -788,8 +788,8 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
   Future<App> checkAppVersion(String? appkey) async {
     //
     final initUrl = BytedeskUtils.getHostUri(
-        '/api/app/version', {'key': appkey, 'client': client});
-    final initResponse = await httpClient.get(initUrl, headers: getHeaders());
+        '/visitor/api/app/version', {'key': appkey, 'client': client});
+    final initResponse = await httpClient.get(initUrl, headers: getHeadersForVisitor());
     //解决json解析中的乱码问题
     Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
     //将string类型数据 转换为json类型的数据
@@ -797,9 +797,9 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
     debugPrint("checkAppVersion:$responseJson");
     // 判断token是否过期
-    if (responseJson.toString().contains('invalid_token')) {
-      bytedeskEventBus.fire(InvalidTokenEventBus());
-    }
+    // if (responseJson.toString().contains('invalid_token')) {
+    //   bytedeskEventBus.fire(InvalidTokenEventBus());
+    // }
     // TODO: 根据status_code判断结果，并解析
     int statusCode = responseJson['status_code'];
     if (statusCode == 200) {

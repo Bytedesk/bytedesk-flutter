@@ -32,11 +32,12 @@ bytedesk flutter helpdesk sdk
 
 ```dart
 //
-bytedesk_kefu: ^1.5.8
+bytedesk_kefu: ^1.6.0
 //
 assets:
     - assets/audio/
     - assets/images/chat/
+    - assets/images/common/
     - assets/images/feedback/
 ```
 

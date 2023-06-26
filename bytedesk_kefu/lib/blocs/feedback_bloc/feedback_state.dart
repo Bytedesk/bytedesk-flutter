@@ -1,4 +1,6 @@
 import 'package:bytedesk_kefu/model/helpCategory.dart';
+import 'package:bytedesk_kefu/model/model.dart';
+import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class FeedbackState extends Equatable {
@@ -32,13 +34,22 @@ class FeedbackLoadError extends FeedbackState {
 }
 
 /// Initialized
-class FeedbackCategoryState extends FeedbackState {
+class GetFeedbackCategorySuccess extends FeedbackState {
   final List<HelpCategory> categoryList;
 
-  const FeedbackCategoryState(this.categoryList) : super();
+  const GetFeedbackCategorySuccess(this.categoryList) : super();
 
   @override
-  String toString() => 'GetFeedbackCategoryState';
+  String toString() => 'GetFeedbackCategorySuccess';
+}
+
+class GetMyFeedbackSuccess extends FeedbackState {
+  final List<BFeedback> feedbackList;
+
+  const GetMyFeedbackSuccess(this.feedbackList) : super();
+
+  @override
+  String toString() => 'GetMyFeedbackSuccess';
 }
 
 class FeedbackSubmiting extends FeedbackState {
@@ -62,14 +73,26 @@ class ImageUploading extends FeedbackState {
 }
 
 class UploadImageSuccess extends FeedbackState {
-  //
-  final String url;
-  const UploadImageSuccess(this.url);
+  final UploadJsonResult uploadJsonResult;
+
+  const UploadImageSuccess(this.uploadJsonResult);
+
   @override
-  List<Object> get props => [url];
+  List<Object> get props => [uploadJsonResult];
+
   @override
-  String toString() => 'UploadImageSuccess { logo: $url }';
+  String toString() => 'UploadImageSuccess { logo: ${uploadJsonResult.url} }';
 }
+
+// class UploadImageSuccess extends FeedbackState {
+//   //
+//   final String url;
+//   const UploadImageSuccess(this.url);
+//   @override
+//   List<Object> get props => [url];
+//   @override
+//   String toString() => 'UploadImageSuccess { logo: $url }';
+// }
 
 class UpLoadImageError extends FeedbackState {
   @override

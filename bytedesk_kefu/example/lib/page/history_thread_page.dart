@@ -34,16 +34,19 @@ class _HistoryThreadPageState extends State<HistoryThreadPage> {
           onRefresh: _onRefresh,
           child: ListView.builder(
             padding: const EdgeInsets.all(8.0),
-            itemBuilder: (_, int index) => ListTile(
-              leading: Image.network(_historyThreadList[index].avatar!),
-              title: Text('${_historyThreadList[index].nickname}, ${_historyThreadList[index].timestamp}'),
-              subtitle: Text('${_historyThreadList[index].content}'),
-              onTap: () {
-                // 进入客服页面
-                // BytedeskKefu.startChatThread(context, _historyThreadList[index]);
-                BytedeskKefu.startChatThreadIM(
-                    context, _historyThreadList[index]);
-              },
+            itemBuilder: (_, int index) => Card(
+              child: ListTile(
+                leading: Image.network(_historyThreadList[index].avatar!),
+                title: Text(
+                    '${_historyThreadList[index].nickname}, ${_historyThreadList[index].timestamp}'),
+                subtitle: Text('${_historyThreadList[index].content}'),
+                onTap: () {
+                  // 进入客服页面
+                  // BytedeskKefu.startChatThread(context, _historyThreadList[index]);
+                  BytedeskKefu.startChatThreadIM(
+                      context, _historyThreadList[index]);
+                },
+              ),
             ),
             itemCount: _historyThreadList.length,
           ),

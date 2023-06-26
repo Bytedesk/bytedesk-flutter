@@ -21,7 +21,7 @@ class HelpBloc extends Bloc<HelpEvent, HelpState> {
     try {
       final List<HelpCategory> categoryList =
           await helpRepository.getHelpCategories(event.uid);
-      emit(HelpCategoryState(categoryList));
+      emit(GetCategorySuccess(categoryList));
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(HelpLoadError());
@@ -34,7 +34,7 @@ class HelpBloc extends Bloc<HelpEvent, HelpState> {
     try {
       final List<HelpArticle> categoryList =
           await helpRepository.getCategoryArticles(event.categoryId);
-      emit(HelpArticleState(categoryList));
+      emit(GetArticleSuccess(categoryList));
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(HelpLoadError());

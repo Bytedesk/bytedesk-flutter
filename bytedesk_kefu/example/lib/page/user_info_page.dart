@@ -28,7 +28,7 @@ class _UserInfoPageState extends State<UserInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('用户信息'),
+        title: const Text('自定义用户信息'),
         elevation: 0,
       ),
       body: ListView(

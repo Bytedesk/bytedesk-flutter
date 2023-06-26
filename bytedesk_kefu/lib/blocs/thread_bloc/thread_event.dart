@@ -62,6 +62,7 @@ class RequestThreadEvent extends ThreadEvent {
       : super();
 }
 
+// TODO: 添加key验证，防止用户滥用
 // 请求智谱AI客服会话
 class RequestZhipuAIThreadEvent extends ThreadEvent {
   final String? wid;
@@ -70,6 +71,14 @@ class RequestZhipuAIThreadEvent extends ThreadEvent {
   const RequestZhipuAIThreadEvent(
       {@required this.wid,
       @required this.forceNew})
+      : super();
+}
+
+class RefreshZhipuAIThreadHistoryEvent extends ThreadEvent {
+  final int? page;
+  final int? size;
+  //
+  const RefreshZhipuAIThreadHistoryEvent({@required this.page, @required this.size})
       : super();
 }
 
