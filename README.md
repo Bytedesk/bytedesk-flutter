@@ -1,6 +1,6 @@
 # 萝卜丝客服SDK
 
-萝卜丝(bytedesk) flutter 客服SDK
+萝卜丝(bytedesk) flutter 客服SDK [pub.dev](https://pub.dev/packages/bytedesk_kefu)
 
 - [官网](https://www.weikefu.net/)
 - [价格](https://www.weikefu.net/pages/price.html)
@@ -34,7 +34,7 @@
 
 ### 第一步
 
-- pubspec.yaml添加：bytedesk_kefu: ^1.6.0
+- pubspec.yaml添加：bytedesk_kefu: ^1.6.3
 <!-- - 最新版本：[![Pub](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) -->
 <!-- - [![pub package](https://img.shields.io/pub/v/bytedesk_kefu.svg)](https://pub.dev/packages/bytedesk_kefu) -->
 <!-- [![pub points](https://badges.bar/bytedesk_kefu/pub%20points)](https://pub.dev/packages/bytedesk_kefu/score) | [![popularity](https://badges.bar/bytedesk_kefu/popularity)](https://pub.dev/packages/bytedesk_kefu/score) | [![likes](https://badges.bar/bytedesk_kefu/likes)](https://pub.dev/packages/bytedesk_kefu/score) -->
@@ -66,9 +66,9 @@ assets:
 
 | image1 | image2 | image3 |
 | :----------: | :----------: | :----------: |
-| <img src="./home.jpeg" width="250"> | <img src="./robot1.jpeg" width="250"> | <img src="./robot2.jpeg" width="250"> |
-| <img src="./chat.png" width="250"> | <img src="./shop.png" width="250"> |<img src="./postscript.png" width="250"> |
-| <img src="./feedback.png" width="250"> |<img src="./faq.png" width="250"> |<img src="./notice.jpeg" width="250"> |
+| <img src="./images/home.jpeg" width="250"> | <img src="./images/robot1.jpeg" width="250"> | <img src="./images/robot2.jpeg" width="250"> |
+| <img src="./images/chat.png" width="250"> | <img src="./images/shop.png" width="250"> |<img src="./images/postscript.png" width="250"> |
+| <img src="./images/feedback.png" width="250"> |<img src="./images/faq.png" width="250"> |<img src="./images/notice.jpeg" width="250"> |
 
 ## 以下步骤为非必须步骤，开发者可根据需要调用
 
@@ -333,7 +333,7 @@ bytedesk_kefu:
 
 ## 公众号
 
-<img src="./luobosi_mp.png?raw=true" width="250">
+<img src="./images/luobosi_mp.png?raw=true" width="250">
 
 ## 其他
 

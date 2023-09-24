@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:flutter/material.dart';
 
@@ -28,9 +30,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
       appBar: AppBar(
         title: Text(_title!),
       ),
-      body: Container(
-        child: Text(_content!),
-      ),
+      body: Text(_content!),
     );
   }
 }

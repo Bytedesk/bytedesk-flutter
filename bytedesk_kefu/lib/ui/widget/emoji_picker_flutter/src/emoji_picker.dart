@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import '../src/category_emoji.dart';
 import '../src/config.dart';
 import '../src/default_emoji_picker_view.dart';

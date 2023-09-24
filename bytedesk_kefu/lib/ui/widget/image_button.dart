@@ -17,7 +17,7 @@ class ImageButton extends StatefulWidget {
   final String? title;
 
   @override
-  _ImageButtonState createState() => _ImageButtonState();
+  State<ImageButton> createState() => _ImageButtonState();
 }
 
 class _ImageButtonState extends State<ImageButton> {

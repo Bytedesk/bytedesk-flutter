@@ -1,6 +1,6 @@
 // import 'dart:async';
 import 'package:bytedesk_kefu/blocs/feedback_bloc/bloc.dart';
-import 'package:bytedesk_kefu/model/helpCategory.dart';
+// import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/model/model.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 // import 'package:bytedesk_kefu/model/jsonResult.dart';

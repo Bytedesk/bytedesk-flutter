@@ -1,6 +1,8 @@
 // import 'dart:async';
 import 'package:bytedesk_kefu/model/markThread.dart';
 import 'package:bloc/bloc.dart';
+import 'package:bytedesk_kefu/model/requestThreadZhipuAI.dart';
+import 'package:bytedesk_kefu/model/threadZhipuAI.dart';
 import './bloc.dart';
 import 'package:bytedesk_kefu/repositories/repositories.dart';
 import 'package:bytedesk_kefu/model/model.dart';
@@ -101,9 +103,9 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
       RequestZhipuAIThreadEvent event, Emitter<ThreadState> emit) async {
     emit(RequestThreading());
     try {
-      final RequestThreadResult thread = await threadRepository.requestZhipuAIThread(
+      final RequestThreadZhipuAIResult thread = await threadRepository.requestZhipuAIThread(
           event.wid, event.forceNew);
-      emit(RequestThreadSuccess(thread));
+      emit(RequestThreadZhipuAISuccess(thread));
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(RequestThreadError());
@@ -114,9 +116,9 @@ class ThreadBloc extends Bloc<ThreadEvent, ThreadState> {
       RefreshZhipuAIThreadHistoryEvent event, Emitter<ThreadState> emit) async {
     emit(ThreadHistoryLoading());
     try {
-      final List<Thread> threadList =
+      final List<ThreadZhipuAI> threadList =
           await threadRepository.getZhipuAIThreadHistory(event.page, event.size);
-      emit(ThreadLoadSuccess(threadList));
+      emit(ThreadZhipuAILoadSuccess(threadList));
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(ThreadLoadError());

@@ -5,6 +5,7 @@ import 'dart:async';
 
 import 'package:bytedesk_kefu/model/answer.dart';
 import 'package:bytedesk_kefu/model/category.dart';
+import 'package:bytedesk_kefu/model/messageZhipuAI.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 // import 'package:flutter/material.dart';
@@ -75,6 +76,15 @@ class MessageProvider {
   }
 
   Future<int> insert(Message message) async {
+    // FIXME: 暂不支持web
+    if (BytedeskUtils.isWeb) {
+      return 0;
+    }
+    // debugPrint('insert avatar:' + message.avatar + ' conten:' + message.content + ' timestamp:' + message.timestamp);
+    return await database!.insert(tableMessage!, message.toMap());
+  }
+
+  Future<int> insertZhipuAI(MessageZhipuAI message) async {
     // FIXME: 暂不支持web
     if (BytedeskUtils.isWeb) {
       return 0;

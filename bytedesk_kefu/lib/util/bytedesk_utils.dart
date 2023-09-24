@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison, constant_identifier_names
+// ignore_for_file: unnecessary_null_comparison, constant_identifier_names, avoid_print
 
 import 'dart:io';
 import 'dart:math';
@@ -40,6 +40,10 @@ class BytedeskUtils {
     if (BytedeskConstants.isDebug) {
       print(content);
     }
+  }
+
+  static bool isDarkMode(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
   }
 
   static String client() {

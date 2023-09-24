@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
+import 'package:bytedesk_kefu/model/messageZhipuAI.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
 import 'package:bytedesk_kefu/model/requestCategory.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
@@ -36,7 +37,10 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     //
-    return JsonResult(message: "发送消息成功", statusCode: 200, data: jsonString);
+    return JsonResult(
+        message: responseJson['message'],
+        statusCode: responseJson['status_code'],
+        data: responseJson['data']);
   }
 
   // 发送给智谱AI消息
@@ -58,7 +62,10 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
     //
-    return JsonResult(message: "发送消息成功", statusCode: 200, data: jsonString);
+    return JsonResult(
+        message: responseJson['message'],
+        statusCode: responseJson['status_code'],
+        data: responseJson['data']);
   }
 
   Future<List<Message>> loadHistoryMessages(
@@ -155,6 +162,36 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     List<Message> messageList =
         (responseJson['data']['content'] as List<dynamic>)
             .map((item) => Message.fromJsonFileHelper(item))
+            .toList();
+
+    return messageList;
+  }
+
+  Future<List<MessageZhipuAI>> loadTidMessagesZhipuAI(
+      String? tid, int? page, int? size) async {
+    //
+    final loadTopicMessagesUrl = BytedeskUtils.getHostUri('/api/messages/thread/tid', {
+      'page': page.toString(),
+      'size': size.toString(),
+      'tid': tid,
+      'client': client
+    });
+    debugPrint("loadTidMessagesZhipuAI Url $loadTopicMessagesUrl");
+    final initResponse = await httpClient.get(loadTopicMessagesUrl, headers: getHeaders());
+    //解决json解析中的乱码问题
+    Utf8Decoder utf8decoder = const Utf8Decoder(); // fix 中文乱码
+    //将string类型数据 转换为json类型的数据
+    final responseJson =
+        json.decode(utf8decoder.convert(initResponse.bodyBytes));
+    debugPrint("loadTidMessagesZhipuAI: $responseJson", wrapWidth: 2048);
+    // 判断token是否过期
+    if (responseJson.toString().contains('invalid_token')) {
+      bytedeskEventBus.fire(InvalidTokenEventBus());
+    }
+    //
+    List<MessageZhipuAI> messageList =
+        (responseJson['data']['content'] as List<dynamic>)
+            .map((item) => MessageZhipuAI.fromJsonZhipuAI(item))
             .toList();
 
     return messageList;

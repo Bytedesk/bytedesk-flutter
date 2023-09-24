@@ -5,7 +5,9 @@ import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/markThread.dart';
 import 'package:bytedesk_kefu/model/requestThread.dart';
 import 'package:bytedesk_kefu/model/requestThreadFileHelper.dart';
+import 'package:bytedesk_kefu/model/requestThreadZhipuAI.dart';
 import 'package:bytedesk_kefu/model/thread.dart';
+import 'package:bytedesk_kefu/model/threadZhipuAI.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
@@ -150,8 +152,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    // debugPrint("requestThread:");
-    // BytedeskUtils.printLog(responseJson);
+    debugPrint("requestThread: $responseJson");
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
@@ -192,7 +193,7 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
 
   // TODO: 添加key验证，防止用户滥用
   // 请求智谱AI客服会话
-  Future<RequestThreadResult> requestZhipuAIThread(
+  Future<RequestThreadZhipuAIResult> requestZhipuAIThread(
       String? wid, String? forceNew) async {
     //
     final threadUrl = BytedeskUtils.getHostUri('/api/thread/zhipuai',
@@ -206,16 +207,16 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    debugPrint("requestZhipuAIThread: $responseJson");
+    debugPrint("requestZhipuAIThread: $responseJson", wrapWidth: 2048);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
-    return RequestThreadResult.fromJson(responseJson);
+    return RequestThreadZhipuAIResult.fromJson(responseJson);
   }
 
   // 用户-智谱AI会话历史记录
-  Future<List<Thread>> getZhipuAIThreadHistory(int? page, int? size) async {
+  Future<List<ThreadZhipuAI>> getZhipuAIThreadHistory(int? page, int? size) async {
     //
     final threadUrl = BytedeskUtils.getHostUri('/api/thread/zhipuai/history',
         {'page': page.toString(), 'size': size.toString(), 'client': client});
@@ -227,15 +228,15 @@ class BytedeskThreadHttpApi extends BytedeskBaseHttpApi {
     //将string类型数据 转换为json类型的数据
     final responseJson =
         json.decode(utf8decoder.convert(initResponse.bodyBytes));
-    debugPrint("responseJson $responseJson");
+    debugPrint("getZhipuAIThreadHistory: $responseJson", wrapWidth: 2048);
     // 判断token是否过期
     if (responseJson.toString().contains('invalid_token')) {
       bytedeskEventBus.fire(InvalidTokenEventBus());
     }
 
-    List<Thread> threadList =
+    List<ThreadZhipuAI> threadList =
         (responseJson['data']['content'] as List<dynamic>)
-            .map((item) => Thread.fromHistoryJson(item))
+            .map((item) => ThreadZhipuAI.fromHistoryJson(item))
             .toList();
 
     return threadList;

@@ -1,4 +1,4 @@
-import 'package:bytedesk_kefu/model/helpCategory.dart';
+// import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/model/model.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:equatable/equatable.dart';

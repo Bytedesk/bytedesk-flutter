@@ -28,7 +28,8 @@ class _VideoPlayPageState extends State<VideoPlayPage> {
   }
 
   Future<void> initializePlayer() async {
-    _videoPlayerController1 = VideoPlayerController.network(_videoUrl!);
+    // _videoPlayerController1 = VideoPlayerController.network(_videoUrl!);
+    _videoPlayerController1 = VideoPlayerController.networkUrl(Uri.parse(_videoUrl!));
     await _videoPlayerController1!.initialize();
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1!,

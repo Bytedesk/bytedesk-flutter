@@ -187,7 +187,7 @@ class MessageWidget extends StatelessWidget {
                     //   Fluttertoast.showToast(msg: "onLongPress ${item.name}, ${message.mid}");
                     // },
                     onTap: () {
-                      print("onTap ${item.name}, ${message.mid}");
+                      // print("onTap ${item.name}, ${message.mid}");
                       popupMenuController.hideMenu();
                       // Fluttertoast.showToast(
                       //     msg: "onTap ${item.name}, ${message.mid}");
@@ -434,7 +434,8 @@ class MessageWidget extends StatelessWidget {
                             constraints: const BoxConstraints(
                                 maxWidth: 240, minHeight: 40),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: BytedeskUtils.isDarkMode(context) ? Colors.grey : Colors.white,
+                              // color: Colors.grey,
                               borderRadius: BorderRadius.circular(3.0),
                             ),
                             child: _buildReceivedContent(context, message!),

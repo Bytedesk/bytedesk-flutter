@@ -3,6 +3,8 @@
 // import 'package:emoji_picker_flutter/src/config.dart';
 // import 'package:emoji_picker_flutter/src/emoji_picker_builder.dart';
 // import 'package:emoji_picker_flutter/src/emoji_view_state.dart';
+// ignore_for_file: library_private_types_in_public_api
+
 import './emoji_picker_flutter/emoji_picker_flutter.dart';
 import './emoji_picker_flutter/src/category_emoji.dart';
 // import 'package:bytedesk_kefu/vendors/emoji_picker_flutter/src/config.dart';

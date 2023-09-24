@@ -60,7 +60,7 @@ class _ExamplePageState extends State<ExamplePage> {
             },
           ),
           ListTile(
-            title: const Text('常见问题/帮助中心'),
+            title: const Text('帮助中心'),
             trailing: const Icon(Icons.keyboard_arrow_right),
             onTap: () {
               BytedeskKefu.showFaq(context, _kefuAdminUid, "常见问题");

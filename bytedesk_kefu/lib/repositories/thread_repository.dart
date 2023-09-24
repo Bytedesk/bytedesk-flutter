@@ -3,6 +3,8 @@ import 'package:bytedesk_kefu/http/bytedesk_thread_api.dart';
 import 'package:bytedesk_kefu/model/markThread.dart';
 // import 'package:bytedesk_kefu/model/requestThread.dart';
 import 'package:bytedesk_kefu/model/model.dart';
+import 'package:bytedesk_kefu/model/requestThreadZhipuAI.dart';
+import 'package:bytedesk_kefu/model/threadZhipuAI.dart';
 // import 'package:http/http.dart' as http;
 
 class ThreadRepository {
@@ -35,11 +37,11 @@ class ThreadRepository {
     return await bytedeskHttpApi.requestThread(wid, type, aid);
   }
 
-  Future<RequestThreadResult> requestZhipuAIThread(String? wid, String? forceNew) async {
+  Future<RequestThreadZhipuAIResult> requestZhipuAIThread(String? wid, String? forceNew) async {
     return await bytedeskHttpApi.requestZhipuAIThread(wid, forceNew);
   }
 
-  Future<List<Thread>> getZhipuAIThreadHistory(int? page, int? size) async {
+  Future<List<ThreadZhipuAI>> getZhipuAIThreadHistory(int? page, int? size) async {
     return await bytedeskHttpApi.getZhipuAIThreadHistory(page, size);
   }
 

@@ -6,7 +6,6 @@ import 'message.dart';
 class RequestThreadResult extends Equatable {
   final String? message;
   final int? statusCode;
-  //
   final Message? msg;
 
   const RequestThreadResult({this.message, this.statusCode, this.msg})

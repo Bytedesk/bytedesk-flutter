@@ -81,6 +81,26 @@ class LoadTopicMessageEvent extends MessageEvent {
       : super();
 }
 
+class LoadMessageFileHelperEvent extends MessageEvent {
+  final String? topic;
+  final int? page;
+  final int? size;
+
+  const LoadMessageFileHelperEvent(
+      {@required this.topic, @required this.page, @required this.size})
+      : super();
+}
+
+class LoadMessageZhipuAIEvent extends MessageEvent {
+  final String? tid;
+  final int? page;
+  final int? size;
+
+  const LoadMessageZhipuAIEvent(
+      {@required this.tid, @required this.page, @required this.size})
+      : super();
+}
+
 class LoadChannelMessageEvent extends MessageEvent {
   final String? cid;
   final int? page;

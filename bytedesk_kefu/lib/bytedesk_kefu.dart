@@ -96,7 +96,8 @@ class BytedeskKefu {
     String? unionid = SpUtil.getString(BytedeskConstants.unionid);
     if (username!.isEmpty && unionid!.isEmpty) {
       // 第一此启动, 则调用注册接口，否则调用登录接口
-      User user = await BytedeskUserHttpApi().registerAnonymous(subDomain);
+      User user =
+          await BytedeskUserHttpApi().registerAnonymous(appKey, subDomain);
       visitorLogin(user.username!, appKey, subDomain);
     } else if (username.isNotEmpty) {
       // 用户名登录，非微信登录
@@ -107,6 +108,21 @@ class BytedeskKefu {
     } else {
       // 验证码登录其他账号，非当前匿名登录账户
       otherOAuth();
+    }
+    // 缓存appkey
+    SpUtil.putString(BytedeskConstants.appkey, appKey);
+    SpUtil.putString(BytedeskConstants.subDomain, subDomain);
+  }
+
+  static void anonymousLogin2() async {
+    /// sp初始化
+    await SpUtil.getInstance();
+    String? appKey = SpUtil.getString(BytedeskConstants.appkey);
+    String? subDomain = SpUtil.getString(BytedeskConstants.subdomain);
+    if (appKey!.isNotEmpty && subDomain!.isNotEmpty) {
+      anonymousLogin(appKey, subDomain);
+    } else {
+      debugPrint("请首先是anonymousLogin函数登录，并传递相应参数");
     }
   }
 
@@ -144,7 +160,8 @@ class BytedeskKefu {
   }
 
   // 访客用户名登录
-  static void loginVisitor(String username, String password, String appkey, String subDomain) async {
+  static void loginVisitor(
+      String username, String password, String appkey, String subDomain) async {
     //
     SpUtil.putString(BytedeskConstants.role, BytedeskConstants.ROLE_VISITOR);
     //
@@ -365,7 +382,10 @@ class BytedeskKefu {
   // 常见问题列表
   static void showFaq(BuildContext context, String uid, String title) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return HelpProvider(uid: uid, title: title,);
+      return HelpProvider(
+        uid: uid,
+        title: title,
+      );
     }));
   }
 
@@ -385,12 +405,14 @@ class BytedeskKefu {
 
   static void showWorkGroupLeaveMessage(
       BuildContext context, String wid, String tip) {
-    showLeaveMessage(context, wid, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, tip);
+    showLeaveMessage(
+        context, wid, wid, BytedeskConstants.CHAT_TYPE_WORKGROUP, tip);
   }
 
   static void showAppointedLeaveMessage(
       BuildContext context, String aid, String tip) {
-    showLeaveMessage(context, aid, aid, BytedeskConstants.CHAT_TYPE_APPOINTED, tip);
+    showLeaveMessage(
+        context, aid, aid, BytedeskConstants.CHAT_TYPE_APPOINTED, tip);
   }
 
   // 留言
@@ -417,7 +439,6 @@ class BytedeskKefu {
       );
     }));
   }
-
 
   // TODO: 提交工单
   // 频道消息
@@ -552,7 +573,7 @@ class BytedeskKefu {
     return BytedeskUserHttpApi().checkAppVersion(iosKey);
   }
 
-    // 从服务器检测当前APP是否有新版
+  // 从服务器检测当前APP是否有新版
   static Future<App> checkAppVersion2(String flutterKey) {
     return BytedeskUserHttpApi().checkAppVersion(flutterKey);
   }

@@ -9,7 +9,6 @@ library mqtt_browser_client;
 
 import 'dart:async';
 // import 'dart:html';
-// 替代 dart:html 以便于在APP上运行
 import 'package:universal_html/html.dart';
 import 'dart:typed_data';
 import 'package:event_bus/event_bus.dart' as events;

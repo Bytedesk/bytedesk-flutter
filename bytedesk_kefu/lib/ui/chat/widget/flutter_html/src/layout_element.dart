@@ -177,7 +177,7 @@ class EmptyLayoutElement extends LayoutElement {
   EmptyLayoutElement({required String name}) : super(name: name, children: []);
 
   @override
-  Widget? toWidget(_) => null;
+  Widget? toWidget(context) => null;
 }
 
 LayoutElement parseLayoutElement(

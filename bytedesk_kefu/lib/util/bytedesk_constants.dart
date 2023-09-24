@@ -33,7 +33,7 @@ class BytedeskConstants {
   // static const String httpUploadUrl = 'http://$mqttHost:8000';
   // static const String host = '$mqttHost:8000';
   // static const int mqttPort = 3883; // not secure
-  // static const String mqttHost = '10.11.4.121';
+  // static const String mqttHost = '10.11.4.162';
 
   // 家
   // static const bool isDebug = true;
@@ -46,14 +46,27 @@ class BytedeskConstants {
   // static const String httpBaseUrliOS = 'http://$mqttHost:8000';
   // static const String httpUploadUrl = 'http://$mqttHost:8000';
   // static const String host = '$mqttHost:8000';
-  // static const String mqttHost = '192.168.0.105';
+  // static const String mqttHost = '192.168.110.121';
+
+  // 本地
+  // static const bool isDebug = true;
+  // static const bool isSecure = false;
+  // static const bool isWebSocketWss = false;
+  // static const String webSocketWssUrl = 'wss://flutter.bytedesk.com/websocket';
+  // static const int mqttPort = 3883; // not secure
+  // static const String httpBaseUrl = 'http://$mqttHost:8000';
+  // static const String httpBaseUrlAndroid = 'http://$mqttHost:8000';
+  // static const String httpBaseUrliOS = 'http://$mqttHost:8000';
+  // static const String httpUploadUrl = 'http://$mqttHost:8000';
+  // static const String host = '$mqttHost:8000';
+  // static const String mqttHost = '127.0.0.1';
 
   // 线上
-  static const bool isDebug = true; // false;
-  static const bool isSecure = true; // secure
+  static const bool isDebug = false;
+  static const bool isSecure = true;
   static const bool isWebSocketWss = true;
   static const String webSocketWssUrl = 'wss://$mqttHost/websocket';
-  static const int mqttPort = 13883; // secure
+  static const int mqttPort = 13883;
   static const String httpBaseUrl = 'https://$mqttHost';
   static const String httpBaseUrlAndroid = 'https://$mqttHost';
   static const String httpBaseUrliOS = 'https://$mqttHost';
@@ -78,6 +91,9 @@ class BytedeskConstants {
   //
   static const String accessToken = 'bytedesk_accessToken';
   static const String refreshToken = 'bytedesk_refreshToken';
+  //
+  static const String appkey = 'bytedesk_appkey';
+  static const String subdomain = 'bytedesk_subdomain';
   //
   static const String user = 'bytedesk_user';
   static const String uid = 'bytedesk_uid';
@@ -152,6 +168,10 @@ class BytedeskConstants {
   static const String MESSAGE_TYPE_ROBOT = 'robot';
   //
   static const String MESSAGE_TYPE_ROBOT_V2 = 'robotv2';
+  // 机器人欢迎语
+  static const String MESSAGE_TYPE_ROBOT_WELCOME = 'robot_welcome';
+  // 提示语 promot list
+  static const String MESSAGE_TYPE_ROBOT_PROMOT = 'robot_promot';
   //
   static const String MESSAGE_TYPE_ROBOT_RESULT = 'robot_result';
   // 问卷

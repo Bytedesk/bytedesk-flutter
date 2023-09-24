@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, use_full_hex_values_for_flutter_colors
+
 import 'dart:async';
 // import 'dart:io';
 
@@ -803,23 +805,23 @@ class _ChatLSPageState extends State<ChatLSPage>
     );
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // debugPrint("didChangeAppLifecycleState:" + state.toString());
-    switch (state) {
-      case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
-        break;
-      case AppLifecycleState.paused: // 应用程序不可见，后台
-        break;
-      case AppLifecycleState.resumed: // 应用程序可见，前台
-        // APP切换到前台之后，重连
-        // BytedeskUtils.mqttReConnect();
-        // TODO: 拉取离线消息
-        break;
-      case AppLifecycleState.detached: // 申请将暂时暂停
-        break;
-    }
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   // debugPrint("didChangeAppLifecycleState:" + state.toString());
+  //   switch (state) {
+  //     case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+  //       break;
+  //     case AppLifecycleState.paused: // 应用程序不可见，后台
+  //       break;
+  //     case AppLifecycleState.resumed: // 应用程序可见，前台
+  //       // APP切换到前台之后，重连
+  //       // BytedeskUtils.mqttReConnect();
+  //       // TODO: 拉取离线消息
+  //       break;
+  //     case AppLifecycleState.detached: // 申请将暂时暂停
+  //       break;
+  //   }
+  // }
 
   @override
   void dispose() {

@@ -41,6 +41,20 @@ class User extends Equatable {
         subDomain: json['subDomain']);
   }
 
+  static User fromInvalidToken() {
+    return const User(
+        uid: 'invalid_token',
+        username: '',
+        nickname: '',
+        avatar: '',
+        mobile: '',
+        description: '',
+        sex: false,
+        location: '',
+        birthday: '',
+        subDomain: '');
+  }
+
   // static User fromProperties(String? uid, String? nickname, String? avatar) {
   //   return User()
   // }

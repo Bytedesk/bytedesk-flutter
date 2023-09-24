@@ -1,4 +1,6 @@
 // import 'dart:io';
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 import 'package:bytedesk_kefu/blocs/feedback_bloc/bloc.dart';
 import 'package:bytedesk_kefu/model/helpCategory.dart';

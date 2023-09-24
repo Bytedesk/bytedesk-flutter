@@ -35,7 +35,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     emit(ProfileInProgress());
     try {
       User user = await userRepository.getProfile();
-      emit(ProfileSuccess(user: user));
+      if (user.uid == 'invalid_token') {
+        emit(const ProfileFailure(error: 'token过期，请重新登录'));
+      } else {
+        emit(ProfileSuccess(user: user));
+      }
     } catch (error) {
       // 网络或其他错误
       emit(ProfileFailure(error: error.toString()));

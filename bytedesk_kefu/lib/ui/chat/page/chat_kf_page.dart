@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, use_full_hex_values_for_flutter_colors
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -140,7 +142,7 @@ class _ChatKFPageState extends State<ChatKFPage>
     //   debugPrint('addPostFrameCallback');
     // });
     // Fluttertoast.showToast(msg: "请求中, 请稍后...");
-    _listener();
+    initListeners();
     super.initState();
     // 定时拉取聊天记录 10s
     _loadHistoryTimer = Timer.periodic(const Duration(seconds: 15), (timer) {
@@ -295,14 +297,6 @@ class _ChatKFPageState extends State<ChatKFPage>
                           widget.aid!,
                           widget.type!,
                           state.threadResult.msg!.content!);
-                      // Navigator.of(context)
-                      //     .push(MaterialPageRoute(builder: (context) {
-                      //   return LeaveMsgProvider(
-                      //       wid: widget.wid,
-                      //       aid: widget.aid,
-                      //       type: widget.type,
-                      //       tip: state.threadResult.msg!.content);
-                      // }));
                     } else if (state.threadResult.statusCode == 204) {
                       debugPrint('当前无客服在线，请自助查询或留言');
                       setState(() {
@@ -492,7 +486,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                     ]))
                 : Container(
                     alignment: Alignment.bottomCenter,
-                    color: const Color(0xffdeeeeee),
+                    // color: const Color(0xffdeeeeee),
+                    color: BytedeskUtils.isDarkMode(context) ? Colors.transparent : const Color(0xffdeeeeee),
                     child: Column(
                       children: <Widget>[
                         // 参考pull_to_refresh库中 QQChatList例子
@@ -508,6 +503,11 @@ class _ChatKFPageState extends State<ChatKFPage>
                               _refreshController.loadComplete();
                             },
                             footer: const ClassicFooter(
+                              idleText: "上拉加载",
+                              loadingText: "加载中...",
+                              noDataText: "没有更多了",
+                              failedText: "加载失败",
+                              canLoadingText: "加载中...",
                               loadStyle: LoadStyle.ShowWhenLoading,
                             ),
                             enablePullUp: true,
@@ -920,7 +920,13 @@ class _ChatKFPageState extends State<ChatKFPage>
   }
 
   //
-  _listener() {
+  initListeners() {
+    // token过期，要求重新登录
+    bytedeskEventBus.on<InvalidTokenEventBus>().listen((event) {
+      debugPrint("InvalidTokenEventBus token过期，请重新登录");
+      // 也即执行init初始接口 BytedeskKefu.init(appKey, subDomain);
+      BytedeskKefu.anonymousLogin2();
+    });
     // 更新消息状态
     bytedeskEventBus.on<ReceiveMessageReceiptEventBus>().listen((event) {
       // debugPrint('更新状态:' + event.mid + '-' + event.status);
@@ -1084,7 +1090,10 @@ class _ChatKFPageState extends State<ChatKFPage>
           String? mimeType = pickedFile.mimeType;
           //
           BlocProvider.of<MessageBloc>(context).add(UploadImageBytesEvent(
-              fileName: fileName, fileBytes: fileBytes, mimeType: mimeType,));
+            fileName: fileName,
+            fileBytes: fileBytes,
+            mimeType: mimeType,
+          ));
         } else {
           // 其他
           BlocProvider.of<MessageBloc>(context)
@@ -1098,7 +1107,6 @@ class _ChatKFPageState extends State<ChatKFPage>
       Fluttertoast.showToast(msg: "未选取图片");
     }
   }
-
 
   // 拍照
   Future<void> _takeImage() async {
@@ -1161,7 +1169,8 @@ class _ChatKFPageState extends State<ChatKFPage>
         //
         if (BytedeskUtils.isWeb) {
           // web
-          String? fileName = pickedFile.path.split("/").last.replaceAll(".jpg", ".mp4");
+          String? fileName =
+              pickedFile.path.split("/").last.replaceAll(".jpg", ".mp4");
           Uint8List? fileBytes = await pickedFile.readAsBytes();
           String? mimeType = pickedFile.mimeType;
           //
@@ -1240,7 +1249,8 @@ class _ChatKFPageState extends State<ChatKFPage>
         //
         if (BytedeskUtils.isWeb) {
           // web
-          String? fileName = pickedFile.path.split("/").last.replaceAll(".jpg", ".mp4");
+          String? fileName =
+              pickedFile.path.split("/").last.replaceAll(".jpg", ".mp4");
           Uint8List? fileBytes = await pickedFile.readAsBytes();
           String? mimeType = pickedFile.mimeType;
           //
@@ -1365,23 +1375,23 @@ class _ChatKFPageState extends State<ChatKFPage>
     );
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    // debugPrint("didChangeAppLifecycleState:" + state.toString());
-    switch (state) {
-      case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
-        break;
-      case AppLifecycleState.paused: // 应用程序不可见，后台
-        break;
-      case AppLifecycleState.resumed: // 应用程序可见，前台
-        // APP切换到前台之后，重连
-        // BytedeskUtils.mqttReConnect();
-        // TODO: 拉取离线消息
-        break;
-      case AppLifecycleState.detached: // 申请将暂时暂停
-        break;
-    }
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   // debugPrint("didChangeAppLifecycleState:" + state.toString());
+  //   switch (state) {
+  //     case AppLifecycleState.inactive: // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+  //       break;
+  //     case AppLifecycleState.paused: // 应用程序不可见，后台
+  //       break;
+  //     case AppLifecycleState.resumed: // 应用程序可见，前台
+  //       // APP切换到前台之后，重连
+  //       // BytedeskUtils.mqttReConnect();
+  //       // TODO: 拉取离线消息
+  //       break;
+  //     case AppLifecycleState.detached: // 申请将暂时暂停
+  //       break;
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -1395,4 +1405,3 @@ class _ChatKFPageState extends State<ChatKFPage>
     super.dispose();
   }
 }
-

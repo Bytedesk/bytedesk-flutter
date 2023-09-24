@@ -1,4 +1,6 @@
 import 'package:bytedesk_kefu/model/markThread.dart';
+import 'package:bytedesk_kefu/model/requestThreadZhipuAI.dart';
+import 'package:bytedesk_kefu/model/threadZhipuAI.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:bytedesk_kefu/model/model.dart';
@@ -66,6 +68,23 @@ class ThreadLoadSuccess extends ThreadState {
       'ThreadLoadSuccess { threadList: ${threadList!.length} }';
 }
 
+class ThreadZhipuAILoadSuccess extends ThreadState {
+  final List<ThreadZhipuAI>? threadList;
+
+  const ThreadZhipuAILoadSuccess(this.threadList);
+
+  ThreadZhipuAILoadSuccess copyWith({List<ThreadZhipuAI>? threadList}) {
+    return ThreadZhipuAILoadSuccess(threadList);
+  }
+
+  @override
+  List<Object> get props => [threadList!];
+
+  @override
+  String toString() =>
+      'ThreadZhipuAILoadSuccess { threadList: ${threadList!.length} }';
+}
+
 class RequestThreading extends ThreadState {
   @override
   String toString() => 'RequestThreading';
@@ -81,6 +100,18 @@ class RequestThreadSuccess extends ThreadState {
 
   @override
   String toString() => 'RequestThreadSuccess';
+}
+
+class RequestThreadZhipuAISuccess extends ThreadState {
+  final RequestThreadZhipuAIResult threadResult;
+
+  const RequestThreadZhipuAISuccess(this.threadResult);
+
+  @override
+  List<Object> get props => [threadResult];
+
+  @override
+  String toString() => 'RequestThreadZhipuAISuccess';
 }
 
 class RequestThreadError extends ThreadState {

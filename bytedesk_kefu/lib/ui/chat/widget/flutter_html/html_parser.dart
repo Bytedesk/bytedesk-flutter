@@ -1,3 +1,5 @@
+// ignore_for_file: overridden_fields, prefer_initializing_formals
+
 import 'dart:collection';
 import 'dart:math';
 

@@ -1,4 +1,5 @@
 import 'package:bytedesk_kefu/model/message.dart';
+import 'package:bytedesk_kefu/model/robot.dart';
 import 'package:event_bus/event_bus.dart';
 
 EventBus bytedeskEventBus = EventBus();
@@ -52,6 +53,22 @@ class QueryCategoryEventBus {
   QueryCategoryEventBus(this.cid, this.name);
 }
 
+class QueryRobotEventBus {
+  String cid;
+  String name;
+  QueryRobotEventBus(this.cid, this.name);
+}
+
 class RequestAgentThreadEventBus {
   RequestAgentThreadEventBus();
+}
+
+class ChooseRobotEventBus {
+  Robot robot;
+  ChooseRobotEventBus(this.robot);
+}
+
+class SmsLoginSuccessEventBus {
+  String mobile;
+  SmsLoginSuccessEventBus(this.mobile);
 }

@@ -1,14 +1,11 @@
 name: bytedesk_kefu_example
 description: Demonstrates how to use the bytedesk_kefu plugin.
-
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
-
-version: 2.0.0+2
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: ">=2.18.0 <4.0.0"
+  sdk: '>=3.0.5 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,14 +27,7 @@ dependencies:
   fluttertoast: ^8.2.2
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
-  # 应用内-顶部通知栏 https://pub.dev/packages/overlay_support/
-  # overlay_support: ^1.2.1
-  # 播放提示音 https://pub.dev/packages/audioplayers
-  # audioplayers: ^0.20.1
-  # 振动 https://pub.dev/packages/vibration
-  # 针对报错fatal error: 'vibration/vibration-Swift.h' file not found #import <vibration/vibration-Swift.h>, ld: library not found for -lvibration
-  # 请在ios/Podfile中添加：use_frameworks!
-  # vibration: ^1.7.5
+  # 
 
   bytedesk_kefu:
     # When depending on this package from a real application you should use:
@@ -52,6 +42,8 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 
@@ -67,6 +59,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

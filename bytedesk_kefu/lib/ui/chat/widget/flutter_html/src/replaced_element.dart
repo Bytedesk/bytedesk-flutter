@@ -63,7 +63,7 @@ class EmptyContentElement extends ReplacedElement {
   EmptyContentElement({String name = "empty"}) : super(name: name, style: Style(), elementId: "[[No ID]]");
 
   @override
-  Widget? toWidget(_) => null;
+  Widget? toWidget(context) => null;
 }
 
 class RubyElement extends ReplacedElement {

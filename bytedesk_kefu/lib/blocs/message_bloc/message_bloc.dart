@@ -1,6 +1,7 @@
 // import 'dart:async';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
+import 'package:bytedesk_kefu/model/messageZhipuAI.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
 import 'package:bytedesk_kefu/model/requestCategory.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
@@ -26,6 +27,8 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     on<LoadUnreadVisitorMessagesEvent>(_mapLoadUnreadVisitorMessageToState);
     on<LoadUnreadAgentMessagesEvent>(_mapLoadUnreadAgentMessageToState);
     on<LoadTopicMessageEvent>(_mapLoadTopicMessageToState);
+    on<LoadMessageFileHelperEvent>(_mapLoadMessageFileHelperToState);
+    on<LoadMessageZhipuAIEvent>(_mapLoadMessageZhipuAIToState);
 
     on<LoadChannelMessageEvent>(_mapLoadChannelMessageToState);
     on<QueryAnswerEvent>(_mapQueryAnswerToState);
@@ -144,6 +147,32 @@ class MessageBloc extends Bloc<MessageEvent, MessageState> {
     } catch (error) {
       BytedeskUtils.printLog(error);
       emit(LoadTopicMessageError());
+    }
+  }
+
+  void _mapLoadMessageFileHelperToState(
+      LoadMessageFileHelperEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
+    try {
+      final List<Message> messageList = await messageRepository
+          .loadTopicMessagesFileHelper(event.topic, event.page, event.size);
+      emit(LoadMessageFileHelperSuccess(messageList: messageList));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(LoadMessageFileHelperError());
+    }
+  }
+
+  void _mapLoadMessageZhipuAIToState(
+      LoadMessageZhipuAIEvent event, Emitter<MessageState> emit) async {
+    emit(MessageLoading());
+    try {
+      final List<MessageZhipuAI> messageList = await messageRepository
+          .loadTidMessagesZhipuAI(event.tid, event.page, event.size);
+      emit(LoadMessageZhipuAISuccess(messageList: messageList));
+    } catch (error) {
+      BytedeskUtils.printLog(error);
+      emit(LoadMessageZhipuAIError());
     }
   }
 

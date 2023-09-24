@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
 import 'package:bytedesk_kefu/model/bfeedbackJsonResult.dart';
-import 'package:bytedesk_kefu/model/helpCategory.dart';
+// import 'package:bytedesk_kefu/model/helpCategory.dart';
 import 'package:bytedesk_kefu/model/model.dart';
 // import 'package:bytedesk_kefu/model/jsonResult.dart';
 // import 'package:bytedesk_kefu/util/bytedesk_constants.dart';

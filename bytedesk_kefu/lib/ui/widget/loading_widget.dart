@@ -5,7 +5,7 @@ class LoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
         child: SizedBox(
       width: double.infinity,
       height: double.infinity,
@@ -18,7 +18,7 @@ class LoadingWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(
+              SizedBox(
                 width: 50.0,
                 height: 50.0,
                 // child: SpinKitFadingCube(
@@ -26,9 +26,7 @@ class LoadingWidget extends StatelessWidget {
                 //   size: 25.0,
                 // ),
               ),
-              Container(
-                child: const Text('数据加载中，请稍后'),
-              )
+              Text('数据加载中，请稍后')
             ],
           ),
         ),

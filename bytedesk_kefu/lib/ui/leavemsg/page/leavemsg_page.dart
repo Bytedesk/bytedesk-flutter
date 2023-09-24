@@ -1,6 +1,8 @@
 // import 'dart:io';
 // import 'dart:html';
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bytedesk_kefu/blocs/leavemsg_bloc/bloc.dart';
 import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 // import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
@@ -34,7 +36,7 @@ class LeaveMsgPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _LeaveMsgPageState createState() => _LeaveMsgPageState();
+  State<LeaveMsgPage> createState() => _LeaveMsgPageState();
 }
 
 class _LeaveMsgPageState extends State<LeaveMsgPage> {
@@ -80,12 +82,28 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
           centerTitle: true,
           elevation: 0,
           actions: [
-            IconButton(
-                onPressed: () => {
-                      BytedeskKefu.showLeaveMessageHistory(
-                          context, widget.wid!, widget.aid!, widget.type!)
-                    },
-                icon: const Icon(Icons.history_sharp))
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: InkWell(
+                  onTap: () {
+                    debugPrint('我的留言');
+                    BytedeskKefu.showLeaveMessageHistory(
+                        context, widget.wid!, widget.aid!, widget.type!);
+                  },
+                  child: const Text(
+                    '我的留言',
+                  ),
+                ),
+              ),
+            )
+            // IconButton(
+            //     onPressed: () => {
+            //           BytedeskKefu.showLeaveMessageHistory(
+            //               context, widget.wid!, widget.aid!, widget.type!)
+            //         },
+            //     icon: const Icon(Icons.history_sharp))
           ],
         ),
         body: BlocConsumer<LeaveMsgBloc, LeaveMsgState>(
@@ -275,7 +293,7 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
                         //
                         String mobile = _mobileEditController.text;
                         String content = _contentEditController.text;
-                        if (mobile.length !=  11) {
+                        if (mobile.length != 11) {
                           // TODO: 正则验证手机号
                           Fluttertoast.showToast(msg: "请正确填写手机号");
                           return;

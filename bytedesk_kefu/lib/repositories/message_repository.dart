@@ -1,6 +1,7 @@
 import 'package:bytedesk_kefu/http/bytedesk_message_api.dart';
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
+import 'package:bytedesk_kefu/model/messageZhipuAI.dart';
 import 'package:bytedesk_kefu/model/requestAnswer.dart';
 import 'package:bytedesk_kefu/model/requestCategory.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
@@ -26,6 +27,16 @@ class MessageRepository {
   Future<List<Message>> loadTopicMessages(
       String? topic, int? page, int? size) async {
     return await bytedeskHttpApi.loadTopicMessages(topic, page, size);
+  }
+
+  Future<List<Message>> loadTopicMessagesFileHelper(
+      String? topic, int? page, int? size) async {
+    return await bytedeskHttpApi.loadTopicMessagesFileHelper(topic, page, size);
+  }
+
+  Future<List<MessageZhipuAI>> loadTidMessagesZhipuAI(
+      String? tid, int? page, int? size) async {
+    return await bytedeskHttpApi.loadTidMessagesZhipuAI(tid, page, size);
   }
 
   Future<List<Message>> loadChannelMessages(

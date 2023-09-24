@@ -1,8 +1,25 @@
 # Upgrade Log
 
-## 1.6.0
+## 1.6.4
+
+* 背景跟随主题变化
+
+## 1.6.3
 
 * optimize user experience
+
+## 1.6.2
+
+* optimize user experience
+
+## 1.6.1
+
+* optimize user experience
+
+## 1.6.0
+
+* 增加 常见问题/帮助中心
+* 增加 意见反馈
 
 ## 1.5.9
 

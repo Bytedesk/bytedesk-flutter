@@ -79,6 +79,16 @@ class RequestCodeWeiyuButtonPressed extends LoginEvent {
   }
 }
 
+class RequestCodeTikuButtonPressed extends LoginEvent {
+  //
+  final String? mobile;
+  const RequestCodeTikuButtonPressed({@required this.mobile}) : super();
+  @override
+  String toString() {
+    return 'RequestCodeTikuButtonPressed { mobile: $mobile}';
+  }
+}
+
 class BindMobileEvent extends LoginEvent {
   //
   final String? mobile;
