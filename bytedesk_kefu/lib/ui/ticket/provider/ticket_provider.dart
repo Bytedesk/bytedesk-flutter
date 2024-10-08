@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TicketProvider extends StatelessWidget {
   final String? uid;
-  const TicketProvider({Key? key, @required this.uid}) : super(key: key);
+  const TicketProvider({super.key, @required this.uid});
 
   @override
   Widget build(BuildContext context) {

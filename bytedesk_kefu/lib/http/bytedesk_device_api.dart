@@ -1,4 +1,3 @@
-import 'dart:convert';
 // import 'dart:io';
 
 import 'package:bytedesk_kefu/http/bytedesk_base_api.dart';
@@ -93,30 +92,30 @@ class BytedeskDeviceHttpApi extends BytedeskBaseHttpApi {
   }
 
   // 上传苹果deviceToken
-  Future<void> updateIOSDeviceToken(
-      String appkey, String build, String deviceToken) async {
-    //
-    var body = json.encode({
-      "appkey": appkey,
-      "build": build,
-      "token": deviceToken,
-      "client": client
-    });
-    //
-    // final initUrl = '$baseUrl/api/push/update/token';
-    final initUrl = BytedeskUtils.getHostUri('/api/push/update/token');
-    await httpClient.post(initUrl, headers: getHeaders(), body: body);
-  }
+  // Future<void> updateIOSDeviceToken(
+  //     String appkey, String build, String deviceToken) async {
+  //   //
+  //   var body = json.encode({
+  //     "appkey": appkey,
+  //     "build": build,
+  //     "token": deviceToken,
+  //     "client": client
+  //   });
+  //   //
+  //   // final initUrl = '$baseUrl/api/push/update/token';
+  //   final initUrl = BytedeskUtils.getHostUri('/api/push/update/token');
+  //   await httpClient.post(initUrl, headers: getHeaders(), body: body);
+  // }
 
-  // 删除设备信息
-  Future<void> deleteIOSDeviceToken(String build) async {
-    //
-    var body = json.encode({"build": build, "client": client});
-    //
-    // final initUrl = '$baseUrl/api/push/delete/token';
-    final initUrl = BytedeskUtils.getHostUri('/api/push/delete/token');
-    await httpClient.post(initUrl, headers: getHeaders(), body: body);
-  }
+  // // 删除设备信息
+  // Future<void> deleteIOSDeviceToken(String build) async {
+  //   //
+  //   var body = json.encode({"build": build, "client": client});
+  //   //
+  //   // final initUrl = '$baseUrl/api/push/delete/token';
+  //   final initUrl = BytedeskUtils.getHostUri('/api/push/delete/token');
+  //   await httpClient.post(initUrl, headers: getHeaders(), body: body);
+  // }
 
   // Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
   //   return <String, dynamic>{

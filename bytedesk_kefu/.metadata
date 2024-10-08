@@ -4,7 +4,7 @@
 # This file should be version controlled.
 
 version:
-  revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+  revision: 796c8ef79279f9c774545b3771238c3098dbefab
   channel: stable
 
 project_type: plugin
@@ -13,23 +13,26 @@ project_type: plugin
 migration:
   platforms:
     - platform: root
-      create_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
-      base_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
     - platform: android
-      create_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
-      base_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
     - platform: ios
-      create_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
-      base_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+    - platform: linux
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
     - platform: macos
-      create_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
-      base_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
     - platform: web
-      create_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
-      base_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
     - platform: windows
-      create_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
-      base_revision: ffccd96b62ee8cec7740dab303538c5fc26ac543
+      create_revision: 796c8ef79279f9c774545b3771238c3098dbefab
+      base_revision: 796c8ef79279f9c774545b3771238c3098dbefab
 
   # User provided section
 

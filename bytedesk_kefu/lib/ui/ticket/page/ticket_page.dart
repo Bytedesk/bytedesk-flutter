@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class TicketPage extends StatefulWidget {
   final String? uid;
-  const TicketPage({Key? key, @required this.uid}) : super(key: key);
+  const TicketPage({super.key, @required this.uid});
 
   @override
   _TicketPageState createState() => _TicketPageState();

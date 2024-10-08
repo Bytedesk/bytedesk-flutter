@@ -1,6 +1,5 @@
 import 'package:bytedesk_kefu/model/jsonResult.dart';
 import 'package:bytedesk_kefu/model/message.dart';
-import 'package:bytedesk_kefu/model/messageZhipuAI.dart';
 import 'package:bytedesk_kefu/model/uploadJsonResult.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -150,12 +149,6 @@ class LoadMessageFileHelperSuccess extends MessageState {
   final List<Message>? messageList;
 
   const LoadMessageFileHelperSuccess({@required this.messageList}) : super();
-}
-
-class LoadMessageZhipuAISuccess extends MessageState {
-  final List<MessageZhipuAI>? messageList;
-
-  const LoadMessageZhipuAISuccess({@required this.messageList}) : super();
 }
 
 class LoadChannelMessageSuccess extends MessageState {

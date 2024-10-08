@@ -7,7 +7,6 @@ export './thread.dart';
 export './workGroup.dart';
 export './codeResult.dart';
 export './jsonResult.dart';
-export './requestAnswer.dart';
 export './requestThread.dart';
 export './helpArticle.dart';
 export './helpCategory.dart';

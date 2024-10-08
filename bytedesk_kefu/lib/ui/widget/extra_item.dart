@@ -67,13 +67,13 @@ class ExtraItem extends StatelessWidget {
 
 class ExtraItems extends StatefulWidget {
   const ExtraItems({
-    Key? key,
+    super.key,
     this.handleImageSelection,
     this.handleFileSelection,
     this.handlePickerSelection,
     this.handleUploadVideo,
     this.handleCaptureVideo,
-  }) : super(key: key);
+  });
 
   final void Function()? handleImageSelection;
   final void Function()? handleFileSelection;

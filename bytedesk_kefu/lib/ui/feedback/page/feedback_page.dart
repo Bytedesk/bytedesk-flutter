@@ -13,7 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FeedbackPage extends StatefulWidget {
   final String? uid;
-  const FeedbackPage({Key? key, @required this.uid}) : super(key: key);
+  const FeedbackPage({super.key, @required this.uid});
 
   @override
   State<FeedbackPage> createState() => _FeedbackPageState();

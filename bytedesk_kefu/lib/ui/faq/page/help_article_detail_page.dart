@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HelpArticleDetailPage extends StatefulWidget {
   final HelpArticle? helpArticle;
-  const HelpArticleDetailPage({Key? key, this.helpArticle}) : super(key: key);
+  const HelpArticleDetailPage({super.key, this.helpArticle});
 
   @override
   State<HelpArticleDetailPage> createState() => _HelpArticleDetailPageState();

@@ -2,10 +2,10 @@ name: bytedesk_kefu_example
 description: Demonstrates how to use the bytedesk_kefu plugin.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: ">=3.0.5 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -16,18 +16,24 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
+  # 状态管理：# Localization https://github.com/dart-lang/intl
+  intl: ^0.19.0
   # https://github.com/jonataslaw/getx/blob/master/README.zh-cn.md
   # 通用框架：国际化、状态管理、路由管理、主题管理 https://pub.dev/packages/get/install
-  get: ^4.6.5
+  get: ^4.6.6
   # 事件通知总线
   # https://pub.dev/packages/event_bus
   event_bus: ^2.0.0
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.2.2
+  fluttertoast: ^8.2.4
   # 消息设置switch https://pub.dev/packages/list_tile_switch
   list_tile_switch: ^1.0.0
-  # 
+  # 新消息提示按钮 https://pub.dev/packages/floating_chat_button/install
+  floating_chat_button: ^1.0.1
+  #
 
   bytedesk_kefu:
     # When depending on this package from a real application you should use:
@@ -52,14 +58,13 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

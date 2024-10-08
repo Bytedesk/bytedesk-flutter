@@ -6,29 +6,24 @@ import 'package:bytedesk_kefu_example/example.dart';
 import 'package:get/get.dart';
 // import 'package:overlay_support/overlay_support.dart';
 import 'package:flutter/material.dart';
+
+import 'l10n/translations.dart';
 // import 'package:vibration/vibration.dart';
 // import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   // runApp(const OverlaySupport(child: MyApp()));
-  //
   runApp(const MyApp());
 
-  // 参考文档：https://github.com/Bytedesk/bytedesk-flutter
-  // 管理后台：https://www.bytedesk.com/admin
-  // appkey和subDomain请替换为真实值
-  // 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
-  String appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
-  // 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
-  String subDomain = "vip";
+  // 第二步：初始化
+  // 获取企业uid，登录后台->客服->渠道->flutter
+  // http://www.weiyuai.cn/admin/cs/channel
+  String orgUid = "df_org_uid";
   // 第一步：初始化
-  BytedeskKefu.init(appKey, subDomain);
-  // 注：如果需要多平台统一用户（用于同步聊天记录等），可使用下列接口，其中：username只能包含数字或字母，不能含有汉字和特殊字符等，nickname可以使用汉字
-  // 注：如需切换用户，请首先执行BytedeskKefu.logout()
-  // BytedeskKefu.initWithUsernameAndNicknameAndAvatar('myflutterusername', '我是美女', 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png', _appKey, _subDomain);
-  // BytedeskKefu.initWithUsername('myflutterusername', _appKey, _subDomain); // 其中：username为自定义用户名，可与开发者所在用户系统对接
-  // 如果还需要自定义昵称/头像，可以使用 initWithUsernameAndNickname或initWithUsernameAndNicknameAndAvatar，
-  // 具体参数可以参考 bytedesk_kefu/bytedesk_kefu.dart 文件
+  BytedeskKefu.init(orgUid);
+  // 注：如果需要多平台统一用户（用于同步聊天记录等），可使用:
+  // BytedeskKefu.initWithUidAndNicknameAndAvatar(orgUid, 'myflutteruid', '我是美女', 'https://bytedesk.oss-cn-shenzhen.aliyuncs.com/avatars/girl.png');
+  // BytedeskKefu.initWithUid(orgUid, 'myflutteruid'); // 其中：uid为自定义uid，可与开发者所在用户系统对接，用于多用户切换
 }
 
 class MyApp extends StatefulWidget {
@@ -59,6 +54,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       key: _appKey,
       debugShowCheckedModeBanner: false, // 去除右上角debug的标签
       home: const ExamplePage(),
+      translations: AppTranslations(),
+      supportedLocales: AppTranslations.supportedLocales,
+      locale: AppTranslations.fallbackLocale,
+      fallbackLocale: AppTranslations.fallbackLocale,
+      localizationsDelegates: AppTranslations.localizationsDelegates,
       builder: (context, widget) {
         if (_checkSize) {
           final size = Get.size;

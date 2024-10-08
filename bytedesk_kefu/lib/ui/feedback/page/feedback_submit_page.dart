@@ -16,7 +16,7 @@ import 'package:image_picker/image_picker.dart';
 
 class FeedbackSubmitPage extends StatefulWidget {
   final HelpCategory? helpCategory;
-  const FeedbackSubmitPage({Key? key, this.helpCategory}) : super(key: key);
+  const FeedbackSubmitPage({super.key, this.helpCategory});
 
   @override
   State<FeedbackSubmitPage> createState() => _FeedbackSubmitPageState();

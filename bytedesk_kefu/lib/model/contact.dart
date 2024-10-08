@@ -1,5 +1,4 @@
 // import 'package:equatable/equatable.dart';
-// import 'package:azlistview/azlistview.dart';
 
 class Contact {
   // extends ISuspensionBean

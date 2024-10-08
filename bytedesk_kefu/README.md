@@ -1,7 +1,6 @@
 # bytedesk helpdesk system
 
-- [萝卜丝-智能客服-中文文档](https://git.oschina.net/270580156/bytedesk-flutter)
-- [Push](https://pub.dev/packages/bytedesk_push)
+- [萝卜丝->请切换此分支](https://gitee.com/270580156/bytedesk-flutter/tree/luobosi/)
 
 bytedesk flutter helpdesk sdk
 
@@ -32,12 +31,11 @@ bytedesk flutter helpdesk sdk
 
 ```dart
 //
-bytedesk_kefu: ^1.6.4
+bytedesk_kefu: ^1.6.0
 //
 assets:
     - assets/audio/
     - assets/images/chat/
-    - assets/images/common/
     - assets/images/feedback/
 ```
 
@@ -71,12 +69,11 @@ Add the following Android permissions to the **AndroidManifest.xml** file, locat
 ### Second Step：Login
 
 ```dart
-// appkey和subDomain请替换为真实值
-// 获取appkey，登录后台->渠道管理->Flutter->添加应用->获取appkey
-String _appKey = '81f427ea-4467-4c7c-b0cd-5c0e4b51456f';
-// 获取subDomain，也即企业号：登录后台->客服管理->客服账号->企业号
-String _subDomain = "vip";
-BytedeskKefu.init(_appKey, _subDomain);
+// 获取企业uid，登录后台->客服->渠道->flutter
+// http://www.weiyuai.cn/admin/cs/channel
+String orgUid = "df_org_uid";
+// 第一步：初始化
+BytedeskKefu.init(orgUid);
 ```
 
 ### Third Step：Contact
@@ -91,7 +88,7 @@ BytedeskKefu.startWorkGroupChat(context, workGroupWid, "title");
 | :---------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
 |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/home.jpeg?raw=true" width="250">  |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot1.jpeg?raw=true" width="250">   |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot2.jpeg?raw=true" width="250">   |
 |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/chat.png?raw=true" width="250">   |   <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/shop.png?raw=true" width="250">    | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/postscript.png?raw=true" width="250"> |
-| <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/feedback.png?raw=true" width="250"> | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/faq.png?raw=true" width="250"> |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/notice.jpeg?raw=true" width="250"> |
+| <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/status.jpeg?raw=true" width="250"> | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/userinfo.jpeg?raw=true" width="250"> |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/notice.jpeg?raw=true" width="250"> |
 
 ### Change UI
 
@@ -104,21 +101,46 @@ bytedesk_kefu:
     path: ./vendors/bytedesk_kefu
 ```
 
-### Support
+## 对话SDK
 
-- [官网kefux.com](https://www.kefux.com/)
-- QQ 3Group: 825257535
-- Follow Us：
-- <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/luobosi_mp.png?raw=true" width="250">
-
-## Other
-
-- [Flutter Push SDK](https://pub.dev/packages/bytedesk_push)
-- [Flutter SDK](https://github.com/bytedesk/bytedesk-flutter)
-- [UniApp SDK](https://github.com/bytedesk/bytedesk-uniapp)
-- [iOS SDK](https://github.com/bytedesk/bytedesk-ios)
-- [Android SDK](https://github.com/bytedesk/bytedesk-android)
+<!-- - [iOS-oc](./visitor/oc)
+- [iOS-swift](./visitor/swift)
+- [Android](./visitor/android)
+- [Flutter](./visitor/flutter)
+- [React](./visitor/react)
+- [React-native](./visitor/react-native)
+- [UniApp](./visitor/uniapp)
+- [Web](./visitor/web) -->
+<!-- - [iOS-oc](https://github.com/Bytedesk/bytedesk-oc) -->
+<!-- - [React-native](https://github.com/bytedesk/bytedesk-react-native) -->
+<!-- - [Vue](https://github.com/bytedesk/bytedesk-vue) -->
+<!-- - [Browser-Extension](https://github.com/Bytedesk/bytedesk-browser-extention) -->
+<!-- - [Vscode-plugin](https://github.com/bytedesk/bytedesk-vscode-plugin) -->
+- [iOS-swift](https://github.com/Bytedesk/bytedesk-swift)
+- [Android](https://github.com/bytedesk/bytedesk-android)
+- [Flutter](https://github.com/bytedesk/bytedesk-flutter)
+- [React](https://github.com/bytedesk/bytedesk-react)
+- [UniApp](https://github.com/bytedesk/bytedesk-uniapp)
 - [Web](https://github.com/bytedesk/bytedesk-web)
-- [微信公众号/小程序接口](https://github.com/bytedesk/bytedesk-wechat)
-- [服务器端接口](https://github.com/bytedesk/bytedesk-server)
-- [机器人](https://github.com/bytedesk/bytedesk-chatbot)
+
+## 客户端
+
+- [Windows](https://www.weiyuai.cn/download.html)
+- [Mac](https://www.weiyuai.cn/download.html)
+- [Linux](https://www.weiyuai.cn/download.html)
+- [Android](https://www.weiyuai.cn/download.html)
+- [IOS](https://www.weiyuai.cn/download.html)
+
+## 技术栈
+
+<!-- - [sofaboot](https://github.com/sofastack/sofa-boot/blob/master/README_ZH.md) for im server 基于金融级云原生架构-->
+- [springboot-3.x for 后端](https://github.com/Bytedesk/bytedesk)
+- [python for ai](https://github.com/Bytedesk/bytedesk-ai)
+- [react for web前端](https://github.com/Bytedesk/bytedesk-react)
+- [flutter for 移动客户端(ios&android)](https://github.com/Bytedesk/bytedesk-mobile)
+- [electron for 桌面客户端(windows&mac&linux)](https://github.com/Bytedesk/bytedesk-desktop)
+
+## 联系
+
+- [Email](mailto:270580156@qq.com)
+- [微信](./images/wechat.png)

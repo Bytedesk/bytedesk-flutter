@@ -1,317 +1,179 @@
-import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
-import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
+/*
+ * @Author: jackning 270580156@qq.com
+ * @Date: 2023-08-01 14:26:10
+ * @LastEditors: jackning 270580156@qq.com
+ * @LastEditTime: 2024-10-05 17:32:52
+ * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
+ *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
+ *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
+ *  仅支持企业内部员工自用，严禁私自用于销售、二次销售或者部署SaaS方式销售 
+ *  Business Source License 1.1: https://github.com/Bytedesk/bytedesk/blob/main/LICENSE 
+ *  contact: 270580156@qq.com 
+ *  联系：270580156@qq.com
+ * Copyright (c) 2024 by bytedesk.com, All Rights Reserved. 
+ */
 import 'package:equatable/equatable.dart';
-import 'package:sp_util/sp_util.dart';
+import 'user_protobuf.dart';
+import '../protobuf/message.pb.dart' as protomsg;
 
 class Thread extends Equatable {
   //
-  final String? tid;
-  final String? topic;
-  final String? wid;
-  final String? uid;
-  final String? nickname;
-  final String? avatar;
-  final String? content;
-  final String? timestamp;
-  final int? unreadCount;
-  final String? type;
+  String? uid;
+  String? topic;
+  String? content;
+  String? type;
+  String? status;
   //
-  final bool? current;
+  bool? top;
+  bool? unread;
+  int? unreadCount;
+  bool? mute;
+  int? star;
+  bool? folded;
   //
-  final bool? top;
-  final bool? topVisitor;
+  String? client;
+  String? extra;
   //
-  final bool? nodisturb;
-  final bool? nodisturbVisitor;
+  UserProtobuf? user;
+  String? updatedAt;
   //
-  final bool? unread;
-  final bool? unreadVisitor;
-  //
-  final String? client;
-  final String? currentUid;
-
-  const Thread(
-      {this.tid,
+  Thread(
+      {this.uid,
       this.topic,
-      this.wid,
-      this.uid,
-      this.nickname,
-      this.avatar,
       this.content,
-      this.timestamp,
-      this.unreadCount,
       this.type,
-      this.current,
+      this.status,
+      //
       this.top,
-      this.topVisitor,
-      this.nodisturb,
-      this.nodisturbVisitor,
       this.unread,
-      this.unreadVisitor,
+      this.unreadCount,
+      this.mute,
+      this.star,
+      this.folded,
+      //
       this.client,
-      this.currentUid});
+      this.extra,
+      //
+      this.user,
+      // this.agent,
+      //
+      this.updatedAt})
+      : super();
 
-  static Thread fromWorkGroupJson(dynamic json) {
+  //
+  static Thread fromJson(dynamic json) {
     return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        wid: json['workGroup']['wid'],
-        nickname: json['workGroup']['nickname'],
-        avatar: json['workGroup']['avatar'],
-        content: json['content'],
-        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
+      uid: json['uid'],
+      topic: json['topic'],
+      content: json['content'],
+      type: json['type'],
+      status: json['status'],
+      //
+      top: json['top'],
+      unread: json['unread'],
+      unreadCount: json['unreadCount'],
+      mute: json['mute'],
+      star: json['star'],
+      folded: json['folded'],
+      //
+      client: json['client'],
+      extra: json['extra'],
+      //
+      user: UserProtobuf.fromJson(json['user']),
+      //
+      updatedAt: json['updatedAt'],
+    );
   }
 
-  static Thread fromWorkGroupJson2(dynamic json) {
-    if (json['type'] == BytedeskConstants.THREAD_TYPE_WORKGROUP) {
-      return Thread(
-          tid: json['tid'],
-          topic: json['topic'],
-          wid: json['workGroup']['wid'],
-          nickname: json['workGroup']['nickname'],
-          avatar: json['workGroup']['avatar'],
-          content: json['content'],
-          timestamp: json['timestamp'],
-          unreadCount: json['unreadCount'],
-          type: json['type'],
-          current: json['current'],
-          client: json['client'],
-          top: json['top'],
-          topVisitor: json['topVisitor'],
-          nodisturb: json['nodisturb'],
-          nodisturbVisitor: json['nodisturbVisitor'],
-          unread: json['unread'],
-          unreadVisitor: json['unreadVisitor']);
-    } else if (json['type'] == BytedeskConstants.THREAD_TYPE_APPOINTED) {
-      return Thread(
-          tid: json['tid'],
-          topic: json['topic'],
-          wid: json['agent']['uid'],
-          nickname: json['agent']['nickname'],
-          avatar: json['agent']['avatar'],
-          content: json['content'],
-          timestamp: json['timestamp'],
-          unreadCount: json['unreadCount'],
-          type: json['type'],
-          current: json['current'],
-          client: json['client'],
-          top: json['top'],
-          topVisitor: json['topVisitor'],
-          nodisturb: json['nodisturb'],
-          nodisturbVisitor: json['nodisturbVisitor'],
-          unread: json['unread'],
-          unreadVisitor: json['unreadVisitor']);
-    } else if (json['type'] == BytedeskConstants.THREAD_TYPE_CHANNEL) {
-      return Thread(
-          tid: json['tid'],
-          topic: json['topic'],
-          wid: json['channel']['cid'],
-          nickname: json['channel']['nickname'],
-          avatar: json['channel']['avatar'],
-          content: json['content'],
-          timestamp: json['timestamp'],
-          unreadCount: json['unreadCount'],
-          type: json['type'],
-          current: json['current'],
-          client: json['client'],
-          top: json['top'],
-          topVisitor: json['topVisitor'],
-          nodisturb: json['nodisturb'],
-          nodisturbVisitor: json['nodisturbVisitor'],
-          unread: json['unread'],
-          unreadVisitor: json['unreadVisitor']);
-    }
-    // 其他类型
+  //
+  static Thread fromProto(protomsg.Message messageProto) {
     return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        wid: json['admin']['uid'],
-        nickname: json['admin']['nickname'],
-        avatar: json['admin']['avatar'],
-        content: json['content'],
-        timestamp: json['timestamp'],
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
+      uid: messageProto.thread.uid,
+      topic: messageProto.thread.topic,
+      content: messageProto.content,
+      type: messageProto.thread.type,
+      status: messageProto.thread.status,
+      unreadCount: 1,
+      //
+      client: messageProto.client,
+      extra: messageProto.thread.extra,
+      //
+      user: UserProtobuf.fromThreadProto(messageProto),
+      updatedAt: messageProto.createdAt,
+    );
   }
 
-  static Thread fromHistoryJson(dynamic json) {
+  //
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'uid': uid,
+        'topic': topic,
+        'content': content,
+        'type': type,
+        'status': status,
+        //
+        'top': top,
+        'unread': unread,
+        'unreadCount': unreadCount,
+        'mute': mute,
+
+        'star': star,
+        'folded': folded,
+        //
+        'client': client,
+        'extra': extra,
+        //
+        'user': user?.toJson(),
+        // 'agent': agent,
+        //
+        'updatedAt': updatedAt,
+      };
+
+  //
+  Map<String, dynamic> toMap(String currentUid) => <String, dynamic>{
+        'uid': uid,
+        'type': type,
+        'content': content,
+        'status': status,
+        'createdAt': updatedAt,
+        'client': client,
+        'extra': extra,
+        //
+        'topic': topic,
+        //
+        'userUid': user?.uid,
+        'userNickname': user?.nickname,
+        'userAvatar': user?.avatar,
+        //
+        'currentUid': currentUid
+      };
+
+  //
+  static Thread init() {
     return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        // wid: json['wid'],
-        nickname: json['nickname'],
-        avatar: json['avatar'],
-        content: json['content'],
-        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
+      uid: '',
+      topic: '',
+      content: '',
+      type: '',
+      status: '',
+      //
+      top: false,
+      unread: false,
+      unreadCount: 0,
+      mute: false,
+      star: 0,
+      folded: false,
+      //
+      client: '',
+      extra: '',
+      //
+      user: UserProtobuf.init(),
+      // agent: '',
+      //
+      updatedAt: '',
+    );
   }
 
-  static Thread fromVisitorJson(dynamic json) {
-    return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        uid: json['visitor']['uid'],
-        // nickname: json['visitor']['nickname'],
-        nickname: SpUtil.getString(BytedeskConstants.nickname)!,
-        // avatar: json['visitor']['avatar'],
-        avatar: SpUtil.getString(BytedeskConstants.avatar)!,
-        content: json['content'],
-        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
-  }
-
-  static Thread fromContactJson(dynamic json) {
-    return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        nickname: json['contact']['nickname'],
-        avatar: json['contact']['avatar'],
-        content: json['content'],
-        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
-  }
-
-  static Thread fromGroupJson(dynamic json) {
-    return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        nickname: json['group']['nickname'],
-        avatar: json['group']['avatar'],
-        content: json['content'],
-        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
-  }
-
-  static Thread fromFileHelperJson(dynamic json) {
-    return Thread(
-        tid: json['tid'],
-        topic: json['topic'],
-        uid: json['visitor']['uid'],
-        nickname: json['visitor']['nickname'],
-        avatar: json['visitor']['avatar'],
-        content: json['content'],
-        timestamp: BytedeskUtils.getTimeDuration(json['timestamp']),
-        unreadCount: json['unreadCount'],
-        type: json['type'],
-        current: json['current'],
-        client: json['client'],
-        top: json['top'],
-        topVisitor: json['topVisitor'],
-        nodisturb: json['nodisturb'],
-        nodisturbVisitor: json['nodisturbVisitor'],
-        unread: json['unread'],
-        unreadVisitor: json['unreadVisitor']);
-  }
-
-  static Thread fromUnreadJson(dynamic json) {
-    return Thread(
-        tid: json['tid'],
-        topic: json['topic']);
-  }
-
+  //
   @override
-  List<Object> get props => [topic!];
-
-  // Convert a Thread into a Map. The keys must correspond to the names of the
-  // columns in the database.
-  Map<String, dynamic> toMap() {
-    return {
-      'tid': tid,
-      'topic': topic,
-      'wid': wid,
-      'uid': uid,
-      'nickname': nickname,
-      'avatar': avatar,
-      'content': content,
-      'timestamp': timestamp,
-      'unreadCount': unreadCount,
-      'type': type,
-      'currentUid': currentUid,
-      'client': client,
-      'current': current,
-      'top': top,
-      'topVisitor': topVisitor,
-      'nodisturb': nodisturb,
-      'nodisturbVisitor': nodisturbVisitor,
-      'unread': unread,
-      'unreadVisitor': unreadVisitor
-    };
-  }
-
-  // Thread.fromMap(Map<String, dynamic> map) {
-  //   tid = map['tid'];
-  //   topic = map['topic'];
-  //   wid = map['wid'];
-  //   uid = map['uid'];
-  //   nickname = map['nickname'];
-  //   avatar = map['avatar'];
-  //   content = map['content'];
-  //   timestamp = map['timestamp'];
-  //   unreadCount = map['unreadCount'];
-  //   type = map['type'];
-  //   current = map['current'];
-  //   client = map['client'];
-  //   top = map['top'];
-  //   topVisitor = map['topVisitor'];
-  //   nodisturb = map['nodisturb'];
-  //   nodisturbVisitor = map['nodisturbVisitor'];
-  //   unread = map['unread'];
-  //   unreadVisitor = map['unreadVisitor'];
-  //   currentUid = map['currentUid'];
-  //   client = map['client'];
-  // }
+  List<Object> get props => [uid!];
 }

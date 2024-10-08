@@ -15,7 +15,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class HelpArticleListPage extends StatefulWidget {
   //
   final HelpCategory? helpCategory;
-  const HelpArticleListPage({Key? key, this.helpCategory}) : super(key: key);
+  const HelpArticleListPage({super.key, this.helpCategory});
 
   @override
   State<HelpArticleListPage> createState() => _HelpArticleListPageState();

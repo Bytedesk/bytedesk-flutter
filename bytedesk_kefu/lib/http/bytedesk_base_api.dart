@@ -1,13 +1,25 @@
+/*
+ * @Author: jackning 270580156@qq.com
+ * @Date: 2022-03-10 14:55:08
+ * @LastEditors: jackning 270580156@qq.com
+ * @LastEditTime: 2024-10-05 17:40:58
+ * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
+ *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
+ *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
+ *  仅支持企业内部员工自用，严禁私自用于销售、二次销售或者部署SaaS方式销售 
+ *  Business Source License 1.1: https://github.com/Bytedesk/bytedesk/blob/main/LICENSE 
+ *  contact: 270580156@qq.com 
+ *  技术/商务联系：270580156@qq.com
+ * Copyright (c) 2024 by bytedesk.com, All Rights Reserved. 
+ */
 import 'dart:io';
 
-import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
-import 'package:sp_util/sp_util.dart';
 import 'package:http/http.dart' as http;
 
 class BytedeskBaseHttpApi {
   //
-  String client = BytedeskUtils.getClient();
+  String client = BytedeskUtils.client();
   String baseUrl = BytedeskUtils.getBaseUrl();
   //
   final http.Client httpClient = http.Client();
@@ -15,10 +27,10 @@ class BytedeskBaseHttpApi {
   BytedeskBaseHttpApi();
   //
   Map<String, String> getHeaders() {
-    String? accessToken = SpUtil.getString(BytedeskConstants.accessToken);
+    // String? accessToken = SpUtil.getString(BytedeskConstants.accessToken);
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $accessToken"
+      HttpHeaders.authorizationHeader: "Bearer accessToken"
     };
     return headers;
   }

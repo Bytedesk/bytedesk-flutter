@@ -185,13 +185,16 @@ StyledElement parseStyledElement(
       break;
     case "font":
       styledElement.style = Style(
-        color: element.attributes['color'] != null ?
-          element.attributes['color']!.startsWith("#") ?
-            ExpressionMapping.stringToColor(element.attributes['color']!) :
-            ExpressionMapping.namedColorToColor(element.attributes['color']!) :
-          null,
+        color: element.attributes['color'] != null
+            ? element.attributes['color']!.startsWith("#")
+                ? ExpressionMapping.stringToColor(element.attributes['color']!)
+                : ExpressionMapping.namedColorToColor(
+                    element.attributes['color']!)
+            : null,
         fontFamily: element.attributes['face']?.split(",").first,
-        fontSize: element.attributes['size'] != null ? numberToFontSize(element.attributes['size']!) : null,
+        fontSize: element.attributes['pageSize'] != null
+            ? numberToFontSize(element.attributes['pageSize']!)
+            : null,
       );
       break;
     case "h1":

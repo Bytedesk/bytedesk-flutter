@@ -1,6 +1,5 @@
-import 'dart:convert';
 
-import 'package:bytedesk_kefu/bytedesk_kefu.dart';
+// import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/ui/chat/page/video_play_page.dart';
 // import 'package:bytedesk_kefu/ui/widget/bubble.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/services.dart';
 // import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:flutter_html/flutter_html.dart';
+import '../../../bytedesk_kefu.dart';
 import '../../widget/pop_up_menu.dart';
 import './flutter_html/flutter_html.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
@@ -49,9 +49,7 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 头像组件
-    return message!.isSend == 1
-        ? _buildSendWidget(context)
-        : _buildReceiveWidget(context);
+    return message!.isSend() ? _buildSendWidget(context) : _buildReceiveWidget(context);
   }
 
   // 发送消息widget
@@ -61,9 +59,9 @@ class MessageWidget extends StatelessWidget {
     String status = '';
     if (message!.status == BytedeskConstants.MESSAGE_STATUS_SENDING) {
       status = '发送中';
-    } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_STORED) {
+    } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_SUCCESS) {
       status = ''; // 发送成功
-    } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_RECEIVED) {
+    } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_DELIVERED) {
       status = '送达';
     } else if (message!.status == BytedeskConstants.MESSAGE_STATUS_READ) {
       status = '已读';
@@ -120,17 +118,6 @@ class MessageWidget extends StatelessWidget {
                               child: _buildSendContent(context, message!),
                             ),
                           )
-                          // FIXME: 升级2.12兼容null-safty之后，无法显示长按气泡
-                          // FLBubble(
-                          //     bubbleFrom: FLBubbleFrom.right,
-                          //     backgroundColor:
-                          //         const Color.fromRGBO(160, 231, 90, 1),
-                          //     child: Container(
-                          //       constraints: BoxConstraints(maxWidth: tWidth),
-                          //       padding: const EdgeInsets.symmetric(
-                          //           horizontal: 2, vertical: 2),
-                          //       child: _buildSendMenuWidget(context, message!),
-                          //     )),
                         ],
                       ),
                       Container(
@@ -194,35 +181,13 @@ class MessageWidget extends StatelessWidget {
                       String value = item.name;
                       if (value == 'copy') {
                         /// 把文本复制进入粘贴板
-                        if (message.type ==
-                            BytedeskConstants.MESSAGE_TYPE_TEXT) {
-                          Clipboard.setData(
+                        Clipboard.setData(
                               ClipboardData(text: message.content!));
-                        } else if (message.type ==
-                            BytedeskConstants.MESSAGE_TYPE_IMAGE) {
-                          Clipboard.setData(
-                              ClipboardData(text: message.imageUrl!));
-                        } else if (message.type ==
-                            BytedeskConstants.MESSAGE_TYPE_VIDEO) {
-                          Clipboard.setData(
-                              ClipboardData(text: message.videoUrl!));
-                        } else if (message.type ==
-                            BytedeskConstants.MESSAGE_TYPE_FILE) {
-                          Clipboard.setData(
-                              ClipboardData(text: message.fileUrl!));
-                        } else if (message.type ==
-                            BytedeskConstants.MESSAGE_TYPE_VOICE) {
-                          Clipboard.setData(
-                              ClipboardData(text: message.voiceUrl!));
-                        } else {
-                          Clipboard.setData(
-                              ClipboardData(text: message.content!));
-                        }
                         // Toast
                         Fluttertoast.showToast(msg: '复制成功',);
                       } else if (value == 'delete') {
                         bytedeskEventBus
-                            .fire(DeleteMessageEventBus(message.mid!));
+                            .fire(DeleteMessageEventBus(message.uid!));
                       } else if (value == 'recall') {
                         // TODO: 消息撤回, 限制在5分钟之内允许撤回
                       }
@@ -238,6 +203,7 @@ class MessageWidget extends StatelessWidget {
   Widget _buildSendContent(BuildContext context, Message message) {
     //
     if (message.type == BytedeskConstants.MESSAGE_TYPE_TEXT) {
+      // TODO: 国际化
       return Text(
         //SelectableText(
         message.content ?? '',
@@ -253,9 +219,9 @@ class MessageWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => PhotoViewWrapper(
-                imageUrl: message.imageUrl!,
+                imageUrl: message.content!,
                 imageProvider: NetworkImage(
-                  message.imageUrl!,
+                  message.content!,
                 ),
                 loadingBuilder: (context, event) {
                   if (event == null) {
@@ -277,83 +243,85 @@ class MessageWidget extends StatelessWidget {
         child: SizedBox(
           width: 100,
           child: CachedNetworkImage(
-            imageUrl: message.imageUrl!,
+            imageUrl: message.content!,
             // placeholder: (context, url) => CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
         ),
       );
-    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_COMMODITY) {
-      // 商品信息, TODO: add send button
-      final commodityJson = json.decode(message.content!);
-      String title = commodityJson['title'].toString();
-      String content = commodityJson['content'].toString();
-      String price = commodityJson['price'].toString();
-      String imageUrl = commodityJson['imageUrl'].toString();
-      return InkWell(
-        onTap: () {
-          // debugPrint('message!.type ${message!.type}, message!.content ${message!.content}');
-          if (customCallback != null) {
-            customCallback!(message.content!);
-          } else {
-            debugPrint('customCallback is null');
-          }
-        },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: 90.0,
-              height: 90.0,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-              ),
-            ),
-            // Gaps.hGap8,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Gaps.vGap10,
-                  Container(
-                    margin: const EdgeInsets.only(left: 8),
-                    child: Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, left: 8),
-                    child: Text(
-                      '¥$price',
-                      style: const TextStyle(fontSize: 12, color: Colors.red),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, left: 8),
-                    child: Text(
-                      content,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                  // Gaps.vGap4,
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+    }
+    //  else if (message.type == BytedeskConstants.MESSAGE_TYPE_COMMODITY) {
+    //   // 商品信息, TODO: add send button
+    //   final commodityJson = json.decode(message.content!);
+    //   String title = commodityJson['title'].toString();
+    //   String content = commodityJson['content'].toString();
+    //   String price = commodityJson['price'].toString();
+    //   String imageUrl = commodityJson['imageUrl'].toString();
+    //   return InkWell(
+    //     onTap: () {
+    //       // debugPrint('message!.type ${message!.type}, message!.content ${message!.content}');
+    //       if (customCallback != null) {
+    //         customCallback!(message.content!);
+    //       } else {
+    //         debugPrint('customCallback is null');
+    //       }
+    //     },
+    //     child: Row(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: <Widget>[
+    //         SizedBox(
+    //           width: 90.0,
+    //           height: 90.0,
+    //           child: CachedNetworkImage(
+    //             imageUrl: imageUrl,
+    //           ),
+    //         ),
+    //         // Gaps.hGap8,
+    //         Expanded(
+    //           child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: <Widget>[
+    //               // Gaps.vGap10,
+    //               Container(
+    //                 margin: const EdgeInsets.only(left: 8),
+    //                 child: Text(
+    //                   title,
+    //                   maxLines: 1,
+    //                   overflow: TextOverflow.ellipsis,
+    //                 ),
+    //               ),
+    //               Container(
+    //                 margin: const EdgeInsets.only(top: 10, left: 8),
+    //                 child: Text(
+    //                   '¥$price',
+    //                   style: const TextStyle(fontSize: 12, color: Colors.red),
+    //                   maxLines: 1,
+    //                   overflow: TextOverflow.ellipsis,
+    //                 ),
+    //               ),
+    //               Container(
+    //                 margin: const EdgeInsets.only(top: 10, left: 8),
+    //                 child: Text(
+    //                   content,
+    //                   style: const TextStyle(fontSize: 12, color: Colors.grey),
+    //                   maxLines: 1,
+    //                   overflow: TextOverflow.ellipsis,
+    //                 ),
+    //               )
+    //               // Gaps.vGap4,
+    //             ],
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
+     else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
           debugPrint('play video');
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return VideoPlayPage(videoUrl: message.videoUrl);
+            return VideoPlayPage(videoUrl: message.content);
           }));
         },
         child: SizedBox(
@@ -386,14 +354,9 @@ class MessageWidget extends StatelessWidget {
           // 时间戳
           _buildTimestampWidget(),
           // 消息
-          (message!.type!.startsWith(
-                      BytedeskConstants.MESSAGE_TYPE_NOTIFICATION) &&
-                  message!.type !=
-                      BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_THREAD &&
-                  message!.type !=
-                      BytedeskConstants.MESSAGE_TYPE_NOTIFICATION_PREVIEW)
-              ? _buildSystemMessageWidget()
-              : Row(
+          message!.isSystem()? _buildSystemMessageWidget()
+              : 
+              Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // 头像
@@ -409,7 +372,7 @@ class MessageWidget extends StatelessWidget {
                           // color: Colors.grey,
                           margin: const EdgeInsets.only(bottom: 5),
                           child: SelectableText(
-                            message!.nickname!,
+                            message!.user!.nickname!,
                             style: const TextStyle(fontSize: 10),
                           ),
                         ),
@@ -480,9 +443,9 @@ class MessageWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => PhotoViewWrapper(
-                imageUrl: message.imageUrl!,
+                imageUrl: message.content!,
                 imageProvider: NetworkImage(
-                  message.imageUrl!,
+                  message.content!,
                 ),
                 loadingBuilder: (context, event) {
                   if (event == null) {
@@ -504,7 +467,7 @@ class MessageWidget extends StatelessWidget {
         child: SizedBox(
           width: 100,
           child: CachedNetworkImage(
-            imageUrl: message.imageUrl!,
+            imageUrl: message.content!,
             // placeholder: (context, url) => CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
@@ -534,7 +497,7 @@ class MessageWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => PhotoViewWrapper(
-                      imageUrl: message.imageUrl!,
+                      imageUrl: message.content!,
                       imageProvider: NetworkImage(
                         src!,
                       ),
@@ -560,45 +523,45 @@ class MessageWidget extends StatelessWidget {
               },
             ),
           ),
-          Visibility(
-              visible: message.answers != null && message.answers!.isNotEmpty,
-              // visible: false,
-              child: ListView.builder(
-                // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
-                shrinkWrap: true,
-                // 禁用ListView滑动，使用外层的ScrollView滑动
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(0),
-                itemCount:
-                    message.answers == null ? 0 : message.answers!.length,
-                itemBuilder: (_, index) {
-                  //
-                  var answer = message.answers![index];
-                  // return Text(answer.question!);
-                  return DecoratedBox(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        bottom: Divider.createBorderSide(context, width: 0.8),
-                      )),
-                      child: Container(
-                        margin:
-                            const EdgeInsets.only(top: 6, left: 8, bottom: 8),
-                        // color: Colors.pink,
-                        child: InkWell(
-                            child: Text(
-                              answer.question!,
-                              style: const TextStyle(color: Colors.blue),
-                            ),
-                            onTap: () => {
-                                  // debugPrint('object:' + answer.question),
-                                  bytedeskEventBus.fire(QueryAnswerEventBus(
-                                      answer.aid!,
-                                      answer.question!,
-                                      answer.answer!))
-                                }),
-                      ));
-                },
-              )),
+          // Visibility(
+          //     visible: message.answers != null && message.answers!.isNotEmpty,
+          //     // visible: false,
+          //     child: ListView.builder(
+          //       // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
+          //       shrinkWrap: true,
+          //       // 禁用ListView滑动，使用外层的ScrollView滑动
+          //       physics: const NeverScrollableScrollPhysics(),
+          //       padding: const EdgeInsets.all(0),
+          //       itemCount:
+          //           message.answers == null ? 0 : message.answers!.length,
+          //       itemBuilder: (_, index) {
+          //         //
+          //         var answer = message.answers![index];
+          //         // return Text(answer.question!);
+          //         return DecoratedBox(
+          //             decoration: BoxDecoration(
+          //                 border: Border(
+          //               bottom: Divider.createBorderSide(context, width: 0.8),
+          //             )),
+          //             child: Container(
+          //               margin:
+          //                   const EdgeInsets.only(top: 6, left: 8, bottom: 8),
+          //               // color: Colors.pink,
+          //               child: InkWell(
+          //                   child: Text(
+          //                     answer.question!,
+          //                     style: const TextStyle(color: Colors.blue),
+          //                   ),
+          //                   onTap: () => {
+          //                         // debugPrint('object:' + answer.question),
+          //                         bytedeskEventBus.fire(QueryAnswerEventBus(
+          //                             answer.aid!,
+          //                             answer.question!,
+          //                             answer.answer!))
+          //                       }),
+          //             ));
+          //       },
+          //     )),
           Container(
             margin: const EdgeInsets.only(left: 10, top: 10),
             child: Row(
@@ -619,157 +582,159 @@ class MessageWidget extends StatelessWidget {
           )
         ],
       );
-    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_V2) {
-      return Column(
-        children: <Widget>[
-          SelectableText(
-            message.content ?? '',
-            textAlign: TextAlign.left,
-            // softWrap: true,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16.0,
-            ),
-          ),
-          Visibility(
-              visible:
-                  message.categories != null && message.categories!.isNotEmpty,
-              // visible: false,
-              child: ListView.builder(
-                // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
-                shrinkWrap: true,
-                // 禁用ListView滑动，使用外层的ScrollView滑动
-                physics: const NeverScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(0),
-                itemCount:
-                    message.categories == null ? 0 : message.categories!.length,
-                itemBuilder: (_, index) {
-                  //
-                  var category = message.categories![index];
-                  // return Text(answer.question!);
-                  return DecoratedBox(
-                      decoration: BoxDecoration(
-                          border: Border(
-                        bottom: Divider.createBorderSide(context, width: 0.8),
-                      )),
-                      child: Container(
-                        margin:
-                            const EdgeInsets.only(top: 6, left: 8, bottom: 8),
-                        // color: Colors.pink,
-                        child: InkWell(
-                            child: Text(
-                              category.name!,
-                              style: const TextStyle(color: Colors.blue),
-                            ),
-                            onTap: () => {
-                                  // BytedeskUtils.printLog(category.name),
-                                  bytedeskEventBus.fire(QueryCategoryEventBus(
-                                      category.cid!, category.name!))
-                                }),
-                      ));
-                },
-              )),
-          Container(
-            margin: const EdgeInsets.only(left: 10, top: 10),
-            child: Row(
-              children: [
-                const Text('没有找到答案？'),
-                GestureDetector(
-                  child: Text(
-                    '人工客服',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  onTap: () {
-                    debugPrint('请求人工客服');
-                    bytedeskEventBus.fire(RequestAgentThreadEventBus());
-                  },
-                )
-              ],
-            ),
-          )
-        ],
-      );
-    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT) {
-      return SelectableText(
-        message.content ?? '',
-        textAlign: TextAlign.left,
-        // softWrap: true,
-        style: const TextStyle(
-          color: Colors.black,
-          fontSize: 16.0,
-        ),
-      );
-    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_COMMODITY) {
-      // 商品信息, TODO: add send button
-      final commodityJson = json.decode(message.content!);
-      String title = commodityJson['title'].toString();
-      String content = commodityJson['content'].toString();
-      String price = commodityJson['price'].toString();
-      String imageUrl = commodityJson['imageUrl'].toString();
-      return InkWell(
-        onTap: () {
-          // debugPrint('message!.type ${message!.type}, message!.content ${message!.content}');
-          if (customCallback != null) {
-            customCallback!(message.content!);
-          } else {
-            debugPrint('customCallback is null');
-          }
-        },
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              width: 90.0,
-              height: 90.0,
-              child: CachedNetworkImage(
-                imageUrl: imageUrl,
-              ),
-            ),
-            // Gaps.hGap8,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Gaps.vGap10,
-                  Container(
-                    margin: const EdgeInsets.only(left: 8),
-                    child: Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, left: 8),
-                    child: Text(
-                      '¥$price',
-                      style: const TextStyle(fontSize: 12, color: Colors.red),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10, left: 8),
-                    child: Text(
-                      content,
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                  // Gaps.vGap4,
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    } else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+    }
+    //  else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_V2) {
+    //   return Column(
+    //     children: <Widget>[
+    //       SelectableText(
+    //         message.content ?? '',
+    //         textAlign: TextAlign.left,
+    //         // softWrap: true,
+    //         style: const TextStyle(
+    //           color: Colors.black,
+    //           fontSize: 16.0,
+    //         ),
+    //       ),
+    //       Visibility(
+    //           visible:
+    //               message.categories != null && message.categories!.isNotEmpty,
+    //           // visible: false,
+    //           child: ListView.builder(
+    //             // 如果滚动视图在滚动方向无界约束，那么shrinkWrap必须为true
+    //             shrinkWrap: true,
+    //             // 禁用ListView滑动，使用外层的ScrollView滑动
+    //             physics: const NeverScrollableScrollPhysics(),
+    //             padding: const EdgeInsets.all(0),
+    //             itemCount:
+    //                 message.categories == null ? 0 : message.categories!.length,
+    //             itemBuilder: (_, index) {
+    //               //
+    //               var category = message.categories![index];
+    //               // return Text(answer.question!);
+    //               return DecoratedBox(
+    //                   decoration: BoxDecoration(
+    //                       border: Border(
+    //                     bottom: Divider.createBorderSide(context, width: 0.8),
+    //                   )),
+    //                   child: Container(
+    //                     margin:
+    //                         const EdgeInsets.only(top: 6, left: 8, bottom: 8),
+    //                     // color: Colors.pink,
+    //                     child: InkWell(
+    //                         child: Text(
+    //                           category.name!,
+    //                           style: const TextStyle(color: Colors.blue),
+    //                         ),
+    //                         onTap: () => {
+    //                               // BytedeskUtils.printLog(category.name),
+    //                               bytedeskEventBus.fire(QueryCategoryEventBus(
+    //                                   category.cid!, category.name!))
+    //                             }),
+    //                   ));
+    //             },
+    //           )),
+    //       Container(
+    //         margin: const EdgeInsets.only(left: 10, top: 10),
+    //         child: Row(
+    //           children: [
+    //             const Text('没有找到答案？'),
+    //             GestureDetector(
+    //               child: Text(
+    //                 '人工客服',
+    //                 style: TextStyle(color: Theme.of(context).primaryColor),
+    //               ),
+    //               onTap: () {
+    //                 debugPrint('请求人工客服');
+    //                 bytedeskEventBus.fire(RequestAgentThreadEventBus());
+    //               },
+    //             )
+    //           ],
+    //         ),
+    //       )
+    //     ],
+    //   );
+    // } else if (message.type == BytedeskConstants.MESSAGE_TYPE_ROBOT_RESULT) {
+    //   return SelectableText(
+    //     message.content ?? '',
+    //     textAlign: TextAlign.left,
+    //     // softWrap: true,
+    //     style: const TextStyle(
+    //       color: Colors.black,
+    //       fontSize: 16.0,
+    //     ),
+    //   );
+    // } else if (message.type == BytedeskConstants.MESSAGE_TYPE_COMMODITY) {
+    //   // 商品信息, TODO: add send button
+    //   final commodityJson = json.decode(message.content!);
+    //   String title = commodityJson['title'].toString();
+    //   String content = commodityJson['content'].toString();
+    //   String price = commodityJson['price'].toString();
+    //   String imageUrl = commodityJson['imageUrl'].toString();
+    //   return InkWell(
+    //     onTap: () {
+    //       // debugPrint('message!.type ${message!.type}, message!.content ${message!.content}');
+    //       if (customCallback != null) {
+    //         customCallback!(message.content!);
+    //       } else {
+    //         debugPrint('customCallback is null');
+    //       }
+    //     },
+    //     child: Row(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: <Widget>[
+    //         SizedBox(
+    //           width: 90.0,
+    //           height: 90.0,
+    //           child: CachedNetworkImage(
+    //             imageUrl: imageUrl,
+    //           ),
+    //         ),
+    //         // Gaps.hGap8,
+    //         Expanded(
+    //           child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: <Widget>[
+    //               // Gaps.vGap10,
+    //               Container(
+    //                 margin: const EdgeInsets.only(left: 8),
+    //                 child: Text(
+    //                   title,
+    //                   maxLines: 1,
+    //                   overflow: TextOverflow.ellipsis,
+    //                 ),
+    //               ),
+    //               Container(
+    //                 margin: const EdgeInsets.only(top: 10, left: 8),
+    //                 child: Text(
+    //                   '¥$price',
+    //                   style: const TextStyle(fontSize: 12, color: Colors.red),
+    //                   maxLines: 1,
+    //                   overflow: TextOverflow.ellipsis,
+    //                 ),
+    //               ),
+    //               Container(
+    //                 margin: const EdgeInsets.only(top: 10, left: 8),
+    //                 child: Text(
+    //                   content,
+    //                   style: const TextStyle(fontSize: 12, color: Colors.grey),
+    //                   maxLines: 1,
+    //                   overflow: TextOverflow.ellipsis,
+    //                 ),
+    //               )
+    //               // Gaps.vGap4,
+    //             ],
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
+     else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
           debugPrint('play video');
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            return VideoPlayPage(videoUrl: message.videoUrl);
+            return VideoPlayPage(videoUrl: message.content);
           }));
         },
         child: SizedBox(
@@ -800,7 +765,7 @@ class MessageWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.only(bottom: 5, top: 5),
           child: Text(
-            message!.timestamp ?? '',
+            message!.createdAt ?? '',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 10.0),
           ),
@@ -817,7 +782,7 @@ class MessageWidget extends StatelessWidget {
         Container(
           padding: const EdgeInsets.only(bottom: 5, top: 5),
           child: Text(
-            message!.content ?? '',
+            message!.content ?? '', // TODO: 国际化
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 10.0),
           ),
@@ -832,7 +797,7 @@ class MessageWidget extends StatelessWidget {
       width: 35,
       height: 35,
       child: CachedNetworkImage(
-        imageUrl: message!.avatar ?? BytedeskConstants.DEFAULT_AVATA,
+        imageUrl: message!.user?.avatar ?? BytedeskConstants.DEFAULT_AVATA,
         errorWidget: (context, url, error) => const Icon(Icons.error),
       ),
     );

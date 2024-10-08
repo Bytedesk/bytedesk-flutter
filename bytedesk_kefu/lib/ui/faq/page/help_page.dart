@@ -13,7 +13,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class HelpPage extends StatefulWidget {
   final String? uid;
   final String? title;
-  const HelpPage({Key? key, @required this.uid, this.title}) : super(key: key);
+  const HelpPage({super.key, @required this.uid, this.title});
 
   @override
   State<HelpPage> createState() => _HelpPageState();

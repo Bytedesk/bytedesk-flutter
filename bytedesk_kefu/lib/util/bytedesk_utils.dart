@@ -1,9 +1,9 @@
 // ignore_for_file: unnecessary_null_comparison, constant_identifier_names, avoid_print
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:bytedesk_kefu/mqtt/bytedesk_mqtt.dart';
 import 'package:bytedesk_kefu/util/bytedesk_constants.dart';
 import 'package:sp_util/sp_util.dart';
 import 'package:flutter/foundation.dart';
@@ -23,6 +23,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 /// 保存文件或图片到本地
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:url_launcher/url_launcher.dart';
+
+import '../mqtt/bytedesk_mqtt.dart';
+import '../model/thread_protobuf.dart';
 
 class BytedeskUtils {
   //
@@ -64,43 +68,36 @@ class BytedeskUtils {
     }
   }
 
-  static String clientSchool() {
-    if (isWeb) {
-      return 'flutter_web_school';
-    } else if (isAndroid) {
-      return 'flutter_android_school';
-    } else if (isIOS) {
-      return 'flutter_ios_school';
-    } else if (isMacOS) {
-      return 'flutter_mac_school';
-    } else if (isWindows) {
-      return 'flutter_windows_school';
-    } else if (isLinux) {
-      return 'flutter_linux_school';
-    } else {
-      return 'flutter_web_school';
-    }
-  }
+  // static String clientSchool() {
+  //   if (isWeb) {
+  //     return 'flutter_web_school';
+  //   } else if (isAndroid) {
+  //     return 'flutter_android_school';
+  //   } else if (isIOS) {
+  //     return 'flutter_ios_school';
+  //   } else if (isMacOS) {
+  //     return 'flutter_mac_school';
+  //   } else if (isWindows) {
+  //     return 'flutter_windows_school';
+  //   } else if (isLinux) {
+  //     return 'flutter_linux_school';
+  //   } else {
+  //     return 'flutter_web_school';
+  //   }
+  // }
 
   static String getClient() {
-    String? role = SpUtil.getString(BytedeskConstants.role,
-        defValue: BytedeskConstants.ROLE_VISITOR);
-    // 区分用户端，还是学校端
-    return (role == BytedeskConstants.ROLE_VISITOR)
-        ? BytedeskUtils.client()
-        : BytedeskUtils.clientSchool();
+    // String? role = SpUtil.getString(BytedeskConstants.role,
+    //     defValue: BytedeskConstants.ROLE_VISITOR);
+    // // 区分用户端，还是学校端
+    // return (role == BytedeskConstants.ROLE_VISITOR)
+    //     ? BytedeskUtils.client()
+    //     : BytedeskUtils.clientSchool();
+    return BytedeskUtils.client();
   }
 
   static String getBaseUrl() {
-    if (isWeb) {
-      return BytedeskConstants.httpBaseUrl;
-    } else if (isAndroid) {
-      return BytedeskConstants.httpBaseUrlAndroid;
-    } else if (isIOS) {
-      return BytedeskConstants.httpBaseUrliOS;
-    } else {
-      return BytedeskConstants.httpBaseUrl;
-    }
+    return BytedeskConstants.httpBaseUrl;
   }
 
   static Uri getHostUri(
@@ -108,56 +105,84 @@ class BytedeskUtils {
     Map<String, dynamic>? queryParameters,
   ]) {
     if (BytedeskConstants.isDebug) {
-      return Uri.http(BytedeskConstants.host, path, queryParameters);
+      return Uri.http(BytedeskConstants.httpBaseUrl, path, queryParameters);
     } else {
-      return Uri.https(BytedeskConstants.host, path, queryParameters);
+      return Uri.https(BytedeskConstants.httpBaseUrl, path, queryParameters);
     }
+  }
+
+  static String? messageToJson(String uid, String type, String content, ThreadProtobuf thread) {
+     Map<String, Object> messageExtra = {
+				"orgUid": SpUtil.getString(BytedeskConstants.VISITOR_ORGUID)!
+		};
+    Map<String, Object> jsonContent = {
+      "uid": uid,
+				"type": type,
+				"content": content,
+				"status": BytedeskConstants.MESSAGE_STATUS_SENDING,
+				"createdAt": BytedeskUtils.formatedDateNow(),
+				"client": BytedeskConstants.HTTP_CLIENT,
+				"extra": json.encode(messageExtra),
+				"user": {
+					"uid": SpUtil.getString(BytedeskConstants.VISITOR_UID)!,
+					"nickname": SpUtil.getString(BytedeskConstants.VISITOR_NICKNAME)!,
+					"avatar": SpUtil.getString(BytedeskConstants.VISITOR_AVATAR)!
+				},
+				"thread": {
+					"uid": thread.uid,
+					"topic": thread.topic,
+					"type": thread.type,
+					"status": thread.status,
+					"user": thread.user
+				}
+    };
+    return json.encode(jsonContent);
   }
 
   // 含访客登录
-  static bool? isLogin() {
-    return SpUtil.getBool(BytedeskConstants.isLogin);
-  }
+  // static bool? isLogin() {
+  //   return SpUtil.getBool(BytedeskConstants.isLogin);
+  // }
 
-  // 验证手机号登录
-  static bool? isAuthenticated() {
-    return SpUtil.getBool(BytedeskConstants.isAuthenticated);
-  }
+  // // 验证手机号登录
+  // static bool? isAuthenticated() {
+  //   return SpUtil.getBool(BytedeskConstants.isAuthenticated);
+  // }
 
-  // 当前是否客服页面
-  static bool? isCurrentChatKfPage() {
-    return SpUtil.getBool(BytedeskConstants.isCurrentChatKfPage);
-  }
+  // // 当前是否客服页面
+  // static bool? isCurrentChatKfPage() {
+  //   return SpUtil.getBool(BytedeskConstants.isCurrentChatKfPage);
+  // }
 
-  //
-  static String? getAccessToken() {
-    return SpUtil.getString(BytedeskConstants.accessToken);
-  }
+  // //
+  // static String? getAccessToken() {
+  //   return SpUtil.getString(BytedeskConstants.accessToken);
+  // }
 
-  static String? getUid() {
-    return SpUtil.getString(BytedeskConstants.uid);
-  }
+  // static String? getUid() {
+  //   return SpUtil.getString(BytedeskConstants.uid);
+  // }
 
-  static String? getNickname() {
-    return SpUtil.getString(BytedeskConstants.nickname);
-  }
+  // static String? getNickname() {
+  //   return SpUtil.getString(BytedeskConstants.nickname);
+  // }
 
-  static String? getAvatar() {
-    return SpUtil.getString(BytedeskConstants.avatar);
-  }
+  // static String? getAvatar() {
+  //   return SpUtil.getString(BytedeskConstants.avatar);
+  // }
 
-  static String? getDescription() {
-    return SpUtil.getString(BytedeskConstants.description);
-  }
+  // static String? getDescription() {
+  //   return SpUtil.getString(BytedeskConstants.description);
+  // }
 
-  static bool mqttConnect() {
-    var isLogin = SpUtil.getBool(BytedeskConstants.isLogin);
-    if (isLogin!) {
-      BytedeskMqtt().connect();
-      return true;
-    }
-    return false;
-  }
+  // static bool mqttConnect() {
+  //   var isLogin = SpUtil.getBool(BytedeskConstants.isLogin);
+  //   if (isLogin!) {
+  //     BytedeskMqtt().connect();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   static bool mqttReConnect() {
     bool isConnected = BytedeskMqtt().isConnected();
@@ -176,25 +201,25 @@ class BytedeskUtils {
     BytedeskMqtt().disconnect();
   }
 
-  static double? getLatitude() {
-    if (isWeb) {
-      return SpUtil.getDouble(BytedeskConstants.latitude);
-    } else if (isAndroid) {
-      return SpUtil.getDouble(BytedeskConstants.latitude);
-    } else {
-      return double.parse(SpUtil.getString(BytedeskConstants.latitude)!);
-    }
-  }
+  // static double? getLatitude() {
+  //   if (isWeb) {
+  //     return SpUtil.getDouble(BytedeskConstants.latitude);
+  //   } else if (isAndroid) {
+  //     return SpUtil.getDouble(BytedeskConstants.latitude);
+  //   } else {
+  //     return double.parse(SpUtil.getString(BytedeskConstants.latitude)!);
+  //   }
+  // }
 
-  static double? getLongtitude() {
-    if (isWeb) {
-      return SpUtil.getDouble(BytedeskConstants.longtitude);
-    } else if (isAndroid) {
-      return SpUtil.getDouble(BytedeskConstants.longtitude);
-    } else {
-      return double.parse(SpUtil.getString(BytedeskConstants.longtitude)!);
-    }
-  }
+  // static double? getLongtitude() {
+  //   if (isWeb) {
+  //     return SpUtil.getDouble(BytedeskConstants.longtitude);
+  //   } else if (isAndroid) {
+  //     return SpUtil.getDouble(BytedeskConstants.longtitude);
+  //   } else {
+  //     return double.parse(SpUtil.getString(BytedeskConstants.longtitude)!);
+  //   }
+  // }
 
   // static Color string2Color(String colorString) {
   //   int value = 0x00000000;
@@ -212,6 +237,32 @@ class BytedeskUtils {
   //   }
   //   return Color(value);
   // }
+
+  static String getFileType(String filePath) {
+    // 获取文件扩展名
+    String extension =
+        filePath.split('.').last.toLowerCase(); // 转换为小写以确保匹配不受大小写影响
+
+    // 根据扩展名判断文件类型
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      case 'gif':
+        return 'image/gif';
+      case 'mp4':
+        return 'video/mp4';
+      case 'webm':
+        return 'video/webm';
+      case 'ogv':
+        return 'video/ogg';
+      // 可以继续添加其他文件类型的判断逻辑
+      default:
+        return 'application/octet-stream'; // 对于未知的文件类型，可以使用这个通用的MIME类型
+    }
+  }
 
   static String formatedDateNow() {
     var format = DateFormat('yyyy-MM-dd HH:mm:ss');
@@ -434,6 +485,12 @@ class BytedeskUtils {
     }
   }
 
+  static Future<void> mylaunchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   // 退出登录
   static void exitLogin(BuildContext context) {
     // 友盟统计：取消用户账号
@@ -447,20 +504,9 @@ class BytedeskUtils {
   // 清空本地缓存
   static void clearUserCache() {
     //
-    SpUtil.putString(BytedeskConstants.uid, '');
-    SpUtil.putString(BytedeskConstants.username, '');
-    SpUtil.putString(BytedeskConstants.nickname, '');
-    SpUtil.putString(BytedeskConstants.avatar, '');
-    SpUtil.putString(BytedeskConstants.description, '');
-    SpUtil.putString(BytedeskConstants.subDomain, '');
-    SpUtil.putString(BytedeskConstants.role, '');
-    //
-    SpUtil.putString(BytedeskConstants.unionid, '');
-    SpUtil.putString(BytedeskConstants.openid, '');
-    //
-    SpUtil.putBool(BytedeskConstants.isLogin, false);
-    SpUtil.putBool(BytedeskConstants.isAuthenticated, false);
-    SpUtil.putString(BytedeskConstants.mobile, '');
-    SpUtil.putString(BytedeskConstants.accessToken, '');
+    SpUtil.putString(BytedeskConstants.VISITOR_UID, '');
+    SpUtil.putString(BytedeskConstants.VISITOR_NICKNAME, '');
+    SpUtil.putString(BytedeskConstants.VISITOR_AVATAR, '');
+    SpUtil.putString(BytedeskConstants.VISITOR_ORGUID, '');
   }
 }

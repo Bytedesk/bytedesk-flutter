@@ -4,7 +4,6 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:bytedesk_kefu/blocs/leavemsg_bloc/bloc.dart';
-import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 // import 'package:bytedesk_kefu/ui/widget/image_choose_widget.dart';
 import 'package:bytedesk_kefu/ui/widget/my_button.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -28,12 +27,11 @@ class LeaveMsgPage extends StatefulWidget {
   // String? content;
   //
   const LeaveMsgPage(
-      {Key? key,
+      {super.key,
       @required this.wid,
       @required this.aid,
       @required this.type,
-      @required this.tip})
-      : super(key: key);
+      @required this.tip});
 
   @override
   State<LeaveMsgPage> createState() => _LeaveMsgPageState();
@@ -89,8 +87,8 @@ class _LeaveMsgPageState extends State<LeaveMsgPage> {
                 child: InkWell(
                   onTap: () {
                     debugPrint('我的留言');
-                    BytedeskKefu.showLeaveMessageHistory(
-                        context, widget.wid!, widget.aid!, widget.type!);
+                    // BytedeskKefu.showLeaveMessageHistory(
+                    //     context, widget.wid!, widget.aid!, widget.type!);
                   },
                   child: const Text(
                     '我的留言',

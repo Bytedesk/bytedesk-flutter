@@ -1,6 +1,6 @@
 name: bytedesk_kefu
 description: the best app chat sdk in china, you can chat with the agent freely at anytime. the agent can chat with the visitor by web/pc/mac/ios/android client.
-version: 1.6.4
+version: 2.0.0
 homepage: https://www.kefux.com
 repository: https://github.com/Bytedesk/bytedesk-flutter
 issue_tracker: https://github.com/Bytedesk/bytedesk-flutter/issues
@@ -12,19 +12,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # Localization https://github.com/dart-lang/intl
-  intl: ^0.18.0
-  # https://pub.dev/packages/meta/install
+  intl: ^0.19.0
+  # https://pub.dev/packages/meta
   meta: ^1.9.1
   # https://pub.dev/packages/equatable
   equatable: ^2.0.5
-  # https://pub.dev/packages/bloc/install
+  # https://pub.dev/packages/bloc
   bloc: ^8.1.2
   # https://pub.dev/packages/flutter_bloc
   flutter_bloc: ^8.1.3
   # https://pub.dev/packages/http
-  http: ^0.13.6
+  http: ^1.1.0
   http_parser: ^4.0.2
   # 事件通知总线
   # https://pub.dev/packages/event_bus
@@ -41,22 +43,21 @@ dependencies:
   # https://pub.dev/packages/shared_preferences
   # shared_preferences: ^2.0.18
   # https://pub.dev/packages/protobuf
-  protobuf: ^2.1.0
+  protobuf: ^3.1.0
   # 下拉刷新 https://pub.dev/packages/flutter_easyrefresh
   # flutter_easyrefresh: ^2.2.2
   # toast https://pub.dev/packages/fluttertoast
-  fluttertoast: ^8.2.2
+  fluttertoast: ^8.2.6
   # https://pub.dev/packages/bot_toast
   # bot_toast: ^4.0.3
   # https://pub.dev/packages/flutter_easyloading
   # flutter_easyloading: ^3.0.5
   # H5-webchat https://pub.dev/packages/webview_flutter
-  # webview_flutter: ^3.0.4
-  webview_flutter: ^4.2.2
+  webview_flutter: ^4.8.0
   # https://pub.dev/packages/webview_flutter_android
-  webview_flutter_android: ^3.9.2
+  webview_flutter_android: ^3.16.6
   # https://pub.dev/packages/webview_flutter_wkwebview
-  webview_flutter_wkwebview: ^3.7.2
+  webview_flutter_wkwebview: ^3.14.0
   # flutter_webview_pro: ^3.0.1+2
   # https://pub.dev/packages/device_info
   # device_info: ^2.0.3
@@ -66,14 +67,14 @@ dependencies:
   # devicelocale: ^0.5.5
   # https://pub.dev/packages/package_info
   package_info: ^2.0.2
-  # package_info_plus: ^4.0.2
+  # package_info_plus: ^4.2.0
   # 输入框 https://pub.dev/packages/extended_text_field
   # extended_text_field: ^8.0.0
   # https://pub.dev/packages/pull_to_refresh
   pull_to_refresh: ^2.0.0
   # 图片压缩 https://pub.dev/packages/flutter_image_compress
   # flutter_image_compress: ^0.7.0
-  # 视频压缩 https://pub.dev/packages/flutter_video_compress/install
+  # 视频压缩 https://pub.dev/packages/flutter_video_compress
   # flutter_video_compress: ^0.3.7+8
   # 振动 https://pub.dev/packages/vibration
   # vibration: ^1.7.5
@@ -86,19 +87,19 @@ dependencies:
   # flutter_html: ^2.2.1 # bug: 与最新webview_flutter不兼容
   # 图片选择插件
   # https://pub.dev/packages/image_picker
-  image_picker: ^1.0.1
+  image_picker: ^1.0.4
   # image_picker在选择视频的时候有bug，选此替代 https://pub.dev/packages/file_picker
   # file_picker: ^4.6.1
   # 查看大图 https://pub.dev/packages/photo_view
-  photo_view: ^0.14.0
+  photo_view: ^0.15.0
   # 图片缓存 https://pub.dev/packages/cached_network_image
-  cached_network_image: ^3.2.3
+  cached_network_image: ^3.3.0
   # https://dart.dev/tools/pub/publishing#publishing-prereleases
   # https://pub.dev/packages/flutter_cache_manager
   flutter_cache_manager: ^3.3.1
   # 保存图片到相册
   # https://pub.flutter-io.cn/packages/image_gallery_saver
-  image_gallery_saver: ^1.7.1
+  image_gallery_saver: ^2.0.3
   # https://pub.dev/packages/emoji_picker_flutter
   # emoji_picker_flutter: ^1.1.2
   # emoji_picker_flutter:
@@ -110,7 +111,7 @@ dependencies:
   # https://pub.dev/packages/flutter_chat_ui
   # flutter_chat_ui: ^1.6.8
   # 打开用户协议等网页 https://pub.dev/packages/url_launcher
-  url_launcher: ^6.1.12
+  url_launcher: ^6.2.1
   # 录音
   # flutter_sound: ^9.2.12
   # flutter_sound_platform_interface: ^9.2.12
@@ -131,13 +132,13 @@ dependencies:
   crypto: ^3.0.3
   # Plugins for parsing css
   # https://pub.dev/packages/csslib
-  csslib: ^0.17.3
+  csslib: ^1.0.0
   css_colors: ^1.1.1
   # Plugins for rendering the <video> tag.
   video_player: ^2.7.0
-  # https://pub.dev/packages/chewie/install
+  # https://pub.dev/packages/chewie
   chewie: ^1.7.0
-  # https://pub.dev/packages/flutter_html/install
+  # https://pub.dev/packages/flutter_html
   # flutter_html: ^2.2.1
   # chewie: ^1.2.2 # 与 flutter_html: ^3.0.0-alpha.3 不兼容
   # chewie:
@@ -156,6 +157,24 @@ dependencies:
   # plugin to convert integers to numerals
   # https://pub.dev/packages/numerus
   numerus: ^2.1.2
+  # https://pub.dev/packages/wechat_assets_picker
+  wechat_assets_picker: ^9.2.0
+  # https://pub.dev/packages/wechat_camera_picker
+  wechat_camera_picker: ^4.3.1
+  # 收到消息震动 https://pub.dev/packages/flutter_vibrate
+  flutter_vibrate: ^1.3.0
+  # mqtt长连接 https://pub.dev/packages/mqtt_client
+  mqtt_client: ^10.5.1
+  # stomp https://pub.dev/packages/stomp_dart_client
+  stomp_dart_client: ^2.1.0
+   # 录音，发语音消息 https://pub.dev/packages/audio_session
+  audio_session: ^0.1.21
+  # 录音，发语音消息 https://pub.dev/packages/flutter_sound
+  flutter_sound: ^9.15.61
+  # 录音，发语音消息 https://pub.dev/packages/path_provider
+  path_provider: ^2.1.4
+  # 录音，发语音消息 https://pub.dev/packages/permission_handler
+  permission_handler: ^11.3.1
 
   flutter_web_plugins:
     sdk: flutter
@@ -164,7 +183,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

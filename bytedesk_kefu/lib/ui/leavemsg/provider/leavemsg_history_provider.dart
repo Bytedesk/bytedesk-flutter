@@ -10,11 +10,10 @@ class LeaveMsgHistoryProvider extends StatelessWidget {
   final String? aid;
   final String? type;
   const LeaveMsgHistoryProvider(
-      {Key? key,
+      {super.key,
       @required this.wid,
       @required this.aid,
-      @required this.type})
-      : super(key: key);
+      @required this.type});
 
   @override
   Widget build(BuildContext context) {

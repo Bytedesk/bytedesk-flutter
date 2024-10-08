@@ -24,7 +24,7 @@ class EmptyWidget extends StatelessWidget {
         child: InkWell(
       onTap: () {
         debugPrint("EmptyWidget onTap");
-        tapCallback!();
+        // tapCallback!();
       },
       child: SizedBox(
         height: double.infinity,

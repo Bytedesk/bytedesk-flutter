@@ -1,12 +1,7 @@
-import 'dart:async';
-// import 'dart:convert';
-// import 'dart:io';
-// import 'dart:typed_data';
-
-// import 'package:flutter/cupertino.dart';
+import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // import 'package:flutter_webview_pro/webview_flutter.dart';
 // import 'package:path_provider/path_provider.dart';
@@ -21,11 +16,11 @@ import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 // 显示加载进度
 class ChatWebViewPage extends StatefulWidget {
   const ChatWebViewPage({
-    Key? key,
+    super.key,
     @required this.title,
     @required this.url,
     // this.cookieManager
-  }) : super(key: key);
+  });
 
   final String? title;
   final String? url;
@@ -164,7 +159,7 @@ class SampleMenu extends StatelessWidget {
       onSelected: (MenuOptions value) {
         switch (value) {
           case MenuOptions.openInBrowser:
-            _launchUrl(url);
+            BytedeskUtils.mylaunchUrl(url);
             break;
         }
       },
@@ -177,12 +172,12 @@ class SampleMenu extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
-      throw Exception('Could not launch $uri');
-    }
-  }
+  // Future<void> _launchUrl(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (!await launchUrl(uri)) {
+  //     throw Exception('Could not launch $uri');
+  //   }
+  // }
 }
 
 class NavigationControls extends StatelessWidget {

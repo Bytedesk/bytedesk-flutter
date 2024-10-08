@@ -52,45 +52,19 @@ class DeleteThreadEvent extends ThreadEvent {
 
 // 请求客服会话
 class RequestThreadEvent extends ThreadEvent {
-  final String? wid;
+  final String? sid;
   final String? type;
-  final String? aid;
-  final bool? isV2Robot;
+  final bool? forceAgent;
 
-  const RequestThreadEvent(
-      {@required this.wid, @required this.type, @required this.aid, @required this.isV2Robot})
-      : super();
-}
-
-// TODO: 添加key验证，防止用户滥用
-// 请求智谱AI客服会话
-class RequestZhipuAIThreadEvent extends ThreadEvent {
-  final String? wid;
-  final String? forceNew;
-
-  const RequestZhipuAIThreadEvent(
-      {@required this.wid,
-      @required this.forceNew})
-      : super();
-}
-
-class RefreshZhipuAIThreadHistoryEvent extends ThreadEvent {
-  final int? page;
-  final int? size;
-  //
-  const RefreshZhipuAIThreadHistoryEvent({@required this.page, @required this.size})
-      : super();
+  const RequestThreadEvent({@required this.sid, @required this.type, @required this.forceAgent}) : super();
 }
 
 // 请求人工客服，不管此工作组是否设置为默认机器人，只要有人工客服在线，则可以直接对接人工
 class RequestAgentEvent extends ThreadEvent {
-  final String? wid;
+  final String? sid;
   final String? type;
-  final String? aid;
 
-  const RequestAgentEvent(
-      {@required this.wid, @required this.type, @required this.aid})
-      : super();
+  const RequestAgentEvent({@required this.sid, @required this.type}) : super();
 }
 
 class RequestContactThreadEvent extends ThreadEvent {

@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class HelpProvider extends StatelessWidget {
   final String? uid;
   final String? title;
-  const HelpProvider({Key? key, @required this.uid, this.title}) : super(key: key);
+  const HelpProvider({super.key, @required this.uid, this.title});
 
   @override
   Widget build(BuildContext context) {
