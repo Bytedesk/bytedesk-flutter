@@ -44,11 +44,11 @@ class TextContentElement extends ReplacedElement {
   dom.Node? node;
 
   TextContentElement({
-    required Style style,
+    required super.style,
     required this.text,
     this.node,
     dom.Element? element,
-  }) : super(name: "[text]", style: style, node: element, elementId: "[[No ID]]");
+  }) : super(name: "[text]", node: element, elementId: "[[No ID]]");
 
   @override
   String toString() {
@@ -60,7 +60,7 @@ class TextContentElement extends ReplacedElement {
 }
 
 class EmptyContentElement extends ReplacedElement {
-  EmptyContentElement({String name = "empty"}) : super(name: name, style: Style(), elementId: "[[No ID]]");
+  EmptyContentElement({super.name = "empty"}) : super(style: Style(), elementId: "[[No ID]]");
 
   @override
   Widget? toWidget(context) => null;
@@ -72,9 +72,9 @@ class RubyElement extends ReplacedElement {
 
   RubyElement({
     required this.element,
-    required List<StyledElement> children,
-    String name = "ruby"
-  }) : super(name: name, alignment: PlaceholderAlignment.middle, style: Style(), elementId: element.id, children: children);
+    required List<StyledElement> super.children,
+    super.name = "ruby"
+  }) : super(alignment: PlaceholderAlignment.middle, style: Style(), elementId: element.id);
 
   @override
   Widget toWidget(RenderContext context) {

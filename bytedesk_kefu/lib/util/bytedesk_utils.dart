@@ -25,7 +25,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../mqtt/bytedesk_mqtt.dart';
+// import '../mqtt/bytedesk_mqtt.dart';
 import '../model/thread_protobuf.dart';
 
 class BytedeskUtils {
@@ -111,30 +111,31 @@ class BytedeskUtils {
     }
   }
 
-  static String? messageToJson(String uid, String type, String content, ThreadProtobuf thread) {
-     Map<String, Object> messageExtra = {
-				"orgUid": SpUtil.getString(BytedeskConstants.VISITOR_ORGUID)!
-		};
+  static String? messageToJson(
+      String uid, String type, String content, ThreadProtobuf thread) {
+    Map<String, Object> messageExtra = {
+      "orgUid": SpUtil.getString(BytedeskConstants.VISITOR_ORGUID)!
+    };
     Map<String, Object> jsonContent = {
       "uid": uid,
-				"type": type,
-				"content": content,
-				"status": BytedeskConstants.MESSAGE_STATUS_SENDING,
-				"createdAt": BytedeskUtils.formatedDateNow(),
-				"client": BytedeskConstants.HTTP_CLIENT,
-				"extra": json.encode(messageExtra),
-				"user": {
-					"uid": SpUtil.getString(BytedeskConstants.VISITOR_UID)!,
-					"nickname": SpUtil.getString(BytedeskConstants.VISITOR_NICKNAME)!,
-					"avatar": SpUtil.getString(BytedeskConstants.VISITOR_AVATAR)!
-				},
-				"thread": {
-					"uid": thread.uid,
-					"topic": thread.topic,
-					"type": thread.type,
-					"status": thread.status,
-					"user": thread.user
-				}
+      "type": type,
+      "content": content,
+      "status": BytedeskConstants.MESSAGE_STATUS_SENDING,
+      "createdAt": BytedeskUtils.formattedDateNow(),
+      "client": BytedeskConstants.HTTP_CLIENT,
+      "extra": json.encode(messageExtra),
+      "user": {
+        "uid": SpUtil.getString(BytedeskConstants.VISITOR_UID)!,
+        "nickname": SpUtil.getString(BytedeskConstants.VISITOR_NICKNAME)!,
+        "avatar": SpUtil.getString(BytedeskConstants.VISITOR_AVATAR)!
+      },
+      "thread": {
+        "uid": thread.uid,
+        "topic": thread.topic,
+        "type": thread.type,
+        "status": thread.status,
+        "user": thread.user
+      }
     };
     return json.encode(jsonContent);
   }
@@ -184,22 +185,22 @@ class BytedeskUtils {
   //   return false;
   // }
 
-  static bool mqttReConnect() {
-    bool isConnected = BytedeskMqtt().isConnected();
-    if (!isConnected) {
-      BytedeskMqtt().connect();
-      return true;
-    }
-    return false;
-  }
+  // static bool mqttReConnect() {
+  //   bool isConnected = BytedeskMqtt().isConnected();
+  //   if (!isConnected) {
+  //     BytedeskMqtt().connect();
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
-  static bool isMqttConnected() {
-    return BytedeskMqtt().isConnected();
-  }
+  // static bool isMqttConnected() {
+  //   return BytedeskMqtt().isConnected();
+  // }
 
-  static void mqttDisconnect() {
-    BytedeskMqtt().disconnect();
-  }
+  // static void mqttDisconnect() {
+  //   BytedeskMqtt().disconnect();
+  // }
 
   // static double? getLatitude() {
   //   if (isWeb) {
@@ -264,12 +265,12 @@ class BytedeskUtils {
     }
   }
 
-  static String formatedDateNow() {
+  static String formattedDateNow() {
     var format = DateFormat('yyyy-MM-dd HH:mm:ss');
     return format.format(DateTime.now());
   }
 
-  static String formatedTimestampNow() {
+  static String formattedTimestampNow() {
     var format = DateFormat('yyyyMMddHHmmss');
     return format.format(DateTime.now());
   }

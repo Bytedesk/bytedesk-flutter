@@ -81,7 +81,7 @@ const zhCN = {
   "i18n.guess.faq": "猜你相问",
   "i18n.hot.faq": "热门问题",
   "i18n.change.faq": "换一换",
-  "i18n.file.asistant": "文件助手",
+  "i18n.file.assistant": "文件助手",
   "i18n.thread.content.image": "图片",
   "i18n.thread.content.file": "文件",
   "i18n.system.notification": "系统通知",
@@ -94,9 +94,8 @@ const zhCN = {
   "i18n.robot.nickname": "默认机器人",
   "i18n.robot.description": "默认机器人描述",
   "i18n.robot.noreply": "未找到相应答案",
-  "i18n.robot.agent.asistant.nickname": "客服助手",
-  "i18n.llm.prompt":
-    "你是一个聪明、对人类有帮助的人工智能，你可以对人类提出的问题给出有用、详细、礼貌的回答",
+  "i18n.robot.agent.assistant.nickname": "客服助手",
+  "i18n.llm.prompt": "你是一个聪明、对人类有帮助的人工智能，你可以对人类提出的问题给出有用、详细、礼貌的回答",
   "i18n.agent.nickname": "默认客服",
   "i18n.agent.description": "默认客服描述",
   "i18n.workgroup.nickname": "默认技能组",
@@ -105,10 +104,8 @@ const zhCN = {
   "i18n.thanks": "感谢",
   "i18n.welcome": "问候",
   "i18n.bye": "告别",
-  "i18n.contact.title":
-    "方便的话请您提供一下您的联系电话，我电话给您沟通一下，这样更加直观",
-  "i18n.contact.content":
-    "方便的话请您提供一下您的联系电话，我电话给您沟通一下，这样更加直观",
+  "i18n.contact.title": "方便的话请您提供一下您的联系电话，我电话给您沟通一下，这样更加直观",
+  "i18n.contact.content": "方便的话请您提供一下您的联系电话，我电话给您沟通一下，这样更加直观",
   "i18n.thanks.title": "感谢光临，欢迎再来",
   "i18n.thanks.content": "感谢光临，欢迎再来",
   "i18n.welcome.title": "您好，有什么可以帮您的",

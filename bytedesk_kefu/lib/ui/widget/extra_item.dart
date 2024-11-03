@@ -9,13 +9,13 @@ import 'package:flutter/material.dart';
 
 class ExtraItem extends StatelessWidget {
   const ExtraItem({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.image,
     this.width,
     this.height,
     required this.title,
-  }) : super(key: key);
+  });
 
   final ImageProvider image;
   final void Function()? onPressed;

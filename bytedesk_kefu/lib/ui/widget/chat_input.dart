@@ -46,7 +46,7 @@ double _softKeyHeight = 210;
 
 class ChatInput extends StatefulWidget {
   const ChatInput({
-    Key? key,
+    super.key,
     required this.isRobot,
     this.isAttachmentUploading,
     this.onAttachmentPressed,
@@ -56,7 +56,7 @@ class ChatInput extends StatefulWidget {
     required this.sendButtonVisibilityMode,
     this.extraWidget,
     this.voiceWidget,
-  }) : super(key: key);
+  });
 
   /// See [AttachmentButton.onPressed]
   final void Function()? onAttachmentPressed;

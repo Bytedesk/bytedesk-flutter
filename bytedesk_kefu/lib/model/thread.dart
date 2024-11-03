@@ -2,7 +2,7 @@
  * @Author: jackning 270580156@qq.com
  * @Date: 2023-08-01 14:26:10
  * @LastEditors: jackning 270580156@qq.com
- * @LastEditTime: 2024-10-05 17:32:52
+ * @LastEditTime: 2024-10-17 17:01:06
  * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
  *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
  *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
@@ -22,7 +22,7 @@ class Thread extends Equatable {
   String? topic;
   String? content;
   String? type;
-  String? status;
+  String? state;
   //
   bool? top;
   bool? unread;
@@ -42,7 +42,7 @@ class Thread extends Equatable {
       this.topic,
       this.content,
       this.type,
-      this.status,
+      this.state,
       //
       this.top,
       this.unread,
@@ -67,7 +67,7 @@ class Thread extends Equatable {
       topic: json['topic'],
       content: json['content'],
       type: json['type'],
-      status: json['status'],
+      state: json['status'],
       //
       top: json['top'],
       unread: json['unread'],
@@ -92,7 +92,7 @@ class Thread extends Equatable {
       topic: messageProto.thread.topic,
       content: messageProto.content,
       type: messageProto.thread.type,
-      status: messageProto.thread.status,
+      state: messageProto.thread.status,
       unreadCount: 1,
       //
       client: messageProto.client,
@@ -109,7 +109,7 @@ class Thread extends Equatable {
         'topic': topic,
         'content': content,
         'type': type,
-        'status': status,
+        'status': state,
         //
         'top': top,
         'unread': unread,
@@ -133,7 +133,7 @@ class Thread extends Equatable {
         'uid': uid,
         'type': type,
         'content': content,
-        'status': status,
+        'status': state,
         'createdAt': updatedAt,
         'client': client,
         'extra': extra,
@@ -154,7 +154,7 @@ class Thread extends Equatable {
       topic: '',
       content: '',
       type: '',
-      status: '',
+      state: '',
       //
       top: false,
       unread: false,

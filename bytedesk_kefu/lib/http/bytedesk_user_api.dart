@@ -39,6 +39,7 @@ class BytedeskUserHttpApi extends BytedeskBaseHttpApi {
     debugPrint("$initUrl, init:$responseJson");
     //
     if (responseJson['code'] == 200) {
+      // TODO: 拉取离线消息
       return VisitorJsonResult.fromJson(responseJson);
     } else {
       throw Exception('初始化失败');

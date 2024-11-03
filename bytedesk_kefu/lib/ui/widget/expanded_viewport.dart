@@ -18,23 +18,19 @@ import 'dart:math' as math;
 
 class ExpandedViewport extends Viewport {
   ExpandedViewport({
-    Key? key,
+    super.key,
     AxisDirection? axisDirection = AxisDirection.down,
-    AxisDirection? crossAxisDirection,
+    super.crossAxisDirection,
     double? anchor = 0.0,
     ViewportOffset? offset,
-    Key? center,
-    double? cacheExtent = 1,
+    super.center,
+    super.cacheExtent = 1,
     List<Widget>? slivers = const <Widget>[],
   }) : super(
-            key: key,
             slivers: slivers!,
             axisDirection: axisDirection!,
-            crossAxisDirection: crossAxisDirection,
             anchor: anchor!,
-            offset: offset!,
-            center: center,
-            cacheExtent: cacheExtent);
+            offset: offset!);
 
   @override
   RenderViewport createRenderObject(BuildContext context) {
@@ -52,21 +48,16 @@ class ExpandedViewport extends Viewport {
 
 class _RenderExpandedViewport extends RenderViewport {
   _RenderExpandedViewport({
-    AxisDirection axisDirection = AxisDirection.down,
+    super.axisDirection,
     @required AxisDirection? crossAxisDirection,
     @required ViewportOffset? offset,
-    double anchor = 0.0,
-    List<RenderSliver>? children,
-    RenderSliver? center,
-    double? cacheExtent,
+    super.anchor,
+    super.children,
+    super.center,
+    super.cacheExtent,
   }) : super(
-            axisDirection: axisDirection,
             crossAxisDirection: crossAxisDirection!,
-            offset: offset!,
-            anchor: anchor,
-            children: children,
-            center: center,
-            cacheExtent: cacheExtent);
+            offset: offset!);
 
   @override
   void performLayout() {

@@ -16,7 +16,7 @@ import 'package:bytedesk_kefu/util/bytedesk_events.dart';
 import 'package:bytedesk_kefu/util/bytedesk_utils.dart';
 import 'package:bytedesk_kefu/util/bytedesk_uuid.dart';
 // import 'package:file_picker/file_picker.dart';
-import 'package:sp_util/sp_util.dart';
+// import 'package:sp_util/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter_video_compress/flutter_video_compress.dart';
@@ -93,7 +93,7 @@ class _ChatKFPageState extends State<ChatKFPage>
   // final BytedeskMqtt _bdMqtt = BytedeskMqtt();
   final BytedeskStomp _bdStomp = BytedeskStomp();
   // 当前用户uid
-  final String? _currentUid = SpUtil.getString(BytedeskConstants.VISITOR_UID);
+  // final String? _currentUid = SpUtil.getString(BytedeskConstants.VISITOR_UID);
   // final String? _currentUsername = SpUtil.getString(BytedeskConstants.username);
   // final String? _currentNickname = SpUtil.getString(BytedeskConstants.VISITOR_NICKNAME);
   // final String? _currentAvatar = SpUtil.getString(BytedeskConstants.VISITOR_AVATAR);
@@ -249,7 +249,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                     debugPrint('图片上传成功 $content');
                     //
                     String? uid = BytedeskUuid.uuid();
-                    sendMessage(uid, BytedeskConstants.MESSAGE_TYPE_IMAGE, content!);
+                    sendMessage(
+                        uid, BytedeskConstants.MESSAGE_TYPE_IMAGE, content!);
                     //
                   } else if (state is UpLoadImageError) {
                     // 图片上传失败
@@ -260,7 +261,8 @@ class _ChatKFPageState extends State<ChatKFPage>
                     debugPrint('视频上传成功 $content');
                     //
                     String? uid = BytedeskUuid.uuid();
-                    sendMessage(uid, BytedeskConstants.MESSAGE_TYPE_VIDEO, content!);
+                    sendMessage(
+                        uid, BytedeskConstants.MESSAGE_TYPE_VIDEO, content!);
                     //
                   } else if (state is UpLoadVideoError) {
                     // 视频上传失败
@@ -794,10 +796,10 @@ class _ChatKFPageState extends State<ChatKFPage>
     // BlocProvider.of<MessageBloc>(context)
     //     ..add(LoadHistoryMessageEvent(uid: _currentUid, page: page, size: size));
     //
-    List<Message> messageList = await _messageProvider.getTopicMessages(
-        _currentThread!.topic, _currentUid, page, size);
+    // List<Message> messageList = await _messageProvider.getTopicMessages(
+    //     _currentThread!.topic, _currentUid, page, size);
     // BytedeskUtils.printLog(messageList.length);
-    int length = messageList.length;
+    // int length = messageList.length;
     // for (var i = 0; i < length; i++) {
     //   Message message = messageList[i];
     //   if (message.type ==

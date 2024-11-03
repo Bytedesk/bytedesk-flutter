@@ -70,7 +70,8 @@ class _FeedbackPageState extends State<FeedbackPage>
           BlocConsumer<FeedbackBloc, FeedbackState>(listener: (context, state) {
         // do stuff here based on BlocA's state
         if (state is GetFeedbackCategorySuccess) {
-          debugPrint('feedback category load success length: ${state.categoryList.length}');
+          debugPrint(
+              'feedback category load success length: ${state.categoryList.length}');
           if (state.categoryList.isEmpty) {
             // Toast.show('没有更多了哦');
           } else {

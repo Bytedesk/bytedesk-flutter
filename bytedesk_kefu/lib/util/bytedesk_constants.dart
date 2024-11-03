@@ -89,7 +89,7 @@ class BytedeskConstants {
   static const String THREAD_TYPE_GROUP = "GROUP";
   static const String THREAD_TYPE_LEAVEMSG = "LEAVEMSG";
   static const String THREAD_TYPE_FEEDBACK = "FEEDBACK";
-  static const String THREAD_TYPE_ASISTANT = "ASISTANT";
+  static const String THREAD_TYPE_ASSISTANT = "ASSISTANT";
   static const String THREAD_TYPE_CHANNEL = "CHANNEL";
   static const String THREAD_TYPE_LOCAL = "LOCAL";
 //
@@ -193,7 +193,7 @@ class BytedeskConstants {
   static const String MESSAGE_TYPE_INVITE_ACCEPT = "INVITE_ACCEPT"; // 邀请-接受
   static const String MESSAGE_TYPE_INVITE_REJECT = "INVITE_REJECT"; // 邀请-拒绝
 //
-  static const String TOPIC_FILE_ASISTANT = "file";
+  static const String TOPIC_FILE_ASSISTANT = "file";
   static const String TOPIC_SYSTEM_NOTIFICATION = "system";
 // 注意：没有 '/' 开头，防止stomp主题中奖 '/' 替换为 '.'之后，在最前面多余一个 '.'
   static const String TOPIC_USER_PREFIX = "user/";
@@ -214,7 +214,7 @@ class BytedeskConstants {
   static const String TOPIC_ORG_KB_PREFIX = "org/kb/";
   static const String TOPIC_ORG_KBDOC_PREFIX = "org/kbdoc/";
 //
-  static const String KB_TYPE_ASISTANT = "ASISTANT";
+  static const String KB_TYPE_ASSISTANT = "ASSISTANT";
   static const String KB_TYPE_HELPDOC = "HELPDOC";
   static const String KB_TYPE_LLM = "LLM";
   static const String KB_TYPE_KEYWORD = "KEYWORD";

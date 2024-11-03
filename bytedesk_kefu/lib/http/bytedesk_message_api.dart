@@ -11,13 +11,13 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
 class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
-  
   //
   Future<JsonResult> sendMessageRest(String? jsonString) async {
     //
     var body = json.encode({"json": jsonString, "client": client});
     //
-    final sendMessageUrl = BytedeskUtils.getHostUri('/visitor/api/v1/message/send');
+    final sendMessageUrl =
+        BytedeskUtils.getHostUri('/visitor/api/v1/message/send');
     final sendMessageResponse = await httpClient.post(sendMessageUrl,
         headers: getHeadersForVisitor(), body: body);
     //解决json解析中的乱码问题
@@ -123,7 +123,6 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
   //   return messageList;
   // }
 
-
   // /// 查询当前用户-某技能组wid或指定客服未读消息
   // /// 注意：技能组wid或指定客服唯一id
   // /// 适用于 访客 和 客服
@@ -221,7 +220,6 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
   //   return messageList;
   // }
 
-
   // https://pub.dev/documentation/http/latest/http/MultipartRequest-class.html
   Future<UploadJsonResult> uploadImage(String? filePath) async {
     //
@@ -231,7 +229,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       fileName += '.png';
     }
     // 格式化日期时间
-    String formattedDateTime = BytedeskUtils.formatedTimestampNow();
+    String formattedDateTime = BytedeskUtils.formattedTimestampNow();
     // 拼接文件名
     String fileNameNew = '${formattedDateTime}_$fileName';
 
@@ -272,7 +270,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
       fileName += '.png';
     }
     // 格式化日期时间
-    String formattedDateTime = BytedeskUtils.formatedTimestampNow();
+    String formattedDateTime = BytedeskUtils.formattedTimestampNow();
     // 拼接文件名
     String fileNameNew = '${formattedDateTime}_$fileName';
 
@@ -311,7 +309,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     // FIXME: image_picker有bug，选择视频后缀为.jpg，此处替换一下
     String? fileName = filePath!.split("/").last.replaceAll(".jpg", ".mp4");
     // 格式化日期时间
-    String formattedDateTime = BytedeskUtils.formatedTimestampNow();
+    String formattedDateTime = BytedeskUtils.formattedTimestampNow();
     // 拼接文件名
     String fileNameNew = '${formattedDateTime}_$fileName';
 
@@ -352,7 +350,7 @@ class BytedeskMessageHttpApi extends BytedeskBaseHttpApi {
     // FIXME: image_picker有bug，选择视频后缀为.jpg，此处替换一下
     // String? fileName = filePath!.split("/").last.replaceAll(".jpg", ".mp4");
     // 格式化日期时间
-    String formattedDateTime = BytedeskUtils.formatedTimestampNow();
+    String formattedDateTime = BytedeskUtils.formattedTimestampNow();
     // 拼接文件名
     String fileNameNew = '${formattedDateTime}_$fileName';
 

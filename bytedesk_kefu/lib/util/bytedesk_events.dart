@@ -1,8 +1,8 @@
 /*
  * @Author: jackning 270580156@qq.com
  * @Date: 2022-03-10 14:55:08
- * @LastEditors: jackning 270580156@qq.com
- * @LastEditTime: 2024-10-08 11:33:05
+ * @LastEditors: jack ning github@bytedesk.com
+ * @LastEditTime: 2024-10-13 23:41:08
  * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
  *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
  *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
@@ -54,9 +54,9 @@ class DeleteMessageEventBus {
 }
 
 // token过期
-// class InvalidTokenEventBus {
-//   InvalidTokenEventBus();
-// }
+class InvalidTokenEventBus {
+  InvalidTokenEventBus();
+}
 
 // class QueryAnswerEventBus {
 //   String aid;

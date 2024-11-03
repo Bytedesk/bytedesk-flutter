@@ -160,7 +160,7 @@ dependencies:
   # https://pub.dev/packages/wechat_assets_picker
   wechat_assets_picker: ^9.2.0
   # https://pub.dev/packages/wechat_camera_picker
-  wechat_camera_picker: ^4.3.1
+  wechat_camera_picker: ^4.3.2
   # 收到消息震动 https://pub.dev/packages/flutter_vibrate
   flutter_vibrate: ^1.3.0
   # mqtt长连接 https://pub.dev/packages/mqtt_client

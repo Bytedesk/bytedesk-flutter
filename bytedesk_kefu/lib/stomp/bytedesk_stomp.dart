@@ -2,7 +2,7 @@
  * @Author: jackning 270580156@qq.com
  * @Date: 2024-10-08 12:08:19
  * @LastEditors: jackning 270580156@qq.com
- * @LastEditTime: 2024-10-08 13:22:42
+ * @LastEditTime: 2024-10-14 09:45:29
  * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
  *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
  *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
@@ -63,6 +63,8 @@ class BytedeskStomp {
           // await Future.delayed(const Duration(milliseconds: 200));
           debugPrint('before connecting...');
         },
+        heartbeatIncoming: const Duration(seconds: 10),
+        heartbeatOutgoing: const Duration(seconds: 10),
         onWebSocketError: (dynamic error) => debugPrint(error.toString()),
         stompConnectHeaders: {'Authorization': 'Bearer yourToken'},
         webSocketConnectHeaders: {'Authorization': 'Bearer yourToken'},
@@ -118,17 +120,17 @@ class BytedeskStomp {
         Map<String, dynamic>? result = json.decode(frame.body!);
         String uid = result!['uid'];
         debugPrint('Received message: uid $uid, $result');
-        // {client: MACOS, 
+        // {client: MACOS,
         //  content: 20241008130653a430395dffed44ff85878a38628abe3b,
-        //  createdAt: 2024-10-08 13:06:53.536, 
+        //  createdAt: 2024-10-08 13:06:53.536,
         //  extra: {"orgUid":"df_org_uid"},
         //  status: SUCCESS,
         //  thread: {topic: org/workgroup/df_wg_uid/1490702810794244, type: WORKGROUP, uid: 1490786847869184,
         //          user: {avatar: https://cdn.weiyuai.cn/avatars/apple_default_avatar.png, nickname: Local[192.168.0.104], type: VISITOR, uid: 1490702810794244}},
-        //  type: READ, 
+        //  type: READ,
         //  uid: a30cbb1238684d1fa0a7c8b2b4fc987e,
         //  user: {avatar: https://cdn.weiyuai.cn/avatars/admin_default_avatar.png, nickname: i18n.agent.nickname, type: AGENT, uid: df_ag_uid}}
-        
+
         debugPrint(
             'uid: ${result['uid']}, type: ${result['type']}, content: ${result['content']}, user:avatar ${result['user']['avatar']}, user:nickname: ${result['user']['nickname']}');
         // 收到消息后，显示在聊天界面
@@ -276,5 +278,4 @@ class BytedeskStomp {
   }
 
   void handleTransferMessage() {}
-  
 }

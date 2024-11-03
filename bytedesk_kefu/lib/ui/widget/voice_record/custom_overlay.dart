@@ -2,7 +2,7 @@
  * @Author: jackning 270580156@qq.com
  * @Date: 2022-06-26 22:37:10
  * @LastEditors: jackning 270580156@qq.com
- * @LastEditTime: 2024-10-05 10:45:54
+ * @LastEditTime: 2024-10-08 15:10:14
  * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
  *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
  *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
@@ -21,7 +21,7 @@ class CustomOverlay extends StatelessWidget {
   final double height;
 
   const CustomOverlay({
-    Key? key,
+    super.key,
     this.icon,
     this.decoration = const BoxDecoration(
       color: Color(0xff77797A),
@@ -29,7 +29,7 @@ class CustomOverlay extends StatelessWidget {
     ),
     this.width = 160,
     this.height = 160,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

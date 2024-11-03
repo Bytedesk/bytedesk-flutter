@@ -67,7 +67,7 @@ const en = {
   "i18n.guess.faq": "Guess",
   "i18n.hot.faq": "Hot",
   "i18n.change.faq": "Change",
-  "i18n.file.asistant": "file assistant",
+  "i18n.file.assistant": "file assistant",
   "i18n.thread.content.image": "image",
   "i18n.thread.content.file": "file",
   "i18n.system.notification": "notification",
@@ -80,9 +80,9 @@ const en = {
   "i18n.robot.nickname": "DefaultRobot",
   "i18n.robot.description": "Default Robot Description",
   "i18n.robot.noreply": "Answer Not Found",
-  "i18n.robot.agent.asistant.nickname": "DefaultAsistant",
+  "i18n.robot.agent.assistant.nickname": "DefaultAsistant",
   "i18n.llm.prompt":
-    "You are a smart and helpful artificial intelligence, capable of providing useful, detailed, and polite answers to human questions.",
+      "You are a smart and helpful artificial intelligence, capable of providing useful, detailed, and polite answers to human questions.",
   "i18n.agent.nickname": "DefaultAgent",
   "i18n.agent.description": "Default Agent Description",
   "i18n.workgroup.nickname": "DefaultWorkgroup",
@@ -92,19 +92,19 @@ const en = {
   "i18n.welcome": "Welcome",
   "i18n.bye": "Bye",
   "i18n.contact.title":
-    "If it's convenient, please provide your contact number so that I can communicate with you via phone for a more intuitive conversation.",
+      "If it's convenient, please provide your contact number so that I can communicate with you via phone for a more intuitive conversation.",
   "i18n.contact.content":
-    "If it's convenient, please provide your contact number so that I can communicate with you via phone for a more intuitive conversation.",
+      "If it's convenient, please provide your contact number so that I can communicate with you via phone for a more intuitive conversation.",
   "i18n.thanks.title":
-    "Thank you for visiting, we look forward to seeing you again.",
+      "Thank you for visiting, we look forward to seeing you again.",
   "i18n.thanks.content":
-    "Thank you for visiting, we look forward to seeing you again.",
+      "Thank you for visiting, we look forward to seeing you again.",
   "i18n.welcome.title": "Hello, how can I assist you?",
   "i18n.welcome.content": "Hello, how can I assist you?",
   "i18n.bye.title":
-    "Your satisfaction is always our goal. If you have any questions, please feel free to contact us.",
+      "Your satisfaction is always our goal. If you have any questions, please feel free to contact us.",
   "i18n.bye.content":
-    "Your satisfaction is always our goal. If you have any questions, please feel free to contact us.",
+      "Your satisfaction is always our goal. If you have any questions, please feel free to contact us.",
   "i18n.vip.api": "VIP API",
   "i18n.faq.category.demo.1": "CategoryDemo1",
   "i18n.faq.category.demo.2": "CategoryDemo2",

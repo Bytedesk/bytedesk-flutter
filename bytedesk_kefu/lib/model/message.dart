@@ -2,7 +2,7 @@
  * @Author: jackning 270580156@qq.com
  * @Date: 2023-08-01 14:26:10
  * @LastEditors: jackning 270580156@qq.com
- * @LastEditTime: 2024-10-08 14:56:33
+ * @LastEditTime: 2024-10-17 17:16:41
  * @Description: bytedesk.com https://github.com/Bytedesk/bytedesk
  *   Please be aware of the BSL license restrictions before installing Bytedesk IM – 
  *  selling, reselling, or hosting Bytedesk IM as a service is a breach of the terms and automatically terminates your rights under the license. 
@@ -132,19 +132,18 @@ class Message extends Equatable {
 
   static Message fromUidTypeContent(String uid, String type, String content) {
     return Message(
-      uid: uid,
-      type: type,
-      content: content,
-      status: BytedeskConstants.MESSAGE_STATUS_SENDING,
-      createdAt: BytedeskUtils.formatedDateNow(),
-      client: BytedeskUtils.getClient(),
-      extra: '',
-      user: UserProtobuf(
-        uid: SpUtil.getString(BytedeskConstants.VISITOR_UID)!, 
-        nickname: SpUtil.getString(BytedeskConstants.VISITOR_NICKNAME)!, 
-        avatar: SpUtil.getString(BytedeskConstants.VISITOR_AVATAR)!, 
-      )
-    );
+        uid: uid,
+        type: type,
+        content: content,
+        status: BytedeskConstants.MESSAGE_STATUS_SENDING,
+        createdAt: BytedeskUtils.formattedDateNow(),
+        client: BytedeskUtils.getClient(),
+        extra: '',
+        user: UserProtobuf(
+          uid: SpUtil.getString(BytedeskConstants.VISITOR_UID)!,
+          nickname: SpUtil.getString(BytedeskConstants.VISITOR_NICKNAME)!,
+          avatar: SpUtil.getString(BytedeskConstants.VISITOR_AVATAR)!,
+        ));
   }
 
   //
@@ -206,10 +205,10 @@ class Message extends Equatable {
   }
 
   bool isSystem() {
-    return type == BytedeskConstants.MESSAGE_TYPE_SYSTEM 
-      || type == BytedeskConstants.MESSAGE_TYPE_CONTINUE 
-      || type == BytedeskConstants.MESSAGE_TYPE_AUTO_CLOSED 
-      || type == BytedeskConstants.MESSAGE_TYPE_AUTO_CLOSED;
+    return type == BytedeskConstants.MESSAGE_TYPE_SYSTEM ||
+        type == BytedeskConstants.MESSAGE_TYPE_CONTINUE ||
+        type == BytedeskConstants.MESSAGE_TYPE_AUTO_CLOSED ||
+        type == BytedeskConstants.MESSAGE_TYPE_AUTO_CLOSED;
   }
 
   //

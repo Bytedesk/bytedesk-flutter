@@ -46,22 +46,22 @@ class VoiceWidget extends StatefulWidget {
   final Decoration? decoration;
 
   /// startRecord 开始录制回调  stopRecord回调
-  VoiceWidget({
-    Key? key,
+  const VoiceWidget({
+    super.key,
     this.startRecord,
     this.stopRecord,
     this.height,
     this.decoration,
     this.margin,
-  }) : super(key: key);
+  });
 
   @override
-  _VoiceWidgetState createState() => _VoiceWidgetState();
+  State<VoiceWidget> createState() => _VoiceWidgetState();
 }
 
 class _VoiceWidgetState extends State<VoiceWidget> {
   // 倒计时总时长
-  int _countTotal = 300;
+  final int _countTotal = 300;
   double starty = 0.0;
   double offset = 0.0;
   bool isUp = false;
@@ -117,22 +117,20 @@ class _VoiceWidgetState extends State<VoiceWidget> {
                           ),
                         ),
                       )
-                    : new Image.asset(
+                    : Image.asset(
                         voiceIco,
                         width: 100,
                         height: 100,
                         // package: 'flutter_plugin_record',
                       ),
               ),
-              Container(
-                child: Text(
-                  toastShow + "\n" + recorderTxt,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontStyle: FontStyle.normal,
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+              Text(
+                "$toastShow\n$recorderTxt",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontStyle: FontStyle.normal,
+                  color: Colors.white,
+                  fontSize: 14,
                 ),
               )
             ],
@@ -184,7 +182,7 @@ class _VoiceWidgetState extends State<VoiceWidget> {
       overlayEntry = null;
     }
     debugPrint(
-        ">>> on record hideVoiceView isUp ${isUp}, filepath: ${filePath}");
+        ">>> on record hideVoiceView isUp $isUp, filepath: $filePath");
     if (isUp) {
       // debugPrint("取消发送");
     } else {
@@ -195,7 +193,7 @@ class _VoiceWidgetState extends State<VoiceWidget> {
             ? null
             : AudioFile(
                 file: File(filePath),
-                duration: this.recordingDuration,
+                duration: recordingDuration,
                 // waveForm: _levels,
                 mimeType: recordingMimeType,
               ),
@@ -299,7 +297,7 @@ class _VoiceWidgetState extends State<VoiceWidget> {
         recordingDuration = e.duration;
         // _levels.add(e.decibels ?? 0.0);
 
-        DateTime date = new DateTime.fromMillisecondsSinceEpoch(
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(
           e.duration.inMilliseconds,
           isUtc: true,
         );

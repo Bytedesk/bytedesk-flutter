@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 /// Default EmojiPicker Implementation
 class DefaultEmojiPickerView extends EmojiPickerBuilder {
   /// Constructor
-  const DefaultEmojiPickerView(Config config, EmojiViewState state, {super.key})
-      : super(config, state);
+  const DefaultEmojiPickerView(super.config, super.state, {super.key});
 
   @override
   // ignore: library_private_types_in_public_api

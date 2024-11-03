@@ -85,7 +85,7 @@ const zhTW = {
   "i18n.DEPT.CS": "客服部",
   //
   "i18n.new.message": "新消息",
-  "i18n.file.asistant": "文件助手",
+  "i18n.file.assistant": "文件助手",
   "i18n.thread.content.image": "圖片",
   "i18n.thread.content.file": "文件",
   "i18n.system.notification": "系統通知",
@@ -99,7 +99,7 @@ const zhTW = {
   "i18n.robot.nickname": "默認機器人",
   "i18n.robot.description": "默認機器人描述",
   "i18n.robot.noreply": "未找到相应答案",
-  "i18n.robot.agent.asistant.nickname": "默认机器人助手",
+  "i18n.robot.agent.assistant.nickname": "默认机器人助手",
   "i18n.llm.prompt": "你是一個聰明、對人類有幫助的人工智能，你可以對人類提出的問題給出有用、詳細、禮貌的回答",
   "i18n.agent.nickname": "默認客服",
   "i18n.agent.description": "默認客服描述",
@@ -155,5 +155,5 @@ const zhTW = {
   "i18n.auto.closed": "会话自动关闭",
   "i18n.agent.closed": "客服关闭会话",
   "i18n.online.chat": "在线客服",
-  // 
+  //
 };

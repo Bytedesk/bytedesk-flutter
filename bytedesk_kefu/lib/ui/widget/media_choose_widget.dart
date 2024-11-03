@@ -10,12 +10,11 @@ class MediaChooseWidget extends StatelessWidget {
   final VoidCallback? takeVideoCallBack;
 
   const MediaChooseWidget(
-      {Key? key,
+      {super.key,
       this.pickImageCallBack,
       this.takeImageCallBack,
       this.pickVideoCallBack,
-      this.takeVideoCallBack})
-      : super(key: key);
+      this.takeVideoCallBack});
 
   @override
   Widget build(BuildContext context) {

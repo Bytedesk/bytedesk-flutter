@@ -2,13 +2,10 @@
 
 - [萝卜丝->请切换此分支](https://gitee.com/270580156/bytedesk-flutter/tree/luobosi/)
 
-bytedesk flutter helpdesk sdk
+## Language
 
-- [Website](https://www.kefux.com)
-- [Web Demo](https://cdn.bytedesk.com/flutter/)
-- [Download Gitee Demo](https://git.oschina.net/270580156/bytedesk-flutter)
-- [Download Github Demo](https://github.com/Bytedesk/bytedesk-flutter)
-<!-- - [Download ApkDemo](https://bytedesk.oss-cn-shenzhen.aliyuncs.com/apk/bytedesk-android-sdk-demo.apk) -->
+- [English](./README.md)
+- [中文](./README.zh.md)
 
 ## Features
 
@@ -24,6 +21,12 @@ bytedesk flutter helpdesk sdk
 - chat notification
   <!-- - support faq list -->
   <!-- - support feedback -->
+
+
+bytedesk flutter helpdesk sdk
+
+- [Download Gitee Demo](https://git.oschina.net/270580156/bytedesk-flutter)
+- [Download Github Demo](https://github.com/Bytedesk/bytedesk-flutter)
 
 ## Getting Started
 
@@ -103,25 +106,14 @@ bytedesk_kefu:
 
 ## 对话SDK
 
-<!-- - [iOS-oc](./visitor/oc)
-- [iOS-swift](./visitor/swift)
-- [Android](./visitor/android)
-- [Flutter](./visitor/flutter)
-- [React](./visitor/react)
-- [React-native](./visitor/react-native)
-- [UniApp](./visitor/uniapp)
-- [Web](./visitor/web) -->
-<!-- - [iOS-oc](https://github.com/Bytedesk/bytedesk-oc) -->
-<!-- - [React-native](https://github.com/bytedesk/bytedesk-react-native) -->
-<!-- - [Vue](https://github.com/bytedesk/bytedesk-vue) -->
-<!-- - [Browser-Extension](https://github.com/Bytedesk/bytedesk-browser-extention) -->
-<!-- - [Vscode-plugin](https://github.com/bytedesk/bytedesk-vscode-plugin) -->
-- [iOS-swift](https://github.com/Bytedesk/bytedesk-swift)
-- [Android](https://github.com/bytedesk/bytedesk-android)
-- [Flutter](https://github.com/bytedesk/bytedesk-flutter)
-- [React](https://github.com/bytedesk/bytedesk-react)
-- [UniApp](https://github.com/bytedesk/bytedesk-uniapp)
-- [Web](https://github.com/bytedesk/bytedesk-web)
+| Project     | Description           | Forks          | Stars             |
+|-------------|-----------------------|----------------|-------------------|
+| [iOS-swift](https://github.com/bytedesk/bytedesk-swift) | iOS swift  | ![GitHub forks](https://img.shields.io/github/forks/bytedesk/bytedesk-swift) | ![GitHub Repo stars](https://img.shields.io/github/stars/Bytedesk/bytedesk-swift)                 |
+| [Android](https://github.com/bytedesk/bytedesk-android) | Android | ![GitHub forks](https://img.shields.io/github/forks/bytedesk/bytedesk-android) | ![GitHub Repo stars](https://img.shields.io/github/stars/bytedesk/bytedesk-android)  |
+| [Flutter](https://github.com/bytedesk/bytedesk-flutter) | Flutter | ![GitHub forks](https://img.shields.io/github/forks/bytedesk/bytedesk-flutter)| ![GitHub Repo stars](https://img.shields.io/github/stars/bytedesk/bytedesk-flutter) |
+| [React](https://github.com/bytedesk/bytedesk-react) | React | ![GitHub forks](https://img.shields.io/github/forks/bytedesk/bytedesk-react) | ![GitHub Repo stars](https://img.shields.io/github/stars/bytedesk/bytedesk-react) |
+| [UniApp](https://github.com/bytedesk/bytedesk-uniapp) | Uniapp | ![GitHub forks](https://img.shields.io/github/forks/bytedesk/bytedesk-uniapp) | ![GitHub Repo stars](https://img.shields.io/github/stars/bytedesk/bytedesk-uniapp) |
+| [Web/Vue](https://github.com/bytedesk/bytedesk-web) | Web/Vue | ![GitHub forks](https://img.shields.io/github/forks/bytedesk/bytedesk-web) | ![GitHub Repo stars](https://img.shields.io/github/stars/bytedesk/bytedesk-web) |
 
 ## 客户端
 

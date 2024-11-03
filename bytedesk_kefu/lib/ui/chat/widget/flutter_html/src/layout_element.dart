@@ -10,39 +10,39 @@ import 'package:html/dom.dart' as dom;
 /// an html document with a more complex layout. LayoutElements handle
 abstract class LayoutElement extends StyledElement {
   LayoutElement({
-    String name = "[[No Name]]",
-    required List<StyledElement> children,
+    super.name = "[[No Name]]",
+    required super.children,
     String? elementId,
-    dom.Element? node,
-  }) : super(name: name, children: children, style: Style(), node: node, elementId: elementId ?? "[[No ID]]");
+    super.node,
+  }) : super(style: Style(), elementId: elementId ?? "[[No ID]]");
 
   Widget? toWidget(RenderContext context);
 }
 
 class TableSectionLayoutElement extends LayoutElement {
   TableSectionLayoutElement({
-    required String name,
-    required List<StyledElement> children,
-  }) : super(name: name, children: children);
+    required super.name,
+    required super.children,
+  });
 
   @override
   Widget toWidget(RenderContext context) {
     // Not rendered; TableLayoutElement will instead consume its children
-    return Container(child: const Text("TABLE SECTION"));
+    return const Text("TABLE SECTION");
   }
 }
 
 class TableRowLayoutElement extends LayoutElement {
   TableRowLayoutElement({
-    required String name,
-    required List<StyledElement> children,
-    required dom.Element node,
-  }) : super(name: name, children: children, node: node);
+    required super.name,
+    required super.children,
+    required dom.Element super.node,
+  });
 
   @override
   Widget toWidget(RenderContext context) {
     // Not rendered; TableLayoutElement will instead consume its children
-    return Container(child: const Text("TABLE ROW"));
+    return const Text("TABLE ROW");
   }
 }
 
@@ -124,11 +124,11 @@ class DetailsContentElement extends LayoutElement {
   List<dom.Element> elementList;
 
   DetailsContentElement({
-    required String name,
-    required List<StyledElement> children,
-    required dom.Element node,
+    required super.name,
+    required super.children,
+    required dom.Element super.node,
     required this.elementList,
-  }) : super(name: name, node: node, children: children, elementId: node.id);
+  }) : super(elementId: node.id);
 
   @override
   Widget toWidget(RenderContext context) {

@@ -141,7 +141,7 @@ class ThreadProvider {
         uid: maps[i][columnUid],
         type: maps[i][columnType],
         content: maps[i][columnContent],
-        status: maps[i][columnStatus],
+        state: maps[i][columnStatus],
         // createdAt: maps[i][columnCreatedAt],
         client: maps[i][columnClient],
         extra: maps[i][columnExtra],

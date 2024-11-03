@@ -1,4 +1,3 @@
-
 // import 'package:bytedesk_kefu/bytedesk_kefu.dart';
 import 'package:bytedesk_kefu/model/message.dart';
 import 'package:bytedesk_kefu/ui/chat/page/video_play_page.dart';
@@ -49,7 +48,9 @@ class MessageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 头像组件
-    return message!.isSend() ? _buildSendWidget(context) : _buildReceiveWidget(context);
+    return message!.isSend()
+        ? _buildSendWidget(context)
+        : _buildReceiveWidget(context);
   }
 
   // 发送消息widget
@@ -80,52 +81,52 @@ class MessageWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(flex: 1, child: Container()),
-                      Text(
-                        status,
-                        style: const TextStyle(fontSize: 10),
-                      ),
-                      Container(
-                        width: 5,
-                      ),
-                      Column(
-                        // Column被Expanded包裹起来，使其内部文本可自动换行
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          BytedeskPopupMenu(
-                            menuBuilder: _buildPopupMenuWidget(context, message!),
-                            // menuBuilder: () => GestureDetector(
-                            //   child: _buildSendMenuWidget(context, message!),
-                            //   onLongPress: () {
-                            //     print("onLongPress");
-                            //   },
-                            //   onTap: () {
-                            //     print("onTap");
-                            //   },
-                            // ),
-                            barrierColor: Colors.transparent,
-                            pressType: PressType.longPress,
-                            controller: popupMenuController,
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              constraints: const BoxConstraints(maxWidth: 240, minHeight: 40),
-                              decoration: BoxDecoration(
-                                color: const Color(0xff98e165),
-                                borderRadius: BorderRadius.circular(3.0),
-                              ),
-                              child: _buildSendContent(context, message!),
+                    child: Row(
+                  children: <Widget>[
+                    Expanded(flex: 1, child: Container()),
+                    Text(
+                      status,
+                      style: const TextStyle(fontSize: 10),
+                    ),
+                    Container(
+                      width: 5,
+                    ),
+                    Column(
+                      // Column被Expanded包裹起来，使其内部文本可自动换行
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        BytedeskPopupMenu(
+                          menuBuilder: _buildPopupMenuWidget(context, message!),
+                          // menuBuilder: () => GestureDetector(
+                          //   child: _buildSendMenuWidget(context, message!),
+                          //   onLongPress: () {
+                          //     print("onLongPress");
+                          //   },
+                          //   onTap: () {
+                          //     print("onTap");
+                          //   },
+                          // ),
+                          barrierColor: Colors.transparent,
+                          pressType: PressType.longPress,
+                          controller: popupMenuController,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            constraints: const BoxConstraints(
+                                maxWidth: 240, minHeight: 40),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff98e165),
+                              borderRadius: BorderRadius.circular(3.0),
                             ),
-                          )
-                        ],
-                      ),
-                      Container(
-                        width: 5,
-                      ),
-                    ],
-                  )
-                ),
+                            child: _buildSendContent(context, message!),
+                          ),
+                        )
+                      ],
+                    ),
+                    Container(
+                      width: 5,
+                    ),
+                  ],
+                )),
                 // 头像
                 _buildAvatarWidget()
               ],
@@ -182,9 +183,11 @@ class MessageWidget extends StatelessWidget {
                       if (value == 'copy') {
                         /// 把文本复制进入粘贴板
                         Clipboard.setData(
-                              ClipboardData(text: message.content!));
+                            ClipboardData(text: message.content!));
                         // Toast
-                        Fluttertoast.showToast(msg: '复制成功',);
+                        Fluttertoast.showToast(
+                          msg: '复制成功',
+                        );
                       } else if (value == 'delete') {
                         bytedeskEventBus
                             .fire(DeleteMessageEventBus(message.uid!));
@@ -316,7 +319,7 @@ class MessageWidget extends StatelessWidget {
     //     ),
     //   );
     // }
-     else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+    else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
           debugPrint('play video');
@@ -354,9 +357,9 @@ class MessageWidget extends StatelessWidget {
           // 时间戳
           _buildTimestampWidget(),
           // 消息
-          message!.isSystem()? _buildSystemMessageWidget()
-              : 
-              Row(
+          message!.isSystem()
+              ? _buildSystemMessageWidget()
+              : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // 头像
@@ -376,7 +379,7 @@ class MessageWidget extends StatelessWidget {
                             style: const TextStyle(fontSize: 10),
                           ),
                         ),
-                        
+
                         BytedeskPopupMenu(
                           menuBuilder: _buildPopupMenuWidget(context, message!),
                           // menuBuilder:_buildReceiveMenuWidget(context, message!),
@@ -397,7 +400,9 @@ class MessageWidget extends StatelessWidget {
                             constraints: const BoxConstraints(
                                 maxWidth: 240, minHeight: 40),
                             decoration: BoxDecoration(
-                              color: BytedeskUtils.isDarkMode(context) ? Colors.grey : Colors.white,
+                              color: BytedeskUtils.isDarkMode(context)
+                                  ? Colors.grey
+                                  : Colors.white,
                               // color: Colors.grey,
                               borderRadius: BorderRadius.circular(3.0),
                             ),
@@ -729,7 +734,7 @@ class MessageWidget extends StatelessWidget {
     //     ),
     //   );
     // }
-     else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
+    else if (message.type == BytedeskConstants.MESSAGE_TYPE_VIDEO) {
       return InkWell(
         onTap: () {
           debugPrint('play video');
