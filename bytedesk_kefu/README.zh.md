@@ -360,7 +360,6 @@ bytedesk_kefu:
 
 ## 技术栈
 
-<!-- - [sofaboot](https://github.com/sofastack/sofa-boot/blob/master/README_ZH.md) for im server 基于金融级云原生架构-->
 - [springboot-3.x for 后端](https://github.com/Bytedesk/bytedesk)
 - [python for ai](https://github.com/Bytedesk/bytedesk-ai)
 - [react for web前端](https://github.com/Bytedesk/bytedesk-react)

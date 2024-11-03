@@ -89,9 +89,9 @@ BytedeskKefu.startWorkGroupChat(context, workGroupWid, "title");
 
 |                                                image1                                                 |                                                 image2                                                  |                                                  image3                                                  |
 | :---------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
-|  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/home.jpeg?raw=true" width="250">  |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot1.jpeg?raw=true" width="250">   |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/robot2.jpeg?raw=true" width="250">   |
-|  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/chat.png?raw=true" width="250">   |   <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/shop.png?raw=true" width="250">    | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/postscript.png?raw=true" width="250"> |
-| <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/status.jpeg?raw=true" width="250"> | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/userinfo.jpeg?raw=true" width="250"> |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/notice.jpeg?raw=true" width="250"> |
+|  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/home.jpeg?raw=true" width="250">  |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/robot1.jpeg?raw=true" width="250">   |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/robot2.jpeg?raw=true" width="250">   |
+|  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/chat.png?raw=true" width="250">   |   <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/shop.png?raw=true" width="250">    | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/postscript.png?raw=true" width="250"> |
+| <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/status.jpeg?raw=true" width="250"> | <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/userinfo.jpeg?raw=true" width="250"> |  <img src="https://github.com/Bytedesk/bytedesk-flutter/blob/master/images/notice.jpeg?raw=true" width="250"> |
 
 ### Change UI
 
@@ -125,7 +125,7 @@ bytedesk_kefu:
 
 ## 技术栈
 
-<!-- - [sofaboot](https://github.com/sofastack/sofa-boot/blob/master/README_ZH.md) for im server 基于金融级云原生架构-->
+<!-- - [sofaboot](https://github.com/sofastack/sofa-boot/blob/master/images/README_ZH.md) for im server 基于金融级云原生架构-->
 - [springboot-3.x for 后端](https://github.com/Bytedesk/bytedesk)
 - [python for ai](https://github.com/Bytedesk/bytedesk-ai)
 - [react for web前端](https://github.com/Bytedesk/bytedesk-react)
