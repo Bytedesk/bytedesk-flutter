@@ -719,6 +719,13 @@ class ChatWebViewPage extends StatefulWidget {
 class _ChatWebViewPageState extends State<ChatWebViewPage> {
   late final WebViewController _controller;
   bool _loading = true;
+  bool _detailRouteInFlight = false;
+  String? _lastOpenedDetailId;
+  DateTime? _lastOpenedDetailAt;
+
+  String _detailRouteId(DetailDestination detail) {
+    return '${detail.kind}:${_stringValue(detail.payload['uid'])}:${_stringValue(detail.payload['value'])}';
+  }
 
   @override
   void initState() {
@@ -727,18 +734,35 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel(
         'BytedeskBubbleBridge',
-        onMessageReceived: (message) {
+        onMessageReceived: (message) async {
           final detail = _detailDestinationFromPacket(message.message);
           if (detail == null || !mounted) {
             return;
           }
-          Navigator.of(context).push(
+          final routeId = _detailRouteId(detail);
+          final now = DateTime.now();
+          if (_detailRouteInFlight) {
+            return;
+          }
+          if (_lastOpenedDetailId == routeId &&
+              _lastOpenedDetailAt != null &&
+              now.difference(_lastOpenedDetailAt!) < const Duration(seconds: 1)) {
+            return;
+          }
+
+          _detailRouteInFlight = true;
+          _lastOpenedDetailId = routeId;
+          _lastOpenedDetailAt = now;
+
+          await Navigator.of(context).push(
             MaterialPageRoute<void>(
               builder: (_) => detail.kind == _goodsMessageType
                   ? GoodsDetailPage(goods: detail.payload)
                   : OrderDetailPage(order: detail.payload),
             ),
           );
+
+          _detailRouteInFlight = false;
         },
       )
       ..setNavigationDelegate(
