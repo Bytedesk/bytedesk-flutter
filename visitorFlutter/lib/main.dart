@@ -595,10 +595,39 @@ class MessagesTab extends StatelessWidget {
                                     ],
                                   ),
                                   const SizedBox(height: 6),
-                                  Text(
-                                    threads[index].preview,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                  Row(
+                                    children: [
+                                      if (threads[index].isPlatformThread)
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 6,
+                                            vertical: 2,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0x1F2C5D9F),
+                                            borderRadius: BorderRadius.circular(
+                                              999,
+                                            ),
+                                          ),
+                                          child: const Text(
+                                            '平台',
+                                            style: TextStyle(
+                                              color: Color(0xFF2C5D9F),
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                      if (threads[index].isPlatformThread)
+                                        const SizedBox(width: 6),
+                                      Expanded(
+                                        child: Text(
+                                          threads[index].preview,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 8),
                                   Row(
@@ -746,7 +775,8 @@ class _ChatWebViewPageState extends State<ChatWebViewPage> {
           }
           if (_lastOpenedDetailId == routeId &&
               _lastOpenedDetailAt != null &&
-              now.difference(_lastOpenedDetailAt!) < const Duration(seconds: 1)) {
+              now.difference(_lastOpenedDetailAt!) <
+                  const Duration(seconds: 1)) {
             return;
           }
 
@@ -1687,6 +1717,7 @@ class ThreadSummary {
     required this.updatedAt,
     required this.unreadCount,
     required this.avatar,
+    required this.isPlatformThread,
   });
 
   final Map<String, dynamic> raw;
@@ -1697,6 +1728,7 @@ class ThreadSummary {
   final String updatedAt;
   final int unreadCount;
   final String avatar;
+  final bool isPlatformThread;
 
   factory ThreadSummary.fromMap(Map<String, dynamic> thread) {
     return ThreadSummary(
@@ -1712,6 +1744,8 @@ class ThreadSummary {
           ) ??
           0,
       avatar: _resolveThreadAvatar(thread),
+      isPlatformThread:
+          _stringValue(thread['orgUid']) == _defaultChatProfile.org,
     );
   }
 
